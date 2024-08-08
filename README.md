@@ -1,12 +1,12 @@
-# Niên luận Cơ sở/Chuyên ngành CTXXX
+# Niên luận Cơ sở/Chuyên ngành CT466
 
-**Học kỳ**: X, **Năm học**: 20XX-20XX
+**Học kỳ**: 1, **Năm học**: 2024-2025
 
-**MSSV**: X
+**MSSV**: B2111797
 
-**Họ tên**: X
+**Họ tên**: Lê Văn Hậu
 
-**Tên đề tài**: X
+**Tên đề tài**: Web thương mại điện tử bán kính mắt
 
 ---
 
