@@ -1,14 +1,19 @@
 package com.example.eyeglass.service.impl;
 
-import com.example.eyeglass.dto.PersonDTO;
-import com.example.eyeglass.entity.Person;
+import com.example.eyeglass.constants.EyeGlassConstants;
+import com.example.eyeglass.dto.user.UserDTO;
+import com.example.eyeglass.entity.Roles;
+import com.example.eyeglass.entity.User;
 import com.example.eyeglass.exception.ResourceNotFoundException;
-import com.example.eyeglass.mapper.PersonMapperInterface;
+import com.example.eyeglass.mapper.UserMapper;
 import com.example.eyeglass.repository.PersonRepository;
+import com.example.eyeglass.repository.RolesRepository;
 import com.example.eyeglass.service.PersonService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,29 +24,47 @@ import java.util.stream.Collectors;
 @Slf4j
 public class PersonServiceImpl implements PersonService {
     private PersonRepository personRepository;
+    private RolesRepository rolesRepository;
+    private UserMapper UserMapper;
 
-    private PersonMapperInterface PersonMapper;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Override
-    public List<PersonDTO> getAllUsers() {
-        List<Person> persons = personRepository.findAll();
-        return persons.stream()
-                .map(PersonMapper::toDTO)
+    public List<UserDTO> getAllUsers() {
+        List<User> users = personRepository.findAll();
+        return users.stream()
+                .map(UserMapper::toDTO)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public PersonDTO getUserById(Long id) {
-        Person person = personRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User not found with id"));
-        return PersonMapper.toDTO(person);
+    public UserDTO getUserById(Long id) {
+        User user = personRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User not found with id"));
+        return UserMapper.toDTO(user);
     }
 
     @Override
-    public PersonDTO createUser(PersonDTO personDTO) {
+    public UserDTO createUser(UserDTO userDTO) {
 
-        Person person = PersonMapper.toEntity(personDTO);
-        Person savedPerson = personRepository.save(person);
-        return PersonMapper.toDTO(savedPerson);
+        User user = UserMapper.toEntity(userDTO);
+        Roles roles = rolesRepository.getRolesByName(EyeGlassConstants.ROLE_USER);
+        user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+        user.setRoles(roles);
+        User savedUser = personRepository.save(user);
+        return UserMapper.toDTO(savedUser);
+    }
+
+    @Override
+    public UserDTO updateUser(Long id, UserDTO userDTO) {
+        User user = personRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User not found with id"));
+        user.setFullName(userDTO.getFullName());
+        user.setEmail(userDTO.getEmail());
+        user.setPhoneNumber(userDTO.getPhoneNumber());
+        user.setAddress(userDTO.getAddress());
+        user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+        User updatedUser = personRepository.save(user);
+        return UserMapper.toDTO(updatedUser);
     }
 
 }

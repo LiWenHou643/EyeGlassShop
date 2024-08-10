@@ -1,8 +1,7 @@
 package com.example.eyeglass.controller;
 
-import com.example.eyeglass.dto.PersonDTO;
+import com.example.eyeglass.dto.user.UserDTO;
 import com.example.eyeglass.service.PersonService;
-import com.example.eyeglass.service.impl.PersonServiceImpl;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,34 +12,40 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/users")
-public class PersonController {
+public class UserController {
 
     private final PersonService personService;
 
     @Autowired
-    public PersonController(PersonService personService) {
+    public UserController(PersonService personService) {
         this.personService = personService;
     }
 
     @GetMapping("/all")
     @ResponseBody
     public ResponseEntity<?> getAllUsers() {
-        List<PersonDTO> personDTOS = personService.getAllUsers();
-        return new ResponseEntity<>(personDTOS, HttpStatus.OK);
+        List<UserDTO> userDTOS = personService.getAllUsers();
+        return new ResponseEntity<>(userDTOS, HttpStatus.OK);
     }
 
     @GetMapping("{id}")
     @ResponseBody
     public ResponseEntity<?> getUserById(@PathVariable("id") Long id) {
-        PersonDTO personDTO = personService.getUserById(id);
-        return new ResponseEntity<>(personDTO, HttpStatus.OK);
+        UserDTO userDTO = personService.getUserById(id);
+        return new ResponseEntity<>(userDTO, HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<?> createUser(@Valid @RequestBody PersonDTO personDTO) {
+    public ResponseEntity<?> createUser(@Valid @RequestBody UserDTO userDTO) {
 
-        PersonDTO savedUser = personService.createUser(personDTO);
+        UserDTO savedUser = personService.createUser(userDTO);
         return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
+    }
+
+    @PutMapping("{id}")
+    public ResponseEntity<?> updateUser(@PathVariable("id") Long id, @Valid @RequestBody UserDTO userDTO) {
+        UserDTO updatedUser = personService.updateUser(id, userDTO);
+        return new ResponseEntity<>(updatedUser, HttpStatus.OK);
     }
 
 }

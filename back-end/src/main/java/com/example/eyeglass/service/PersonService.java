@@ -1,12 +1,17 @@
 package com.example.eyeglass.service;
 
-import com.example.eyeglass.dto.PersonDTO;
+import com.example.eyeglass.dto.user.UserDTO;
 
 import java.util.List;
 
 public interface PersonService {
 
-    List<PersonDTO> getAllUsers();
-    PersonDTO getUserById(Long id);
-    PersonDTO createUser(PersonDTO personDTO);
+    List<UserDTO> getAllUsers();
+
+    UserDTO getUserById(Long id);
+
+    UserDTO createUser(UserDTO userDTO);
+
+    UserDTO updateUser(Long id, UserDTO userDTO);
+
 }

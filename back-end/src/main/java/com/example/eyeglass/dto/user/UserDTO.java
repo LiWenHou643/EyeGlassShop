@@ -1,18 +1,19 @@
-package com.example.eyeglass.dto;
+package com.example.eyeglass.dto.user;
 
+import com.example.eyeglass.entity.Roles;
+import jakarta.persistence.EntityListeners;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class PersonDTO {
-
-    private Long id;
+public class UserDTO {
 
     @NotBlank(message = "Full name cannot be blank")
     @Size(min = 3, max = 50, message = "Full name must be between 3 and 50 characters")
@@ -23,7 +24,7 @@ public class PersonDTO {
     private String email;
 
     @NotBlank(message = "Phone number cannot be blank")
-    @Pattern(regexp="(&|[0-9]{10})", message = "Phone number must be 10 digits")
+    @Pattern(regexp = "(&|[0-9]{10})", message = "Phone number must be 10 digits")
     private String phoneNumber;
 
     @NotBlank(message = "Address cannot be blank")
@@ -34,7 +35,5 @@ public class PersonDTO {
     @Size(min = 8, max = 50, message = "Password must be between 8 and 50 characters")
     private String password;
 
-    @NotNull(message = "Role ID cannot be null")
-    private int roleId;
-
+    private Roles roles;
 }
