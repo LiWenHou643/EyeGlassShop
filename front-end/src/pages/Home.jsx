@@ -1,21 +1,15 @@
-import { listUsers } from '../services/UserApi';
-import { useEffect } from 'react';
-import Carousels from '../ui/Carousels';
+import HomeBlog from '../features/home/HomeBlog';
+import HomeIntro from '../features/home/HomeIntro';
+import HomeBanner from '../features/home/HomeBanner';
 
 function Home() {
-    useEffect(() => {
-        listUsers()
-            .then((response) => {
-                console.log(response.data);
-            })
-            .catch((error) => {
-                console.error(error);
-            });
-    }, []);
-
     return (
         <div>
-            <Carousels />
+            <HomeBanner />
+            <div className='container'>
+                <HomeIntro />
+                <HomeBlog />
+            </div>
         </div>
     );
 }

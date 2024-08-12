@@ -2,6 +2,11 @@ import { Link } from 'react-router-dom';
 
 import { styled } from 'styled-components';
 
+const StyledHeader = styled.header`
+    position: fixed;
+    top: 0;
+    z-index: 1000;
+`;
 const StyledLink = styled(Link)`
     padding: 0.4rem 0.5rem;
     margin: 0 !important;
@@ -31,76 +36,78 @@ const StyledDiv = styled.a`
 `;
 function Header() {
     return (
-        <nav className='navbar navbar-expand-lg bg-body-tertiary'>
-            <div className='container-fluid'>
-                <StyledLink className='navbar-brand px-5' to='/'>
-                    EYES HERO
-                </StyledLink>
-                <button
-                    className='navbar-toggler'
-                    type='button'
-                    data-bs-toggle='collapse'
-                    data-bs-target='#navbarSupportedContent'
-                    aria-controls='navbarSupportedContent'
-                    aria-expanded='false'
-                    aria-label='Toggle navigation'
-                >
-                    <span className='navbar-toggler-icon'></span>
-                </button>
-                <div
-                    className='collapse navbar-collapse'
-                    id='navbarSupportedContent'
-                >
-                    <ul className='navbar-nav me-auto mb-2 mb-lg-0'>
-                        <li className='nav-item dropdown'>
-                            <StyledDiv
-                                className='nav-link dropdown-toggle'
-                                role='button'
-                                data-bs-toggle='dropdown'
-                            >
-                                Glasses
-                            </StyledDiv>
-                            <ul className='dropdown-menu'>
-                                <li>
-                                    <StyledLink
-                                        className='dropdown-item'
-                                        to='/glasses/eyeglasses'
-                                    >
-                                        Action
-                                    </StyledLink>
-                                </li>
-                                <li>
-                                    <StyledLink
-                                        className='dropdown-item'
-                                        to='/glasses/sunglasses'
-                                    >
-                                        Another action
-                                    </StyledLink>
-                                </li>
-                                <li>
-                                    <StyledLink className='dropdown-item'>
-                                        Something else here
-                                    </StyledLink>
-                                </li>
-                            </ul>
-                        </li>
-
-                        <li className='nav-item'>
-                            <StyledLink className='dropdown-item' href='#'>
-                                Contact
-                            </StyledLink>
-                        </li>
-                    </ul>
-
-                    <StyledLink
-                        className='px-4 btn btn-outline-success'
-                        to='/login'
-                    >
-                        Login
+        <StyledHeader className='w-100'>
+            <nav className='navbar navbar-expand-lg bg-body-tertiary'>
+                <div className='container-fluid'>
+                    <StyledLink className='navbar-brand px-5' to='/'>
+                        EYES HERO
                     </StyledLink>
+                    <button
+                        className='navbar-toggler'
+                        type='button'
+                        data-bs-toggle='collapse'
+                        data-bs-target='#navbarSupportedContent'
+                        aria-controls='navbarSupportedContent'
+                        aria-expanded='false'
+                        aria-label='Toggle navigation'
+                    >
+                        <span className='navbar-toggler-icon'></span>
+                    </button>
+                    <div
+                        className='collapse navbar-collapse'
+                        id='navbarSupportedContent'
+                    >
+                        <ul className='navbar-nav me-auto mb-2 mb-lg-0'>
+                            <li className='nav-item dropdown'>
+                                <StyledDiv
+                                    className='nav-link dropdown-toggle'
+                                    role='button'
+                                    data-bs-toggle='dropdown'
+                                >
+                                    Glasses
+                                </StyledDiv>
+                                <ul className='dropdown-menu'>
+                                    <li>
+                                        <StyledLink
+                                            className='dropdown-item'
+                                            to='/glasses/eyeglasses'
+                                        >
+                                            Action
+                                        </StyledLink>
+                                    </li>
+                                    <li>
+                                        <StyledLink
+                                            className='dropdown-item'
+                                            to='/glasses/sunglasses'
+                                        >
+                                            Another action
+                                        </StyledLink>
+                                    </li>
+                                    <li>
+                                        <StyledLink className='dropdown-item'>
+                                            Something else here
+                                        </StyledLink>
+                                    </li>
+                                </ul>
+                            </li>
+
+                            <li className='nav-item'>
+                                <StyledLink className='dropdown-item' href='#'>
+                                    Contact
+                                </StyledLink>
+                            </li>
+                        </ul>
+
+                        <StyledLink
+                            className='px-4 btn btn-outline-success'
+                            to='/login'
+                        >
+                            Login
+                        </StyledLink>
+                    </div>
                 </div>
-            </div>
-        </nav>
+            </nav>
+        </StyledHeader>
     );
 }
 

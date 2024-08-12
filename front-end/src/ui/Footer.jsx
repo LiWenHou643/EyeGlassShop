@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 const StyledFooter = styled.footer`
@@ -26,14 +27,32 @@ const Button = styled.button`
     transition: background-color 0.5s;
 `;
 
+const ImgContainer = styled.div`
+    background-color: var(--color-grey-100);
+    overflow: hidden;
+    width: 130px;
+    height: 40px;
+    border-radius: 0.5rem;
+    padding: 0.4rem;
+    &:hover {
+        cursor: pointer;
+        scale: 1.1;
+    }
+`;
+
+const Img = styled.img`
+    object-fit: contain;
+    width: 100%;
+    height: 100%;
+`;
+
 const Footer = () => (
-    <StyledFooter className='page-footer font-small blue pt-4'>
+    <StyledFooter className='page-footer font-small blue pt-4 mt-5'>
         <div className='container py-5'>
-            <StyledRow className='py-4 my-4 container-fluid text-center text-md-start'>
+            <StyledRow className='mb-md-5 pt-4 mt-4 container-fluid text-center text-md-start'>
                 <div className='row'>
                     <div className='col-md-4 mt-md-0 mt-3'>
-                        <h2 className='text-uppercase'>Your Opinion</h2>
-                        <br />
+                        <h2 className='text-uppercase mb-4'>Your Opinion</h2>
                         <p>
                             We always appreciate your feedback. Please let us
                             know
@@ -42,7 +61,9 @@ const Footer = () => (
                         <Button>Fill this form</Button>
                     </div>
 
-                    <div className='col-md-4 mt-md-0 mt-3'>
+                    <hr className='clearfix w-100 d-md-none pb-0 my-4' />
+
+                    <div className='col-md-3 offset-md-1 mt-md-0 mt-3'>
                         <h2 className='text-uppercase'>Hot line</h2>
                         <P>0939 999 999</P>
                         <P>(9:00 - 22:00)</P>
@@ -51,10 +72,10 @@ const Footer = () => (
                         <P>eyehero@gmail.com</P>
                     </div>
 
-                    <hr className='clearfix w-100 d-md-none pb-0' />
+                    <hr className='clearfix w-100 d-md-none pb-0 my-4' />
 
-                    <div className='col-md-4 mb-md-0 mb-3'>
-                        <h2 className='text-uppercase'>Links</h2>
+                    <div className='col-md-3 offset-md-1 mb-md-0 mb-3'>
+                        <h2 className='text-uppercase mb-4'>Links</h2>
                         <ul className='list-unstyled'>
                             <li>
                                 <P href='#!'>Link 1</P>
@@ -73,57 +94,67 @@ const Footer = () => (
                 </div>
             </StyledRow>
 
-            <hr></hr>
+            <hr />
 
-            <StyledRow className='py-4 my-4 container-fluid text-center text-md-start'>
+            <StyledRow className='mt-md-5 pb-4 mb-4 container-fluid text-center text-md-start'>
                 <div className='row'>
                     <div className='col-md-3 mt-md-0 mt-3'>
-                        <h2 className='text-uppercase'>Introduce</h2>
+                        <h2 className='text-uppercase mb-4'>Introduce</h2>
                         <P>
                             We are the best eye glasses shop in Viet Nam. We
                             have all types of fashion glasses for you to choose
                             from eyeglass to sunglasses or only eyeframe.
                         </P>
                     </div>
+                    <hr className='clearfix w-100 d-md-none pb-0 my-4' />
 
                     <div className='col-md-3 mt-md-0 mt-3'>
-                        <h2 className='text-uppercase'>Policies</h2>
+                        <h2 className='text-uppercase mb-4'>Policies</h2>
                         <P>
                             1 year warranty commitment with 1 for 1 return.
                             Daily promotion with many attractive gifts.
                         </P>
                     </div>
 
-                    <hr className='clearfix w-100 d-md-none pb-0' />
+                    <hr className='clearfix w-100 d-md-none pb-0 my-4' />
 
                     <div className='col-md-3 mb-md-0 mb-3'>
-                        <h2 className='text-uppercase'>Contacts</h2>
+                        <h2 className='text-uppercase mb-4'>Contacts</h2>
                         <ul className='list-unstyled'>
                             <li>
                                 <P href='#!'>
-                                    Address: Mau Than, Ninh Kieu, Can Tho, Viet
-                                    Nam
+                                    <strong>Address: </strong>Mau Than, Ninh
+                                    Kieu, Can Tho, Viet Nam
                                 </P>
                             </li>
                             <li>
-                                <P href='#!'>Hotline</P>
+                                <P href='#!'>
+                                    <strong>Hotline: </strong>
+                                </P>
                             </li>
                             <li>
-                                <P href='#!'>Email</P>
+                                <P href='#!'>
+                                    <strong>Email: </strong>
+                                </P>
                             </li>
                         </ul>
                     </div>
+                    <hr className='clearfix w-100 d-md-none pb-0 my-4' />
 
                     <div className='col-md-3 mb-md-0 mb-3'>
-                        <h2 className='text-uppercase'>E-commerce</h2>
-                        <ul className='list-unstyled'>
-                            <li>
-                                <a href='#!'>Shoppee</a>
-                            </li>
-                            <li>
-                                <a href='#!'>Lazada</a>
-                            </li>
-                        </ul>
+                        <h2 className='text-uppercase mb-4'>E-commerce</h2>
+                        <div className='d-flex flex-wrap justify-content-center justify-content-md-start gap-4'>
+                            <Link>
+                                <ImgContainer>
+                                    <Img src='shopee.png' alt='' />
+                                </ImgContainer>
+                            </Link>
+                            <Link>
+                                <ImgContainer>
+                                    <Img src='lazada.png' alt='' />
+                                </ImgContainer>
+                            </Link>
+                        </div>
                     </div>
                 </div>
             </StyledRow>
