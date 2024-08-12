@@ -1,6 +1,7 @@
 package com.example.eyeglass.service.impl;
 
 import com.example.eyeglass.constants.EyeGlassConstants;
+import com.example.eyeglass.dto.user.CreateUserDTO;
 import com.example.eyeglass.dto.user.UserDTO;
 import com.example.eyeglass.entity.Roles;
 import com.example.eyeglass.entity.User;
@@ -45,11 +46,11 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
-    public UserDTO createUser(UserDTO userDTO) {
+    public UserDTO createUser(CreateUserDTO createUserDTO) {
 
-        User user = UserMapper.toEntity(userDTO);
+        User user = UserMapper.toEntityFromCreate(createUserDTO);
         Roles roles = rolesRepository.getRolesByName(EyeGlassConstants.ROLE_USER);
-        user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+        user.setPassword(passwordEncoder.encode(createUserDTO.getPassword()));
         user.setRoles(roles);
         User savedUser = personRepository.save(user);
         return UserMapper.toDTO(savedUser);

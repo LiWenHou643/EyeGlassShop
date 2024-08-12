@@ -1,7 +1,10 @@
 package com.example.eyeglass.dto.user;
 
 import com.example.eyeglass.entity.Roles;
-import jakarta.validation.constraints.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,7 +14,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserDTO {
+public class CreateUserDTO {
 
     @NotBlank(message = "Full name cannot be blank")
     @Size(min = 3, max = 50, message = "Full name must be between 3 and 50 characters")
@@ -21,17 +24,8 @@ public class UserDTO {
     @Email(message = "Invalid email address")
     private String email;
 
-    @NotBlank(message = "Phone number cannot be blank")
-    @Pattern(regexp = "(&|[0-9]{10})", message = "Phone number must be 10 digits")
-    private String phoneNumber;
-
-    @NotBlank(message = "Address cannot be blank")
-    @Size(min = 3, max = 100, message = "Address must be between 3 and 100 characters")
-    private String address;
-
     @NotBlank(message = "Password cannot be blank")
     @Size(min = 8, max = 50, message = "Password must be between 8 and 50 characters")
     private String password;
 
-    private Roles roles;
 }

@@ -1,5 +1,6 @@
 package com.example.eyeglass.controller;
 
+import com.example.eyeglass.dto.user.CreateUserDTO;
 import com.example.eyeglass.dto.user.UserDTO;
 import com.example.eyeglass.service.PersonService;
 import jakarta.validation.Valid;
@@ -36,9 +37,9 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<?> createUser(@Valid @RequestBody UserDTO userDTO) {
+    public ResponseEntity<?> createUser(@Valid @RequestBody CreateUserDTO createUserDTO) {
 
-        UserDTO savedUser = personService.createUser(userDTO);
+        UserDTO savedUser = personService.createUser(createUserDTO);
         return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
     }
 
