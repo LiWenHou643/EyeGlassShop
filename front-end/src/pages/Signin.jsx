@@ -1,9 +1,10 @@
 import styled from 'styled-components';
-import LoginForm from '../features/authentication/LoginForm';
+import SigninForm from '../features/authentication/SigninForm';
 
 const StyledContainer = styled.div`
     min-height: 600px;
 `;
+
 const FormContainer = styled.div`
     &.container {
         width: 400px;
@@ -25,13 +26,13 @@ const FormContainer = styled.div`
     }
 `;
 
-export default function Login() {
+export default function Signin() {
     return (
         <StyledContainer>
             <FormContainer className='container d-flex flex-column justify-content-around align-items-center border border-success gap-4'>
-                <h1 className='display-2 mb-4'>Log In</h1>
+                <h1 className='display-2 mb-4'>Sign In</h1>
 
-                <LoginForm />
+                <SigninForm />
             </FormContainer>
         </StyledContainer>
     );

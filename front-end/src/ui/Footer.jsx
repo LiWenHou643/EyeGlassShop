@@ -1,62 +1,139 @@
 import React from 'react';
+import styled from 'styled-components';
+
+const StyledFooter = styled.footer`
+    background-color: var(--color-grey-800);
+    color: var(--color-grey-100);
+`;
+const StyledRow = styled.div``;
+
+const P = styled.p`
+    color: var(--color-grey-400);
+    font-size: 1.6rem;
+`;
+
+const Button = styled.button`
+    color: var(--color-grey-800);
+    border: none;
+    padding: 1rem 2rem;
+    border-radius: 1rem;
+    font-size: 1.8rem;
+
+    &:hover {
+        background-color: var(--color-green-600);
+    }
+
+    transition: background-color 0.5s;
+`;
 
 const Footer = () => (
-    <footer className='page-footer font-small blue pt-4'>
-        <div className='container-fluid text-center text-md-left'>
-            <div className='row'>
-                <div className='col-md-6 mt-md-0 mt-3'>
-                    <h5 className='text-uppercase'>Footer Content</h5>
-                    <p>
-                        Here you can use rows and columns to organize your
-                        footer content.
-                    </p>
-                </div>
+    <StyledFooter className='page-footer font-small blue pt-4'>
+        <div className='container py-5'>
+            <StyledRow className='py-4 my-4 container-fluid text-center text-md-start'>
+                <div className='row'>
+                    <div className='col-md-4 mt-md-0 mt-3'>
+                        <h2 className='text-uppercase'>Your Opinion</h2>
+                        <br />
+                        <p>
+                            We always appreciate your feedback. Please let us
+                            know
+                        </p>
+                        <br />
+                        <Button>Fill this form</Button>
+                    </div>
 
-                <hr className='clearfix w-100 d-md-none pb-0' />
+                    <div className='col-md-4 mt-md-0 mt-3'>
+                        <h2 className='text-uppercase'>Hot line</h2>
+                        <P>0939 999 999</P>
+                        <P>(9:00 - 22:00)</P>
+                        <br />
+                        <h2 className='text-uppercase'>Email</h2>
+                        <P>eyehero@gmail.com</P>
+                    </div>
 
-                <div className='col-md-3 mb-md-0 mb-3'>
-                    <h5 className='text-uppercase'>Links</h5>
-                    <ul className='list-unstyled'>
-                        <li>
-                            <a href='#!'>Link 1</a>
-                        </li>
-                        <li>
-                            <a href='#!'>Link 2</a>
-                        </li>
-                        <li>
-                            <a href='#!'>Link 3</a>
-                        </li>
-                        <li>
-                            <a href='#!'>Link 4</a>
-                        </li>
-                    </ul>
-                </div>
+                    <hr className='clearfix w-100 d-md-none pb-0' />
 
-                <div className='col-md-3 mb-md-0 mb-3'>
-                    <h5 className='text-uppercase'>Links</h5>
-                    <ul className='list-unstyled'>
-                        <li>
-                            <a href='#!'>Link 1</a>
-                        </li>
-                        <li>
-                            <a href='#!'>Link 2</a>
-                        </li>
-                        <li>
-                            <a href='#!'>Link 3</a>
-                        </li>
-                        <li>
-                            <a href='#!'>Link 4</a>
-                        </li>
-                    </ul>
+                    <div className='col-md-4 mb-md-0 mb-3'>
+                        <h2 className='text-uppercase'>Links</h2>
+                        <ul className='list-unstyled'>
+                            <li>
+                                <P href='#!'>Link 1</P>
+                            </li>
+                            <li>
+                                <P href='#!'>Link 2</P>
+                            </li>
+                            <li>
+                                <P href='#!'>Link 3</P>
+                            </li>
+                            <li>
+                                <P href='#!'>Link 4</P>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
-            </div>
+            </StyledRow>
+
+            <hr></hr>
+
+            <StyledRow className='py-4 my-4 container-fluid text-center text-md-start'>
+                <div className='row'>
+                    <div className='col-md-3 mt-md-0 mt-3'>
+                        <h2 className='text-uppercase'>Introduce</h2>
+                        <P>
+                            We are the best eye glasses shop in Viet Nam. We
+                            have all types of fashion glasses for you to choose
+                            from eyeglass to sunglasses or only eyeframe.
+                        </P>
+                    </div>
+
+                    <div className='col-md-3 mt-md-0 mt-3'>
+                        <h2 className='text-uppercase'>Policies</h2>
+                        <P>
+                            1 year warranty commitment with 1 for 1 return.
+                            Daily promotion with many attractive gifts.
+                        </P>
+                    </div>
+
+                    <hr className='clearfix w-100 d-md-none pb-0' />
+
+                    <div className='col-md-3 mb-md-0 mb-3'>
+                        <h2 className='text-uppercase'>Contacts</h2>
+                        <ul className='list-unstyled'>
+                            <li>
+                                <P href='#!'>
+                                    Address: Mau Than, Ninh Kieu, Can Tho, Viet
+                                    Nam
+                                </P>
+                            </li>
+                            <li>
+                                <P href='#!'>Hotline</P>
+                            </li>
+                            <li>
+                                <P href='#!'>Email</P>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div className='col-md-3 mb-md-0 mb-3'>
+                        <h2 className='text-uppercase'>E-commerce</h2>
+                        <ul className='list-unstyled'>
+                            <li>
+                                <a href='#!'>Shoppee</a>
+                            </li>
+                            <li>
+                                <a href='#!'>Lazada</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </StyledRow>
+
+            <StyledRow className='footer-copyright text-center'>
+                © 2024 Copyright:
+                <a href='https://eyeghero@gmail.com/'> Eye Hero Corp</a>
+            </StyledRow>
         </div>
-
-        <div className='footer-copyright text-center py-3'>
-            © 2020 Copyright:
-            <a href='https://mdbootstrap.com/'> MDBootstrap.com</a>
-        </div>
-    </footer>
+    </StyledFooter>
 );
 
 export default Footer;

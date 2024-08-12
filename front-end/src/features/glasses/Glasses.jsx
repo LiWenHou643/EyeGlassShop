@@ -1,5 +1,5 @@
 function Glasses() {
-    return <div>Best Glasses In The World</div>;
+    return <div>glasses</div>;
 }
 
 export default Glasses;
