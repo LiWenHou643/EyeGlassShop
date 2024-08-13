@@ -1,17 +1,8 @@
 import React from 'react';
 import Slider from 'react-slick';
 import styled from 'styled-components';
+import ImgContainer from './ImageContainer';
 
-const ImgContainer = styled.div`
-    height: 100%;
-    overflow: hidden;
-    aspect-ratio: ${(props) => (props.$isBanner ? '10/4' : '400/250')};
-    img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-    }
-`;
 const Title = styled.h3`
     overflow: hidden;
     height: 30px;
@@ -35,10 +26,11 @@ export default function Carousels({ data, isBanner }) {
     var settings = {
         dots: true,
         infinite: true,
-        speed: 500,
+        speed: 3000,
+        autoplay: true,
         slidesToShow: 1,
         slidesToScroll: 1,
-        arrows: false,
+        arrows: isBanner,
     };
     return (
         <Slider {...settings}>

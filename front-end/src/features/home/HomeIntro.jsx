@@ -34,7 +34,7 @@ const IntroIcon = styled.div`
 function HomeIntro() {
     return (
         <IntroContainer>
-            <div className='row justify-content-between flex-wrap'>
+            <div className='row justify-content-between flex-wrap gap-5 gap-sm-0'>
                 <div className='d-flex align-items-center col-12 col-sm-6 col-md-3'>
                     <IntroIcon>
                         <MdOutlineCleanHands />

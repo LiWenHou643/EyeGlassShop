@@ -34,6 +34,11 @@ const StyledDiv = styled.a`
         background-color: var(--color-grey-200);
     }
 `;
+
+const P = styled.p`
+    font-size: 1.6rem;
+    padding: 0.5rem 1rem !important;
+`;
 function Header() {
     return (
         <StyledHeader className='w-100'>
@@ -72,7 +77,7 @@ function Header() {
                                             className='dropdown-item'
                                             to='/glasses/eyeglasses'
                                         >
-                                            Action
+                                            <P>Eyeglasses</P>
                                         </StyledLink>
                                     </li>
                                     <li>
@@ -80,12 +85,12 @@ function Header() {
                                             className='dropdown-item'
                                             to='/glasses/sunglasses'
                                         >
-                                            Another action
+                                            <P>Sunglasses</P>
                                         </StyledLink>
                                     </li>
                                     <li>
                                         <StyledLink className='dropdown-item'>
-                                            Something else here
+                                            <P>Eyeframe</P>
                                         </StyledLink>
                                     </li>
                                 </ul>

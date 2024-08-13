@@ -5,6 +5,7 @@ import styled from 'styled-components';
 const StyledFooter = styled.footer`
     background-color: var(--color-grey-800);
     color: var(--color-grey-100);
+    margin-top: 10rem;
 `;
 const StyledRow = styled.div``;
 
@@ -46,17 +47,30 @@ const Img = styled.img`
     height: 100%;
 `;
 
+const A = styled.a`
+    width: 70px;
+    height: 70px;
+    cursor: pointer;
+    i {
+        display: block;
+        width: 100%;
+        height: 100%;
+        background: ${(props) => `url(${props.$src})} no-repeat center center`};
+        background-size: contain;
+    }
+`;
+
 const Footer = () => (
-    <StyledFooter className='page-footer font-small blue pt-4 mt-5'>
-        <div className='container py-5'>
+    <StyledFooter className='page-footer font-small blue'>
+        <div className='container py-md-5'>
             <StyledRow className='mb-md-5 pt-4 mt-4 container-fluid text-center text-md-start'>
                 <div className='row'>
                     <div className='col-md-4 mt-md-0 mt-3'>
                         <h2 className='text-uppercase mb-4'>Your Opinion</h2>
-                        <p>
+                        <P>
                             We always appreciate your feedback. Please let us
                             know
-                        </p>
+                        </P>
                         <br />
                         <Button>Fill this form</Button>
                     </div>
@@ -75,21 +89,20 @@ const Footer = () => (
                     <hr className='clearfix w-100 d-md-none pb-0 my-4' />
 
                     <div className='col-md-3 offset-md-1 mb-md-0 mb-3'>
-                        <h2 className='text-uppercase mb-4'>Links</h2>
-                        <ul className='list-unstyled'>
-                            <li>
-                                <P href='#!'>Link 1</P>
-                            </li>
-                            <li>
-                                <P href='#!'>Link 2</P>
-                            </li>
-                            <li>
-                                <P href='#!'>Link 3</P>
-                            </li>
-                            <li>
-                                <P href='#!'>Link 4</P>
-                            </li>
-                        </ul>
+                        <div className='d-flex justify-content-center justify-content-md-start flex-wrap gap-3'>
+                            <A to='#' $src='fb.svg'>
+                                <i />
+                            </A>
+                            <A to='#' $src='instagram.svg'>
+                                <i />
+                            </A>
+                            <A to='#' $src='tiktok.svg'>
+                                <i />
+                            </A>
+                            <A to='#' $src='zalo.svg'>
+                                <i />
+                            </A>
+                        </div>
                     </div>
                 </div>
             </StyledRow>
