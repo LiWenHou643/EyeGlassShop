@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import SigninForm from '../features/authentication/SigninForm';
 
 const StyledContainer = styled.div`
+    margin-top: 200px;
     min-height: 600px;
 `;
 

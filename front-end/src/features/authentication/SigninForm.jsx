@@ -4,6 +4,21 @@ import { useCreateUser } from './useCreateUser';
 import Button from '../../ui/Button';
 import FormRow from '../../ui/FormRow';
 import Form from '../../ui/Form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
+
+const schema = yup.object({
+    fullname: yup.string().required('Full name is required'),
+    email: yup
+        .string()
+        .email('Email is not valid')
+        .required('Email is required'),
+    pwd: yup
+        .string()
+        .min(8, 'Password must be at least 8 characters')
+        .required('Password is required'),
+    pwdc: yup.string().oneOf([yup.ref('pwd'), null], 'Passwords must match'),
+});
 
 export default function SigninForm() {
     const {
@@ -17,6 +32,7 @@ export default function SigninForm() {
             pwd: '',
             pwdc: '',
         },
+        resolver: yupResolver(schema),
     });
 
     const { createUser, isCreatingUser } = useCreateUser();
@@ -43,7 +59,7 @@ export default function SigninForm() {
                 register={register}
                 required
                 minLength={3}
-                disabledd={isCreatingUser}
+                disabled={isCreatingUser}
             >
                 full name
             </FormRow>
@@ -107,7 +123,7 @@ export default function SigninForm() {
             </div>
             <div className='row mt-4 d-flex justify-content-between'>
                 <Link
-                    className='col-6 col-sm-5 col-lg-4 py-3 text-capitalize'
+                    className='col-6 col-sm-5 col-lg-4 py-3 text-capitalize text-center bg-secondary text-light rounded-2'
                     to='/login'
                     disabled={isCreatingUser}
                 >

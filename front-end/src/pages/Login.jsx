@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import LoginForm from '../features/authentication/LoginForm';
 
 const StyledContainer = styled.div`
+    margin-top: 200px;
     min-height: 600px;
 `;
 const FormContainer = styled.div`

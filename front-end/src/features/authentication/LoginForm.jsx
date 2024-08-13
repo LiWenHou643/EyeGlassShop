@@ -3,6 +3,19 @@ import Button from '../../ui/Button';
 import FormRow from '../../ui/FormRow';
 import { Link } from 'react-router-dom';
 import Form from '../../ui/Form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
+
+const schema = yup.object({
+    email: yup
+        .string()
+        .email('Email is not valid')
+        .required('Email is required'),
+    pwd: yup
+        .string()
+        .min(8, 'Password must be at least 8 characters')
+        .required('Password is required'),
+});
 
 export default function LoginForm() {
     const {
@@ -14,6 +27,7 @@ export default function LoginForm() {
             email: '',
             pwd: '',
         },
+        resolver: yupResolver(schema),
     });
 
     function onSubmit(data, event) {
@@ -59,7 +73,7 @@ export default function LoginForm() {
             <div className='row mt-4 d-flex justify-content-between'>
                 <Link
                     to='/signin'
-                    className='col-6 col-sm-5 col-lg-4 py-3 text-capitalize'
+                    className='col-6 col-sm-5 col-lg-4 py-3 text-capitalize  bg-secondary text-light rounded-2 text-center'
                 >
                     Create account
                 </Link>
