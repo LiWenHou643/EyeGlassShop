@@ -1,6 +1,5 @@
 package com.example.eyeglass.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.EntityListeners;
 import lombok.Getter;
 import lombok.Setter;

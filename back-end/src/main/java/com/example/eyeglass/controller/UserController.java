@@ -1,10 +1,10 @@
 package com.example.eyeglass.controller;
 
 import com.example.eyeglass.dto.user.CreateUserDTO;
-import com.example.eyeglass.dto.user.UserDTO;
-import com.example.eyeglass.service.PersonService;
+import com.example.eyeglass.dto.user.CustomerDTO;
+import com.example.eyeglass.service.CustomerService;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
@@ -12,40 +12,36 @@ import org.springframework.http.ResponseEntity;
 import java.util.List;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api/users")
 public class UserController {
 
-    private final PersonService personService;
-
-    @Autowired
-    public UserController(PersonService personService) {
-        this.personService = personService;
-    }
+    private final CustomerService customerService;
 
     @GetMapping("/all")
     @ResponseBody
     public ResponseEntity<?> getAllUsers() {
-        List<UserDTO> userDTOS = personService.getAllUsers();
-        return new ResponseEntity<>(userDTOS, HttpStatus.OK);
+        List<CustomerDTO> customerDTOS = customerService.getAllUsers();
+        return new ResponseEntity<>(customerDTOS, HttpStatus.OK);
     }
 
     @GetMapping("{id}")
     @ResponseBody
     public ResponseEntity<?> getUserById(@PathVariable("id") Long id) {
-        UserDTO userDTO = personService.getUserById(id);
-        return new ResponseEntity<>(userDTO, HttpStatus.OK);
+        CustomerDTO customerDTO = customerService.getUserById(id);
+        return new ResponseEntity<>(customerDTO, HttpStatus.OK);
     }
 
     @PostMapping
     public ResponseEntity<?> createUser(@Valid @RequestBody CreateUserDTO createUserDTO) {
 
-        UserDTO savedUser = personService.createUser(createUserDTO);
+        CustomerDTO savedUser = customerService.createUser(createUserDTO);
         return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<?> updateUser(@PathVariable("id") Long id, @Valid @RequestBody UserDTO userDTO) {
-        UserDTO updatedUser = personService.updateUser(id, userDTO);
+    public ResponseEntity<?> updateUser(@PathVariable("id") Long id, @Valid @RequestBody CustomerDTO customerDTO) {
+        CustomerDTO updatedUser = customerService.updateUser(id, customerDTO);
         return new ResponseEntity<>(updatedUser, HttpStatus.OK);
     }
 

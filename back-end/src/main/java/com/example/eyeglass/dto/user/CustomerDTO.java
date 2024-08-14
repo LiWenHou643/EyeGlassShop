@@ -11,7 +11,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserDTO {
+public class CustomerDTO {
 
     @NotBlank(message = "Full name cannot be blank")
     @Size(min = 3, max = 50, message = "Full name must be between 3 and 50 characters")
