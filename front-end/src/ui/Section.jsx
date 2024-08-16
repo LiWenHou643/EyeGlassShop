@@ -2,8 +2,9 @@ import styled from 'styled-components';
 
 const Section = styled.section`
     &.p-section {
-        padding-top: 80px;
-        padding-bottom: 80px;
+        margin-top: 40px;
+        margin-bottom: 40px;
+        padding: 0 8px;
     }
 `;
 

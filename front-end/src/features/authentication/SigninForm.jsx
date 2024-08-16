@@ -25,6 +25,7 @@ export default function SigninForm() {
         register,
         handleSubmit,
         formState: { errors },
+        reset,
     } = useForm({
         defaultValues: {
             fullname: '',
@@ -35,7 +36,7 @@ export default function SigninForm() {
         resolver: yupResolver(schema),
     });
 
-    const { createUser, isCreatingUser } = useCreateUser();
+    const { createUser, isCreatingUser } = useCreateUser(reset);
 
     const onSubmit = (data) => {
         const formattedData = {
@@ -43,8 +44,18 @@ export default function SigninForm() {
             email: data.email,
             password: data.pwd,
         };
-        console.log('formattedData', formattedData);
-        createUser({ ...formattedData });
+        createUser(
+            { ...formattedData },
+            {
+                onSuccess: () => {
+                    reset();
+                },
+            }
+        );
+    };
+
+    const onReset = () => {
+        reset();
     };
 
     return (
@@ -121,17 +132,31 @@ export default function SigninForm() {
                     {errors?.pwdc?.message}
                 </p>
             </div>
+
+            <div className='d-flex justify-content-start'>
+                <p>
+                    Already have an account?{' '}
+                    <Link
+                        className='col-6 col-sm-5 col-lg-4 py-3 rounded-2 link-primary'
+                        to='/login'
+                        disabled={isCreatingUser}
+                    >
+                        Login now
+                    </Link>
+                </p>
+            </div>
             <div className='row mt-4 d-flex justify-content-between'>
-                <Link
-                    className='col-6 col-sm-5 col-lg-4 py-3 text-capitalize text-center bg-secondary text-light rounded-2'
-                    to='/login'
+                <Button
+                    type='reset'
+                    className='col-3 py-3 btn btn-secondary text-capitalize'
                     disabled={isCreatingUser}
+                    onClick={onReset}
                 >
-                    Back to login
-                </Link>
+                    Reset
+                </Button>
                 <Button
                     type='submit'
-                    className='col-6 col-sm-5 col-lg-4 py-3 btn btn-success text-capitalize'
+                    className='col-5 py-3 btn btn-success text-capitalize'
                     disabled={isCreatingUser}
                 >
                     Create ccount

@@ -9,6 +9,7 @@ import Eyeglasses from './features/glasses/Eyeglasses';
 import Sunglasses from './features/glasses/Sunglasses';
 import Home from './pages/Home';
 import Signin from './pages/Signin';
+import { Toaster } from 'react-hot-toast';
 
 const queryClient = new QueryClient();
 
@@ -43,6 +44,7 @@ function App() {
             </BrowserRouter>
 
             <GlobalStyles />
+            <Toaster position='top-center' reverseOrder={true} />
         </QueryClientProvider>
     );
 }

@@ -70,16 +70,39 @@ export default function LoginForm() {
                     {errors?.pwd?.message}
                 </p>
             </div>
+
+            <div className='d-flex justify-content-between align-items-center'>
+                <div className='col-7 d-md-flex justify-content-md-start align-items-md-center'>
+                    <p>Has no account? &nbsp;</p>
+                    <Link
+                        className='py-3 rounded-2 link-primary'
+                        to='/login'
+                        // disabled={isSubmitting}
+                    >
+                        Register now
+                    </Link>
+                </div>
+                <div className='col-5 d-flex justify-content-end align-items-center'>
+                    <Link
+                        className='py-3 rounded-2 link-primary'
+                        to='/forgot-password'
+                        // disabled={isSubmitting}
+                    >
+                        Forgot password
+                    </Link>
+                </div>
+            </div>
+
             <div className='row mt-4 d-flex justify-content-between'>
                 <Link
                     to='/signin'
-                    className='col-6 col-sm-5 col-lg-4 py-3 text-capitalize  bg-secondary text-light rounded-2 text-center'
+                    className='col-6 py-3 text-capitalize  bg-secondary text-light rounded-2 text-center'
                 >
                     Create account
                 </Link>
                 <Button
                     type='submit'
-                    className='col-6 col-sm-5 col-lg-4 py-3 btn btn-success text-capitalize'
+                    className='col-3 py-3 btn btn-success text-capitalize'
                 >
                     Log in
                 </Button>

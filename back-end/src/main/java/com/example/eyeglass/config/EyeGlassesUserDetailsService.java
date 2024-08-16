@@ -21,7 +21,7 @@ public class EyeGlassesUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Customer customer = customerRepository.findByEmail(username)    // email = username
-                .orElseThrow(() -> new UsernameNotFoundException("User not found for user: " + username));
+                .orElseThrow(() -> new UsernameNotFoundException("Not found for user: " + username));
         List<GrantedAuthority> authorities = List.of(new SimpleGrantedAuthority(customer.getRoles().getName()));
         return new User(customer.getEmail(), customer.getPassword(), authorities);
     }
