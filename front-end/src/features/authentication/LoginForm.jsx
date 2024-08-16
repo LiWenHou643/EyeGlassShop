@@ -22,6 +22,7 @@ export default function LoginForm() {
         register,
         handleSubmit,
         formState: { errors },
+        reset,
     } = useForm({
         defaultValues: {
             email: '',
@@ -34,6 +35,10 @@ export default function LoginForm() {
         event.preventDefault();
         console.log(data);
         // Handle form submission
+    }
+
+    function onReset() {
+        reset();
     }
 
     return (
@@ -76,7 +81,7 @@ export default function LoginForm() {
                     <p>Has no account? &nbsp;</p>
                     <Link
                         className='py-3 rounded-2 link-primary'
-                        to='/login'
+                        to='/signin'
                         // disabled={isSubmitting}
                     >
                         Register now
@@ -94,12 +99,13 @@ export default function LoginForm() {
             </div>
 
             <div className='row mt-4 d-flex justify-content-between'>
-                <Link
-                    to='/signin'
-                    className='col-6 py-3 text-capitalize  bg-secondary text-light rounded-2 text-center'
+                <Button
+                    type='reset'
+                    className='col-3 py-3 btn btn-secondary text-capitalize'
+                    onClick={onReset}
                 >
-                    Create account
-                </Link>
+                    Reset
+                </Button>
                 <Button
                     type='submit'
                     className='col-3 py-3 btn btn-success text-capitalize'
