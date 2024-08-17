@@ -38,20 +38,26 @@ export default function SigninForm() {
 
     const { createUser, isCreatingUser } = useCreateUser(reset);
 
-    const onSubmit = (data) => {
+    const onSubmit = async (data) => {
         const formattedData = {
             fullName: data.fullname,
             email: data.email,
             password: data.pwd,
         };
-        createUser(
-            { ...formattedData },
-            {
-                onSuccess: () => {
-                    reset();
-                },
-            }
-        );
+        try {
+            const createdUser = await createUser(
+                { ...formattedData },
+                {
+                    onSuccess: () => {
+                        reset();
+                    },
+                }
+            );
+
+            console.log(createdUser);
+        } catch (error) {
+            console.error('Error creating user:', error);
+        }
     };
 
     const onReset = () => {

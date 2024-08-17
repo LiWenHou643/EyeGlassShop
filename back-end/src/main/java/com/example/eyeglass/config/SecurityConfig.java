@@ -28,12 +28,14 @@ public class SecurityConfig {
             .authorizeHttpRequests(authorize -> authorize
                     .requestMatchers("/api/admin/**").hasRole("ADMIN")
                     .requestMatchers("/api/users/**").hasRole("USER")
-                    .requestMatchers("/api/**").permitAll()
-                    .requestMatchers("/test", "/myAccount").authenticated()
+                    .requestMatchers("/test").authenticated()
+                    .requestMatchers("/api/register").permitAll()
                     .requestMatchers("/notices", "/contact", "/error", "/register", "/invalidSession").permitAll()
             );
 
-        http.formLogin(Customizer.withDefaults());
+        http.formLogin(flc->flc.loginPage("/login").permitAll()
+                               .defaultSuccessUrl("/home", true)
+                               .failureUrl("/login?error=true"));
         http.httpBasic(hbc -> hbc.authenticationEntryPoint(new CustomBasicAuthenticationEntryPoint()));
         http.exceptionHandling(ehc -> ehc.accessDeniedHandler(new CustomAccessDeniedHandler()));
 

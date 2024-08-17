@@ -1,22 +1,21 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { register } from '../../services/UserApi';
+import { login as lg } from '../../services/UserApi';
 import { toast } from 'react-hot-toast';
 
 export function useCreateUser() {
     const queryClient = useQueryClient();
 
-    const { mutateAsync: createUser, isLoading: isCreatingUser } = useMutation({
-        mutationFn: register,
-        onSuccess: (data) => {
+    const { mutate: login, isLoading: isLoggingin } = useMutation({
+        mutationFn: lg,
+        onSuccess: () => {
             queryClient.invalidateQueries({
                 queryKey: ['users'],
             });
             toast.success('User created successfully');
-            return data;
         },
         onError: (error) => {
             toast.error(error.message);
         },
     });
-    return { createUser, isCreatingUser };
+    return { login, isLoggingin };
 }

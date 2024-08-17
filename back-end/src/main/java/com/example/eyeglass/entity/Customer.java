@@ -12,7 +12,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Entity
 @Table(name = "customer")
-public class Customer {
+public class Customer extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,11 +35,4 @@ public class Customer {
     @JoinColumn(name = "role_id", referencedColumnName = "id", nullable = false)
     private Roles roles;
 
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    private long id;
-//    private String email;
-//    private String pwd;
-//    @Column(name = "role")
-//    private String role;
 }
