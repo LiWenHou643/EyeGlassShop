@@ -1,5 +1,5 @@
-DROP SCHEMA IF EXISTS `EyeGlassShop`;
-CREATE SCHEMA `EyeGlassShop`;
+-- DROP SCHEMA IF EXISTS `EyeGlassShop`;
+-- CREATE SCHEMA `EyeGlassShop`;
 USE EyeGlassShop;
 
 CREATE TABLE `roles` (
@@ -14,11 +14,11 @@ CREATE TABLE `customer` (
   `phone_number` varchar(20),
   `address` varchar(200),
   `password` varchar(200) NOT NULL,
-  `role_id` int NOT NULL,
-  `created_at` TIMESTAMP NOT NULL,
-  `created_by` varchar(50) NOT NULL,
-  `updated_at` TIMESTAMP DEFAULT NULL,
-  `updated_by` varchar(50) DEFAULT NULL
+  `role_id` int NOT NULL
+--   `created_at` TIMESTAMP NOT NULL,
+--   `created_by` varchar(50) NOT NULL,
+--   `updated_at` TIMESTAMP DEFAULT NULL,
+--   `updated_by` varchar(50) DEFAULT NULL
 );
 
 CREATE TABLE `tokens` (

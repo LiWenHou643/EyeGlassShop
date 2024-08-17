@@ -10,4 +10,9 @@ public class TestController {
     public String test() {
         return "Hello World!";
     }
+
+    @GetMapping("/myAccount")
+    public String getAccountDetails() {
+        return "Here are the account details from the DB";
+    }
 }
