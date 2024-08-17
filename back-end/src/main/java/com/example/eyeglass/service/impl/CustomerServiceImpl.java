@@ -6,6 +6,7 @@ import com.example.eyeglass.dto.user.CustomerDTO;
 import com.example.eyeglass.entity.Customer;
 import com.example.eyeglass.entity.Roles;
 import com.example.eyeglass.exception.ResourceNotFoundException;
+import com.example.eyeglass.exception.UserAlreadyExistsException;
 import com.example.eyeglass.mapper.UserMapper;
 import com.example.eyeglass.repository.CustomerRepository;
 import com.example.eyeglass.repository.RolesRepository;
@@ -16,6 +17,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -45,12 +47,17 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public CustomerDTO createUser(CreateUserDTO createUserDTO) {
+        Optional<Customer> customer = customerRepository.findByEmail(createUserDTO.getEmail());
 
-        Customer customer = UserMapper.toEntityFromCreate(createUserDTO);
+        if (customer.isPresent()) {
+            throw new UserAlreadyExistsException("User already exists with email: %s".formatted(createUserDTO.getEmail()));
+        }
+
+        Customer newCustomer = UserMapper.toEntityFromCreate(createUserDTO);
         Roles roles = rolesRepository.getRolesByName(EyeGlassConstants.ROLE_USER);
-        customer.setPassword(passwordEncoder.encode(createUserDTO.getPassword()));
-        customer.setRoles(roles);
-        Customer savedCustomer = customerRepository.save(customer);
+        newCustomer.setPassword(passwordEncoder.encode(createUserDTO.getPassword()));
+        newCustomer.setRoles(roles);
+        Customer savedCustomer = customerRepository.save(newCustomer);
         return UserMapper.toDTO(savedCustomer);
     }
 
