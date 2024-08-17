@@ -10,6 +10,7 @@ import Sunglasses from './features/glasses/Sunglasses';
 import Home from './pages/Home';
 import Signin from './pages/Signin';
 import { Toaster } from 'react-hot-toast';
+import ProtectedRoutes from './utils/ProtectedRoutes';
 
 const queryClient = new QueryClient();
 
@@ -22,22 +23,31 @@ function App() {
                         <Route index element={<Navigate replace to='home' />} />
                         <Route path='home' element={<Home />} />
                         <Route path='login' element={<Login />} />
-                        {/* <Route path='forgot' element={<Forgot />} /> */}
                         <Route path='signin' element={<Signin />} />
-                        <Route path='login' element={<Login />} />
-                        <Route path='glasses' element={<Glasses />}>
-                            <Route
-                                index
-                                element={
-                                    <Navigate
-                                        replace
-                                        to='/glasses/eyeglasses'
-                                    />
-                                }
-                            />
-                            <Route path='eyeglasses' element={<Eyeglasses />} />
-                            <Route path='sunglasses' element={<Sunglasses />} />
+                        {/* <Route path='forgot' element={<Forgot />} /> */}
+
+                        <Route element={<ProtectedRoutes />}>
+                            <Route path='glasses' element={<Glasses />}>
+                                <Route
+                                    index
+                                    element={
+                                        <Navigate
+                                            replace
+                                            to='/glasses/eyeglasses'
+                                        />
+                                    }
+                                />
+                                <Route
+                                    path='sunglasses'
+                                    element={<Sunglasses />}
+                                />
+                                <Route
+                                    path='eyeglasses'
+                                    element={<Eyeglasses />}
+                                />
+                            </Route>
                         </Route>
+
                         <Route path='*' element={<PageNotFound />} />
                     </Route>
                 </Routes>
