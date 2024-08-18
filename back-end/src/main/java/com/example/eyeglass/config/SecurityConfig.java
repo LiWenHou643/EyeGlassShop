@@ -34,14 +34,15 @@ public class SecurityConfig {
         CsrfTokenRequestAttributeHandler csrfTokenRequestAttributeHandler = new CsrfTokenRequestAttributeHandler();
 
         http.securityContext(sc -> sc.requireExplicitSave(false))
-                .sessionManagement(smc -> smc
-                    .sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
-                    .invalidSessionUrl("/invalidSession").maximumSessions(3).maxSessionsPreventsLogin(true))
+            .sessionManagement(smc -> smc.sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
+                                         .invalidSessionUrl("/invalidSession")
+                                         .maximumSessions(3)
+                                         .maxSessionsPreventsLogin(true))
             .requiresChannel(rcc -> rcc.anyRequest().requiresInsecure())
             .csrf(csrfConfig->csrfConfig
                     .csrfTokenRequestHandler(csrfTokenRequestAttributeHandler)
                     .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()))
-                .addFilterAfter(new CsrfCookieFilter(), BasicAuthenticationFilter.class)
+            .addFilterAfter(new CsrfCookieFilter(), BasicAuthenticationFilter.class)
             .cors(cors -> cors.configurationSource(request -> {
                 var config = new CorsConfiguration();
                 config.setAllowedOrigins(Collections.singletonList(("http://localhost:3000")));
