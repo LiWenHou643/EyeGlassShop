@@ -1,6 +1,7 @@
 package com.example.eyeglass.dto.user;
 
 import com.example.eyeglass.entity.Roles;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -31,6 +32,7 @@ public class CustomerDTO {
 
     @NotBlank(message = "Password cannot be blank")
     @Size(min = 8, max = 50, message = "Password must be between 8 and 50 characters")
+    @JsonIgnore
     private String password;
 
     private Roles roles;

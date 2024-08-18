@@ -1,5 +1,6 @@
 package com.example.eyeglass.dto.user;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -24,6 +25,7 @@ public class CreateUserDTO {
 
     @NotBlank(message = "Password cannot be blank")
     @Size(min = 8, max = 50, message = "Password must be between 8 and 50 characters")
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
 }

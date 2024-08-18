@@ -11,16 +11,7 @@ import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/register")
+@RequestMapping("/api/user")
 public class UserController {
-
-    private final CustomerService customerService;
-
-    @PostMapping
-    public ResponseEntity<?> createUser(@Valid @RequestBody CreateUserDTO createUserDTO) {
-
-        CustomerDTO savedUser = customerService.createUser(createUserDTO);
-        return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
-    }
 
 }

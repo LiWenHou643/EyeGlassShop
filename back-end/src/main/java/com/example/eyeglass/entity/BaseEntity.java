@@ -1,5 +1,6 @@
 package com.example.eyeglass.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.EntityListeners;
 import lombok.Getter;
 import lombok.Setter;
@@ -22,21 +23,21 @@ public class BaseEntity {
 
     @CreatedDate
     @Column(updatable = false, nullable = false)
-//    @JsonIgnore
+    @JsonIgnore
     private LocalDateTime createdAt;
 
     @CreatedBy
     @Column(updatable = false, nullable = false)
-//    @JsonIgnore
+    @JsonIgnore
     private String createdBy;
 
     @LastModifiedDate
     @Column(insertable = false)
-//    @JsonIgnore
+    @JsonIgnore
     private LocalDateTime updatedAt;
 
     @LastModifiedBy
     @Column(insertable = false)
-//    @JsonIgnore
+    @JsonIgnore
     private String updatedBy;
 }
