@@ -46,6 +46,14 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
+    public CustomerDTO getUserByEmail(String email) {
+        Customer customer = customerRepository.findByEmail(email)
+                                              .orElseThrow(() -> new ResourceNotFoundException("User not found with " +
+                                                      "email"));
+        return UserMapper.toDTO(customer);
+    }
+
+    @Override
     public CustomerDTO createUser(CreateUserDTO createUserDTO) {
         Optional<Customer> customer = customerRepository.findByEmail(createUserDTO.getEmail());
 

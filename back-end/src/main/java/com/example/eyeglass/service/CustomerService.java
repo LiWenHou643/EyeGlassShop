@@ -11,6 +11,8 @@ public interface CustomerService {
 
     CustomerDTO getUserById(Long id);
 
+    CustomerDTO getUserByEmail(String email);
+
     CustomerDTO createUser(CreateUserDTO createUserDTO);
 
     CustomerDTO updateUser(Long id, CustomerDTO customerDTO);
