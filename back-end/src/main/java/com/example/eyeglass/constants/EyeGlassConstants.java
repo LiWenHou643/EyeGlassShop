@@ -1,7 +1,7 @@
 package com.example.eyeglass.constants;
 
-public class EyeGlassConstants {
+public interface EyeGlassConstants {
 
-    public static final String ROLE_USER = "USER";
-    public static final String ROLE_ADMIN = "ADMIN";
+    String ROLE_USER = "USER";
+    String ROLE_ADMIN = "ADMIN";
 }

@@ -21,7 +21,6 @@ import org.springframework.security.web.csrf.CsrfTokenRequestAttributeHandler;
 import org.springframework.web.cors.CorsConfiguration;
 
 import java.util.Collections;
-import java.util.List;
 
 @Configuration
 @Profile("!prod")
@@ -33,7 +32,7 @@ public class SecurityConfig {
         CsrfTokenRequestAttributeHandler csrfTokenRequestAttributeHandler = new CsrfTokenRequestAttributeHandler();
 
         http.securityContext(sc -> sc.requireExplicitSave(false))
-            .sessionManagement(smc -> smc.sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
+            .sessionManagement(smc -> smc.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                                          .invalidSessionUrl("/invalidSession")
                                          .maximumSessions(3)
                                          .maxSessionsPreventsLogin(true))
@@ -57,6 +56,8 @@ public class SecurityConfig {
                     .requestMatchers("/api/admin/**").hasRole("ADMIN")
                     .requestMatchers("/api/user/**").authenticated()
                     .requestMatchers("/test").authenticated()
+                    .requestMatchers("/admin").hasRole("ADMIN")
+                    .requestMatchers("/user").hasRole("USER")
                     .requestMatchers("/api/register", "/api/login").permitAll()
                     .requestMatchers("/contact", "/error", "/invalidSession").permitAll()
             );

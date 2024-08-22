@@ -11,8 +11,13 @@ public class TestController {
         return "Hello World!";
     }
 
-    @GetMapping("/myAccount")
-    public String getAccountDetails() {
-        return "Here are the account details from the DB";
+    @GetMapping("/admin")
+    public String admin() {
+        return "Im Admin";
+    }
+
+    @GetMapping("/user")
+    public String user() {
+        return "Im User";
     }
 }
