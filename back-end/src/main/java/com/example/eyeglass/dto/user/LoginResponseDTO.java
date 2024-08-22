@@ -1,0 +1,4 @@
+package com.example.eyeglass.dto.user;
+
+public record LoginResponseDTO(String status, String jwtToken) {
+}
