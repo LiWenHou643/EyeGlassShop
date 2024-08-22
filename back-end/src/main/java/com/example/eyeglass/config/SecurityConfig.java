@@ -3,6 +3,8 @@ package com.example.eyeglass.config;
 import com.example.eyeglass.exception.CustomAccessDeniedHandler;
 import com.example.eyeglass.exception.CustomBasicAuthenticationEntryPoint;
 import com.example.eyeglass.filters.CsrfCookieFilter;
+import com.example.eyeglass.filters.JWTTokenGenerationFilter;
+import com.example.eyeglass.filters.JWTTokenValidationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -20,7 +22,9 @@ import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.csrf.CsrfTokenRequestAttributeHandler;
 import org.springframework.web.cors.CorsConfiguration;
 
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 
 @Configuration
 @Profile("!prod")
@@ -31,7 +35,7 @@ public class SecurityConfig {
     SecurityFilterChain defaltSecurityFilterChain(HttpSecurity http) throws Exception {
         CsrfTokenRequestAttributeHandler csrfTokenRequestAttributeHandler = new CsrfTokenRequestAttributeHandler();
 
-        http.securityContext(sc -> sc.requireExplicitSave(false))
+        http
             .sessionManagement(smc -> smc.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                                          .invalidSessionUrl("/invalidSession")
                                          .maximumSessions(3)
@@ -43,6 +47,7 @@ public class SecurityConfig {
                 config.setAllowedMethods(Collections.singletonList("*"));
                 config.setAllowedHeaders(Collections.singletonList("*"));
                 config.setAllowCredentials(true);
+                config.setExposedHeaders(List.of("Authorization")); // for JWT
                 config.setMaxAge(3600L);
                 return config;
             }))
@@ -52,6 +57,8 @@ public class SecurityConfig {
                     .ignoringRequestMatchers("/api/register")
             )
             .addFilterAfter(new CsrfCookieFilter(), BasicAuthenticationFilter.class)
+            .addFilterBefore(new JWTTokenValidationFilter(), BasicAuthenticationFilter.class)
+            .addFilterAfter(new JWTTokenGenerationFilter(), BasicAuthenticationFilter.class)
             .authorizeHttpRequests(authorize -> authorize
                     .requestMatchers("/api/admin/**").hasRole("ADMIN")
                     .requestMatchers("/api/user/**").authenticated()
