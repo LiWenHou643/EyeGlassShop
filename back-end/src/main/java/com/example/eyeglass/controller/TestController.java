@@ -29,11 +29,6 @@ public class TestController {
         return "Im User";
     }
 
-    @GetMapping("/myUser")
-    public String myUser() {
-        return "Hello My USER!";
-    }
-
     @GetMapping("/profile")
     public ResponseEntity<?> getProfile(Authentication authentication) {
         CustomerDTO customerDTO = customerService.getUserByEmail(authentication.getName());

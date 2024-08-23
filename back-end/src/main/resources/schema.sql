@@ -9,7 +9,7 @@ CREATE TABLE `roles` (
 
 CREATE TABLE `customer` (
   `id` int PRIMARY KEY AUTO_INCREMENT,
-  `fullname` varchar(50) NOT NULL,
+  `full_name` varchar(50) NOT NULL,
   `email` varchar(150) NOT NULL,
   `phone_number` varchar(20),
   `address` varchar(200),

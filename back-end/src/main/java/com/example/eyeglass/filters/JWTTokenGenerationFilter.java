@@ -8,7 +8,6 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 import org.springframework.core.env.Environment;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -21,7 +20,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.stream.Collectors;
 
-@RequiredArgsConstructor
+
+// This filter is used for MVC but not RESTful APIs
 public class JWTTokenGenerationFilter extends OncePerRequestFilter {
 
     @Override
@@ -52,6 +52,6 @@ public class JWTTokenGenerationFilter extends OncePerRequestFilter {
 
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
-        return !request.getServletPath().equals("/user");
+        return !request.getServletPath().equals("/api/login");
     }
 }

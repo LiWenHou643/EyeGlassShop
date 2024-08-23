@@ -16,8 +16,9 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class EyeGlassesUserDetailsService implements UserDetailsService {
-    private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(EyeGlassesUserDetailsService.class);
+
     private final CustomerRepository customerRepository;
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Customer customer = customerRepository.findByEmail(username).orElseThrow(() -> new

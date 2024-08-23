@@ -1,7 +1,7 @@
 package com.example.eyeglass.service.impl;
 
 import com.example.eyeglass.constants.EyeGlassConstants;
-import com.example.eyeglass.dto.user.CreateUserDTO;
+import com.example.eyeglass.dto.user.RegisterDTO;
 import com.example.eyeglass.dto.user.CustomerDTO;
 import com.example.eyeglass.entity.Customer;
 import com.example.eyeglass.entity.Roles;
@@ -54,16 +54,17 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public CustomerDTO createUser(CreateUserDTO createUserDTO) {
-        Optional<Customer> customer = customerRepository.findByEmail(createUserDTO.getEmail());
+    public CustomerDTO createUser(RegisterDTO registerDTO) {
+        Optional<Customer> customer = customerRepository.findByEmail(registerDTO.getEmail());
 
         if (customer.isPresent()) {
-            throw new UserAlreadyExistsException("User already exists with email: %s".formatted(createUserDTO.getEmail()));
+            throw new UserAlreadyExistsException(
+                    "User already exists with email: %s".formatted(registerDTO.getEmail()));
         }
 
-        Customer newCustomer = UserMapper.toEntityFromCreate(createUserDTO);
+        Customer newCustomer = UserMapper.toEntityFromRegister(registerDTO);
         Roles roles = rolesRepository.getRolesByName(EyeGlassConstants.ROLE_USER);
-        newCustomer.setPassword(passwordEncoder.encode(createUserDTO.getPassword()));
+        newCustomer.setPassword(passwordEncoder.encode(registerDTO.getPassword()));
         newCustomer.setRoles(roles);
         Customer savedCustomer = customerRepository.save(newCustomer);
         return UserMapper.toDTO(savedCustomer);

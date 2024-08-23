@@ -29,6 +29,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 
 @Configuration
 @Profile("!prod")
@@ -52,21 +53,16 @@ public class SecurityConfig {
             .csrf(csrfConfig -> csrfConfig.csrfTokenRequestHandler(csrfTokenRequestAttributeHandler)
                                           .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
                                           .ignoringRequestMatchers("/api/register")
+                                          .ignoringRequestMatchers("/api/login")
             )
             .addFilterAfter(new CsrfCookieFilter(), BasicAuthenticationFilter.class)
             .addFilterBefore(new JWTTokenValidationFilter(), BasicAuthenticationFilter.class)
-            .addFilterAfter(new JWTTokenGenerationFilter(), BasicAuthenticationFilter.class)
             .requiresChannel(rcc -> rcc.anyRequest().requiresInsecure())
             .authorizeHttpRequests(authorize -> authorize
                     .requestMatchers("/api/admin/**").hasRole("ADMIN")
-                    .requestMatchers("/api/user/**").authenticated()
-                    .requestMatchers("/test").authenticated()
-                    .requestMatchers("/admin").hasRole("ADMIN")
-                    .requestMatchers("/user").hasRole("USER")
-                    .requestMatchers("/myUser").hasRole("USER")
-                    .requestMatchers("/profile").hasRole("USER")
+                    .requestMatchers("/api/user/**").hasRole("USER")
                     .requestMatchers("/api/register", "/api/login").permitAll()
-                    .requestMatchers("/contact", "/error", "/invalidSession").permitAll()
+                    .requestMatchers("/contact", "/error").permitAll()
             );
 
         http.formLogin(Customizer.withDefaults());
@@ -92,7 +88,7 @@ public class SecurityConfig {
         UsernamePwdAuthenticationProvider authenticationProvider =
                 new UsernamePwdAuthenticationProvider(userDetailsService, passwordEncoder);
         ProviderManager providerManager = new ProviderManager(authenticationProvider);
-        providerManager.setEraseCredentialsAfterAuthentication(false);
+        providerManager.setEraseCredentialsAfterAuthentication(false); // give flexible for any password validations
         return providerManager;
     }
 }

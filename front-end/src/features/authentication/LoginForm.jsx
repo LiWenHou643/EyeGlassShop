@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import Form from '../../ui/Form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import { login } from '../../services/UserApi';
+import { useLogin } from '../../features/authentication/useLogin';
 
 const schema = yup.object({
     email: yup
@@ -32,9 +32,11 @@ export default function LoginForm() {
         resolver: yupResolver(schema),
     });
 
-    function onSubmit(data, event) {
-        event.preventDefault();
-        login(data);
+    const { login, isLoggingin } = useLogin();
+
+    function onSubmit(data) {
+        const userId = data.email; // Assuming userId is the email
+        login({ ...data, userId });
     }
 
     function onReset() {

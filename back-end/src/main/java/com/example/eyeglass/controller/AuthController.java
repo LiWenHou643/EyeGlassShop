@@ -1,7 +1,7 @@
 package com.example.eyeglass.controller;
 
 import com.example.eyeglass.constants.EyeGlassConstants;
-import com.example.eyeglass.dto.user.CreateUserDTO;
+import com.example.eyeglass.dto.user.RegisterDTO;
 import com.example.eyeglass.dto.user.CustomerDTO;
 import com.example.eyeglass.dto.user.LoginRequestDTO;
 import com.example.eyeglass.dto.user.LoginResponseDTO;
@@ -27,16 +27,25 @@ import java.util.stream.Collectors;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api")
-public class LoginController {
+public class AuthController {
     private final CustomerService customerService;
     private final AuthenticationManager authenticationManager;
     private final Environment env;
 
     @PostMapping("/register")
-    public ResponseEntity<?> createUser(@Valid @RequestBody CreateUserDTO createUserDTO) {
+    public ResponseEntity<?> createUser(@Valid @RequestBody RegisterDTO registerDTO) {
 
-        CustomerDTO savedUser = customerService.createUser(createUserDTO);
-        return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
+        CustomerDTO savedUser = customerService.createUser(registerDTO);
+        if (savedUser == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+
+    @RequestMapping("/user")
+    public CustomerDTO getUserDetailsAfterLogin(Authentication authentication) {
+        return customerService.getUserByEmail(authentication.getName());
     }
 
     @PostMapping("/login")

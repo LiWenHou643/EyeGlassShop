@@ -13,14 +13,14 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreateUserDTO {
+public class RegisterDTO {
 
     @NotBlank(message = "Full name cannot be blank")
     @Size(min = 3, max = 50, message = "Full name must be between 3 and 50 characters")
     private String fullName;
 
     @NotBlank(message = "Email cannot be blank")
-    @Email(message = "Invalid email address")
+    @Email(regexp = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", message = "Email should be valid")
     private String email;
 
     @NotBlank(message = "Password cannot be blank")

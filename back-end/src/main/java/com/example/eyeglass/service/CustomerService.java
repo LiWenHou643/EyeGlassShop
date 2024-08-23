@@ -1,6 +1,6 @@
 package com.example.eyeglass.service;
 
-import com.example.eyeglass.dto.user.CreateUserDTO;
+import com.example.eyeglass.dto.user.RegisterDTO;
 import com.example.eyeglass.dto.user.CustomerDTO;
 
 import java.util.List;
@@ -13,7 +13,7 @@ public interface CustomerService {
 
     CustomerDTO getUserByEmail(String email);
 
-    CustomerDTO createUser(CreateUserDTO createUserDTO);
+    CustomerDTO createUser(RegisterDTO registerDTO);
 
     CustomerDTO updateUser(Long id, CustomerDTO customerDTO);
 
