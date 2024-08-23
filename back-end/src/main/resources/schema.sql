@@ -7,7 +7,7 @@ CREATE TABLE `roles` (
   `name` varchar(20)
 );
 
-CREATE TABLE `customer` (
+CREATE TABLE `person` (
   `id` int PRIMARY KEY AUTO_INCREMENT,
   `full_name` varchar(50) NOT NULL,
   `email` varchar(150) NOT NULL,
@@ -19,16 +19,6 @@ CREATE TABLE `customer` (
   `created_by` varchar(50) NOT NULL,
   `updated_at` TIMESTAMP DEFAULT NULL,
   `updated_by` varchar(50) DEFAULT NULL
-);
-
-CREATE TABLE `tokens` (
-  `customer_id` int,
-  `token` varchar(32),
-  `created_at` TIMESTAMP NOT NULL,
-  `created_by` varchar(50) NOT NULL,
-  `updated_at` TIMESTAMP DEFAULT NULL,
-  `updated_by` varchar(50) DEFAULT NULL,
-  PRIMARY KEY (`customer_id`, `token`)
 );
 
 CREATE TABLE `category` (
@@ -76,7 +66,7 @@ CREATE TABLE `galery` (
 
 CREATE TABLE `cart` (
   `id` int PRIMARY KEY AUTO_INCREMENT,
-  `customer_id` int,
+  `person_id` int,
   `total` int,
   `created_at` TIMESTAMP NOT NULL,
   `created_by` varchar(50) NOT NULL,
@@ -108,7 +98,7 @@ CREATE TABLE `payment_details` (
 
 CREATE TABLE `orders_details` (
   `id` int PRIMARY KEY AUTO_INCREMENT,
-  `customer_id` int,
+  `person_id` int,
   `payment_id` int,
   `total` int,
   `created_at` TIMESTAMP NOT NULL,
@@ -129,17 +119,15 @@ CREATE TABLE `order_item` (
   `updated_by` varchar(50) DEFAULT NULL
 );
 
-ALTER TABLE `customer` ADD FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`);
+ALTER TABLE `person` ADD FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`);
 
 ALTER TABLE `sub_category` ADD FOREIGN KEY (`parent_id`) REFERENCES `category` (`id`);
 
 ALTER TABLE `galery` ADD FOREIGN KEY (`product_id`) REFERENCES `product` (`id`);
 
-ALTER TABLE `tokens` ADD FOREIGN KEY (`customer_id`) REFERENCES `customer` (`id`);
+ALTER TABLE `orders_details` ADD FOREIGN KEY (`person_id`) REFERENCES `person` (`id`);
 
-ALTER TABLE `orders_details` ADD FOREIGN KEY (`customer_id`) REFERENCES `customer` (`id`);
-
-ALTER TABLE `cart` ADD FOREIGN KEY (`customer_id`) REFERENCES `customer` (`id`);
+ALTER TABLE `cart` ADD FOREIGN KEY (`person_id`) REFERENCES `person` (`id`);
 
 ALTER TABLE `product` ADD FOREIGN KEY (`category_id`) REFERENCES `sub_category` (`id`);
 

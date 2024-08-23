@@ -1,8 +1,8 @@
 package com.example.eyeglass.mapper;
 
 import com.example.eyeglass.dto.user.RegisterDTO;
-import com.example.eyeglass.dto.user.CustomerDTO;
-import com.example.eyeglass.entity.Customer;
+import com.example.eyeglass.dto.user.PersonDTO;
+import com.example.eyeglass.entity.Person;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
@@ -10,8 +10,8 @@ import org.mapstruct.factory.Mappers;
 public interface UserMapper {
     UserMapper MAPPER = Mappers.getMapper(UserMapper.class);
 
-    CustomerDTO toDTO(Customer customerEntity);
+    PersonDTO toDTO(Person personEntity);
 
-    Customer toEntityFromRegister(RegisterDTO registerDTO);
+    Person toEntityFromRegister(RegisterDTO registerDTO);
 
 }

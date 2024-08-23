@@ -17,7 +17,10 @@ export function useLogin() {
             localStorage.setItem('jwtToken', response.data.jwtToken);
 
             // Set the user in the context
-            setAuth({ token: response.data.jwtToken });
+            setAuth({
+                token: response.data.jwtToken,
+                user: response.data.user,
+            });
 
             queryClient.invalidateQueries({
                 queryKey: ['user'],

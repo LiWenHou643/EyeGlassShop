@@ -1,7 +1,7 @@
 package com.example.eyeglass.controller;
 
-import com.example.eyeglass.dto.user.CustomerDTO;
-import com.example.eyeglass.service.CustomerService;
+import com.example.eyeglass.dto.user.PersonDTO;
+import com.example.eyeglass.service.PersonService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -15,23 +15,23 @@ import java.util.List;
 @RequestMapping("/api/admin")
 public class AdminController {
 
-    private final CustomerService customerService;
+    private final PersonService personService;
 
     @GetMapping("/users")
     public ResponseEntity<?> getAllUsers() {
-        List<CustomerDTO> customerDTOS = customerService.getAllUsers();
-        return new ResponseEntity<>(customerDTOS, HttpStatus.OK);
+        List<PersonDTO> personDTOS = personService.getAllUsers();
+        return new ResponseEntity<>(personDTOS, HttpStatus.OK);
     }
 
     @GetMapping("/user/{id}")
     public ResponseEntity<?> getUserById(@PathVariable("id") Long id) {
-        CustomerDTO customerDTO = customerService.getUserById(id);
-        return new ResponseEntity<>(customerDTO, HttpStatus.OK);
+        PersonDTO personDTO = personService.getUserById(id);
+        return new ResponseEntity<>(personDTO, HttpStatus.OK);
     }
 
     @PutMapping("/user/{id}")
-    public ResponseEntity<?> updateUser(@PathVariable("id") Long id, @Valid @RequestBody CustomerDTO customerDTO) {
-        CustomerDTO updatedUser = customerService.updateUser(id, customerDTO);
+    public ResponseEntity<?> updateUser(@PathVariable("id") Long id, @Valid @RequestBody PersonDTO personDTO) {
+        PersonDTO updatedUser = personService.updateUser(id, personDTO);
         return new ResponseEntity<>(updatedUser, HttpStatus.OK);
     }
 }

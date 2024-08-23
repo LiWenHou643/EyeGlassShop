@@ -1,4 +1,5 @@
 import { styled } from 'styled-components';
+import { useAuth } from '../context/AuthProvider';
 import Dropdown from './Dropdown';
 import BaseStyledLink from './Link';
 
@@ -23,6 +24,8 @@ const StyledLink = styled(BaseStyledLink)`
 `;
 
 function Header() {
+    const { auth } = useAuth();
+
     return (
         <StyledHeader className='w-100'>
             <nav className='navbar navbar-expand-lg bg-body-tertiary'>
@@ -56,12 +59,16 @@ function Header() {
                             </li>
                         </ul>
 
-                        <StyledLink
-                            className='px-4 btn btn-outline-success'
-                            to='/login'
-                        >
-                            Login
-                        </StyledLink>
+                        {auth?.token ? (
+                            <HiOutlineUser />
+                        ) : (
+                            <StyledLink
+                                className='px-4 btn btn-outline-success'
+                                to='/login'
+                            >
+                                Login
+                            </StyledLink>
+                        )}
                     </div>
                 </div>
             </nav>

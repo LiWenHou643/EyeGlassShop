@@ -14,8 +14,8 @@ import com.example.eyeglass.entity.ValidationGroups.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "customer")
-public class Customer extends BaseEntity {
+@Table(name = "person")
+public class Person extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

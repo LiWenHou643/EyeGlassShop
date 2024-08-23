@@ -1,7 +1,7 @@
 package com.example.eyeglass.config;
 
-import com.example.eyeglass.entity.Customer;
-import com.example.eyeglass.repository.CustomerRepository;
+import com.example.eyeglass.entity.Person;
+import com.example.eyeglass.repository.PersonRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -17,14 +17,14 @@ import java.util.List;
 @RequiredArgsConstructor
 public class EyeGlassesUserDetailsService implements UserDetailsService {
 
-    private final CustomerRepository customerRepository;
+    private final PersonRepository personRepository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Customer customer = customerRepository.findByEmail(username).orElseThrow(() -> new
+        Person person = personRepository.findByEmail(username).orElseThrow(() -> new
                 UsernameNotFoundException("User details not found for the user: %s".formatted(username)));
-        List<GrantedAuthority> authorities = List.of(new SimpleGrantedAuthority(customer.getRoles().getName()));
+        List<GrantedAuthority> authorities = List.of(new SimpleGrantedAuthority(person.getRoles().getName()));
 
-        return new User(customer.getEmail(), customer.getPassword(), authorities);
+        return new User(person.getEmail(), person.getPassword(), authorities);
     }
 }

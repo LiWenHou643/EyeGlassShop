@@ -7,7 +7,6 @@ const StyledFooter = styled.footer`
     color: var(--color-grey-100);
     margin-top: 10rem;
 `;
-const StyledRow = styled.div``;
 
 const P = styled.p`
     color: var(--color-grey-400);
@@ -63,7 +62,7 @@ const A = styled.a`
 const Footer = () => (
     <StyledFooter className='page-footer font-small blue'>
         <div className='container py-md-5'>
-            <StyledRow className='mb-md-5 pt-4 mt-4 container-fluid text-center text-md-start'>
+            <div className='mb-md-5 pt-4 mt-4 container-fluid text-center text-md-start'>
                 <div className='row'>
                     <div className='col-md-4 mt-md-0 mt-3'>
                         <h2 className='text-uppercase mb-4'>Your Opinion</h2>
@@ -90,26 +89,26 @@ const Footer = () => (
 
                     <div className='col-md-3 offset-md-1 mb-md-0 mb-3'>
                         <div className='d-flex justify-content-center justify-content-md-start flex-wrap gap-3'>
-                            <A to='#' $src='fb.svg'>
+                            <A to='#' $src='/fb.svg'>
                                 <i />
                             </A>
-                            <A to='#' $src='instagram.svg'>
+                            <A to='#' $src='/instagram.svg'>
                                 <i />
                             </A>
-                            <A to='#' $src='tiktok.svg'>
+                            <A to='#' $src='/tiktok.svg'>
                                 <i />
                             </A>
-                            <A to='#' $src='zalo.svg'>
+                            <A to='#' $src='/zalo.svg'>
                                 <i />
                             </A>
                         </div>
                     </div>
                 </div>
-            </StyledRow>
+            </div>
 
             <hr />
 
-            <StyledRow className='mt-md-5 pb-4 mb-4 container-fluid text-center text-md-start'>
+            <div className='mt-md-5 pb-4 mb-4 container-fluid text-center text-md-start'>
                 <div className='row'>
                     <div className='col-md-3 mt-md-0 mt-3'>
                         <h2 className='text-uppercase mb-4'>Introduce</h2>
@@ -159,23 +158,23 @@ const Footer = () => (
                         <div className='d-flex flex-wrap justify-content-center justify-content-md-start gap-4'>
                             <Link>
                                 <ImgContainer>
-                                    <Img src='shopee.png' alt='' />
+                                    <Img src='/shopee.png' alt='' />
                                 </ImgContainer>
                             </Link>
                             <Link>
                                 <ImgContainer>
-                                    <Img src='lazada.png' alt='' />
+                                    <Img src='/lazada.png' alt='' />
                                 </ImgContainer>
                             </Link>
                         </div>
                     </div>
                 </div>
-            </StyledRow>
+            </div>
 
-            <StyledRow className='footer-copyright text-center'>
+            <div className='footer-copyright text-center'>
                 © 2024 Copyright:
                 <a href='https://eyeghero@gmail.com/'> Eye Hero Corp</a>
-            </StyledRow>
+            </div>
         </div>
     </StyledFooter>
 );

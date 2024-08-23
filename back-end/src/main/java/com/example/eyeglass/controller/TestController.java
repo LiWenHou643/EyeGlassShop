@@ -1,7 +1,7 @@
 package com.example.eyeglass.controller;
 
-import com.example.eyeglass.dto.user.CustomerDTO;
-import com.example.eyeglass.service.CustomerService;
+import com.example.eyeglass.dto.user.PersonDTO;
+import com.example.eyeglass.service.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class TestController {
     @Autowired
-    private CustomerService customerService;
+    private PersonService personService;
 
     @GetMapping("/test")
     public String test() {
@@ -31,7 +31,7 @@ public class TestController {
 
     @GetMapping("/profile")
     public ResponseEntity<?> getProfile(Authentication authentication) {
-        CustomerDTO customerDTO = customerService.getUserByEmail(authentication.getName());
-        return new ResponseEntity<>(customerDTO, HttpStatus.OK);
+        PersonDTO personDTO = personService.getUserByEmail(authentication.getName());
+        return new ResponseEntity<>(personDTO, HttpStatus.OK);
     }
 }

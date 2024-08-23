@@ -2,10 +2,10 @@ package com.example.eyeglass.controller;
 
 import com.example.eyeglass.constants.EyeGlassConstants;
 import com.example.eyeglass.dto.user.RegisterDTO;
-import com.example.eyeglass.dto.user.CustomerDTO;
+import com.example.eyeglass.dto.user.PersonDTO;
 import com.example.eyeglass.dto.user.LoginRequestDTO;
 import com.example.eyeglass.dto.user.LoginResponseDTO;
-import com.example.eyeglass.service.CustomerService;
+import com.example.eyeglass.service.PersonService;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import jakarta.validation.Valid;
@@ -28,14 +28,14 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @RequestMapping("/api")
 public class AuthController {
-    private final CustomerService customerService;
+    private final PersonService personService;
     private final AuthenticationManager authenticationManager;
     private final Environment env;
 
     @PostMapping("/register")
     public ResponseEntity<?> createUser(@Valid @RequestBody RegisterDTO registerDTO) {
 
-        CustomerDTO savedUser = customerService.createUser(registerDTO);
+        PersonDTO savedUser = personService.createUser(registerDTO);
         if (savedUser == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -44,8 +44,8 @@ public class AuthController {
 
 
     @RequestMapping("/user")
-    public CustomerDTO getUserDetailsAfterLogin(Authentication authentication) {
-        return customerService.getUserByEmail(authentication.getName());
+    public PersonDTO getUserDetailsAfterLogin(Authentication authentication) {
+        return personService.getUserByEmail(authentication.getName());
     }
 
     @PostMapping("/login")
@@ -75,6 +75,6 @@ public class AuthController {
         assert authenticationResponse != null;
         return ResponseEntity.status(HttpStatus.OK).header(EyeGlassConstants.JWT_HEADER, jwt)
                              .body(new LoginResponseDTO(jwt,
-                                     customerService.getUserByEmail(authenticationResponse.getName())));
+                                     personService.getUserByEmail(authenticationResponse.getName())));
     }
 }
