@@ -72,7 +72,9 @@ public class AuthController {
             }
         }
         // Return the ResponseEntity with the JWT token in the header and the body
+        assert authenticationResponse != null;
         return ResponseEntity.status(HttpStatus.OK).header(EyeGlassConstants.JWT_HEADER, jwt)
-                             .body(new LoginResponseDTO(HttpStatus.OK.getReasonPhrase(), jwt));
+                             .body(new LoginResponseDTO(jwt,
+                                     customerService.getUserByEmail(authenticationResponse.getName())));
     }
 }

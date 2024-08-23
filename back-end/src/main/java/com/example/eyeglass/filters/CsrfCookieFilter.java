@@ -21,7 +21,7 @@ public class CsrfCookieFilter extends OncePerRequestFilter {
             @NonNull FilterChain filterChain)
             throws ServletException, IOException {
         CsrfToken csrfToken = (CsrfToken) request.getAttribute(CsrfToken.class.getName());
-        csrfToken.getToken(); // This won't trigger session creation if csrfToken is not null
+        csrfToken.getToken();
         filterChain.doFilter(request, response);
     }
 

@@ -17,7 +17,6 @@ export function useLogin() {
             localStorage.setItem('jwtToken', response.data.jwtToken);
 
             // Set the user in the context
-            console.log('response', response.data.jwtToken);
             setAuth({ token: response.data.jwtToken });
 
             queryClient.invalidateQueries({
