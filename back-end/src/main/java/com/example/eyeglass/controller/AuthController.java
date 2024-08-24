@@ -1,13 +1,12 @@
 package com.example.eyeglass.controller;
 
+import com.example.eyeglass.config.JwtUtil;
 import com.example.eyeglass.constants.EyeGlassConstants;
 import com.example.eyeglass.dto.user.RegisterDTO;
 import com.example.eyeglass.dto.user.PersonDTO;
 import com.example.eyeglass.dto.user.LoginRequestDTO;
 import com.example.eyeglass.dto.user.LoginResponseDTO;
 import com.example.eyeglass.service.PersonService;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.security.Keys;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.env.Environment;
@@ -19,9 +18,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.web.bind.annotation.*;
 
-import javax.crypto.SecretKey;
-import java.nio.charset.StandardCharsets;
-import java.util.Date;
 import java.util.stream.Collectors;
 
 @RestController
@@ -31,6 +27,7 @@ public class AuthController {
     private final PersonService personService;
     private final AuthenticationManager authenticationManager;
     private final Environment env;
+    private final JwtUtil jwtUtil;
 
     @PostMapping("/register")
     public ResponseEntity<?> createUser(@Valid @RequestBody RegisterDTO registerDTO) {
@@ -59,18 +56,9 @@ public class AuthController {
         Authentication authenticationResponse = authenticationManager.authenticate(authentication);
         // If authentication is successful, generate the JWT token
         if (null != authenticationResponse && authenticationResponse.isAuthenticated()) {
-            if (null != env) {
-                String secret = env.getProperty(EyeGlassConstants.JWT_SECRET_KEY,
-                        EyeGlassConstants.JWT_SECRET_DEFAULT_VALUE);
-                SecretKey secretKey = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
-                jwt = Jwts.builder().issuer("Eye GLass").subject("JWT Token")
-                          .claim("username", authenticationResponse.getName())
-                          .claim("authorities", authenticationResponse.getAuthorities().stream().map(
-                                  GrantedAuthority::getAuthority).collect(Collectors.joining(",")))
-                          .issuedAt(new Date())
-                          .expiration(new Date((new Date()).getTime() + 30000000))
-                          .signWith(secretKey).compact();
-            }
+            jwt = jwtUtil.generateToken(authenticationResponse.getName(),
+                    authenticationResponse.getAuthorities().stream().map(GrantedAuthority::getAuthority)
+                                          .collect(Collectors.joining(",")));
         }
         // Return the ResponseEntity with the JWT token in the header and the body
         assert authenticationResponse != null;

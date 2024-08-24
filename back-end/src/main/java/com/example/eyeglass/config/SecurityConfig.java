@@ -3,8 +3,7 @@ package com.example.eyeglass.config;
 import com.example.eyeglass.exception.CustomAccessDeniedHandler;
 import com.example.eyeglass.exception.CustomBasicAuthenticationEntryPoint;
 import com.example.eyeglass.filters.CsrfCookieFilter;
-import com.example.eyeglass.filters.JWTTokenGenerationFilter;
-import com.example.eyeglass.filters.JWTTokenValidationFilter;
+import com.example.eyeglass.filters.JWTValidationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -14,7 +13,6 @@ import org.springframework.security.authentication.password.CompromisedPasswordC
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
@@ -26,10 +24,8 @@ import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.csrf.CsrfTokenRequestAttributeHandler;
 import org.springframework.web.cors.CorsConfiguration;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.Locale;
 
 @Configuration
 @Profile("!prod")
@@ -56,7 +52,7 @@ public class SecurityConfig {
                                           .ignoringRequestMatchers("/api/login")
             )
             .addFilterAfter(new CsrfCookieFilter(), BasicAuthenticationFilter.class)
-            .addFilterBefore(new JWTTokenValidationFilter(), BasicAuthenticationFilter.class)
+            .addFilterBefore(new JWTValidationFilter(), BasicAuthenticationFilter.class)
             .requiresChannel(rcc -> rcc.anyRequest().requiresInsecure())
             .authorizeHttpRequests(authorize -> authorize
                     .requestMatchers("/api/admin/**").hasRole("ADMIN")

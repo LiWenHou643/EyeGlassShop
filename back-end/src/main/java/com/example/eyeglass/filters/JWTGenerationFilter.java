@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 
 
 // This filter is used for MVC but not RESTful APIs
-public class JWTTokenGenerationFilter extends OncePerRequestFilter {
+public class JWTGenerationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain)
