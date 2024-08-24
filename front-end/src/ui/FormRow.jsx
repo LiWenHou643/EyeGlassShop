@@ -5,6 +5,7 @@ function FormRow({
     inputId,
     helpText,
     register,
+    disabled,
 }) {
     return (
         <div className='row align-items-center'>
@@ -22,6 +23,7 @@ function FormRow({
                     id={inputId}
                     className='form-control form-control-lg focus-ring focus-ring-success p-3'
                     placeholder={helpText}
+                    disabled={disabled}
                     {...register(inputId)}
                 />
             </div>

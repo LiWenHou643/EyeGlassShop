@@ -1,19 +1,14 @@
 import axios from 'axios';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { register } from '../../services/UserApi';
+import { useMutation } from '@tanstack/react-query';
+import { register } from '../../services/apiAuth';
 import { toast } from 'react-hot-toast';
 
 export function useCreateUser() {
-    const queryClient = useQueryClient();
-
     const { mutateAsync: createUser, isLoading: isCreatingUser } = useMutation({
         mutationFn: register,
-        onSuccess: (data) => {
-            queryClient.invalidateQueries({
-                queryKey: ['users'],
-            });
+        onSuccess: (response) => {
             toast.success('User created successfully');
-            return data;
+            return response;
         },
         onError: (error) => {
             if (axios.isAxiosError(error)) {

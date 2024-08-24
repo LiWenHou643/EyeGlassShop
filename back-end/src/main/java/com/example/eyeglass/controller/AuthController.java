@@ -44,8 +44,9 @@ public class AuthController {
 
 
     @RequestMapping("/user")
-    public PersonDTO getUserDetailsAfterLogin(Authentication authentication) {
-        return personService.getUserByEmail(authentication.getName());
+    public ResponseEntity<PersonDTO> getUserDetailsAfterLogin(Authentication authentication) {
+        PersonDTO person = personService.getUserByEmail(authentication.getName());
+        return ResponseEntity.ok(person);
     }
 
     @PostMapping("/login")
@@ -74,7 +75,6 @@ public class AuthController {
         // Return the ResponseEntity with the JWT token in the header and the body
         assert authenticationResponse != null;
         return ResponseEntity.status(HttpStatus.OK).header(EyeGlassConstants.JWT_HEADER, jwt)
-                             .body(new LoginResponseDTO(jwt,
-                                     personService.getUserByEmail(authenticationResponse.getName())));
+                             .body(new LoginResponseDTO(jwt));
     }
 }

@@ -6,6 +6,7 @@ import Form from '../../ui/Form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { useLogin } from '../../features/authentication/useLogin';
+import { SyncLoader } from 'react-spinners';
 
 const schema = yup.object({
     email: yup
@@ -35,8 +36,7 @@ export default function LoginForm() {
     const { login, isLoggingin } = useLogin();
 
     function onSubmit(data) {
-        const userId = data.email; // Assuming userId is the email
-        login({ ...data, userId });
+        login(data);
     }
 
     function onReset() {
@@ -51,6 +51,7 @@ export default function LoginForm() {
                 type='email'
                 helpText='Must be a valid email'
                 register={register}
+                disabled={isLoggingin}
                 required
             >
                 email
@@ -69,11 +70,12 @@ export default function LoginForm() {
                 register={register}
                 required
                 minLength={8}
+                disabled={isLoggingin}
             >
                 password
             </FormRow>
             <div className='d-flex justify-content-end'>
-                <p className='text-danger px-2 col-12 col-md-8 col-lg-8'>
+                <p className='text-danger px-2 col-12 col-md-8 col-lg-8 h5'>
                     {errors?.pwd?.message}
                 </p>
             </div>
@@ -81,11 +83,7 @@ export default function LoginForm() {
             <div className='d-flex justify-content-between align-items-center'>
                 <div className='col-7 d-md-flex justify-content-md-start align-items-md-center'>
                     <p>Has no account? &nbsp;</p>
-                    <Link
-                        className='py-3 rounded-2 link-primary'
-                        to='/signin'
-                        // disabled={isSubmitting}
-                    >
+                    <Link className='py-3 rounded-2 link-primary' to='/signin'>
                         Register now
                     </Link>
                 </div>
@@ -93,7 +91,6 @@ export default function LoginForm() {
                     <Link
                         className='py-3 rounded-2 link-primary'
                         to='/forgot-password'
-                        // disabled={isSubmitting}
                     >
                         Forgot password
                     </Link>
@@ -104,6 +101,7 @@ export default function LoginForm() {
                 <Button
                     type='reset'
                     className='col-3 py-3 btn btn-secondary text-capitalize'
+                    disabled={isLoggingin}
                     onClick={onReset}
                 >
                     Reset
@@ -111,8 +109,9 @@ export default function LoginForm() {
                 <Button
                     type='submit'
                     className='col-3 py-3 btn btn-success text-capitalize'
+                    disabled={isLoggingin}
                 >
-                    Log in
+                    {isLoggingin ? <SyncLoader color='#ffffff' /> : 'Log in'}
                 </Button>
             </div>
         </Form>

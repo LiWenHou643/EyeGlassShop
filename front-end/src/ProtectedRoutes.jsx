@@ -1,11 +1,12 @@
 import { Navigate, Outlet, useLocation } from 'react-router-dom';
-import { useAuth } from './context/AuthProvider';
+import useUser from './features/authentication/useUser';
 
 function ProtectedRoutes() {
     const location = useLocation();
-    const { auth } = useAuth();
 
-    if (!auth) {
+    const { user } = useUser();
+
+    if (!user) {
         // Redirect to login with the current location as state
         return <Navigate to='/login' state={{ from: location }} />;
     }

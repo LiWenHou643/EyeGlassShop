@@ -29,6 +29,7 @@ public class JWTTokenValidationFilter extends OncePerRequestFilter {
 
         if (jwt != null) {
             try {
+                if (jwt.startsWith("Bearer ")) jwt = jwt.substring(7);
                 Environment env = getEnvironment();
                 String secret = env.getProperty(EyeGlassConstants.JWT_SECRET_KEY,
                         EyeGlassConstants.JWT_SECRET_DEFAULT_VALUE);

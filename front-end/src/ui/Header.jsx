@@ -1,7 +1,8 @@
 import { styled } from 'styled-components';
-import { useAuth } from '../context/AuthProvider';
 import Dropdown from './Dropdown';
 import BaseStyledLink from './Link';
+import { HiOutlineUser } from 'react-icons/hi2';
+import { exactNameFromEmail } from '../utils/helperFunction';
 
 const StyledHeader = styled.header`
     position: fixed;
@@ -24,8 +25,6 @@ const StyledLink = styled(BaseStyledLink)`
 `;
 
 function Header() {
-    const { auth } = useAuth();
-
     return (
         <StyledHeader className='w-100'>
             <nav className='navbar navbar-expand-lg bg-body-tertiary'>
@@ -59,8 +58,13 @@ function Header() {
                             </li>
                         </ul>
 
-                        {auth?.token ? (
-                            <HiOutlineUser />
+                        {true ? (
+                            <div>
+                                <HiOutlineUser />
+                                <span>
+                                    {exactNameFromEmail('huale123@gmail.com')}
+                                </span>
+                            </div>
                         ) : (
                             <StyledLink
                                 className='px-4 btn btn-outline-success'

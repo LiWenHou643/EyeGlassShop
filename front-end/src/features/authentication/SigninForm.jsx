@@ -81,7 +81,7 @@ export default function SigninForm() {
                 full name
             </FormRow>
             <div className='d-flex justify-content-end'>
-                <p className='text-danger px-2 col-12 col-md-8 col-lg-8'>
+                <p className='text-danger px-2 col-12 col-md-8 col-lg-8 h5'>
                     {errors?.fullname?.message}
                 </p>
             </div>
@@ -98,7 +98,7 @@ export default function SigninForm() {
                 email
             </FormRow>
             <div className='d-flex justify-content-end'>
-                <p className='text-danger px-2 col-12 col-md-8 col-lg-8'>
+                <p className='text-danger px-2 col-12 col-md-8 col-lg-8 h5'>
                     {errors?.email?.message}
                 </p>
             </div>
@@ -116,7 +116,7 @@ export default function SigninForm() {
                 password
             </FormRow>
             <div className='d-flex justify-content-end'>
-                <p className='text-danger px-2 col-12 col-md-8 col-lg-8'>
+                <p className='text-danger px-2 col-12 col-md-8 col-lg-8 h5'>
                     {errors?.pwd?.message}
                 </p>
             </div>
@@ -134,7 +134,7 @@ export default function SigninForm() {
                 password confirm
             </FormRow>
             <div className='d-flex justify-content-end'>
-                <p className='text-danger px-2 col-12 col-md-8 col-lg-8'>
+                <p className='text-danger px-2 col-12 col-md-8 col-lg-8 h5'>
                     {errors?.pwdc?.message}
                 </p>
             </div>

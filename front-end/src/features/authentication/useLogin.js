@@ -1,31 +1,30 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { login as loginAccount } from '../../services/AuthApi';
+import { useMutation } from '@tanstack/react-query';
+import { getCurrentUser, login as loginApi } from '../../services/apiAuth';
 import { toast } from 'react-hot-toast';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useAuth } from '../../context/AuthProvider';
+import Cookies from 'js-cookie';
+import useUser from './useUser';
 
 export function useLogin() {
-    const queryClient = useQueryClient();
     const navigate = useNavigate();
-    const { setAuth } = useAuth();
     const location = useLocation();
 
+    const setJwtTokenCookie = (token) => {
+        // Calculate expiration time (current time + 30 minutes)
+        const expirationTime = new Date(new Date().getTime() + 30 * 60 * 1000);
+
+        // Set the cookie with the JWT token and expiration time
+        Cookies.set('jwtToken', token, { expires: expirationTime });
+    };
+
     const { mutate: login, isLoading: isLoggingin } = useMutation({
-        mutationFn: (data) => loginAccount(data.email, data.pwd),
+        mutationFn: (data) => loginApi(data.email, data.pwd),
         onSuccess: (response) => {
             // Store JWT token from the response
-            localStorage.setItem('jwtToken', response.data.jwtToken);
+            setJwtTokenCookie(response.data.jwtToken);
 
-            // Set the user in the context
-            setAuth({
-                token: response.data.jwtToken,
-                user: response.data.user,
-            });
-
-            queryClient.invalidateQueries({
-                queryKey: ['user'],
-            });
-            toast.success('User logged in successfully');
+            // Show a success message
+            toast.success('Logged in successfully!');
 
             // Redirect to the home page or the page the user was trying to access
             const redirectPath = location.state?.from?.pathname || '/';

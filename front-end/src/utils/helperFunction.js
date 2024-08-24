@@ -13,3 +13,7 @@ export function calDateAgo(givenDate) {
 
     return dayDifference;
 }
+
+export function exactNameFromEmail(email) {
+    return email.split('@')[0];
+}

@@ -60,7 +60,7 @@ public class SecurityConfig {
             .requiresChannel(rcc -> rcc.anyRequest().requiresInsecure())
             .authorizeHttpRequests(authorize -> authorize
                     .requestMatchers("/api/admin/**").hasRole("ADMIN")
-                    .requestMatchers("/api/user/**").hasRole("USER")
+                    .requestMatchers("/api/user/**").authenticated()
                     .requestMatchers("/api/register", "/api/login").permitAll()
                     .requestMatchers("/contact", "/error").permitAll()
             );

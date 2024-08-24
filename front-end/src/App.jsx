@@ -1,7 +1,7 @@
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Toaster } from 'react-hot-toast';
-import { AuthProvider } from './context/AuthProvider';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import PageNotFound from './pages/PageNotFound';
 import Login from './pages/Login';
 import Glasses from './pages/Glasses';
@@ -18,49 +18,45 @@ const queryClient = new QueryClient();
 function App() {
     return (
         <QueryClientProvider client={queryClient}>
-            <AuthProvider>
-                <BrowserRouter>
-                    <Routes>
-                        <Route element={<AppLayout />}>
-                            <Route
-                                index
-                                element={<Navigate replace to='home' />}
-                            />
-                            <Route path='home' element={<Home />} />
-                            <Route path='login' element={<Login />} />
-                            <Route path='signin' element={<Signin />} />
-                            {/* <Route path='forgot' element={<Forgot />} /> */}
+            <BrowserRouter>
+                <Routes>
+                    <Route element={<AppLayout />}>
+                        <Route index element={<Navigate replace to='home' />} />
+                        <Route path='home' element={<Home />} />
+                        <Route path='login' element={<Login />} />
+                        <Route path='signin' element={<Signin />} />
+                        {/* <Route path='forgot' element={<Forgot />} /> */}
 
-                            <Route element={<ProtectedRoutes />}>
-                                <Route path='glasses' element={<Glasses />}>
-                                    <Route
-                                        index
-                                        element={
-                                            <Navigate
-                                                replace
-                                                to='/glasses/eyeglasses'
-                                            />
-                                        }
-                                    />
-                                    <Route
-                                        path='sunglasses'
-                                        element={<Sunglasses />}
-                                    />
-                                    <Route
-                                        path='eyeglasses'
-                                        element={<Eyeglasses />}
-                                    />
-                                </Route>
+                        <Route element={<ProtectedRoutes />}>
+                            <Route path='glasses' element={<Glasses />}>
+                                <Route
+                                    index
+                                    element={
+                                        <Navigate
+                                            replace
+                                            to='/glasses/eyeglasses'
+                                        />
+                                    }
+                                />
+                                <Route
+                                    path='sunglasses'
+                                    element={<Sunglasses />}
+                                />
+                                <Route
+                                    path='eyeglasses'
+                                    element={<Eyeglasses />}
+                                />
                             </Route>
-
-                            <Route path='*' element={<PageNotFound />} />
                         </Route>
-                    </Routes>
-                </BrowserRouter>
 
-                <GlobalStyles />
-                <Toaster position='top-center' reverseOrder={true} />
-            </AuthProvider>
+                        <Route path='*' element={<PageNotFound />} />
+                    </Route>
+                </Routes>
+            </BrowserRouter>
+
+            <GlobalStyles />
+            <Toaster position='top-center' reverseOrder={true} />
+            <ReactQueryDevtools initialIsOpen={false} />
         </QueryClientProvider>
     );
 }
