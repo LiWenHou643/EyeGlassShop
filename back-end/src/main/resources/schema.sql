@@ -21,6 +21,12 @@ CREATE TABLE `person` (
   `updated_by` varchar(50) DEFAULT NULL
 );
 
+CREATE TABLE `EyeGlassShop`.`invalidated_tokens` (
+  `id` VARCHAR(512) NOT NULL,
+  `expiration` TIMESTAMP NOT NULL,
+  PRIMARY KEY (`id`));
+
+
 CREATE TABLE `category` (
   `id` int PRIMARY KEY AUTO_INCREMENT,
   `name` varchar(100),

@@ -32,7 +32,7 @@ public class JWTGenerationFilter extends OncePerRequestFilter {
 
         if (authentication != null) {
             Environment env = getEnvironment();
-            String secret = env.getProperty(EyeGlassConstants.JWT_SECRET_KEY,
+            String secret = env.getProperty(EyeGlassConstants.JWT_SECRET,
                     EyeGlassConstants.JWT_SECRET_DEFAULT_VALUE);
             SecretKey secretKey = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
             String jwt = Jwts.builder().issuer("Eye Glass").subject("JWT Token")

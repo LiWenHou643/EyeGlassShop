@@ -1,58 +1,60 @@
 package com.example.eyeglass.filters;
 
+import com.example.eyeglass.config.JwtUtil;
 import com.example.eyeglass.constants.EyeGlassConstants;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.security.Keys;
+import com.example.eyeglass.repository.InvalidatedTokenRepository;
+import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.AccessLevel;
 import lombok.NonNull;
-import org.springframework.core.env.Environment;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import javax.crypto.SecretKey;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 
+@RequiredArgsConstructor
+@Component
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class JWTValidationFilter extends OncePerRequestFilter {
+    JwtUtil jwtUtil;
+    InvalidatedTokenRepository invalidatedTokenRepository;
 
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain) throws ServletException, IOException {
-        String jwt = request.getHeader(EyeGlassConstants.JWT_HEADER);
-
-        if (jwt != null) {
-            try {
-                if (jwt.startsWith("Bearer ")) jwt = jwt.substring(7);
-                Environment env = getEnvironment();
-                String secret = env.getProperty(EyeGlassConstants.JWT_SECRET_KEY,
-                        EyeGlassConstants.JWT_SECRET_DEFAULT_VALUE);
-                SecretKey secretKey = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
-
-                Claims claims = Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(jwt).getPayload();
-
-                String username = String.valueOf(claims.get("username"));
-                String authorities = String.valueOf(claims.get("authorities"));
-                Authentication authentication = new UsernamePasswordAuthenticationToken(username, null,
-                        AuthorityUtils.commaSeparatedStringToAuthorityList(authorities));
-
-                SecurityContextHolder.getContext().setAuthentication(authentication);
-            } catch (Exception e) {
-                throw new BadCredentialsException("Invalid Token received!");
-            }
+        String header = request.getHeader(EyeGlassConstants.JWT_HEADER);
+        if (null == header || !header.startsWith(EyeGlassConstants.JWT_PREFIX)) {
+            filterChain.doFilter(request, response);
+            return;
         }
+
+        try {
+            String token = jwtUtil.getJwtFromHeader(header);
+            boolean isInvalidated = invalidatedTokenRepository.existsById(token);
+            if (isInvalidated) {
+                throw new BadCredentialsException("Token is invalidated!");
+            }
+
+            Authentication authentication = jwtUtil.getAuthenticate(header);
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        } catch (JwtException | IllegalArgumentException e) {
+            throw new BadCredentialsException("Invalid Token received!", e);
+        }
+
         filterChain.doFilter(request, response);
     }
 
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
-        return request.getServletPath().equals("/api/login");
+        String path = request.getServletPath();
+        return path.equals("/api/login");
     }
-
 }

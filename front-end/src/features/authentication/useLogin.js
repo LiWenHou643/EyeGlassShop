@@ -1,9 +1,8 @@
 import { useMutation } from '@tanstack/react-query';
-import { getCurrentUser, login as loginApi } from '../../services/apiAuth';
+import { login as loginApi } from '../../services/apiAuth';
 import { toast } from 'react-hot-toast';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
-import useUser from './useUser';
 
 export function useLogin() {
     const navigate = useNavigate();

@@ -1,20 +1,21 @@
 package com.example.eyeglass.service;
 
-import com.example.eyeglass.dto.user.PersonDTO;
-import com.example.eyeglass.dto.user.RegisterDTO;
+
+import com.example.eyeglass.dto.request.RegisterRequest;
+import com.example.eyeglass.dto.response.PersonResponse;
 
 import java.util.List;
 
 public interface PersonService {
 
-    List<PersonDTO> getAllUsers();
+    List<PersonResponse> getAllUsers();
 
-    PersonDTO getUserById(Long id);
+    PersonResponse getUserById(Long id);
 
-    PersonDTO getUserByEmail(String email);
+    PersonResponse getUserByEmail(String email);
 
-    PersonDTO createUser(RegisterDTO registerDTO);
+    PersonResponse createUser(RegisterRequest register);
 
-    PersonDTO updateUser(Long id, PersonDTO personDTO);
+    PersonResponse updateUser(Long id, PersonResponse person);
 
 }

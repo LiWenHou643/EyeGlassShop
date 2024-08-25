@@ -2,8 +2,8 @@ package com.example.eyeglass.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.EntityListeners;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
@@ -17,6 +17,9 @@ import java.time.LocalDateTime;
 
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
 public class BaseEntity {
@@ -24,20 +27,20 @@ public class BaseEntity {
     @CreatedDate
     @Column(updatable = false, nullable = false)
     @JsonIgnore
-    private LocalDateTime createdAt;
+    LocalDateTime createdAt;
 
     @CreatedBy
     @Column(updatable = false, nullable = false)
     @JsonIgnore
-    private String createdBy;
+    String createdBy;
 
     @LastModifiedDate
     @Column(insertable = false)
     @JsonIgnore
-    private LocalDateTime updatedAt;
+    LocalDateTime updatedAt;
 
     @LastModifiedBy
     @Column(insertable = false)
     @JsonIgnore
-    private String updatedBy;
+    String updatedBy;
 }

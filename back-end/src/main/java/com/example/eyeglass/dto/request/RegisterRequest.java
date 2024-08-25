@@ -1,31 +1,30 @@
-package com.example.eyeglass.dto.user;
+package com.example.eyeglass.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class RegisterDTO {
+@FieldDefaults(level = AccessLevel.PRIVATE)
+public class RegisterRequest {
 
     @NotBlank(message = "Full name cannot be blank")
     @Size(min = 3, max = 50, message = "Full name must be between 3 and 50 characters")
-    private String fullName;
+    String fullName;
 
     @NotBlank(message = "Email cannot be blank")
     @Email(regexp = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", message = "Email should be valid")
-    private String email;
+    String email;
 
     @NotBlank(message = "Password cannot be blank")
     @Size(min = 8, max = 50, message = "Password must be between 8 and 50 characters")
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private String password;
+    String password;
 
 }

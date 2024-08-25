@@ -1,0 +1,33 @@
+spring:
+  config:
+    activate:
+      on-profile: prod
+  application:
+    name: ${SPRING_APP_NAME:eyeglass}
+  datasource:
+    url: jdbc:mysql://${DATABASE_HOST:localhost}:${DATABASE_PORT:3306}/${DATABASE_NAME:EyeGlassShop}
+    username: ${DATABASE_USERNAME:root}
+    password: ${DATABASE_PASSWORD:Hau643@#}
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: ${JPA_SHOW_SQL:false}
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+
+
+logging:
+  level:
+    org.springframework.security: ${SPRING_SECURITY_LOG_LEVEL:ERROR}
+  pattern:
+    console: ${LOG_PATTERN_CONSOLE:%green(%d{HH:mm:ss.SSS}) %blue(%-5level) %red([%thread]) %yellow(%logger{15}) - %msg%n}
+
+server:
+  servlet:
+    session:
+      timeout: ${SESSION_TIMEOUT:10m}
+
+jwt:
+  secret: ${JWT_SECRET:"qwmxUNuHU/QFOb5qVqRj/ePARhnuJJrdfDKa/uqPLfOIxoF0Ryh2NCASNC7JU2q8"}
+  expiration: ${JWT_EXPIRATION:3600000}

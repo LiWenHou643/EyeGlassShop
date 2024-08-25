@@ -4,6 +4,9 @@ import com.example.eyeglass.exception.CustomAccessDeniedHandler;
 import com.example.eyeglass.exception.CustomBasicAuthenticationEntryPoint;
 import com.example.eyeglass.filters.CsrfCookieFilter;
 import com.example.eyeglass.filters.JWTValidationFilter;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -28,9 +31,12 @@ import java.util.Collections;
 import java.util.List;
 
 @Configuration
+@RequiredArgsConstructor
 @Profile("!prod")
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @EnableWebSecurity
 public class SecurityConfig {
+    JWTValidationFilter JWTValidationFilter;
 
     @Bean
     SecurityFilterChain defaltSecurityFilterChain(HttpSecurity http) throws Exception {
@@ -50,14 +56,16 @@ public class SecurityConfig {
                                           .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
                                           .ignoringRequestMatchers("/api/register")
                                           .ignoringRequestMatchers("/api/login")
+                                          .ignoringRequestMatchers("/api/refresh")
+                                          .ignoringRequestMatchers("/api/logout")
             )
             .addFilterAfter(new CsrfCookieFilter(), BasicAuthenticationFilter.class)
-            .addFilterBefore(new JWTValidationFilter(), BasicAuthenticationFilter.class)
+            .addFilterBefore(JWTValidationFilter, BasicAuthenticationFilter.class)
             .requiresChannel(rcc -> rcc.anyRequest().requiresInsecure())
             .authorizeHttpRequests(authorize -> authorize
                     .requestMatchers("/api/admin/**").hasRole("ADMIN")
-                    .requestMatchers("/api/user/**").authenticated()
-                    .requestMatchers("/api/register", "/api/login").permitAll()
+                    .requestMatchers("/api/user/**").hasRole("USER")
+                    .requestMatchers("/api/register", "/api/login", "/api/refresh", "/api/logout").permitAll()
                     .requestMatchers("/contact", "/error").permitAll()
             );
 

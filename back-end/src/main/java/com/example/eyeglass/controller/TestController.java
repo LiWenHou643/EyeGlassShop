@@ -1,7 +1,9 @@
 package com.example.eyeglass.controller;
 
-import com.example.eyeglass.dto.user.PersonDTO;
+import com.example.eyeglass.dto.response.PersonResponse;
+import com.example.eyeglass.repository.InvalidatedTokenRepository;
 import com.example.eyeglass.service.PersonService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -9,10 +11,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+@RequiredArgsConstructor
 @RestController
 public class TestController {
-    @Autowired
-    private PersonService personService;
+    PersonService personService;
 
     @GetMapping("/test")
     public String test() {
@@ -31,7 +33,7 @@ public class TestController {
 
     @GetMapping("/profile")
     public ResponseEntity<?> getProfile(Authentication authentication) {
-        PersonDTO personDTO = personService.getUserByEmail(authentication.getName());
-        return new ResponseEntity<>(personDTO, HttpStatus.OK);
+        PersonResponse personResponse = personService.getUserByEmail(authentication.getName());
+        return new ResponseEntity<>(personResponse, HttpStatus.OK);
     }
 }
