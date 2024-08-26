@@ -43,6 +43,10 @@ public class JwtUtil {
         return null;
     }
 
+    public String toBearerToken(String token) {
+        return "Bearer " + token;
+    }
+
     public String generateToken(String username, String authorities) {
         Map<String, Object> claims = new HashMap<>();
         claims.put("username", username);

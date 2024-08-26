@@ -1,7 +1,6 @@
 package com.example.eyeglass.controller;
 
 import com.example.eyeglass.config.JwtUtil;
-import com.example.eyeglass.constants.EyeGlassConstants;
 import com.example.eyeglass.dto.request.RegisterRequest;
 import com.example.eyeglass.dto.response.PersonResponse;
 import com.example.eyeglass.dto.request.LoginRequest;
@@ -17,7 +16,9 @@ import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -64,6 +65,7 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<AuthenticationResponse> login(@RequestBody LoginRequest loginRequest, HttpServletResponse response) {
         String jwt = "";
+        PersonResponse person = null;
         try {
             // Create an unauthenticated token based on the user's input
             Authentication authentication = UsernamePasswordAuthenticationToken.unauthenticated(loginRequest.username(),
@@ -72,35 +74,35 @@ public class AuthController {
             Authentication authenticationResponse = authenticationManager.authenticate(authentication);
 
             // If authentication is successful, generate the JWT token
-            String name = authenticationResponse.getName();
+            String username = authenticationResponse.getName();
             String authorities = authenticationResponse.getAuthorities().stream()
                                                        .map(GrantedAuthority::getAuthority)
                                                        .collect(Collectors.joining(","));
-            jwt = jwtUtil.generateToken(name, authorities);
+            jwt = jwtUtil.generateToken(username, authorities);
+            person = personService.getUserByEmail(username);
 
             // Create a cookie with the JWT token
-            Cookie cookie = new Cookie("token", jwt);
+            Cookie cookie = new Cookie("token", jwtUtil.toBearerToken(jwt));
             cookie.setHttpOnly(true);  // Helps prevent XSS attacks
             cookie.setSecure(true);    // Ensures the cookie is only sent over HTTPS
             cookie.setPath("/");       // The cookie is valid for the entire domain
             cookie.setMaxAge(3600);    // Cookie expiration time in seconds (1 hour)
 
-            response.addCookie(cookie);  // Add the cookie to the response
-
-            // Return the ResponseEntity with the JWT token in the response body
-            return ResponseEntity.status(HttpStatus.OK).header(EyeGlassConstants.JWT_HEADER, jwt)
-                                 .body(new AuthenticationResponse(jwt, true, "Login successfully"));
-
+            return ResponseEntity.status(HttpStatus.OK).header(HttpHeaders.SET_COOKIE,
+                                         "Authorization=%s; HttpOnly; Secure; SameSite=Strict; Path=/; Max-Age=3600".formatted(
+                                                 jwtUtil.toBearerToken(jwt)))
+                                 .body(new AuthenticationResponse(person, true));
 
         } catch (CustomAuthenticationException e) {
             // Handle custom authentication exception
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                                 .body(new AuthenticationResponse(jwt, false, e.getMessage()));
+                                 .body(new AuthenticationResponse(person, false));
         } catch (Exception e) {
             // Handle other exceptions
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                                 .body(new AuthenticationResponse(jwt, false, e.getMessage()));
+                                 .body(new AuthenticationResponse(person, false));
         }
+
 
     }
 
@@ -118,7 +120,7 @@ public class AuthController {
     }
 
     @PostMapping("/refresh")
-    public ResponseEntity<AuthenticationResponse> refresh(@RequestHeader(value = "Authorization") String request) {
+    public ResponseEntity<?> refresh(@RequestHeader(value = "Authorization") String request, HttpServletResponse response) {
         String token = jwtUtil.getJwtFromHeader(request);
         Date tokenExpiration = jwtUtil.getTokenExpiration(request);
 
@@ -132,8 +134,16 @@ public class AuthController {
 
         String newJwt = jwtUtil.generateToken(username, authorities);
 
-        return ResponseEntity.status(HttpStatus.OK).header(EyeGlassConstants.JWT_HEADER, newJwt)
-                             .body(new AuthenticationResponse(newJwt, true, "Refresh successfully"));
+        // Create a cookie with the JWT token
+        Cookie cookie = new Cookie("token", jwtUtil.toBearerToken(newJwt));
+        cookie.setHttpOnly(true);  // Helps prevent XSS attacks
+        cookie.setSecure(true);    // Ensures the cookie is only sent over HTTPS
+        cookie.setPath("/");       // The cookie is valid for the entire domain
+        cookie.setMaxAge(3600);    // Cookie expiration time in seconds (1 hour)
+
+        response.addCookie(cookie);  // Add the cookie to the response
+
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 }
