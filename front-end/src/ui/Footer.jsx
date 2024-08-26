@@ -46,7 +46,7 @@ const Img = styled.img`
     height: 100%;
 `;
 
-const A = styled.a`
+const ImgLink = styled.a`
     width: 70px;
     height: 70px;
     cursor: pointer;
@@ -57,6 +57,11 @@ const A = styled.a`
         background: ${(props) => `url(${props.$src})} no-repeat center center`};
         background-size: contain;
     }
+`;
+
+const ALink = styled.a`
+    text-transform: capitalize;
+    color: var(--color-grey-400);
 `;
 
 const Footer = () => (
@@ -89,18 +94,18 @@ const Footer = () => (
 
                     <div className='col-md-3 offset-md-1 mb-md-0 mb-3'>
                         <div className='d-flex justify-content-center justify-content-md-start flex-wrap gap-3'>
-                            <A to='#' $src='/fb.svg'>
+                            <ImgLink to='#' $src='/fb.svg'>
                                 <i />
-                            </A>
-                            <A to='#' $src='/instagram.svg'>
+                            </ImgLink>
+                            <ImgLink to='#' $src='/instagram.svg'>
                                 <i />
-                            </A>
-                            <A to='#' $src='/tiktok.svg'>
+                            </ImgLink>
+                            <ImgLink to='#' $src='/tiktok.svg'>
                                 <i />
-                            </A>
-                            <A to='#' $src='/zalo.svg'>
+                            </ImgLink>
+                            <ImgLink to='#' $src='/zalo.svg'>
                                 <i />
-                            </A>
+                            </ImgLink>
                         </div>
                     </div>
                 </div>
@@ -122,10 +127,22 @@ const Footer = () => (
 
                     <div className='col-md-3 mt-md-0 mt-3'>
                         <h2 className='text-uppercase mb-4'>Policies</h2>
-                        <P>
-                            1 year warranty commitment with 1 for 1 return.
-                            Daily promotion with many attractive gifts.
-                        </P>
+                        <ul>
+                            <li>
+                                <ALink href=''>Insurance Policy</ALink>
+                            </li>
+                            <li>
+                                <ALink href=''>
+                                    Shipping and Inspection Policy
+                                </ALink>
+                            </li>
+                            <li>
+                                <ALink href=''>Payment Policy</ALink>
+                            </li>
+                            <li>
+                                <ALink href=''>Warranty Policy</ALink>
+                            </li>
+                        </ul>
                     </div>
 
                     <hr className='clearfix w-100 d-md-none pb-0 my-4' />
