@@ -12,10 +12,9 @@ export function useLogin() {
         mutationFn: ({ username, password }) =>
             loginApi({ username, password }),
         onSuccess: (response) => {
-            console.log('loggin on success ', response?.data.accessToken);
-
             if (response.data.isAuthenticated) {
-                queryClient.setQueryData('user', response.data);
+                localStorage.setItem('user', JSON.stringify(response.data));
+                queryClient.setQueryData(['user'], response.data);
                 const redirectPath = location.state?.from?.pathname || '/';
                 navigate(redirectPath, { replace: true });
             }

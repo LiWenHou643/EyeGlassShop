@@ -27,6 +27,7 @@ const StyledLink = styled(BaseStyledLink)`
 
 function Header() {
     const { isAuthenticated, user } = useUser();
+    console.log('user', user);
     return (
         <StyledHeader className='w-100'>
             <nav className='navbar navbar-expand-lg bg-body-tertiary'>
@@ -63,9 +64,7 @@ function Header() {
                         {isAuthenticated ? (
                             <div>
                                 <HiOutlineUser />
-                                <span>
-                                    {exactNameFromEmail('huale123@gmail.com')}
-                                </span>
+                                <span>{exactNameFromEmail(user?.email)}</span>
                             </div>
                         ) : (
                             <StyledLink

@@ -10,7 +10,11 @@ function useUser() {
         staleTime: 2000,
     });
 
-    return { isLoading, user, isAuthenticated: user?.isAuthenticated };
+    return {
+        isLoading,
+        user: user?.user,
+        isAuthenticated: user?.isAuthenticated,
+    };
 }
 
 export default useUser;

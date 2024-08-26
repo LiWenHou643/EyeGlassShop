@@ -1,40 +1,40 @@
 import axios from 'axios';
-import Cookies from 'js-cookie';
 
 const REST_API_BASE_URL = 'http://localhost:8080/api';
 
-const getToken = () => {
-    return Cookies.get('token');
-};
-
 export const login = ({ username, password }) =>
-    axios
-        .post(
-            `${REST_API_BASE_URL}/login`,
-            {
-                username,
-                password,
-            },
-            {
-                withCredentials: true,
-            }
-        )
-        .catch((error) => {
-            throw new Error(
-                error.response?.data?.message || 'An error occurred'
-            );
-        });
+    axios.post(
+        `${REST_API_BASE_URL}/login`,
+        {
+            username,
+            password,
+        },
+        {
+            withCredentials: true,
+        }
+    );
+// .catch((error) => {
+//     throw new Error(
+//         error.response?.data?.message || 'An error occurred'
+//     );
+// });
 
 export const getCurrentUser = () => {
-    const token = getToken();
-    if (!token) return null;
-
-    axios.get(`${REST_API_BASE_URL}/user`, {
-        headers: {
-            Authorization: `Bearer ${getToken()}`, // Replace with the actual token or use your auth method
-        },
-        withCredentials: true,
-    });
+    try {
+        const user = localStorage.getItem('user');
+        if (user !== 'undefined') {
+            return JSON.parse(user);
+        }
+        const response = axios.get(`${REST_API_BASE_URL}/user`, {
+            withCredentials: true,
+        });
+        console.log('response axios', response.data);
+        localStorage.setItem('user', JSON.stringify(response.data));
+        return response.data || null; // Ensure we return null if no data is returned
+    } catch (error) {
+        console.error('Error fetching current user:', error);
+        return null; // Return null on error to avoid returning undefined
+    }
 };
 
 export const register = (user) =>
