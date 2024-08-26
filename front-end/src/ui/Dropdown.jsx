@@ -24,7 +24,7 @@ const P = styled.p`
     padding: 0.5rem 1rem !important;
 `;
 
-function Dropdown() {
+function Dropdown({ items, linkText, linkTo = '#' }) {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
     const handleMouseEnter = () => {
@@ -41,31 +41,24 @@ function Dropdown() {
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
         >
-            <StyledLink to='/glasses'>Glasses</StyledLink>
+            {linkTo === '#' ? (
+                <P>{linkText}</P>
+            ) : (
+                <StyledLink to={linkTo}>{linkText}</StyledLink>
+            )}
 
             {isDropdownOpen && (
                 <DropdownMenu className='position-absolute top-100'>
-                    <DropdownItem>
-                        <StyledLink
-                            className='dropdown-item'
-                            to='/glasses/eyeglasses'
-                        >
-                            <P>Eyeglasses</P>
-                        </StyledLink>
-                    </DropdownItem>
-                    <DropdownItem>
-                        <StyledLink
-                            className='dropdown-item'
-                            to='/glasses/sunglasses'
-                        >
-                            <P>Sunglasses</P>
-                        </StyledLink>
-                    </DropdownItem>
-                    <DropdownItem>
-                        <StyledLink className='dropdown-item'>
-                            <P>Eyeframe</P>
-                        </StyledLink>
-                    </DropdownItem>
+                    {items.map((item, index) => (
+                        <DropdownItem key={index}>
+                            <StyledLink
+                                className='dropdown-item'
+                                to={item.link}
+                            >
+                                <P>{item.text}</P>
+                            </StyledLink>
+                        </DropdownItem>
+                    ))}
                 </DropdownMenu>
             )}
         </li>

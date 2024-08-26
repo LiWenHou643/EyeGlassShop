@@ -1,9 +1,8 @@
 import { styled } from 'styled-components';
 import Dropdown from './Dropdown';
 import BaseStyledLink from './Link';
-import { HiOutlineUser } from 'react-icons/hi2';
-import { exactNameFromEmail } from '../utils/helperFunction';
 import useUser from '../features/authentication/useUser';
+import UserMenu from '../features/user/userMenu';
 
 const StyledHeader = styled.header`
     position: fixed;
@@ -26,8 +25,8 @@ const StyledLink = styled(BaseStyledLink)`
 `;
 
 function Header() {
-    const { isAuthenticated, user } = useUser();
-    console.log('user', user);
+    const { isAuthenticated } = useUser();
+
     return (
         <StyledHeader className='w-100'>
             <nav className='navbar navbar-expand-lg bg-body-tertiary'>
@@ -52,7 +51,24 @@ function Header() {
                         id='navbarSupportedContent'
                     >
                         <ul className='navbar-nav me-auto mb-2 mb-lg-0 gap-lg-2 px-lg-5 pb-2 pb-lg-0'>
-                            <Dropdown />
+                            <Dropdown
+                                linkText='Glasses'
+                                linkTo='/glasses'
+                                items={[
+                                    {
+                                        link: '/glasses/eyeglasses',
+                                        text: 'Eyeglasses',
+                                    },
+                                    {
+                                        link: '/glasses/sunglasses',
+                                        text: 'Sunglasses',
+                                    },
+                                    {
+                                        link: '/glasses/eyeframe',
+                                        text: 'Eyeframe',
+                                    },
+                                ]}
+                            />
 
                             <li className='nav-item'>
                                 <StyledLink className='dropdown-item' href='#'>
@@ -62,10 +78,7 @@ function Header() {
                         </ul>
 
                         {isAuthenticated ? (
-                            <div>
-                                <HiOutlineUser />
-                                <span>{exactNameFromEmail(user?.email)}</span>
-                            </div>
+                            <UserMenu />
                         ) : (
                             <StyledLink
                                 className='px-4 btn btn-outline-success'
