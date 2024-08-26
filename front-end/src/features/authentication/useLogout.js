@@ -1,0 +1,27 @@
+import { useMutation } from '@tanstack/react-query';
+import { toast } from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
+import { logout as logoutApi } from '../../services/apiAuth';
+import Cookies from 'js-cookie';
+
+export function useLogin() {
+    const navigate = useNavigate();
+
+    const { mutate: logout, isLoading: isLoggingout } = useMutation({
+        mutationFn: logoutApi,
+        onSuccess: (response) => {
+            // Store JWT token from the response
+            Cookies.remove('jwtToken');
+
+            // Show a success message
+            toast.success('Logged out successfully!');
+
+            // Redirect to the home page
+            navigate('/');
+        },
+        onError: (error) => {
+            toast.error(error.message);
+        },
+    });
+    return { logout, isLoggingout };
+}

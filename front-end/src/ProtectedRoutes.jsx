@@ -1,17 +1,21 @@
-import { Navigate, Outlet, useLocation } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 import useUser from './features/authentication/useUser';
+import { useEffect } from 'react';
 
 function ProtectedRoutes() {
-    const location = useLocation();
+    const navigate = useNavigate();
 
-    const { user } = useUser();
+    const { isLoading, isAuthenticated } = useUser();
 
-    if (!user) {
-        // Redirect to login with the current location as state
-        return <Navigate to='/login' state={{ from: location }} />;
+    useEffect(() => {
+        if (!isAuthenticated && !isLoading) navigate('/login');
+    }, [isAuthenticated, isLoading, navigate]);
+
+    if (isLoading) {
+        return <div>Loading...</div>;
     }
 
-    return <Outlet />; // Render the nested routes if authenticated
+    if (isAuthenticated) return <Outlet />; // Render the nested routes if authenticated
 }
 
 export default ProtectedRoutes;

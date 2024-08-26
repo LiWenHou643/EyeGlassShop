@@ -1,33 +1,25 @@
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { login as loginApi } from '../../services/apiAuth';
 import { toast } from 'react-hot-toast';
 import { useLocation, useNavigate } from 'react-router-dom';
-import Cookies from 'js-cookie';
 
 export function useLogin() {
     const navigate = useNavigate();
+    const queryClient = useQueryClient();
     const location = useLocation();
 
-    const setJwtTokenCookie = (token) => {
-        // Calculate expiration time (current time + 30 minutes)
-        const expirationTime = new Date(new Date().getTime() + 30 * 60 * 1000);
-
-        // Set the cookie with the JWT token and expiration time
-        Cookies.set('jwtToken', token, { expires: expirationTime });
-    };
-
     const { mutate: login, isLoading: isLoggingin } = useMutation({
-        mutationFn: (data) => loginApi(data.email, data.pwd),
+        mutationFn: ({ username, password }) =>
+            loginApi({ username, password }),
         onSuccess: (response) => {
-            // Store JWT token from the response
-            setJwtTokenCookie(response.data.jwtToken);
+            console.log('loggin on success ', response?.data.accessToken);
 
-            // Show a success message
-            toast.success('Logged in successfully!');
-
-            // Redirect to the home page or the page the user was trying to access
-            const redirectPath = location.state?.from?.pathname || '/';
-            navigate(redirectPath);
+            if (response.data.isAuthenticated) {
+                queryClient.setQueryData('user', response.data);
+                const redirectPath = location.state?.from?.pathname || '/';
+                navigate(redirectPath, { replace: true });
+            }
+            return null;
         },
         onError: (error) => {
             toast.error(error.message);

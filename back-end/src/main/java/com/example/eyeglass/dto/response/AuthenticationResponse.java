@@ -2,9 +2,10 @@ package com.example.eyeglass.dto.response;
 
 import com.example.eyeglass.constants.EyeGlassConstants;
 
-public record AuthenticationResponse(String accessToken, String tokenType) {
+public record AuthenticationResponse(String accessToken, boolean isAuthenticated, String message) {
 
-    public AuthenticationResponse(String accessToken) {
-        this(accessToken, EyeGlassConstants.JWT_PREFIX);
+    public static AuthenticationResponse of(String accessToken, boolean isAuthenticated, String message) {
+        return new AuthenticationResponse(EyeGlassConstants.JWT_PREFIX + accessToken, isAuthenticated, message);
     }
+
 }

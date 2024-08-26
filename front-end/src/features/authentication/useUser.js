@@ -5,14 +5,12 @@ function useUser() {
     const { isLoading, data: user } = useQuery({
         queryKey: ['user'],
         queryFn: getCurrentUser,
-        onError: (error) => {
-            console.error('Error fetching user data:', error);
-            // If an error occurs, redirect to the login page
-            navigate('/login');
-        },
+        retry: 0,
+        refetchOnWindowFocus: false,
+        staleTime: 2000,
     });
 
-    return { isLoading, user };
+    return { isLoading, user, isAuthenticated: user?.isAuthenticated };
 }
 
 export default useUser;

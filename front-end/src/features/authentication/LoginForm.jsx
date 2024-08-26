@@ -36,11 +36,14 @@ export default function LoginForm() {
     const { login, isLoggingin } = useLogin();
 
     function onSubmit(data) {
-        login(data);
-    }
-
-    function onReset() {
-        reset();
+        login(
+            { username: data.email, password: data.pwd },
+            {
+                onSettled: () => {
+                    reset();
+                },
+            }
+        );
     }
 
     return (
@@ -102,7 +105,7 @@ export default function LoginForm() {
                     type='reset'
                     className='col-3 py-3 btn btn-secondary text-capitalize'
                     disabled={isLoggingin}
-                    onClick={onReset}
+                    onClick={reset}
                 >
                     Reset
                 </Button>

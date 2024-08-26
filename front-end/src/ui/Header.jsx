@@ -3,6 +3,7 @@ import Dropdown from './Dropdown';
 import BaseStyledLink from './Link';
 import { HiOutlineUser } from 'react-icons/hi2';
 import { exactNameFromEmail } from '../utils/helperFunction';
+import useUser from '../features/authentication/useUser';
 
 const StyledHeader = styled.header`
     position: fixed;
@@ -25,6 +26,7 @@ const StyledLink = styled(BaseStyledLink)`
 `;
 
 function Header() {
+    const { isAuthenticated, user } = useUser();
     return (
         <StyledHeader className='w-100'>
             <nav className='navbar navbar-expand-lg bg-body-tertiary'>
@@ -58,7 +60,7 @@ function Header() {
                             </li>
                         </ul>
 
-                        {true ? (
+                        {isAuthenticated ? (
                             <div>
                                 <HiOutlineUser />
                                 <span>
