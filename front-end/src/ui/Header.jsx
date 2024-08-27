@@ -2,9 +2,11 @@ import { styled } from 'styled-components';
 import Dropdown from './Dropdown';
 import BaseStyledLink from './Link';
 import useUser from '../features/authentication/useUser';
-import UserMenu from '../features/user/userMenu';
+import UserMenu from '../features/user/UserMenu';
 
 const StyledHeader = styled.header`
+    background-color: var(--color-grey-800);
+    color: var(--color-grey-100);
     position: fixed;
     top: 0;
     z-index: 1000;
@@ -17,9 +19,8 @@ const StyledLink = styled(BaseStyledLink)`
     width: ${(props) => !props?.className?.includes('navbar-brand') && '120px'};
 
     &:hover {
-        background-color: ${(props) =>
-            props?.className?.includes('dropdown-item') &&
-            'var(--color-grey-200)'};
+        color: var(--color-grey-100);
+        background-color: var(--color-grey-700);
     }
     border-radius: 0.5rem;
 `;
@@ -29,7 +30,7 @@ function Header() {
 
     return (
         <StyledHeader className='w-100'>
-            <nav className='navbar navbar-expand-lg bg-body-tertiary'>
+            <nav className='navbar navbar-expand-lg'>
                 <div className='container-fluid'>
                     <StyledLink className='navbar-brand px-lg-5' to='/'>
                         EYES HERO
@@ -71,7 +72,10 @@ function Header() {
                             />
 
                             <li className='nav-item'>
-                                <StyledLink className='dropdown-item' href='#'>
+                                <StyledLink
+                                    className='dropdown-item text-center'
+                                    href='#'
+                                >
                                     Contact
                                 </StyledLink>
                             </li>

@@ -93,21 +93,25 @@ ul {
     margin: 0 !important;
 }
 
-.active > .page-link {
+.active>.page-link {
     background-color: var(--color-brand-600);
     border-color: var(--color-brand-600);
 }
+
 .pagination {
     gap: 0.6rem;
 }
+
 .page-link {
     color: var(--color-grey-700);
     font-size: 1.4rem;
     padding: 0.2rem 1.2rem;
 }
+
 .page-link::hover {
     background-color: var(--color-brand-500);
 }
+
 .page-link:focus {
     outline: 2px solid var(--color-brand-600);
     outline-offset: -1px;
@@ -119,29 +123,39 @@ ul {
 /* Custom CSS for dropdown */
 .dropdown:hover .dropdown-menu {
     display: block;
-    margin-top: 0; /* remove the gap so it doesn't close */
+    margin-top: 0;
+    /* remove the gap so it doesn't close */
 }
 
 /* Custom CSS for repositioning slick arrows */
 .slick-prev {
-    left: 10px; /* Adjust this value to move the left arrow */
-    width: 40px; /* Optional: adjust width */
-    height: 40px; /* Optional: adjust height */
+    left: 10px;
+    /* Adjust this value to move the left arrow */
+    width: 40px;
+    /* Optional: adjust width */
+    height: 40px;
+    /* Optional: adjust height */
     z-index: 1;
     border-radius: 50%;
 
 }
 
-.slick-prev::before, .slick-next::before {
+.slick-prev::before,
+.slick-next::before {
     z-index: 1;
     color: var(--color-grey-900);
-    width: 40px; /* Optional: adjust width */
+    width: 40px;
+    /* Optional: adjust width */
 
 }
+
 .slick-next {
-    right: 10px; /* Adjust this value to move the right arrow */
-    width: 40px; /* Optional: adjust width */
-    height: 40px; /* Optional: adjust height */
+    right: 10px;
+    /* Adjust this value to move the right arrow */
+    width: 40px;
+    /* Optional: adjust width */
+    height: 40px;
+    /* Optional: adjust height */
     z-index: 1;
     border-radius: 50%;
 

@@ -3,21 +3,34 @@ import styled from 'styled-components';
 import BaseStyledLink from './Link';
 
 const StyledLink = styled(BaseStyledLink)`
-    width: 120px;
     font-size: 2rem;
-
+    width: 120px;
     &:hover {
-        background-color: var(--color-grey-200);
-        border-radius: 0.5rem;
+        background-color: var(--color-grey-700);
     }
 `;
-
 const DropdownMenu = styled.ul`
-    background-color: var(--color-grey-100);
+    background-color: var(--color-grey-900);
     border-radius: 0.5rem;
-`;
+    z-index: 1000;
+    width: 120px;
 
-const DropdownItem = styled.li``;
+    li {
+        &:not(:last-child) {
+            border-bottom: 1px solid var(--color-grey-800);
+        }
+        &:hover {
+            background-color: var(--color-grey-700);
+        }
+
+        &:first-child:hover {
+            border-radius: 0.5rem 0.5rem 0 0;
+        }
+        &:last-child:hover {
+            border-radius: 0 0 0.5rem 0.5rem;
+        }
+    }
+`;
 
 const P = styled.p`
     font-size: 1.6rem;
@@ -44,20 +57,22 @@ function Dropdown({ items, linkText, linkTo = '#' }) {
             {linkTo === '#' ? (
                 <P>{linkText}</P>
             ) : (
-                <StyledLink to={linkTo}>{linkText}</StyledLink>
+                <StyledLink className='rounded-2 text-center' to={linkTo}>
+                    {linkText}
+                </StyledLink>
             )}
 
             {isDropdownOpen && (
                 <DropdownMenu className='position-absolute top-100'>
                     {items.map((item, index) => (
-                        <DropdownItem key={index}>
-                            <StyledLink
+                        <li key={index}>
+                            <BaseStyledLink
                                 className='dropdown-item'
                                 to={item.link}
                             >
                                 <P>{item.text}</P>
-                            </StyledLink>
-                        </DropdownItem>
+                            </BaseStyledLink>
+                        </li>
                     ))}
                 </DropdownMenu>
             )}
