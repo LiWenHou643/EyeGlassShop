@@ -42,10 +42,18 @@ export const register = (user) =>
         withCredentials: true,
     });
 
-export const logout = () =>
-    axios.get(`${REST_API_BASE_URL}/logout`, {
-        withCredentials: true,
-    });
+export const logout = () => {
+    try {
+        localStorage.removeItem('user');
+        const response = axios.get(`${REST_API_BASE_URL}/logout`, {
+            withCredentials: true,
+        });
+        return response.data || null; // Ensure we return null if no data is returned
+    } catch (error) {
+        console.error('Error logout user:', error);
+        return null; // Return null on error to avoid returning undefined
+    }
+};
 
 export const refesh = () =>
     axios.get(`${REST_API_BASE_URL}/refresh`, {

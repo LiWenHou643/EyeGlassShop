@@ -4,6 +4,7 @@ import useUser from '../authentication/useUser';
 import { exactNameFromEmail } from '../../utils/helperFunction';
 import styled from 'styled-components';
 import BaseStyledLink from '../../ui/Link';
+import Modal from '../../ui/Modal';
 
 const MenuList = styled.ul`
     background-color: var(--color-grey-900);
@@ -11,8 +12,6 @@ const MenuList = styled.ul`
     z-index: 1000;
 
     li {
-        padding: 0.5rem 1rem;
-
         &:not(:last-child) {
             border-bottom: 1px solid var(--color-grey-800);
         }
@@ -58,19 +57,44 @@ function UserMenu() {
             {showMenu && (
                 <MenuList className='position-absolute top-100 rounded-3'>
                     <li>
-                        <BaseStyledLink className='dropdown-item' href='#'>
+                        <BaseStyledLink
+                            className='dropdown-item py-2 px-4'
+                            to='#'
+                        >
                             Profile
                         </BaseStyledLink>
                     </li>
                     <li>
-                        <BaseStyledLink className='dropdown-item' href='#'>
+                        <BaseStyledLink
+                            className='dropdown-item py-2 px-4'
+                            to='#'
+                        >
                             Settings
                         </BaseStyledLink>
                     </li>
                     <li>
-                        <BaseStyledLink className='dropdown-item' href='#'>
-                            Logout
-                        </BaseStyledLink>
+                        <Modal>
+                            <Modal.Open opens='logout'>
+                                <BaseStyledLink
+                                    className='dropdown-item py-2 px-4'
+                                    to='#'
+                                >
+                                    Logout
+                                </BaseStyledLink>
+                            </Modal.Open>
+                            <Modal.Window name='logout'>
+                                <Modal.Header>Logout</Modal.Header>
+                                <Modal.Body>
+                                    Are you sure you want to logout?
+                                </Modal.Body>
+                                <Modal.Footer>
+                                    <Modal.Close>Cancel</Modal.Close>
+                                    <Modal.Submit variation='danger'>
+                                        Logout
+                                    </Modal.Submit>
+                                </Modal.Footer>
+                            </Modal.Window>
+                        </Modal>
                     </li>
                 </MenuList>
             )}

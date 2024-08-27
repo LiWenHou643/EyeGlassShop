@@ -3,6 +3,7 @@ import { createPortal } from 'react-dom';
 import { HiXMark } from 'react-icons/hi2';
 import styled from 'styled-components';
 import { useOutsideClick } from '../hooks/useOutsideClick';
+import Button from './Button';
 
 const StyledModal = styled.div`
     position: fixed;
@@ -28,7 +29,7 @@ const Overlay = styled.div`
     transition: all 0.5s;
 `;
 
-const Button = styled.button`
+const CloseXmark = styled.button`
     background: none;
     border: none;
     padding: 0.4rem;
@@ -71,7 +72,50 @@ function Modal({ children }) {
 function Open({ children, opens: opensWindowName }) {
     const { open } = useContext(ModalContext);
 
-    return cloneElement(children, { onClick: () => open(opensWindowName) });
+    return children
+        ? cloneElement(children, {
+              onClick: () => open(opensWindowName),
+          })
+        : null;
+}
+
+function Header({ children }) {
+    return <header className='h1 text-center mb-4'>{children}</header>;
+}
+
+function Body({ children }) {
+    return <section>{children}</section>;
+}
+
+function Footer({ children }) {
+    return (
+        <footer className='d-flex justify-content-between mt-5'>
+            {children}
+        </footer>
+    );
+}
+
+function Close({ children }) {
+    const { close } = useContext(ModalContext);
+
+    return children
+        ? cloneElement(
+              <Button $variation='secondary' $size='small'>
+                  {children}
+              </Button>,
+              {
+                  onClick: close,
+              }
+          )
+        : null;
+}
+
+function Submit({ children, variation }) {
+    return (
+        <Button type='submit' $variation={variation} $size='small'>
+            {children}
+        </Button>
+    );
 }
 
 function Window({ children, name }) {
@@ -83,11 +127,10 @@ function Window({ children, name }) {
     return createPortal(
         <Overlay>
             <StyledModal ref={ref}>
-                <Button onClick={close}>
+                <CloseXmark onClick={close}>
                     <HiXMark />
-                </Button>
-
-                <div>{cloneElement(children, { onCloseModal: close })}</div>
+                </CloseXmark>
+                <div>{children}</div>
             </StyledModal>
         </Overlay>,
         document.body
@@ -96,5 +139,10 @@ function Window({ children, name }) {
 
 Modal.Open = Open;
 Modal.Window = Window;
+Modal.Header = Header;
+Modal.Body = Body;
+Modal.Footer = Footer;
+Modal.Close = Close;
+Modal.Submit = Submit;
 
 export default Modal;
