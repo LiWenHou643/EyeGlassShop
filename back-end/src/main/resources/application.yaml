@@ -6,9 +6,9 @@ spring:
   profiles:
     active: default
   datasource:
-    url: jdbc:mysql://${DATABASE_HOST:localhost}:${DATABASE_PORT:3306}/${DATABASE_NAME:EyeGlassShop}
-    username: ${DATABASE_USERNAME:root}
-    password: ${DATABASE_PASSWORD:Hau643@#}
+    url: jdbc:mysql://avnadmin:AVNS_7tuSVyFY8tOOOQ0rCss@mysql-eyeglass-nln-ct46605.h.aivencloud.com:28819/defaultdb?ssl-mode=REQUIRED
+    username: ${DATABASE_USERNAME:avnadmin}
+    password: ${DATABASE_PASSWORD:AVNS_7tuSVyFY8tOOOQ0rCss}
   jpa:
     hibernate:
       ddl-auto: none

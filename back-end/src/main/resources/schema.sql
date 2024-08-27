@@ -1,6 +1,6 @@
--- DROP SCHEMA IF EXISTS `EyeGlassShop`;
--- CREATE SCHEMA `EyeGlassShop`;
-USE EyeGlassShop;
+-- DROP SCHEMA IF EXISTS `defaultdb`;
+-- CREATE SCHEMA `defaultdb`;
+-- USE defaultdb;
 
 CREATE TABLE `roles` (
   `id` int PRIMARY KEY AUTO_INCREMENT,
@@ -21,7 +21,7 @@ CREATE TABLE `person` (
   `updated_by` varchar(50) DEFAULT NULL
 );
 
-CREATE TABLE `EyeGlassShop`.`invalidated_tokens` (
+CREATE TABLE `invalidated_tokens` (
   `id` VARCHAR(512) NOT NULL,
   `expiration` TIMESTAMP NOT NULL,
   PRIMARY KEY (`id`));
