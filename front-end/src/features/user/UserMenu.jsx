@@ -38,6 +38,8 @@ function UserMenu() {
     const { user } = useUser();
     const { logout } = useLogout();
 
+    const isAdmin = user.role === 'admin';
+
     const handleMouseEnter = () => {
         setShowMenu(true);
     };
@@ -61,17 +63,9 @@ function UserMenu() {
                     <li>
                         <BaseStyledLink
                             className='dropdown-item py-2 px-4'
-                            to='#'
+                            to={isAdmin ? '/admin/setting' : '/user/profile'}
                         >
-                            Profile
-                        </BaseStyledLink>
-                    </li>
-                    <li>
-                        <BaseStyledLink
-                            className='dropdown-item py-2 px-4'
-                            to='#'
-                        >
-                            Settings
+                            {isAdmin ? 'Setting' : 'Profile'}
                         </BaseStyledLink>
                     </li>
                     <li>
