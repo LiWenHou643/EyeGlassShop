@@ -29,5 +29,5 @@ server:
       timeout: ${SESSION_TIMEOUT:20m}
 
 jwt:
-  secret: ${JWT_SECRET:"qwmxUNuHU/QFOb5qVqRj/ePARhnuJJrdfDKa/uqPLfOIxoF0Ryh2NCASNC7JU2q8"}
+  secret: ${JWT_SECRET:qwmxUNuHU/QFOb5qVqRj/ePARhnuJJrdfDKa/uqPLfOIxoF0Ryh2NCASNC7JU2q8}
   expiration: ${JWT_EXPIRATION:3600000}

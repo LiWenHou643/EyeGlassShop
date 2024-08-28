@@ -1,6 +1,5 @@
 package com.example.eyeglass.config;
 
-import com.example.eyeglass.repository.InvalidatedTokenRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
@@ -9,13 +8,15 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.NonFinal;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.HashMap;
@@ -34,17 +35,13 @@ public class JwtUtil {
     @Value("${jwt.expiration}")
     long jwtExpiration;
 
-    InvalidatedTokenRepository invalidatedTokenRepository;
-
-    public String getJwtFromHeader(String bearerToken) {
-        if (null != bearerToken && bearerToken.startsWith("Bearer ")) {
-            return bearerToken.substring(7);
-        }
-        return null;
+    public String toBearerToken(String token) throws UnsupportedEncodingException {
+        return URLEncoder.encode("Bearer %s".formatted(token), StandardCharsets.UTF_8);
     }
 
-    public String toBearerToken(String token) {
-        return "Bearer " + token;
+    public String getJwtFromHeader(String bearerToken) {
+        String decodedToken = URLDecoder.decode(bearerToken, StandardCharsets.UTF_8);
+        return decodedToken.substring(7);
     }
 
     public String generateToken(String username, String authorities) {
@@ -79,10 +76,6 @@ public class JwtUtil {
     }
 
     public Authentication getAuthenticate(String bearerToken) {
-        if (null == bearerToken) {
-            return null;
-        }
-
         Claims claims = getClaims(bearerToken);
 
         String username = String.valueOf(claims.get("username"));

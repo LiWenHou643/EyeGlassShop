@@ -36,7 +36,7 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @EnableWebSecurity
 public class SecurityConfig {
-    JWTValidationFilter JWTValidationFilter;
+    JWTValidationFilter jwtValidationFilter;
 
     @Bean
     SecurityFilterChain defaltSecurityFilterChain(HttpSecurity http) throws Exception {
@@ -48,7 +48,6 @@ public class SecurityConfig {
                 config.setAllowedMethods(Collections.singletonList("*"));
                 config.setAllowedHeaders(Collections.singletonList("*"));
                 config.setAllowCredentials(true);
-                config.setExposedHeaders(List.of("Authorization")); // for JWT
                 config.setMaxAge(3600L);
                 return config;
             }))
@@ -60,7 +59,7 @@ public class SecurityConfig {
                                           .ignoringRequestMatchers("/api/logout")
             )
             .addFilterAfter(new CsrfCookieFilter(), BasicAuthenticationFilter.class)
-            .addFilterBefore(JWTValidationFilter, BasicAuthenticationFilter.class)
+            .addFilterBefore(jwtValidationFilter, BasicAuthenticationFilter.class)
             .requiresChannel(rcc -> rcc.anyRequest().requiresInsecure())
             .authorizeHttpRequests(authorize -> authorize
                     .requestMatchers("/api/admin/**").hasRole("ADMIN")

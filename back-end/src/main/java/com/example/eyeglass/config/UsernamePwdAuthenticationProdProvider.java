@@ -1,9 +1,9 @@
 package com.example.eyeglass.config;
 
-import com.example.eyeglass.exception.CustomAuthenticationException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Profile;
 import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -33,11 +33,9 @@ public class UsernamePwdAuthenticationProdProvider implements AuthenticationProv
             }
             return new UsernamePasswordAuthenticationToken(username, password, userDetails.getAuthorities());
         } catch (UsernameNotFoundException e) {
-            throw new CustomAuthenticationException("User not found: %s".formatted(username));
-        } catch (BadCredentialsException e) {
-            throw new CustomAuthenticationException("Invalid credentials");
+            throw new BadCredentialsException("Username not found");
         } catch (Exception e) {
-            throw new CustomAuthenticationException("Authentication failed for unknown reasons");
+            throw new AuthenticationServiceException("Authentication failed");
         }
     }
 

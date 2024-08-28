@@ -6,6 +6,7 @@ import com.example.eyeglass.repository.InvalidatedTokenRepository;
 import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AccessLevel;
@@ -29,20 +30,32 @@ public class JWTValidationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain) throws ServletException, IOException {
-        String header = request.getHeader(EyeGlassConstants.JWT_HEADER);
-        if (null == header || !header.startsWith(EyeGlassConstants.JWT_PREFIX)) {
+
+        Cookie[] cookies = request.getCookies();
+        String bearerToken = null;
+
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if ("Authorization".equals(cookie.getName())) {
+                    bearerToken = cookie.getValue();
+                    break;
+                }
+            }
+        }
+
+        if (bearerToken == null || !bearerToken.startsWith(EyeGlassConstants.JWT_PREFIX)) {
             filterChain.doFilter(request, response);
             return;
         }
 
         try {
-            String token = jwtUtil.getJwtFromHeader(header);
+            String token = jwtUtil.getJwtFromHeader(bearerToken);
             boolean isInvalidated = invalidatedTokenRepository.existsById(token);
             if (isInvalidated) {
                 throw new BadCredentialsException("Token is invalidated!");
             }
 
-            Authentication authentication = jwtUtil.getAuthenticate(header);
+            Authentication authentication = jwtUtil.getAuthenticate(bearerToken);
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
         } catch (JwtException | IllegalArgumentException e) {
@@ -55,6 +68,6 @@ public class JWTValidationFilter extends OncePerRequestFilter {
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
         String path = request.getServletPath();
-        return path.equals("/api/login");
+        return path.equals("/api/login") || path.equals("/api/logout");
     }
 }
