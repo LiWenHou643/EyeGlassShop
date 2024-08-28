@@ -82,7 +82,7 @@ public class AuthController {
             person = personService.getUserByEmail(username);
 
             return ResponseEntity.status(HttpStatus.OK).header(HttpHeaders.SET_COOKIE,
-                                         "Authorization=%s; Path=/; Max-Age=3600".formatted(
+                                         "Authorization=%s; HttpOnly; Secure; Path=/; Max-Age=3600".formatted(
                                                  jwtUtil.toBearerToken(jwt)))
                                  .body(new AuthenticationResponse(person, true));
 
@@ -102,7 +102,7 @@ public class AuthController {
     @PostMapping("/logout")
     public ResponseEntity<?> logout(HttpServletRequest request) {
         Cookie[] cookies = request.getCookies();
-        String bearerToken = null;
+        String bearerToken;
         if (cookies != null) {
             for (Cookie cookie : cookies) {
                 if ("Authorization".equals(cookie.getName())) {
@@ -115,9 +115,12 @@ public class AuthController {
 
                     invalidatedTokenRepository.save(invalidatedToken);
 
-                    return ResponseEntity.status(HttpStatus.OK).header(HttpHeaders.SET_COOKIE,
-                                                 "Authorization=null; HttpOnly; Secure; Path=/; Max-Age=0")
+                    return ResponseEntity.status(HttpStatus.OK)
+                                         .header(HttpHeaders.SET_COOKIE,
+                                                 "Authorization=; HttpOnly; Secure; Path=/; Max-Age=0")
                                          .body("Logged out successfully");
+
+
                 }
             }
         }

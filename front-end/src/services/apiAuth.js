@@ -1,4 +1,5 @@
 import axios from 'axios';
+import toast from 'react-hot-toast';
 
 const REST_API_BASE_URL = 'http://localhost:8080/api';
 
@@ -41,8 +42,14 @@ export const register = (user) =>
     });
 
 export const logout = () => {
-    axios.post(`${REST_API_BASE_URL}/logout`, {}, { withCredentials: true });
     localStorage.removeItem('user');
+    axios
+        .post(`${REST_API_BASE_URL}/logout`, {}, { withCredentials: true })
+        .then((response) => {
+            if (response.status === 200) {
+                window.location.href = '/'; // Redirect or reload after logout
+            }
+        });
 };
 
 export const refesh = () =>

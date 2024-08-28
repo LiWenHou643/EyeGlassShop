@@ -5,10 +5,6 @@ import { logout as logoutApi } from '../../services/apiAuth';
 export function useLogout() {
     const { mutate: logout, isLoading: isLoggingout } = useMutation({
         mutationFn: logoutApi,
-        onSuccess: () => {
-            // Reload the page
-            window.location.reload();
-        },
         onError: (error) => {
             toast.error(error.message);
         },
