@@ -41,12 +41,8 @@ export const register = (user) =>
     });
 
 export const logout = () => {
-    const response = axios.post(
-        `${REST_API_BASE_URL}/logout`,
-        {},
-        { withCredentials: true }
-    );
-    console.log('Logout response:', response);
+    axios.post(`${REST_API_BASE_URL}/logout`, {}, { withCredentials: true });
+    localStorage.removeItem('user');
 };
 
 export const refesh = () =>
