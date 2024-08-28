@@ -18,9 +18,13 @@ const StyledLink = styled(BaseStyledLink)`
 
     width: ${(props) => !props?.className?.includes('navbar-brand') && '120px'};
 
+    color: var(--color-grey-100);
     &:hover {
         color: var(--color-grey-100);
         background-color: var(--color-grey-700);
+    }
+    &:focus {
+        color: var(--color-grey-100);
     }
     border-radius: 0.5rem;
 `;
