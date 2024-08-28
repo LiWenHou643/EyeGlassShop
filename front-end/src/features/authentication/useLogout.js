@@ -3,7 +3,7 @@ import { toast } from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import { logout as logoutApi } from '../../services/apiAuth';
 
-export function useLogin() {
+export function useLogout() {
     const navigate = useNavigate();
 
     const { mutate: logout, isLoading: isLoggingout } = useMutation({
@@ -12,8 +12,8 @@ export function useLogin() {
             // Show a success message
             toast.success('Logged out successfully!');
 
-            // Redirect to the home page
-            navigate('/');
+            // Redirect to the login page
+            navigate('/login');
         },
         onError: (error) => {
             toast.error(error.message);

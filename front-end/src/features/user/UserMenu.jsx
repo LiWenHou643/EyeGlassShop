@@ -5,6 +5,7 @@ import { exactNameFromEmail } from '../../utils/helperFunction';
 import styled from 'styled-components';
 import BaseStyledLink from '../../ui/Link';
 import Modal from '../../ui/Modal';
+import { useLogout } from '../authentication/useLogout';
 
 const MenuList = styled.ul`
     background-color: var(--color-grey-900);
@@ -35,6 +36,7 @@ const UserButton = styled.div`
 function UserMenu() {
     const [showMenu, setShowMenu] = useState(false);
     const { user } = useUser();
+    const { logout } = useLogout();
 
     const handleMouseEnter = () => {
         setShowMenu(true);
@@ -88,10 +90,15 @@ function UserMenu() {
                                     Are you sure you want to logout?
                                 </Modal.Body>
                                 <Modal.Footer>
-                                    <Modal.Close>Cancel</Modal.Close>
-                                    <Modal.Submit variation='danger'>
+                                    <Modal.Close variation='secondary'>
+                                        Cancel
+                                    </Modal.Close>
+                                    <Modal.Close
+                                        variation='danger'
+                                        onClick={() => logout()}
+                                    >
                                         Logout
-                                    </Modal.Submit>
+                                    </Modal.Close>
                                 </Modal.Footer>
                             </Modal.Window>
                         </Modal>

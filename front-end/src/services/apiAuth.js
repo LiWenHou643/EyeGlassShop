@@ -13,11 +13,6 @@ export const login = ({ username, password }) =>
             withCredentials: true,
         }
     );
-// .catch((error) => {
-//     throw new Error(
-//         error.response?.data?.message || 'An error occurred'
-//     );
-// });
 
 export const getCurrentUser = () => {
     try {
@@ -25,10 +20,13 @@ export const getCurrentUser = () => {
         if (user !== 'undefined') {
             return JSON.parse(user);
         }
-        const response = axios.get(`${REST_API_BASE_URL}/user`, {
-            withCredentials: true,
-        });
-        console.log('response axios', response.data);
+        const response = axios.get(
+            `${REST_API_BASE_URL}/user`,
+            {},
+            {
+                withCredentials: true,
+            }
+        );
         localStorage.setItem('user', JSON.stringify(response.data));
         return response.data || null; // Ensure we return null if no data is returned
     } catch (error) {
@@ -43,16 +41,12 @@ export const register = (user) =>
     });
 
 export const logout = () => {
-    try {
-        localStorage.removeItem('user');
-        const response = axios.get(`${REST_API_BASE_URL}/logout`, {
-            withCredentials: true,
-        });
-        return response.data || null; // Ensure we return null if no data is returned
-    } catch (error) {
-        console.error('Error logout user:', error);
-        return null; // Return null on error to avoid returning undefined
-    }
+    const response = axios.post(
+        `${REST_API_BASE_URL}/logout`,
+        {},
+        { withCredentials: true }
+    );
+    console.log('Logout response:', response);
 };
 
 export const refesh = () =>

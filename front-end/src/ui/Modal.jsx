@@ -95,27 +95,24 @@ function Footer({ children }) {
     );
 }
 
-function Close({ children }) {
+function Close({ children, variation, onClick }) {
     const { close } = useContext(ModalContext);
+
+    function handleClick() {
+        close();
+        onClick && onClick();
+    }
 
     return children
         ? cloneElement(
-              <Button $variation='secondary' $size='small'>
+              <Button $variation={variation} $size='small'>
                   {children}
               </Button>,
               {
-                  onClick: close,
+                  onClick: handleClick,
               }
           )
         : null;
-}
-
-function Submit({ children, variation }) {
-    return (
-        <Button type='submit' $variation={variation} $size='small'>
-            {children}
-        </Button>
-    );
 }
 
 function Window({ children, name }) {
@@ -143,6 +140,5 @@ Modal.Header = Header;
 Modal.Body = Body;
 Modal.Footer = Footer;
 Modal.Close = Close;
-Modal.Submit = Submit;
 
 export default Modal;
