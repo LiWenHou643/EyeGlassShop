@@ -1,18 +1,17 @@
 import axios from 'axios';
 
-const REST_API_BASE_URL = 'http://localhost:8080/api';
+const REST_API_BASE_URL = 'http://localhost:8080/api/auth';
+
+const axiosAuth = axios.create({
+    baseURL: REST_API_BASE_URL,
+    withCredentials: true,
+});
 
 export const login = ({ username, password }) =>
-    axios.post(
-        `${REST_API_BASE_URL}/login`,
-        {
-            username,
-            password,
-        },
-        {
-            withCredentials: true,
-        }
-    );
+    axiosAuth.post('/login', {
+        username,
+        password,
+    });
 
 export const getCurrentUser = () => {
     try {
@@ -20,13 +19,7 @@ export const getCurrentUser = () => {
         if (user !== 'undefined') {
             return JSON.parse(user);
         }
-        const response = axios.get(
-            `${REST_API_BASE_URL}/user`,
-            {},
-            {
-                withCredentials: true,
-            }
-        );
+        const response = axiosAuth.get('/user');
         localStorage.setItem('user', JSON.stringify(response.data));
         return response.data || null; // Ensure we return null if no data is returned
     } catch (error) {
@@ -35,45 +28,44 @@ export const getCurrentUser = () => {
     }
 };
 
-export const register = (user) =>
-    axios.post(`${REST_API_BASE_URL}/register`, user, {
-        withCredentials: true,
-    });
+export const register = (user) => axiosAuth.post('/register', user);
 
 export const logout = () => {
     localStorage.removeItem('user');
-    axios
-        .post(`${REST_API_BASE_URL}/logout`, {}, { withCredentials: true })
-        .then((response) => {
-            if (response.status === 200) {
-                window.location.href = '/'; // Redirect or reload after logout
-            }
-        });
+    axiosAuth.post('/logout').then((response) => {
+        if (response.status === 200) {
+            window.location.href = '/'; // Redirect or reload after logout
+        }
+    });
 };
 
-export const refesh = () =>
-    axios.get(`${REST_API_BASE_URL}/refresh`, {
-        withCredentials: true,
-    });
+export const refreshToken = () => axiosAuth.get('/refresh-token');
 
-axios.interceptors.response.use(
-    (response) => response,
-    async (error) => {
-        const { status } = error.response || {};
+// axiosAuth.interceptors.response.use(
+//     (response) => {
+//         // Return the response directly if it's successful
+//         return response;
+//     },
+//     async (error) => {
+//         const { status } = error.response || {};
 
-        if (status === 401) {
-            // If unauthorized, attempt to refresh the token
-            try {
-                await refesh();
-                // Retry the original request
-                return axios.request(error.config);
-            } catch (refreshError) {
-                // Handle refresh token failure (e.g., redirect to login)
-                console.error('Refresh token failed:', refreshError);
-                return Promise.reject(refreshError);
-            }
-        }
+//         if (status === 401) {
+//             // If unauthorized, attempt to refresh the token
+//             try {
+//                 await refreshToken(); // Define this function to refresh your token
 
-        return Promise.reject(error);
-    }
-);
+//                 // Retry the original request with the new token
+//                 return axiosAuth.request(error.config);
+//             } catch (refreshError) {
+//                 // Handle refresh token failure (e.g., redirect to login)
+//                 console.error('Refresh token failed:', refreshError);
+//                 return Promise.reject(refreshError);
+//             }
+//         }
+
+//         // If the error is not a 401, reject it as usual
+//         return Promise.reject(error);
+//     }
+// );
+
+export default axiosAuth;
