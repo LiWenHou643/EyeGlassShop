@@ -14,8 +14,6 @@ public interface PersonService {
 
     PersonResponse getUserByEmail(String email);
 
-    PersonResponse createUser(RegisterRequest register);
-
     PersonResponse updateUser(Long id, PersonResponse person);
 
 }

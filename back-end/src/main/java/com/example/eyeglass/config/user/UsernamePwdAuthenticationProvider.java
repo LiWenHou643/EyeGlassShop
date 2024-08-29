@@ -1,4 +1,4 @@
-package com.example.eyeglass.config;
+package com.example.eyeglass.config.user;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Profile;
@@ -15,9 +15,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 @Component
-@Profile("prod")
+@Profile("!prod")
 @RequiredArgsConstructor
-public class UsernamePwdAuthenticationProdProvider implements AuthenticationProvider {
+public class UsernamePwdAuthenticationProvider implements AuthenticationProvider {
 
     private final UserDetailsService userDetailsService;
     private final PasswordEncoder passwordEncoder;
@@ -26,11 +26,9 @@ public class UsernamePwdAuthenticationProdProvider implements AuthenticationProv
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         String username = authentication.getName();
         String password = authentication.getCredentials().toString();
+
         try {
             UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-            if (!passwordEncoder.matches(password, userDetails.getPassword())) {
-                throw new BadCredentialsException("Invalid password");
-            }
             return new UsernamePasswordAuthenticationToken(username, password, userDetails.getAuthorities());
         } catch (UsernameNotFoundException e) {
             throw new BadCredentialsException("Username not found");
@@ -41,6 +39,6 @@ public class UsernamePwdAuthenticationProdProvider implements AuthenticationProv
 
     @Override
     public boolean supports(Class<?> authentication) {
-        return UsernamePasswordAuthenticationToken.class.isAssignableFrom(authentication);
+        return (UsernamePasswordAuthenticationToken.class.isAssignableFrom(authentication));
     }
 }

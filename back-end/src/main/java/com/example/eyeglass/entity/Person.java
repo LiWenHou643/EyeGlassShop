@@ -7,6 +7,8 @@ import lombok.*;
 import com.example.eyeglass.entity.ValidationGroups.*;
 import lombok.experimental.FieldDefaults;
 
+import java.util.Set;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -46,5 +48,8 @@ public class Person extends BaseEntity {
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST, targetEntity = Roles.class)
     @JoinColumn(name = "role_id", referencedColumnName = "id", nullable = false)
     Roles roles;
+
+    @OneToMany(mappedBy = "person", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<RefreshToken> refreshTokens;
 
 }

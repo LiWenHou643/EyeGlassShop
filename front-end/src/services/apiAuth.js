@@ -55,3 +55,25 @@ export const refesh = () =>
     axios.get(`${REST_API_BASE_URL}/refresh`, {
         withCredentials: true,
     });
+
+axios.interceptors.response.use(
+    (response) => response,
+    async (error) => {
+        const { status } = error.response || {};
+
+        if (status === 401) {
+            // If unauthorized, attempt to refresh the token
+            try {
+                await refesh();
+                // Retry the original request
+                return axios.request(error.config);
+            } catch (refreshError) {
+                // Handle refresh token failure (e.g., redirect to login)
+                console.error('Refresh token failed:', refreshError);
+                return Promise.reject(refreshError);
+            }
+        }
+
+        return Promise.reject(error);
+    }
+);

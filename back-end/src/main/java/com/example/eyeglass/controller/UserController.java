@@ -13,12 +13,12 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-@RequestMapping("/api/user")
+@RequestMapping("/api/protected")
 public class UserController {
 
     PersonService personService;
 
-    @GetMapping("/profile")
+    @GetMapping("/user")
     public ResponseEntity<?> getProfile(Authentication authentication) {
         PersonResponse personResponse = personService.getUserByEmail(authentication.getName());
         return new ResponseEntity<>(personResponse, HttpStatus.OK);

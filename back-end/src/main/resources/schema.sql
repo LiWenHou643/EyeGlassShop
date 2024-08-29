@@ -21,11 +21,12 @@ CREATE TABLE `person` (
   `updated_by` varchar(50) DEFAULT NULL
 );
 
-CREATE TABLE `invalidated_tokens` (
-  `id` VARCHAR(512) NOT NULL,
-  `expiration` TIMESTAMP NOT NULL,
-  PRIMARY KEY (`id`));
-
+CREATE TABLE `refresh_tokens` (
+  `id` int PRIMARY KEY AUTO_INCREMENT,
+  `refresh_token` varchar(512) NOT NULL,
+  `revoked` tinyint NOT NULL,
+  `person_id` int NOT NULL
+);
 
 CREATE TABLE `category` (
   `id` int PRIMARY KEY AUTO_INCREMENT,
@@ -126,6 +127,8 @@ CREATE TABLE `order_item` (
 );
 
 ALTER TABLE `person` ADD FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`);
+
+ALTER TABLE `refresh_tokens` ADD FOREIGN KEY (`person_id`) REFERENCES `person` (`id`);
 
 ALTER TABLE `sub_category` ADD FOREIGN KEY (`parent_id`) REFERENCES `category` (`id`);
 
