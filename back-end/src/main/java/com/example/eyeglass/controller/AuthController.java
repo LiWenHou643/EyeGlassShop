@@ -49,12 +49,12 @@ public class AuthController {
     public ResponseEntity<?> getRefreshAccessToken() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UserInfoConfig userInfoConfig = (UserInfoConfig) authentication.getPrincipal();  // Assuming your UserDetails is Person or extends it
-        return ResponseEntity.ok(authService.getAccessTokenUsingRefreshToken(userInfoConfig));
+        return ResponseEntity.ok(authService.getAccessTokenUsingRefreshToken(authentication));
     }
 
     @PostMapping("/register")
     public ResponseEntity<?> registerUser(@Valid @RequestBody RegisterRequest request,
-            BindingResult bindingResult, HttpServletResponse httpServletResponse) {
+            BindingResult bindingResult) {
 
         log.info("[AuthController:registerUser]Signup Process Started for user:{}", request.getEmail());
         if (bindingResult.hasErrors()) {
@@ -64,6 +64,6 @@ public class AuthController {
             log.error("[AuthController:registerUser]Errors in user:{}", errorMessage);
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMessage);
         }
-        return ResponseEntity.ok(authService.registerUser(request, httpServletResponse));
+        return ResponseEntity.ok("User Registered Successfully");
     }
 }
