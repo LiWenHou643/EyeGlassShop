@@ -6,8 +6,7 @@ export function useCreateUser() {
     const { mutateAsync: createUser, isLoading: isCreatingUser } = useMutation({
         mutationFn: register,
         onSuccess: (response) => {
-            toast.success('User created successfully');
-            return response;
+            toast.success(response);
         },
         onError: (error) => {
             const errorMessage =

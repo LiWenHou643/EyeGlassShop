@@ -33,8 +33,7 @@ public class JwtGenerator {
         JwtClaimsSet claims = JwtClaimsSet.builder()
                                           .issuer("eye-glass")
                                           .issuedAt(Instant.now())
-                                          .expiresAt(Instant.now().plus(10, ChronoUnit.SECONDS))
-//                                          .expiresAt(Instant.now().plus(5, ChronoUnit.MINUTES))
+                                          .expiresAt(Instant.now().plus(5, ChronoUnit.MINUTES))
                                           .subject(authentication.getName())
                                           .claim("scope", permissions)
                                           .build();

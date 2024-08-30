@@ -1,6 +1,6 @@
 -- DROP SCHEMA IF EXISTS `defaultdb`;
 -- CREATE SCHEMA `defaultdb`;
--- USE defaultdb;
+USE defaultdb;
 
 CREATE TABLE `roles` (
   `id` int PRIMARY KEY AUTO_INCREMENT,

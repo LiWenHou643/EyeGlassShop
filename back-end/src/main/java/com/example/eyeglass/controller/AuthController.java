@@ -63,6 +63,6 @@ public class AuthController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMessage);
         }
         authService.registerUser(request);
-        return ResponseEntity.ok("User Registered Successfully");
+        return ResponseEntity.ok("User registered successfully");
     }
 }
