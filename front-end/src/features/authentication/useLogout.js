@@ -6,7 +6,10 @@ export function useLogout() {
     const { mutate: logout, isLoading: isLoggingout } = useMutation({
         mutationFn: logoutApi,
         onError: (error) => {
-            toast.error(error.message);
+            const errorMessage =
+                error.response?.data?.message || 'An unknown error occurred';
+
+            toast.error(errorMessage);
         },
     });
     return { logout, isLoggingout };

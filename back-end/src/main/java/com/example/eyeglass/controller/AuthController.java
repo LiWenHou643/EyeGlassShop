@@ -12,7 +12,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -48,7 +47,6 @@ public class AuthController {
     @PostMapping("/refresh-token")
     public ResponseEntity<?> getRefreshAccessToken() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        UserInfoConfig userInfoConfig = (UserInfoConfig) authentication.getPrincipal();  // Assuming your UserDetails is Person or extends it
         return ResponseEntity.ok(authService.getAccessTokenUsingRefreshToken(authentication));
     }
 
@@ -64,6 +62,7 @@ public class AuthController {
             log.error("[AuthController:registerUser]Errors in user:{}", errorMessage);
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMessage);
         }
+        authService.registerUser(request);
         return ResponseEntity.ok("User Registered Successfully");
     }
 }

@@ -30,11 +30,11 @@ public class UsernamePwdAuthenticationProvider implements AuthenticationProvider
         try {
             UserDetails userDetails = userDetailsService.loadUserByUsername(username);
             if (!passwordEncoder.matches(password, userDetails.getPassword())) {
-                throw new BadCredentialsException("Invalid password");
+                throw new BadCredentialsException("Invalid credentials");
             }
             return new UsernamePasswordAuthenticationToken(username, password, userDetails.getAuthorities());
         } catch (UsernameNotFoundException e) {
-            throw new BadCredentialsException("Username not found");
+            throw new BadCredentialsException("Invalid credentials");
         } catch (BadCredentialsException e) {
             throw e;
         } catch (Exception e) {

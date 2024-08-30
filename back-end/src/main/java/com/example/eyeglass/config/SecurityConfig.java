@@ -57,7 +57,6 @@ public class SecurityConfig {
     RSAKeyRecord rsaKeyRecord;
     LogoutHandlerService logoutHandlerService;
     RefreshTokenRepository refreshTokenRepository;
-    EyeGlassesUserDetailsService userDetailsService;
 
     @Order(1)
     @Bean
@@ -66,7 +65,7 @@ public class SecurityConfig {
             .requiresChannel(rcc -> rcc.anyRequest().requiresInsecure())
             .csrf(AbstractHttpConfigurer::disable)
             .authorizeHttpRequests(auth -> auth.anyRequest().permitAll())
-            .userDetailsService(userDetailsService)
+//            .userDetailsService(userDetailsService)
             .sessionManagement(smc -> smc.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .exceptionHandling(ex -> {
                 ex.authenticationEntryPoint((request, response, authException) ->

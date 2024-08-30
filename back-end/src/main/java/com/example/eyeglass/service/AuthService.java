@@ -69,7 +69,8 @@ public class AuthService {
                                          .accessToken(accessToken)
                                          .accessTokenExpiry(5 * 60) // in seconds : 5 minutes
                                          .tokenType(TokenType.Bearer)
-                                         .userName(person.getEmail())
+                                         .username(authentication.getName())
+                                         .role(person.getRoles().getName())
                                          .build();
         } catch (Exception e) {
             log.error("[AuthService:userSignInAuth]Exception while authenticating the user due to :" + e.getMessage());
@@ -88,6 +89,7 @@ public class AuthService {
 
     private void createTokenCookie(HttpServletResponse response, String refreshToken) {
         Cookie refreshTokenCookie = new Cookie("refresh_token", refreshToken);
+        refreshTokenCookie.setPath("/");
         refreshTokenCookie.setHttpOnly(true);
         refreshTokenCookie.setSecure(true);
         refreshTokenCookie.setMaxAge(15 * 24 * 60 * 60); // in seconds : 15 days
@@ -102,10 +104,11 @@ public class AuthService {
                                      .accessToken(accessToken)
                                      .accessTokenExpiry(5 * 60) // in seconds : 5 minutes
                                      .tokenType(TokenType.Bearer)
-                                     .userName(authentication.getName())
+                                     .username(authentication.getName())
+                                     .role(authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority)
+                                                         .toList().toString())
                                      .build();
     }
-
 
     public void registerUser(RegisterRequest request) {
         try {

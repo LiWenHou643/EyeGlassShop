@@ -12,6 +12,7 @@ import Sunglasses from './features/glasses/Sunglasses';
 import Home from './pages/Home';
 import Signin from './pages/Signin';
 import ProtectedRoutes from './ProtectedRoutes';
+import Profile from './pages/Profile';
 
 const queryClient = new QueryClient();
 
@@ -26,27 +27,22 @@ function App() {
                         <Route path='login' element={<Login />} />
                         <Route path='signin' element={<Signin />} />
                         {/* <Route path='forgot' element={<Forgot />} /> */}
+                        <Route path='glasses' element={<Glasses />}>
+                            <Route
+                                index
+                                element={
+                                    <Navigate
+                                        replace
+                                        to='/glasses/eyeglasses'
+                                    />
+                                }
+                            />
+                            <Route path='sunglasses' element={<Sunglasses />} />
+                            <Route path='eyeglasses' element={<Eyeglasses />} />
+                        </Route>
 
                         <Route element={<ProtectedRoutes />}>
-                            <Route path='glasses' element={<Glasses />}>
-                                <Route
-                                    index
-                                    element={
-                                        <Navigate
-                                            replace
-                                            to='/glasses/eyeglasses'
-                                        />
-                                    }
-                                />
-                                <Route
-                                    path='sunglasses'
-                                    element={<Sunglasses />}
-                                />
-                                <Route
-                                    path='eyeglasses'
-                                    element={<Eyeglasses />}
-                                />
-                            </Route>
+                            <Route path='user/profile' element={<Profile />} />
                         </Route>
 
                         <Route path='*' element={<PageNotFound />} />

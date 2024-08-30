@@ -35,10 +35,10 @@ const UserButton = styled.div`
 
 function UserMenu() {
     const [showMenu, setShowMenu] = useState(false);
-    const { user } = useUser();
+    const { username, role } = useUser();
     const { logout } = useLogout();
 
-    const isAdmin = user.role === 'admin';
+    const isAdmin = role === 'ROLE_ADMIN';
 
     const handleMouseEnter = () => {
         setShowMenu(true);
@@ -56,7 +56,7 @@ function UserMenu() {
         >
             <UserButton className='d-flex justify-content-center align-items-center gap-2'>
                 <HiOutlineUser />
-                <p>{exactNameFromEmail(user.email)}</p>
+                <p>{exactNameFromEmail(username)}</p>
             </UserButton>
             {showMenu && (
                 <MenuList className='position-absolute top-100 rounded-3'>
