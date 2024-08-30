@@ -1,11 +1,21 @@
 import styled from 'styled-components';
-import { HiOutlineEye } from 'react-icons/hi2';
+import {
+    HiOutlineShieldCheck,
+    HiOutlineTruck,
+    HiOutlineUserGroup,
+} from 'react-icons/hi2';
 import { HiOutlineRefresh } from 'react-icons/hi';
-import { HiOutlineReply } from 'react-icons/hi';
-import { MdOutlineCleanHands } from 'react-icons/md';
 
 const IntroContainer = styled.section`
     margin-top: 60px;
+    background-color: var(--color-grey-0);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    h3 {
+        font-size: 1.6rem;
+    }
+    h4 {
+        font-size: 1.4rem;
+    }
 
     @media (max-width: 576px) {
         margin: 80px;
@@ -27,56 +37,51 @@ const IntroIcon = styled.div`
     margin-right: 10px;
 
     svg {
-        font-size: 50px;
+        font-size: 35px;
     }
 `;
 
+const IntroItem = styled.div`
+    @media (min-width: 769px) {
+        &:not(:last-child) {
+            border-right: 1px solid var(--color-grey-200);
+        }
+    }
+`;
 function HomeIntro() {
     return (
-        <IntroContainer>
-            <div className='row justify-content-between flex-wrap gap-5 gap-sm-0'>
-                <div className='d-flex align-items-center col-12 col-sm-6 col-md-3'>
-                    <IntroIcon>
-                        <MdOutlineCleanHands />
-                    </IntroIcon>
-                    <div>
-                        <h2 className='fw-bold mb-4'>Welcome to our blog!</h2>
-                        <h3>at the entire Eye Hero eyewear system</h3>
-                    </div>
-                </div>
+        <IntroContainer className='row justify-content-between flex-wrap p-5 gap-5 gap-sm-0'>
+            <IntroItem className='text-center col-12 col-sm-6 col-md-3 my-sm-4'>
+                <IntroIcon className='w-100 text-center'>
+                    <HiOutlineTruck />
+                </IntroIcon>
+                <h3 className='fw-semibold'>Free Delivery</h3>
+                <h4 className='text-secondary'>Free Shipping on all order</h4>
+            </IntroItem>
 
-                <div className='d-flex align-items-center col-12 col-sm-6 col-md-3'>
-                    <IntroIcon>
-                        <HiOutlineReply />
-                    </IntroIcon>
-                    <div>
-                        <h2 className='fw-bold mb-4'>Exchange Return</h2>
-                        <h3>within 7 days</h3>
-                    </div>
-                </div>
+            <IntroItem className='text-center col-12 col-sm-6 col-md-3 my-sm-4'>
+                <IntroIcon className='w-100 text-center'>
+                    <HiOutlineRefresh />
+                </IntroIcon>
+                <h3 className='fw-semibold'>Return Policy</h3>
+                <h4 className='text-secondary'>30-day Money Back Guarantee</h4>
+            </IntroItem>
 
-                <div className='d-flex align-items-center col-12 col-sm-6 col-md-3'>
-                    <IntroIcon>
-                        <HiOutlineRefresh />
-                    </IntroIcon>
-                    <div>
-                        <h2 className='fw-bold mb-4'>Old Autumn Renewed</h2>
-                        <h3>Subsidy up to 600,000 VND</h3>
-                    </div>
-                </div>
+            <IntroItem className='text-center col-12 col-sm-6 col-md-3 my-sm-4'>
+                <IntroIcon className='w-100 text-center'>
+                    <HiOutlineUserGroup />
+                </IntroIcon>
+                <h3 className='fw-semibold'>24/7 Support</h3>
+                <h4 className='text-secondary'>Customer Support Friendly</h4>
+            </IntroItem>
 
-                <div className='d-flex align-items-center col-12 col-sm-6 col-md-3'>
-                    <IntroIcon>
-                        <HiOutlineEye />
-                    </IntroIcon>
-                    <div>
-                        <h2 className='fw-bold mb-4'>
-                            Eye Measurement Support
-                        </h2>
-                        <h3>at the entire Eye Hero eyewear system</h3>
-                    </div>
-                </div>
-            </div>
+            <IntroItem className='text-center col-12 col-sm-6 col-md-3 my-sm-4'>
+                <IntroIcon className='w-100 text-center'>
+                    <HiOutlineShieldCheck />
+                </IntroIcon>
+                <h3 className='fw-semibold'>Secure Payment</h3>
+                <h4 className='text-secondary'>100% Secure Payment</h4>
+            </IntroItem>
         </IntroContainer>
     );
 }
