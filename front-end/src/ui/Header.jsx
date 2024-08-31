@@ -120,7 +120,7 @@ function Header() {
                                         text: 'Sunglasses',
                                     },
                                     {
-                                        link: '/glasses/eyeframe',
+                                        link: '/glasses/eyeframes',
                                         text: 'Eyeframe',
                                     },
                                 ]}

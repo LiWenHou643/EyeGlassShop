@@ -14,6 +14,9 @@ import Home from './pages/Home';
 import Signin from './pages/Signin';
 import ProtectedRoutes from './ProtectedRoutes';
 import Profile from './pages/Profile';
+import AllGlasses from './features/glasses/AllGlasses';
+import Eyeframes from './features/glasses/Eyeframes';
+import ForgotPwd from './pages/ForgotPwd';
 
 const queryClient = new QueryClient();
 
@@ -31,17 +34,16 @@ function App() {
                             <Route path='home' element={<Home />} />
                             <Route path='login' element={<Login />} />
                             <Route path='signin' element={<Signin />} />
-                            {/* <Route path='forgot' element={<Forgot />} /> */}
+                            <Route
+                                path='forgot-password'
+                                element={<ForgotPwd />}
+                            />
                             <Route path='glasses' element={<Glasses />}>
                                 <Route
                                     index
-                                    element={
-                                        <Navigate
-                                            replace
-                                            to='/glasses/eyeglasses'
-                                        />
-                                    }
+                                    element={<Navigate replace to='all' />}
                                 />
+                                <Route path='all' element={<AllGlasses />} />
                                 <Route
                                     path='sunglasses'
                                     element={<Sunglasses />}
@@ -49,6 +51,10 @@ function App() {
                                 <Route
                                     path='eyeglasses'
                                     element={<Eyeglasses />}
+                                />
+                                <Route
+                                    path='eyeframes'
+                                    element={<Eyeframes />}
                                 />
                             </Route>
 

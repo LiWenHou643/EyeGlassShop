@@ -1,10 +1,14 @@
 import { Outlet } from 'react-router-dom';
+import styled from 'styled-components';
 
+const StyledContainer = styled.div`
+    margin-top: 20rem;
+`;
 function Glasses() {
     return (
-        <div>
+        <StyledContainer className='container'>
             <Outlet />
-        </div>
+        </StyledContainer>
     );
 }
 
