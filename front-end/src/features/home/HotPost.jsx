@@ -41,7 +41,7 @@ const StyledContainer = styled.div``;
 function HotPost() {
     return (
         <StyledContainer>
-            <h1>Hot Post</h1>
+            <h1 className='mb-4'>Hot Post</h1>
             <Carousels id='hotpost' data={hotPosts} />
         </StyledContainer>
     );

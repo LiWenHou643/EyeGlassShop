@@ -2,31 +2,24 @@ import { useState } from 'react';
 import styled from 'styled-components';
 import BaseStyledLink from './Link';
 
-const StyledLink = styled(BaseStyledLink)`
-    font-size: 2rem;
-    width: 120px;
-    &:hover {
-        background-color: var(--color-grey-700);
-    }
-`;
 const DropdownMenu = styled.ul`
-    background-color: var(--color-grey-900);
+    color: var(--color-grey-900);
+    background-color: var(--color-grey-0);
     border-radius: 0.5rem;
     z-index: 1000;
     width: 120px;
 
     li {
         &:not(:last-child) {
-            border-bottom: 1px solid var(--color-grey-800);
+            border-bottom: 1px solid var(--color-grey-200);
         }
         &:hover {
-            background-color: var(--color-grey-700);
+            background-color: var(--color-grey-300);
         }
-
-        &:first-child:hover {
+        &:first-child {
             border-radius: 0.5rem 0.5rem 0 0;
         }
-        &:last-child:hover {
+        &:last-child {
             border-radius: 0 0 0.5rem 0.5rem;
         }
     }
@@ -37,7 +30,7 @@ const P = styled.p`
     padding: 0.5rem 1rem !important;
 `;
 
-function Dropdown({ items, linkText, linkTo = '#' }) {
+function Dropdown({ items, children }) {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
     const handleMouseEnter = () => {
@@ -54,14 +47,7 @@ function Dropdown({ items, linkText, linkTo = '#' }) {
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
         >
-            {linkTo === '#' ? (
-                <P>{linkText}</P>
-            ) : (
-                <StyledLink className='rounded-2 text-center' to={linkTo}>
-                    {linkText}
-                </StyledLink>
-            )}
-
+            {children}
             {isDropdownOpen && (
                 <DropdownMenu className='position-absolute top-100'>
                     {items.map((item, index) => (

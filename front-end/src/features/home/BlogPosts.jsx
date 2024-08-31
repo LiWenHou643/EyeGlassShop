@@ -31,7 +31,8 @@ const dummyData = [
 ];
 
 const StyledLink = styled(Link)`
-    background-color: var(--color-grey-0);
+    background-color: var(--color-grey-100);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
     width: 100%;
     height: 160px;
 `;
@@ -59,7 +60,7 @@ const Content = styled.p`
 function BlogPosts() {
     return (
         <div>
-            <h1>Blog Posts</h1>
+            <h1 className='mb-4'>Blog Posts</h1>
 
             <div className='d-flex flex-wrap gap-4'>
                 {dummyData.map((post) => (
@@ -76,7 +77,7 @@ function BlogPosts() {
                                 alt={post.title}
                             />
                         </ImgContainer>
-                        <div className='d-flex flex-column justify-content-between p-3'>
+                        <div className='d-flex flex-column justify-content-between p-5 p-lg-3 p-xl-5'>
                             <div className='d-flex justify-content-between'>
                                 <h3 className='mb-3 fw-bold'>{post.title}</h3>
                                 <small>

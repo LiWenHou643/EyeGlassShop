@@ -5,6 +5,11 @@ import { HiArrowRight } from 'react-icons/hi2';
 
 const Background = styled.div`
     background-image: url('home-bg-banner.jpg');
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+`;
+
+const ContentContainer = styled.div`
+    color: var(--color-const-grey-800);
 `;
 function HomeStoreLocation() {
     return (
@@ -16,7 +21,7 @@ function HomeStoreLocation() {
                     </ImgContainer>
                 </div>
 
-                <div className='col-12 col-md-5 p-lg-5 my-lg-5 d-flex flex-column justify-content-between gap-lg-5 gap-2 p-4'>
+                <ContentContainer className='col-12 col-md-5 p-lg-5 my-lg-5 d-flex flex-column justify-content-between gap-lg-5 gap-2 p-4'>
                     <h1 className='fw-bold'>EYEHERO GLASS SHOP SYSTEM</h1>
                     <p>
                         EYEHERO Eyewear system with 38+ branches nationwide,
@@ -30,7 +35,7 @@ function HomeStoreLocation() {
                             Discovery now <HiArrowRight />
                         </h3>
                     </button>
-                </div>
+                </ContentContainer>
             </Background>
         </Section>
     );

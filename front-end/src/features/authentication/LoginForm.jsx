@@ -102,8 +102,9 @@ export default function LoginForm() {
 
             <div className='row mt-4 d-flex justify-content-between'>
                 <Button
+                    $variation='secondary'
                     type='reset'
-                    className='col-3 py-3 btn btn-secondary text-capitalize'
+                    className='col-3 py-3 text-capitalize'
                     disabled={isLoggingin}
                     onClick={reset}
                 >

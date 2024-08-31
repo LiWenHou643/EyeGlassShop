@@ -1,34 +1,36 @@
 import React from 'react';
+import { HiOutlinePaperAirplane } from 'react-icons/hi2';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 const StyledFooter = styled.footer`
-    background-color: var(--color-grey-800);
-    color: var(--color-grey-100);
+    background: var(--color-footer);
+    color: var(--color-grey-900);
     margin-top: 10rem;
 `;
 
 const P = styled.p`
-    color: var(--color-grey-400);
+    color: var(--color-grey-600);
     font-size: 1.6rem;
 `;
 
 const Button = styled.button`
-    color: var(--color-grey-800);
+    background-color: var(--color-grey-200);
+    color: var(--color-grey-900);
     border: none;
     padding: 1rem 2rem;
     border-radius: 1rem;
     font-size: 1.8rem;
 
     &:hover {
-        background-color: var(--color-green-600);
+        background-color: var(--color-grey-300);
     }
 
     transition: background-color 0.5s;
 `;
 
 const ImgContainer = styled.div`
-    background-color: var(--color-grey-100);
+    background-color: var(--color-const-grey-100);
     overflow: hidden;
     width: 130px;
     height: 40px;
@@ -56,12 +58,19 @@ const ImgLink = styled.a`
         height: 100%;
         background: ${(props) => `url(${props.$src})} no-repeat center center`};
         background-size: contain;
+        &:hover {
+            scale: 1.1;
+        }
     }
 `;
 
 const ALink = styled.a`
     text-transform: capitalize;
-    color: var(--color-grey-400);
+    color: var(--color-grey-600);
+
+    &:hover {
+        color: var(--color-grey-900);
+    }
 `;
 
 const Footer = () => (
@@ -129,18 +138,34 @@ const Footer = () => (
                         <h2 className='text-uppercase mb-4'>Policies</h2>
                         <ul>
                             <li>
-                                <ALink href=''>Insurance Policy</ALink>
-                            </li>
-                            <li>
                                 <ALink href=''>
-                                    Shipping and Inspection Policy
+                                    <HiOutlinePaperAirplane />
+                                    <span className='ms-3'>
+                                        Insurance Policy
+                                    </span>
                                 </ALink>
                             </li>
                             <li>
-                                <ALink href=''>Payment Policy</ALink>
+                                <ALink href=''>
+                                    <HiOutlinePaperAirplane />
+                                    <span className='ms-3'>
+                                        Shipping and Inspection Policy
+                                    </span>
+                                </ALink>
                             </li>
                             <li>
-                                <ALink href=''>Warranty Policy</ALink>
+                                <ALink href=''>
+                                    <HiOutlinePaperAirplane />
+                                    <span className='ms-3'>Payment Policy</span>
+                                </ALink>
+                            </li>
+                            <li>
+                                <ALink href=''>
+                                    <HiOutlinePaperAirplane />
+                                    <span className='ms-3'>
+                                        Warranty Policy
+                                    </span>
+                                </ALink>
                             </li>
                         </ul>
                     </div>

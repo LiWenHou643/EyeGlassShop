@@ -26,8 +26,10 @@ export default function Carousels({ data, isBanner }) {
     var settings = {
         dots: true,
         infinite: true,
-        speed: 3000,
+        speed: 800,
         autoplay: true,
+        autoplaySpeed: 3000,
+        pauseOnHover: true,
         slidesToShow: 1,
         slidesToScroll: 1,
         arrows: isBanner,
