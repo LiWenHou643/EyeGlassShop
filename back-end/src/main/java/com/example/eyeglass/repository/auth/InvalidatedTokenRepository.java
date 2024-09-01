@@ -1,4 +1,4 @@
-package com.example.eyeglass.repository;
+package com.example.eyeglass.repository.auth;
 
 import com.example.eyeglass.entity.InvalidatedToken;
 import org.springframework.data.jpa.repository.JpaRepository;

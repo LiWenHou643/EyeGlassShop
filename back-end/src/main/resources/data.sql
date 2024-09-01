@@ -12,3 +12,10 @@ VALUES ('admin', 'admin123@gmail.com', '{bcrypt}$2a$12$rxH7HRYrFkM212zXqOf7EOAII
 INSERT INTO `defaultdb`.`person` (`full_name`, `email`, `password`, `role_id`, `created_at`, `created_by`)
 VALUES ('le van hau', 'user123@gmail.com', '{bcrypt}$2a$12$WDeN1faM.smq94LVHZHnc.OyNmUe0nlGHEVgSYLFh6earRZal0F3y',
         '2', CURDATE(), 'anonymousUser');
+        
+INSERT INTO `defaultdb`.`category` (`id`, `name`) VALUES ('1', 'eyeglasses');
+INSERT INTO `defaultdb`.`category` (`id`, `name`) VALUES ('2', 'sunglasses');
+INSERT INTO `defaultdb`.`category` (`id`, `name`) VALUES ('3', 'eyeframes');
+
+INSERT INTO `defaultdb`.`product` (`id`, `category_id`, `title`, `price`, `discount`, `thumbnail`, `description`) VALUES ('1', '1', 'Glasses 01', '200000', '10', 'this is thumnail', 'good glasses for protect eyes');
+INSERT INTO `defaultdb`.`product_inventory` (`id`, `product_id`, `stock_quantity`, `sold_quantity`) VALUES ('1', '1', '100', '50');

@@ -4,7 +4,7 @@ USE defaultdb;
 
 CREATE TABLE `roles` (
   `id` int PRIMARY KEY AUTO_INCREMENT,
-  `name` varchar(20)
+  `name` varchar(20) NOT NULL
 );
 
 CREATE TABLE `person` (
@@ -26,59 +26,68 @@ CREATE TABLE `refresh_tokens` (
 
 CREATE TABLE `category` (
   `id` int PRIMARY KEY AUTO_INCREMENT,
-  `name` varchar(100)
+  `name` varchar(100) NOT NULL
 );
 
 CREATE TABLE `product` (
   `id` int PRIMARY KEY AUTO_INCREMENT,
-  `category_id` int,
-  `title` varchar(250),
-  `price` int,
-  `discount` int,
-  `thumbnail` varchar(500),
-  `description` longtext
+  `category_id` int NOT NULL,
+  `title` varchar(250) NOT NULL,
+  `price` int NOT NULL,
+  `discount` int NOT NULL,
+  `thumbnail` varchar(500) NOT NULL,
+  `description` longtext NOT NULL
 );
 
 CREATE TABLE `galery` (
   `id` int PRIMARY KEY AUTO_INCREMENT,
-  `product_id` int,
-  `thumbnail` varchar(500)
+  `product_id` int NOT NULL,
+  `thumbnail` varchar(500) NOT NULL
 );
 
 CREATE TABLE `cart` (
   `id` int PRIMARY KEY AUTO_INCREMENT,
-  `person_id` int,
-  `total` int
+  `person_id` int NOT NULL,
+  `total` int NOT NULL
 );
 
 CREATE TABLE `cart_item` (
   `id` int PRIMARY KEY AUTO_INCREMENT,
-  `cart_id` int,
-  `product_id` int,
-  `quantiy` int
+  `cart_id` int NOT NULL,
+  `product_id` int NOT NULL,
+  `quantiy` int NOT NULL
 );
 
 CREATE TABLE `payment_details` (
   `id` int PRIMARY KEY AUTO_INCREMENT,
-  `amount` int,
-  `provider` int,
-  `status` int
+  `amount` int NOT NULL,
+  `provider` int NOT NULL,
+  `status` int NOT NULL
 );
 
-CREATE TABLE `orders_details` (
+CREATE TABLE `orders` (
   `id` int PRIMARY KEY AUTO_INCREMENT,
-  `person_id` int,
-  `payment_id` int,
-  `total` int
+  `person_id` int NOT NULL,
+  `payment_id` int NOT NULL,
+  `total` int NOT NULL,
+  `create_at` timestamp NOT NULL
 );
 
-CREATE TABLE `order_item` (
+CREATE TABLE `order_detail` (
   `id` int PRIMARY KEY AUTO_INCREMENT,
-  `order_id` int,
-  `product_id` int,
-  `price` int,
-  `quantity` int
+  `order_id` int NOT NULL,
+  `product_id` int NOT NULL,
+  `price` int NOT NULL,
+  `quantity` int NOT NULL
 );
+
+CREATE TABLE `product_inventory` (
+  `id` int PRIMARY KEY AUTO_INCREMENT,
+  `product_id` int NOT NULL,
+  `stock_quantity` int NOT NULL DEFAULT 0,
+  `sold_quantity` int NOT NULL DEFAULT 0
+);
+
 
 ALTER TABLE `person` ADD FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`);
 
@@ -86,7 +95,7 @@ ALTER TABLE `refresh_tokens` ADD FOREIGN KEY (`person_id`) REFERENCES `person` (
 
 ALTER TABLE `galery` ADD FOREIGN KEY (`product_id`) REFERENCES `product` (`id`);
 
-ALTER TABLE `orders_details` ADD FOREIGN KEY (`person_id`) REFERENCES `person` (`id`);
+ALTER TABLE `orders` ADD FOREIGN KEY (`person_id`) REFERENCES `person` (`id`);
 
 ALTER TABLE `cart` ADD FOREIGN KEY (`person_id`) REFERENCES `person` (`id`);
 
@@ -96,8 +105,10 @@ ALTER TABLE `cart_item` ADD FOREIGN KEY (`product_id`) REFERENCES `product` (`id
 
 ALTER TABLE `cart_item` ADD FOREIGN KEY (`cart_id`) REFERENCES `cart` (`id`);
 
-ALTER TABLE `order_item` ADD FOREIGN KEY (`order_id`) REFERENCES `orders_details` (`id`);
+ALTER TABLE `order_detail` ADD FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`);
 
-ALTER TABLE `order_item` ADD FOREIGN KEY (`product_id`) REFERENCES `product` (`id`);
+ALTER TABLE `order_detail` ADD FOREIGN KEY (`product_id`) REFERENCES `product` (`id`);
 
-ALTER TABLE `orders_details` ADD FOREIGN KEY (`payment_id`) REFERENCES `payment_details` (`id`);
+ALTER TABLE `orders` ADD FOREIGN KEY (`payment_id`) REFERENCES `payment_details` (`id`);
+
+ALTER TABLE `product_inventory` ADD FOREIGN KEY (`product_id`) REFERENCES `product`(`id`);

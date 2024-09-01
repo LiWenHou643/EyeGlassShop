@@ -1,19 +1,20 @@
-package com.example.eyeglass.service;
+package com.example.eyeglass.service.product;
 
 import com.cloudinary.*;
 import com.cloudinary.utils.ObjectUtils;
 import io.github.cdimascio.dotenv.Dotenv;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
+import org.springframework.stereotype.Service;
 
 import java.util.Map;
 
+@Service
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+@RequiredArgsConstructor
 public class ImageService {
-    private final Cloudinary cloudinary;
-
-    public ImageService() {
-        Dotenv dotenv = Dotenv.load();
-        cloudinary = new Cloudinary(dotenv.get("CLOUDINARY_URL"));
-        cloudinary.config.secure = true;
-    }
+    Cloudinary cloudinary;
 
     public String uploadImage(String image) {
         try {

@@ -1,4 +1,4 @@
-package com.example.eyeglass.service;
+package com.example.eyeglass.service.auth;
 
 import com.example.eyeglass.config.jwtAuth.JwtGenerator;
 import com.example.eyeglass.constants.EyeGlassConstants;
@@ -9,10 +9,10 @@ import com.example.eyeglass.entity.Person;
 import com.example.eyeglass.entity.RefreshToken;
 import com.example.eyeglass.entity.Roles;
 import com.example.eyeglass.exception.UserAlreadyExistsException;
-import com.example.eyeglass.mapper.UserMapper;
-import com.example.eyeglass.repository.PersonRepository;
-import com.example.eyeglass.repository.RefreshTokenRepository;
-import com.example.eyeglass.repository.RolesRepository;
+import com.example.eyeglass.mapper.Mapper;
+import com.example.eyeglass.repository.person.PersonRepository;
+import com.example.eyeglass.repository.auth.RefreshTokenRepository;
+import com.example.eyeglass.repository.auth.RolesRepository;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AccessLevel;
@@ -20,26 +20,20 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @Slf4j
 public class AuthService {
-    UserMapper UserMapper;
+    Mapper mapper;
     JwtGenerator jwtGenerator;
     RolesRepository rolesRepository;
     PasswordEncoder passwordEncoder;
@@ -118,7 +112,7 @@ public class AuthService {
                 throw new UserAlreadyExistsException("Email already exists");
             }
 
-            Person person = UserMapper.toEntityFromRegister(request);
+            Person person = mapper.toEntityFromDto(request);
             Roles role = rolesRepository.getRolesByName(EyeGlassConstants.ROLE_USER);
             person.setRoles(role);
             person.setPassword(passwordEncoder.encode(person.getPassword()));

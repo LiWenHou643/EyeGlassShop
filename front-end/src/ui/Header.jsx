@@ -56,13 +56,19 @@ const LoginButton = styled(StyledLink)`
 
 const ToggleDarkMode = styled.button`
     font-size: 2.5rem;
-    padding: 0 1rem;
+    padding: 1rem 1rem;
     color: var(--color-grey-800);
     margin-left: 1rem;
     transition: 0.5s ease;
     &:hover {
         box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
     }
+    &:focus {
+        color: var(--color-grey-800);
+    }
+    display: flex;
+    justify-content: center;
+    align-items: center;
 `;
 function Header() {
     const { isAuthenticated } = useUser();

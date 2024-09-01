@@ -8,22 +8,24 @@ import Modal from '../../ui/Modal';
 import { useLogout } from '../authentication/useLogout';
 
 const MenuList = styled.ul`
-    background-color: var(--color-grey-900);
+    background-color: var(--color-grey-100);
+    position: absolute;
+    top: 3.4rem;
     width: 120px;
     z-index: 1000;
-
+    color: var(--color-grey-800);
     li {
         &:not(:last-child) {
-            border-bottom: 1px solid var(--color-grey-800);
+            border-bottom: 1px solid var(--color-grey-200);
         }
         &:hover {
-            background-color: var(--color-grey-700);
+            background-color: var(--color-grey-300);
         }
 
-        &:first-child:hover {
+        &:first-child {
             border-radius: 0.5rem 0.5rem 0 0;
         }
-        &:last-child:hover {
+        &:last-child {
             border-radius: 0 0 0.5rem 0.5rem;
         }
     }
@@ -31,6 +33,8 @@ const MenuList = styled.ul`
 
 const UserButton = styled.div`
     cursor: pointer;
+    color: var(--color-grey-800);
+    padding: 0.5rem 1rem;
 `;
 
 function UserMenu() {
@@ -59,7 +63,7 @@ function UserMenu() {
                 <p>{exactNameFromEmail(username)}</p>
             </UserButton>
             {showMenu && (
-                <MenuList className='position-absolute top-100 rounded-3'>
+                <MenuList className='rounded-3'>
                     <li>
                         <BaseStyledLink
                             className='dropdown-item py-2 px-4'

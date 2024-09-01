@@ -3,10 +3,9 @@ package com.example.eyeglass.config;
 import com.example.eyeglass.config.jwtAuth.JwtAccessTokenFilter;
 import com.example.eyeglass.config.jwtAuth.JwtRefreshTokenFilter;
 import com.example.eyeglass.config.jwtAuth.JwtUtils;
-import com.example.eyeglass.config.user.EyeGlassesUserDetailsService;
 import com.example.eyeglass.config.user.UsernamePwdAuthenticationProvider;
-import com.example.eyeglass.repository.RefreshTokenRepository;
-import com.example.eyeglass.service.LogoutHandlerService;
+import com.example.eyeglass.repository.auth.RefreshTokenRepository;
+import com.example.eyeglass.service.auth.LogoutHandlerService;
 import com.nimbusds.jose.jwk.JWK;
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
@@ -65,7 +64,6 @@ public class SecurityConfig {
             .requiresChannel(rcc -> rcc.anyRequest().requiresInsecure())
             .csrf(AbstractHttpConfigurer::disable)
             .authorizeHttpRequests(auth -> auth.anyRequest().permitAll())
-//            .userDetailsService(userDetailsService)
             .sessionManagement(smc -> smc.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .exceptionHandling(ex -> {
                 ex.authenticationEntryPoint((request, response, authException) ->

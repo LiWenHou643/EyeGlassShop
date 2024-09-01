@@ -1,6 +1,6 @@
 package com.example.eyeglass.config.user;
 
-import com.example.eyeglass.repository.PersonRepository;
+import com.example.eyeglass.repository.person.PersonRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;

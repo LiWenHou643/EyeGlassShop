@@ -29,18 +29,8 @@ public class BaseEntity {
     @JsonIgnore
     LocalDateTime createdAt;
 
-    @CreatedBy
-    @Column(updatable = false, nullable = false)
-    @JsonIgnore
-    String createdBy;
-
     @LastModifiedDate
     @Column(insertable = false)
     @JsonIgnore
     LocalDateTime updatedAt;
-
-    @LastModifiedBy
-    @Column(insertable = false)
-    @JsonIgnore
-    String updatedBy;
 }

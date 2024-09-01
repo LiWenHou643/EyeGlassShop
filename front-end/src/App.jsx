@@ -11,12 +11,12 @@ import GlobalStyles from './styles/GlobalStyles';
 import Eyeglasses from './features/glasses/Eyeglasses';
 import Sunglasses from './features/glasses/Sunglasses';
 import Home from './pages/Home';
-import Signin from './pages/Signin';
 import ProtectedRoutes from './ProtectedRoutes';
 import Profile from './pages/Profile';
 import AllGlasses from './features/glasses/AllGlasses';
 import Eyeframes from './features/glasses/Eyeframes';
 import ForgotPwd from './pages/ForgotPwd';
+import Register from './pages/Register';
 
 const queryClient = new QueryClient();
 
@@ -33,7 +33,7 @@ function App() {
                             />
                             <Route path='home' element={<Home />} />
                             <Route path='login' element={<Login />} />
-                            <Route path='signin' element={<Signin />} />
+                            <Route path='signin' element={<Register />} />
                             <Route
                                 path='forgot-password'
                                 element={<ForgotPwd />}

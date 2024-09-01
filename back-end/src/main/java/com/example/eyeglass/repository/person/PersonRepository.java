@@ -1,4 +1,4 @@
-package com.example.eyeglass.repository;
+package com.example.eyeglass.repository.person;
 
 import com.example.eyeglass.entity.Person;
 import org.springframework.data.jpa.repository.JpaRepository;

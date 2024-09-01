@@ -1,10 +1,10 @@
-package com.example.eyeglass.service;
+package com.example.eyeglass.service.person;
 
 import com.example.eyeglass.dto.response.PersonResponse;
 import com.example.eyeglass.entity.Person;
 import com.example.eyeglass.exception.ResourceNotFoundException;
-import com.example.eyeglass.mapper.UserMapper;
-import com.example.eyeglass.repository.PersonRepository;
+import com.example.eyeglass.mapper.Mapper;
+import com.example.eyeglass.repository.person.PersonRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -22,12 +22,12 @@ import java.util.stream.Collectors;
 public class PersonService {
     PersonRepository personRepository;
     PasswordEncoder passwordEncoder;
-    UserMapper UserMapper;
+    Mapper Mapper;
 
     public List<PersonResponse> getAllUsers() {
         List<Person> people = personRepository.findAll();
         return people.stream()
-                     .map(UserMapper::toDTO)
+                     .map(Mapper::toDTO)
                      .collect(Collectors.toList());
     }
 
@@ -35,14 +35,14 @@ public class PersonService {
         Person person = personRepository.findById(id)
                                         .orElseThrow(() -> new ResourceNotFoundException("User not found with " +
                                                 "id"));
-        return UserMapper.toDTO(person);
+        return Mapper.toDTO(person);
     }
 
     public PersonResponse getUserByEmail(String email) {
         Person person = personRepository.findByEmail(email)
                                         .orElseThrow(() -> new ResourceNotFoundException("User not found with " +
                                                 "email"));
-        return UserMapper.toDTO(person);
+        return Mapper.toDTO(person);
     }
 
     public PersonResponse updateUser(Long id, PersonResponse personResponse) {
@@ -55,6 +55,6 @@ public class PersonService {
         person.setAddress(personResponse.getAddress());
         person.setPassword(passwordEncoder.encode(personResponse.getPassword()));
         Person updatedPerson = personRepository.save(person);
-        return UserMapper.toDTO(updatedPerson);
+        return Mapper.toDTO(updatedPerson);
     }
 }

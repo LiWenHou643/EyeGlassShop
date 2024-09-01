@@ -20,7 +20,7 @@ const schema = yup.object({
     pwdc: yup.string().oneOf([yup.ref('pwd'), null], 'Passwords must match'),
 });
 
-export default function SigninForm() {
+export default function RegisterForm() {
     const {
         register,
         handleSubmit,
@@ -165,7 +165,7 @@ export default function SigninForm() {
                     className='col-5 py-3 btn btn-success text-capitalize'
                     disabled={isCreatingUser}
                 >
-                    Create ccount
+                    Create account
                 </Button>
             </div>
         </Form>

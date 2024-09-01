@@ -1,7 +1,7 @@
 package com.example.eyeglass.controller;
 
 import com.example.eyeglass.dto.response.PersonResponse;
-import com.example.eyeglass.service.PersonService;
+import com.example.eyeglass.service.person.PersonService;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import org.springframework.http.HttpStatus;

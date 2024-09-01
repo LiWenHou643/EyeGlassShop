@@ -7,7 +7,7 @@ const StyledFooter = styled.footer`
     background: var(--color-footer);
     color: var(--color-grey-900);
     margin-top: 10rem;
-    border-top: 2px solid var(--color-grey-800);
+    border-top: 2px solid var(--color-grey-500);
 `;
 
 const P = styled.p`

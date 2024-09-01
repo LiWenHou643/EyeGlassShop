@@ -1,14 +1,11 @@
-package com.example.eyeglass.service;
+package com.example.eyeglass.service.auth;
 
-import com.example.eyeglass.dto.response.TokenType;
-import com.example.eyeglass.repository.RefreshTokenRepository;
+import com.example.eyeglass.repository.auth.RefreshTokenRepository;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
 import org.springframework.stereotype.Service;

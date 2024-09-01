@@ -1,6 +1,6 @@
 import { data } from './glassesData';
 import { styled } from 'styled-components';
-import { countDiscount } from '../../utils/helperFunction';
+import { countDiscount, formatSoldAmount } from '../../utils/helperFunction';
 import { HiOutlineStar } from 'react-icons/hi2';
 import BaseStyledLink from '../../ui/Link';
 const CardContainer = styled.div`
@@ -16,17 +16,21 @@ const CardContainer = styled.div`
     transition: all 0.3s;
 `;
 
-const CartBody = styled.div`
-    order: 1;
-`;
-
 const CardImage = styled.div`
     position: relative;
 `;
 
 const CardTitle = styled.p`
     font-size: 1.6rem;
+    line-height: 22px;
     font-weight: 500;
+    display: block;
+    text-decoration: none;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
 `;
 
 const CardBuy = styled(BaseStyledLink)`
@@ -37,7 +41,7 @@ const CardBuy = styled(BaseStyledLink)`
     left: 50%;
     transform: translate(-50%, 50%);
     text-transform: uppercase;
-    font-size: 1.6rem;
+    font-size: 1.4rem;
     border-radius: 30px;
     padding: 0.8rem 1.4rem;
     opacity: 0;
@@ -71,12 +75,12 @@ const CardPrice = styled.div`
 const AfterDiscount = styled.h2`
     position: absolute;
     left: 6rem;
-    bottom: 0.6rem;
+    bottom: 0.7rem;
 `;
 
 function AllGlasses() {
     return (
-        <div className='row justify-content-around row-gap-5'>
+        <div className='row justify-content-start row-gap-5'>
             {data.map((item) => {
                 return (
                     <div
@@ -103,7 +107,7 @@ function AllGlasses() {
                                 </CardBuy>
                             </div>
 
-                            <CartBody className='card-body'>
+                            <div className='card-body'>
                                 <CardTitle className='card-title mt-2 mb-4'>
                                     {item.title}
                                 </CardTitle>
@@ -128,14 +132,10 @@ function AllGlasses() {
                                     </div>
 
                                     <h4>
-                                        {Array.from({ length: 5 }).map(
-                                            (_, index) => (
-                                                <HiOutlineStar key={index} />
-                                            )
-                                        )}
+                                        sold {formatSoldAmount(item.soldAmount)}
                                     </h4>
                                 </CardPrice>
-                            </CartBody>
+                            </div>
                         </CardContainer>
                     </div>
                 );

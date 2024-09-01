@@ -1,16 +1,13 @@
 import { jwtDecode } from 'jwt-decode';
 import { refreshToken } from './apiAuth';
 
-// Function to check if the token is expired
 const isTokenExpired = (token) => {
     if (!token) return true;
 
     const decodedToken = jwtDecode(token);
     const currentTime = Math.floor(Date.now() / 1000);
+    console.log(decodedToken.exp - currentTime, 'seconds left');
 
-    console.log(decodedToken.exp, currentTime);
-
-    // Compare current time with token's exp time
     return decodedToken.exp < currentTime;
 };
 
@@ -23,7 +20,7 @@ export const getUser = async () => {
             user = JSON.parse(storedUser);
         } catch (error) {
             console.error('Failed to parse user JSON:', error);
-            localStorage.removeItem('user'); // Remove corrupted data
+            localStorage.removeItem('user');
             return null;
         }
     }
@@ -41,9 +38,7 @@ export const getUser = async () => {
                 return null;
             }
         }
-
         return user;
     }
-
     return null;
 };

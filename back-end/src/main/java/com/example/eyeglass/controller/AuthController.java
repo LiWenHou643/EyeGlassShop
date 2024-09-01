@@ -1,12 +1,9 @@
 package com.example.eyeglass.controller;
 
-import com.example.eyeglass.config.user.UserInfoConfig;
 import com.example.eyeglass.dto.request.LoginRequest;
 import com.example.eyeglass.dto.request.RegisterRequest;
-import com.example.eyeglass.entity.Person;
-import com.example.eyeglass.service.AuthService;
+import com.example.eyeglass.service.auth.AuthService;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -20,7 +17,9 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import com.example.eyeglass.entity.ValidationGroups.*;
 
 import java.util.List;
 
@@ -34,7 +33,7 @@ public class AuthController {
     AuthenticationManager authenticationManager;
 
     @PostMapping("/login")
-    public ResponseEntity<?> authenticateUser(@RequestBody LoginRequest loginRequest, HttpServletResponse response) {
+    public ResponseEntity<?> authenticateUser(@Validated(Login.class) @RequestBody LoginRequest loginRequest, HttpServletResponse response) {
         Authentication authentication = UsernamePasswordAuthenticationToken.unauthenticated(loginRequest.username(),
                 loginRequest.password());
 
@@ -51,7 +50,7 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> registerUser(@Valid @RequestBody RegisterRequest request,
+    public ResponseEntity<?> registerUser(@Validated(Create.class) @RequestBody RegisterRequest request,
             BindingResult bindingResult) {
 
         log.info("[AuthController:registerUser]Signup Process Started for user:{}", request.getEmail());

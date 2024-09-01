@@ -1,7 +1,7 @@
 package com.example.eyeglass.config.jwtAuth;
 
 import com.example.eyeglass.config.RSAKeyRecord;
-import com.example.eyeglass.repository.RefreshTokenRepository;
+import com.example.eyeglass.repository.auth.RefreshTokenRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
@@ -12,7 +12,6 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContext;

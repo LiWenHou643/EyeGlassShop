@@ -1,9 +1,12 @@
 import styled from 'styled-components';
-import SigninForm from '../features/authentication/SigninForm';
+import SigninForm from '../features/authentication/RegisterForm';
 
 const StyledContainer = styled.div`
-    margin-top: 200px;
     min-height: 600px;
+
+    @media (min-width: 1024px) {
+        margin-top: 200px;
+    }
 `;
 
 const FormContainer = styled.div`
@@ -27,11 +30,11 @@ const FormContainer = styled.div`
     }
 `;
 
-export default function Signin() {
+export default function Register() {
     return (
         <StyledContainer>
-            <FormContainer className='container d-flex flex-column justify-content-around align-items-center border border-success gap-4'>
-                <h1 className='display-2 mb-4'>Sign In</h1>
+            <FormContainer className='container d-flex flex-column justify-content-around align-items-center shadow-lg gap-4'>
+                <h1 className='display-3 mb-4'>Create Account</h1>
 
                 <SigninForm />
             </FormContainer>
