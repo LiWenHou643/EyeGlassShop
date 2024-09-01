@@ -1,11 +1,10 @@
-package com.example.eyeglass.service.impl;
+package com.example.eyeglass.service;
 
 import com.example.eyeglass.dto.response.PersonResponse;
 import com.example.eyeglass.entity.Person;
 import com.example.eyeglass.exception.ResourceNotFoundException;
 import com.example.eyeglass.mapper.UserMapper;
 import com.example.eyeglass.repository.PersonRepository;
-import com.example.eyeglass.service.PersonService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -20,12 +19,11 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @Slf4j
-public class PersonServiceImpl implements PersonService {
+public class PersonService {
     PersonRepository personRepository;
     PasswordEncoder passwordEncoder;
     UserMapper UserMapper;
 
-    @Override
     public List<PersonResponse> getAllUsers() {
         List<Person> people = personRepository.findAll();
         return people.stream()
@@ -33,7 +31,6 @@ public class PersonServiceImpl implements PersonService {
                      .collect(Collectors.toList());
     }
 
-    @Override
     public PersonResponse getUserById(Long id) {
         Person person = personRepository.findById(id)
                                         .orElseThrow(() -> new ResourceNotFoundException("User not found with " +
@@ -41,7 +38,6 @@ public class PersonServiceImpl implements PersonService {
         return UserMapper.toDTO(person);
     }
 
-    @Override
     public PersonResponse getUserByEmail(String email) {
         Person person = personRepository.findByEmail(email)
                                         .orElseThrow(() -> new ResourceNotFoundException("User not found with " +
@@ -49,7 +45,6 @@ public class PersonServiceImpl implements PersonService {
         return UserMapper.toDTO(person);
     }
 
-    @Override
     public PersonResponse updateUser(Long id, PersonResponse personResponse) {
         Person person = personRepository.findById(id)
                                         .orElseThrow(() -> new ResourceNotFoundException("User not found with " +
