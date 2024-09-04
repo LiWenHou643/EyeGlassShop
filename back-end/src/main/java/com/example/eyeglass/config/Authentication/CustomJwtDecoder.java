@@ -1,4 +1,4 @@
-package com.example.eyeglass.config.jwtAuth;
+package com.example.eyeglass.config.Authentication;
 
 import java.text.ParseException;
 import java.util.Objects;

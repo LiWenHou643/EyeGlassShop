@@ -3,13 +3,6 @@ VALUES ('ADMIN');
 INSERT INTO `defaultdb`.`roles` (`name`)
 VALUES ('USER');
 
-INSERT INTO `defaultdb`.`permissions` (`name`)
-VALUES ('READ');
-INSERT INTO `defaultdb`.`permissions` (`name`)
-VALUES ('WRITE');
-INSERT INTO `defaultdb`.`permissions` (`name`)
-VALUES ('READ');
-
 -- pwd: admin@123
 INSERT INTO `defaultdb`.`person` (`full_name`, `email`, `password`, `role`)
 VALUES ('admin', 'admin123@gmail.com', '{bcrypt}$2a$12$rxH7HRYrFkM212zXqOf7EOAIIFu02ctrpPgVWogJjufdvBO4NKxoK', 'ADMIN');

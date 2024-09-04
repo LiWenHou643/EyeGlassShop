@@ -6,16 +6,6 @@ CREATE TABLE `roles` (
   `name` varchar(20) PRIMARY KEY
 );
 
-CREATE TABLE `permissions` (
-  `name` varchar(20) PRIMARY KEY
-);
-
-CREATE TABLE `permissions_roles` (
-  `permissions_name` varchar(20),
-  `roles_name` varchar(20),
-  PRIMARY KEY (`permissions_name`, `roles_name`)
-);
-
 CREATE TABLE `person` (
   `id` int PRIMARY KEY AUTO_INCREMENT,
   `full_name` varchar(50) NOT NULL,
@@ -123,7 +113,3 @@ ALTER TABLE `order_detail` ADD FOREIGN KEY (`product_id`) REFERENCES `product` (
 ALTER TABLE `orders` ADD FOREIGN KEY (`payment_id`) REFERENCES `payment_details` (`id`);
 
 ALTER TABLE `product_inventory` ADD FOREIGN KEY (`product_id`) REFERENCES `product`(`id`);
-
-ALTER TABLE `permissions_roles` ADD FOREIGN KEY (`permissions_name`) REFERENCES `permissions` (`name`);
-
-ALTER TABLE `permissions_roles` ADD FOREIGN KEY (`roles_name`) REFERENCES `roles` (`name`);
