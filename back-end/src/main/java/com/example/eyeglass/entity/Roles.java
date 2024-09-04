@@ -1,10 +1,9 @@
 package com.example.eyeglass.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-
-import java.util.Set;
 
 @Getter
 @Setter
@@ -12,10 +11,8 @@ import java.util.Set;
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
+@Builder
 public class Roles {
-
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     String name;
-
 }

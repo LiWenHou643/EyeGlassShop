@@ -23,11 +23,10 @@ public class JwtGenerator {
                                           .issuedAt(Instant.now())
                                           .expiresAt(Instant.now().plus(15, ChronoUnit.MINUTES))
                                           .subject(person.getEmail())
-                                          .claim("scope", person.getRoles())
+                                          .claim("scope", person.getRoles().getName())
                                           .build();
         return jwtEncoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
     }
-
 
     public String generateRefreshToken(Person person) {
         JwtClaimsSet claims = JwtClaimsSet.builder()

@@ -1,10 +1,6 @@
 spring:
   application:
     name: ${SPRING_APP_NAME:eyeglass}
-  config:
-    import: application_prod.yaml
-  profiles:
-    active: default
   datasource:
     url: jdbc:mysql://avnadmin:AVNS_7tuSVyFY8tOOOQ0rCss@mysql-eyeglass-nln-ct46605.h.aivencloud.com:28819/defaultdb?ssl-mode=REQUIRED
     username: ${DATABASE_USERNAME:avnadmin}
@@ -16,6 +12,9 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQLDialect
+  web:
+    resources:
+      add-mappings: false
 
 logging:
   level:

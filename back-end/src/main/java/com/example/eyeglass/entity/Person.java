@@ -1,10 +1,14 @@
 package com.example.eyeglass.entity;
 
+import com.example.eyeglass.entity.ValidationGroups.Create;
+import com.example.eyeglass.entity.ValidationGroups.Login;
+import com.example.eyeglass.entity.ValidationGroups.Update;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.*;
-import com.example.eyeglass.entity.ValidationGroups.*;
 import lombok.experimental.FieldDefaults;
 
 import java.util.Set;
@@ -15,6 +19,7 @@ import java.util.Set;
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
+@Builder
 @Table(name = "person")
 public class Person {
 
@@ -45,7 +50,7 @@ public class Person {
             groups = {Create.class, Update.class, Login.class})
     String password;
 
-    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST, targetEntity = Roles.class)
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE, targetEntity = Roles.class)
     @JoinColumn(name = "role", referencedColumnName = "name", nullable = false)
     Roles roles;
 

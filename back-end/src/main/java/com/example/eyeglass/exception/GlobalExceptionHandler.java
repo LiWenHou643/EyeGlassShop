@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.servlet.NoHandlerFoundException;
 
 
 @ControllerAdvice
@@ -13,8 +14,16 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(value = RuntimeException.class)
     ResponseEntity<ApiResponse<Void>> handleRuntimeException(RuntimeException e) {
         ApiResponse<Void> response = new ApiResponse<>();
-        response.setCode(ErrorCode.UNCATEGORIZED.getCode());
-        response.setMessage(ErrorCode.UNCATEGORIZED.getMessage());
+        response.setCode(ErrorCode.UNCATEGORIZED_EXCEPTION.getCode());
+        response.setMessage(ErrorCode.UNCATEGORIZED_EXCEPTION.getMessage());
+        return ResponseEntity.badRequest().body(response);
+    }
+
+    @ExceptionHandler(NoHandlerFoundException.class)
+    public ResponseEntity<ApiResponse<Void>> handleNoHandlerFoundException(NoHandlerFoundException e) {
+        ApiResponse<Void> response = new ApiResponse<>();
+        response.setCode(ErrorCode.PATH_NOT_FOUND.getCode());
+        response.setMessage(ErrorCode.PATH_NOT_FOUND.getMessage());
         return ResponseEntity.badRequest().body(response);
     }
 

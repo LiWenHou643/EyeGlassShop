@@ -21,8 +21,6 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class JwtUtils {
 
-    private final PersonRepository personRepository;
-
     public String getUserName(Jwt jwtToken) {
         return jwtToken.getSubject();
     }
@@ -39,12 +37,5 @@ public class JwtUtils {
         return Objects.requireNonNull(jwtToken.getExpiresAt()).isBefore(Instant.now());
     }
 
-    private final PersonRepository personRepository;
-
-    public UserDetails userDetails(String emailId) {
-        return personRepository
-                .findByEmail(emailId)
-                .orElseThrow(() -> new UsernameNotFoundException("UserEmail: " + emailId + " does not exist"));
-    }
 }
 

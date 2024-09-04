@@ -1,65 +1,73 @@
 package com.example.eyeglass.controller;
 
 import com.example.eyeglass.dto.request.AuthenticationRequest;
+import com.example.eyeglass.dto.request.IntrospectRequest;
 import com.example.eyeglass.dto.request.RegisterRequest;
 import com.example.eyeglass.dto.response.ApiResponse;
 import com.example.eyeglass.dto.response.AuthenticationResponse;
-import com.example.eyeglass.service.auth.AuthService;
+import com.example.eyeglass.dto.response.IntrospectResponse;
+import com.example.eyeglass.dto.response.PersonResponse;
+import com.example.eyeglass.entity.ValidationGroups.Create;
+import com.example.eyeglass.entity.ValidationGroups.Login;
+import com.example.eyeglass.service.auth.AuthenticationService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.support.DefaultMessageSourceResolvable;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
-import com.example.eyeglass.entity.ValidationGroups.*;
-
-import java.util.List;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @Slf4j
-@RequestMapping("/api/auth")
+@RequestMapping("/auth")
 public class AuthController {
-    AuthService authService;
+    AuthenticationService authenticationService;
 
     @PostMapping("/login")
-    public ApiResponse<AuthenticationResponse> authenticateUser(@Validated(Login.class) @RequestBody AuthenticationRequest authenticationRequest, HttpServletResponse response) {
+    public ApiResponse<AuthenticationResponse> authenticateUser(
+            @Validated(Login.class) @RequestBody AuthenticationRequest authenticationRequest,
+            HttpServletResponse response) {
 
         ApiResponse<AuthenticationResponse> res = new ApiResponse<>();
         res.setMessage("User authenticated successfully");
-        res.setData(authService.getJwtTokensAfterAuthentication(authenticationResponse, response));
+        res.setData(authenticationService.authenticate(authenticationRequest, response));
         return res;
     }
 
-    @PreAuthorize("hasAuthority('SCOPE_REFRESH_TOKEN')")
-    @PostMapping("/refresh-token")
-    public ResponseEntity<?> getRefreshAccessToken() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        return ResponseEntity.ok(authService.getAccessTokenUsingRefreshToken(authentication));
+    @PostMapping("/introspect")
+    ApiResponse<IntrospectResponse> authenticate(@RequestBody IntrospectRequest request) {
+        var result = authenticationService.introspect(request);
+        return ApiResponse.<IntrospectResponse>builder().data(result).build();
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> registerUser(@Validated(Create.class) @RequestBody RegisterRequest request,
-            BindingResult bindingResult) {
+    public ApiResponse<PersonResponse> registerUser(@Validated(Create.class) @RequestBody RegisterRequest request) {
+        ApiResponse<PersonResponse> res = new ApiResponse<>();
+        res.setMessage("User registered successfully");
+        res.setData(authenticationService.register(request));
+        return res;
+    }
 
-        log.info("[AuthController:registerUser]Signup Process Started for user:{}", request.getEmail());
-        if (bindingResult.hasErrors()) {
-            List<String> errorMessage = bindingResult.getAllErrors().stream()
-                                                     .map(DefaultMessageSourceResolvable::getDefaultMessage)
-                                                     .toList();
-            log.error("[AuthController:registerUser]Errors in user:{}", errorMessage);
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMessage);
-        }
-        authService.registerUser(request);
-        return ResponseEntity.ok("User registered successfully");
+    @PostMapping("/logout")
+    public ApiResponse<String> logoutUser(HttpServletRequest request, HttpServletResponse response) {
+        ApiResponse<String> res = new ApiResponse<>();
+        res.setMessage("User logged out successfully");
+        res.setData(authenticationService.logout(request, response));
+        return res;
+    }
+
+    @PostMapping("/refresh-token")
+    public ApiResponse<AuthenticationResponse> refreshToken(HttpServletRequest request, HttpServletResponse response) {
+        ApiResponse<AuthenticationResponse> res = new ApiResponse<>();
+        res.setMessage("Token refreshed successfully");
+        res.setData(authenticationService.refreshToken(request, response));
+        return res;
     }
 }
