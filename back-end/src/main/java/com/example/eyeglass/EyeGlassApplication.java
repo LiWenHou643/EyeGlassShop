@@ -20,17 +20,4 @@ public class EyeGlassApplication {
         SpringApplication.run(EyeGlassApplication.class, args);
     }
 
-    @Bean
-    public WebMvcConfigurer corsConfigurer() {
-        return new WebMvcConfigurer() {
-            @Override
-            public void addCorsMappings(@NonNull CorsRegistry registry) {
-                registry.addMapping("/api/**").allowedOrigins("http://localhost:3000")
-                        .allowCredentials(true).maxAge(3600)
-                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
-                        .allowedHeaders("Authorization", "Content-Type", "Accept", "Origin", "X-Requested-With")
-                        .exposedHeaders("Authorization", "Content-Type", "Accept", "Origin", "X-Requested-With");
-            }
-        };
-    }
 }

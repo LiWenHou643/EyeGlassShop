@@ -3,8 +3,17 @@
 USE defaultdb;
 
 CREATE TABLE `roles` (
-  `id` int PRIMARY KEY AUTO_INCREMENT,
-  `name` varchar(20) NOT NULL
+  `name` varchar(20) PRIMARY KEY
+);
+
+CREATE TABLE `permissions` (
+  `name` varchar(20) PRIMARY KEY
+);
+
+CREATE TABLE `permissions_roles` (
+  `permissions_name` varchar(20),
+  `roles_name` varchar(20),
+  PRIMARY KEY (`permissions_name`, `roles_name`)
 );
 
 CREATE TABLE `person` (
@@ -14,7 +23,7 @@ CREATE TABLE `person` (
   `phone_number` varchar(20),
   `address` varchar(200),
   `password` varchar(200) NOT NULL,
-  `role_id` int NOT NULL
+  `role` varchar(20) NOT NULL
 );
 
 CREATE TABLE `refresh_tokens` (
@@ -32,11 +41,13 @@ CREATE TABLE `category` (
 CREATE TABLE `product` (
   `id` int PRIMARY KEY AUTO_INCREMENT,
   `category_id` int NOT NULL,
+  `product_code` VARCHAR(255) UNIQUE NOT NULL,
   `title` varchar(250) NOT NULL,
   `price` int NOT NULL,
   `discount` int NOT NULL,
   `thumbnail` varchar(500) NOT NULL,
-  `description` longtext NOT NULL
+  `description` longtext NOT NULL,
+  `is_deleted` boolean NOT NULL DEFAULT FALSE
 );
 
 CREATE TABLE `galery` (
@@ -89,7 +100,7 @@ CREATE TABLE `product_inventory` (
 );
 
 
-ALTER TABLE `person` ADD FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`);
+ALTER TABLE `person` ADD FOREIGN KEY (`role`) REFERENCES `roles` (`name`);
 
 ALTER TABLE `refresh_tokens` ADD FOREIGN KEY (`person_id`) REFERENCES `person` (`id`);
 
@@ -112,3 +123,7 @@ ALTER TABLE `order_detail` ADD FOREIGN KEY (`product_id`) REFERENCES `product` (
 ALTER TABLE `orders` ADD FOREIGN KEY (`payment_id`) REFERENCES `payment_details` (`id`);
 
 ALTER TABLE `product_inventory` ADD FOREIGN KEY (`product_id`) REFERENCES `product`(`id`);
+
+ALTER TABLE `permissions_roles` ADD FOREIGN KEY (`permissions_name`) REFERENCES `permissions` (`name`);
+
+ALTER TABLE `permissions_roles` ADD FOREIGN KEY (`roles_name`) REFERENCES `roles` (`name`);

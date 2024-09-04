@@ -2,7 +2,8 @@ package com.example.eyeglass.service.person;
 
 import com.example.eyeglass.dto.response.PersonResponse;
 import com.example.eyeglass.entity.Person;
-import com.example.eyeglass.exception.ResourceNotFoundException;
+import com.example.eyeglass.exception.AppException;
+import com.example.eyeglass.exception.ErrorCode;
 import com.example.eyeglass.mapper.Mapper;
 import com.example.eyeglass.repository.person.PersonRepository;
 import lombok.AccessLevel;
@@ -33,22 +34,19 @@ public class PersonService {
 
     public PersonResponse getUserById(Long id) {
         Person person = personRepository.findById(id)
-                                        .orElseThrow(() -> new ResourceNotFoundException("User not found with " +
-                                                "id"));
+                                        .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
         return Mapper.toDTO(person);
     }
 
     public PersonResponse getUserByEmail(String email) {
         Person person = personRepository.findByEmail(email)
-                                        .orElseThrow(() -> new ResourceNotFoundException("User not found with " +
-                                                "email"));
+                                        .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
         return Mapper.toDTO(person);
     }
 
     public PersonResponse updateUser(Long id, PersonResponse personResponse) {
         Person person = personRepository.findById(id)
-                                        .orElseThrow(() -> new ResourceNotFoundException("User not found with " +
-                                                "id"));
+                                        .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
         person.setFullName(personResponse.getFullName());
         person.setEmail(personResponse.getEmail());
         person.setPhoneNumber(personResponse.getPhoneNumber());

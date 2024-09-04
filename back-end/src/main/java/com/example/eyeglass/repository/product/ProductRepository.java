@@ -21,4 +21,5 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             "WHERE p.id = :productId")
     Optional<ProductResponse> findProductById(Long productId);
 
+    boolean existsByProductCode(String title);
 }

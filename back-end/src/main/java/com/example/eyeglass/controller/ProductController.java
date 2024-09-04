@@ -21,7 +21,6 @@ public class ProductController {
 
     @GetMapping("/{productId}")
     public ResponseEntity<ProductResponse> getProductById(@PathVariable Long productId) {
-        log.error("Get product by id: {}", productId);
         return ResponseEntity.status(HttpStatus.OK).body(
                 productService.getProductById(productId)
         );
