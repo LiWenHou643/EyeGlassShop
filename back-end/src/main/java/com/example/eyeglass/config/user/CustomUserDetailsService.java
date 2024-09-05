@@ -1,4 +1,4 @@
-package com.example.eyeglass.config;
+package com.example.eyeglass.config.user;
 
 import com.example.eyeglass.repository.person.PersonRepository;
 import lombok.RequiredArgsConstructor;
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class CustomUserDetailsService implements UserDetailsService {
     private final PersonRepository personRepository;
-    
+
     @Override
     public UserDetails loadUserByUsername(String emailId) throws UsernameNotFoundException {
         return personRepository

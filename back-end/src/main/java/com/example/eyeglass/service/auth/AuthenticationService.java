@@ -1,13 +1,10 @@
 package com.example.eyeglass.service.auth;
 
 import com.example.eyeglass.config.Authentication.JwtGenerator;
-import com.example.eyeglass.config.Authentication.JwtUtils;
 import com.example.eyeglass.constants.EyeGlassConstants;
 import com.example.eyeglass.dto.request.AuthenticationRequest;
-import com.example.eyeglass.dto.request.IntrospectRequest;
 import com.example.eyeglass.dto.request.RegisterRequest;
 import com.example.eyeglass.dto.response.AuthenticationResponse;
-import com.example.eyeglass.dto.response.IntrospectResponse;
 import com.example.eyeglass.dto.response.PersonResponse;
 import com.example.eyeglass.dto.response.TokenType;
 import com.example.eyeglass.entity.Person;
@@ -26,9 +23,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.oauth2.jwt.Jwt;
-import org.springframework.security.oauth2.jwt.JwtDecoder;
-import org.springframework.security.oauth2.jwt.JwtException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -36,12 +30,10 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class AuthenticationService {
-    PersonRepository personRepository;
+    Mapper mapper;
     JwtGenerator jwtGenerator;
     PasswordEncoder passwordEncoder;
-    JwtUtils jwtUtils;
-    JwtDecoder jwtDecoder;
-    Mapper mapper;
+    PersonRepository personRepository;
     RefreshTokenRepository refreshTokenRepository;
 
     public AuthenticationResponse authenticate(AuthenticationRequest request, HttpServletResponse response) {
@@ -80,22 +72,12 @@ public class AuthenticationService {
         response.addCookie(refreshTokenCookie);
     }
 
-    public IntrospectResponse introspect(IntrospectRequest request) {
-        String token = request.accessToken();
-        boolean isValid = true;
-
-        try {
-            Jwt jwtToken = jwtDecoder.decode(token);
-            jwtUtils.isTokenValid(jwtToken, jwtUtils.getUserName(jwtToken));
-        } catch (JwtException | AppException e) {
-            isValid = false;
-        }
-
-        return IntrospectResponse.builder().valid(isValid).build();
-    }
-
     public PersonResponse register(RegisterRequest request) {
         Roles role = Roles.builder().name(EyeGlassConstants.ROLE_USER).build();
+
+        request.setFullName(request.getFullName().trim());
+        request.setEmail(request.getEmail().trim());
+        request.setPassword(request.getPassword().trim());
 
         Person personExist = personRepository.findByEmail(request.getEmail()).orElse(null);
         if (personExist != null) throw new AppException(ErrorCode.USER_EXISTED);
@@ -141,21 +123,26 @@ public class AuthenticationService {
     }
 
     public AuthenticationResponse refreshToken(HttpServletRequest request, HttpServletResponse response) {
-        Cookie[] cookies = request.getCookies();
-        String refreshToken = null;
+//        Cookie[] cookies = request.getCookies();
+//        String refreshToken = null;
+//
+//        if (cookies != null) {
+//            for (Cookie cookie : cookies) {
+//                if (cookie.getName().equals("refresh_token")) {
+//                    refreshToken = cookie.getValue();
+//                    break;
+//                }
+//            }
+//        }
 
-        if (cookies != null) {
-            for (Cookie cookie : cookies) {
-                if (cookie.getName().equals("refresh_token")) {
-                    refreshToken = cookie.getValue();
-                    break;
-                }
-            }
-        }
+        String refreshToken = request.getHeader("Authorization");
 
         if (refreshToken == null) {
             throw new AppException(ErrorCode.REFRESH_TOKEN_INVALID);
         }
+
+        refreshToken = refreshToken.replace("Bearer ", "");
+
 
         RefreshToken token = refreshTokenRepository.findByRefreshToken(refreshToken)
                                                    .orElseThrow(() -> new AppException(

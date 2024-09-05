@@ -5,6 +5,8 @@ import com.example.eyeglass.dto.response.ProductResponse;
 import com.example.eyeglass.entity.Category;
 import com.example.eyeglass.entity.Product;
 import com.example.eyeglass.entity.ProductInventory;
+import com.example.eyeglass.exception.AppException;
+import com.example.eyeglass.exception.ErrorCode;
 import com.example.eyeglass.mapper.Mapper;
 import com.example.eyeglass.repository.product.ProductInventoryRepository;
 import com.example.eyeglass.repository.product.ProductRepository;
@@ -19,20 +21,19 @@ import org.springframework.stereotype.Service;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @Service
 public class ProductService {
-    Mapper mapper;
     CategoryService categoryService;
     ProductRepository productRepository;
     ProductInventoryRepository productInventoryRepository;
 
     public ProductResponse getProductById(Long productId) {
         return productRepository.findProductById(productId)
-                                .orElseThrow(() -> new RuntimeException("Product not found"));
+                                .orElseThrow(() -> new AppException(ErrorCode.PRODUCT_NOT_FOUND));
     }
 
     public void addProduct(CreateProductRequest createProductRequest) {
         boolean isProductExist = productRepository.existsByProductCode(createProductRequest.productCode());
         if (isProductExist) {
-            throw new RuntimeException("Product with code " + createProductRequest.productCode() + " already exists");
+            throw new AppException(ErrorCode.PRODUCT_EXISTED);
         }
 
         // Save product to database

@@ -7,15 +7,26 @@ import org.springframework.http.HttpStatusCode;
 @Getter
 public enum ErrorCode {
     UNCATEGORIZED_EXCEPTION(9999, "Uncategorized error", HttpStatus.INTERNAL_SERVER_ERROR),
+    ACCESS_DENIED(9998, "Access denied", HttpStatus.FORBIDDEN),
     PATH_NOT_FOUND(8888, "Path not found", HttpStatus.NOT_FOUND),
+
     USER_EXISTED(1001, "User existed", HttpStatus.BAD_REQUEST),
     USER_NOT_EXISTED(1002, "User not existed", HttpStatus.NOT_FOUND),
     JWT_INVALID(1003, "JWT invalid", HttpStatus.UNAUTHORIZED),
     JWT_EXPIRED(1004, "JWT expired", HttpStatus.UNAUTHORIZED),
     REFRESH_TOKEN_INVALID(1005, "Refresh token invalid", HttpStatus.UNAUTHORIZED),
     REFRESH_TOKEN_REVOKED(1006, "Refresh token revoked", HttpStatus.UNAUTHORIZED),
-    UNAUTHENTICATED(2000, "Unauthenticated", HttpStatus.UNAUTHORIZED),
-    UNAUTHORIZED(2001, "You do not have permission", HttpStatus.FORBIDDEN),
+
+    NAME_INVALID(1011, "Name invalid", HttpStatus.BAD_REQUEST),
+    EMAIL_INVALID(1012, "Email invalid", HttpStatus.BAD_REQUEST),
+    PASSWORD_INVALID(1013, "Password invalid", HttpStatus.BAD_REQUEST),
+    REGISTER_FAILED(1014, "Register failed", HttpStatus.BAD_REQUEST),
+
+    UNAUTHENTICATED(1998, "Unauthenticated", HttpStatus.UNAUTHORIZED),
+    UNAUTHORIZED(1999, "You do not have permission", HttpStatus.FORBIDDEN),
+
+    PRODUCT_NOT_FOUND(2001, "Product not found", HttpStatus.NOT_FOUND),
+    PRODUCT_EXISTED(2002, "Product existed", HttpStatus.BAD_REQUEST),
     ;
 
     ErrorCode(int code, String message, HttpStatusCode statusCode) {

@@ -1,4 +1,4 @@
-package com.example.eyeglass.config;
+package com.example.eyeglass.config.user;
 
 import com.example.eyeglass.entity.Person;
 import lombok.RequiredArgsConstructor;

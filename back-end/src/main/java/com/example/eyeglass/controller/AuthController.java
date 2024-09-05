@@ -1,11 +1,9 @@
 package com.example.eyeglass.controller;
 
 import com.example.eyeglass.dto.request.AuthenticationRequest;
-import com.example.eyeglass.dto.request.IntrospectRequest;
 import com.example.eyeglass.dto.request.RegisterRequest;
 import com.example.eyeglass.dto.response.ApiResponse;
 import com.example.eyeglass.dto.response.AuthenticationResponse;
-import com.example.eyeglass.dto.response.IntrospectResponse;
 import com.example.eyeglass.dto.response.PersonResponse;
 import com.example.eyeglass.entity.ValidationGroups.Create;
 import com.example.eyeglass.entity.ValidationGroups.Login;
@@ -39,12 +37,6 @@ public class AuthController {
         res.setMessage("User authenticated successfully");
         res.setData(authenticationService.authenticate(authenticationRequest, response));
         return res;
-    }
-
-    @PostMapping("/introspect")
-    ApiResponse<IntrospectResponse> authenticate(@RequestBody IntrospectRequest request) {
-        var result = authenticationService.introspect(request);
-        return ApiResponse.<IntrospectResponse>builder().data(result).build();
     }
 
     @PostMapping("/register")
