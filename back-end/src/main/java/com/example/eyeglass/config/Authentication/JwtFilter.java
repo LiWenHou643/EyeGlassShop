@@ -1,8 +1,10 @@
 package com.example.eyeglass.config.Authentication;
 
 import com.example.eyeglass.config.RSAKeyRecord;
+import com.example.eyeglass.dto.response.ApiResponse;
 import com.example.eyeglass.exception.AppException;
 import com.example.eyeglass.exception.ErrorCode;
+import com.example.eyeglass.utils.JsonUtils;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -15,11 +17,11 @@ import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
+import org.springframework.security.oauth2.jwt.JwtException;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
-import java.util.jar.JarException;
 
 @RequiredArgsConstructor
 public class JwtFilter extends OncePerRequestFilter {
@@ -54,8 +56,24 @@ public class JwtFilter extends OncePerRequestFilter {
                     AuthorityUtils.commaSeparatedStringToAuthorityList(authorities));
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
+        } catch (JwtException e) {
+            ApiResponse<Void> apiResponse = ApiResponse.<Void>builder()
+                                                       .code(ErrorCode.JWT_INVALID.getCode())
+                                                       .message(ErrorCode.JWT_INVALID.getMessage())
+                                                       .build();
+
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
+            response.getWriter().write(JsonUtils.toJson(apiResponse));
         } catch (Exception e) {
-            throw new JarException("Invalid tokennnn");
+            ApiResponse<Void> apiResponse = ApiResponse.<Void>builder()
+                                                       .code(ErrorCode.UNCATEGORIZED_EXCEPTION.getCode())
+                                                       .message(ErrorCode.UNCATEGORIZED_EXCEPTION.getMessage())
+                                                       .build();
+
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
+            response.getWriter().write(JsonUtils.toJson(apiResponse));
         }
 
         filterChain.doFilter(request, response);

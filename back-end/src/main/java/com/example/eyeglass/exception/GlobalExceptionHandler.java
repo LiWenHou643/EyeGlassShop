@@ -1,13 +1,12 @@
 package com.example.eyeglass.exception;
 
 import com.example.eyeglass.dto.response.ApiResponse;
-import io.jsonwebtoken.JwtException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
 import java.nio.file.AccessDeniedException;
@@ -15,7 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-@ControllerAdvice
+@RestControllerAdvice
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
@@ -66,12 +65,7 @@ public class GlobalExceptionHandler {
         response.setMessage(errorCode.getMessage());
         return ResponseEntity.status(errorCode.getStatusCode()).body(response);
     }
-
-    @ExceptionHandler(JwtException.class)
-    ResponseEntity<?> handleJwtException(JwtException e) {
-        return ResponseEntity.badRequest().body("Invalid token");
-    }
-
+    
     @ExceptionHandler(MethodArgumentNotValidException.class)
     ResponseEntity<ApiResponse<Map<String, String>>> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
         Map<String, String> errors = new HashMap<>();
