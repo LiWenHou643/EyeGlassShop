@@ -16,6 +16,11 @@ CREATE TABLE `person` (
   `role` varchar(20) NOT NULL
 );
 
+CREATE TABLE `invalidated_tokens` (
+  `token` varchar(512) PRIMARY KEY,
+  `expiration` TIMESTAMP
+);
+
 CREATE TABLE `refresh_tokens` (
   `id` int PRIMARY KEY AUTO_INCREMENT,
   `refresh_token` varchar(512) NOT NULL,

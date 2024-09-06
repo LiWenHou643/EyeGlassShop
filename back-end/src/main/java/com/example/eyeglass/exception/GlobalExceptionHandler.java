@@ -3,6 +3,8 @@ package com.example.eyeglass.exception;
 import com.example.eyeglass.dto.response.ApiResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authorization.AuthorizationDeniedException;
+import org.springframework.security.oauth2.jwt.BadJwtException;
+import org.springframework.security.oauth2.server.resource.InvalidBearerTokenException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
 import java.nio.file.AccessDeniedException;
+import java.text.ParseException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -65,7 +68,15 @@ public class GlobalExceptionHandler {
         response.setMessage(errorCode.getMessage());
         return ResponseEntity.status(errorCode.getStatusCode()).body(response);
     }
-    
+
+    @ExceptionHandler({InvalidBearerTokenException.class, BadJwtException.class, ParseException.class})
+    ResponseEntity<ApiResponse<Void>> handleInvalidBearerTokenException(InvalidBearerTokenException e) {
+        ApiResponse<Void> response = new ApiResponse<>();
+        response.setCode(ErrorCode.REFRESH_TOKEN_INVALID.getCode());
+        response.setMessage(ErrorCode.REFRESH_TOKEN_INVALID.getMessage());
+        return ResponseEntity.status(ErrorCode.REFRESH_TOKEN_INVALID.getStatusCode()).body(response);
+    }
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     ResponseEntity<ApiResponse<Map<String, String>>> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
         Map<String, String> errors = new HashMap<>();
@@ -82,6 +93,5 @@ public class GlobalExceptionHandler {
 
         return ResponseEntity.status(ErrorCode.REGISTER_FAILED.getStatusCode()).body(response);
     }
-
 
 }

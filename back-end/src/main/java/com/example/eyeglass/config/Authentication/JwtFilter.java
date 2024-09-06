@@ -43,43 +43,44 @@ public class JwtFilter extends OncePerRequestFilter {
             JwtDecoder jwtDecoder = NimbusJwtDecoder.withPublicKey(rsaKeyRecord.rsaPublicKey()).build();
 
             Jwt jwt = jwtDecoder.decode(token);
-            boolean isValid = jwtUtils.isTokenValid(jwt);
+            boolean isExpired = jwtUtils.isExpired(jwt);
+            boolean isInvalidated = jwtUtils.isInvalidated(jwt);
 
-            if (!isValid) {
+            if (isExpired) {
                 throw new AppException(ErrorCode.JWT_EXPIRED);
+            } else if (isInvalidated) {
+                throw new AppException(ErrorCode.JWT_INVALID);
+            } else {
+                String username = jwt.getClaim("sub");
+                String authorities = jwt.getClaim("scope");
+                Authentication authentication = new UsernamePasswordAuthenticationToken(username, null,
+                        AuthorityUtils.commaSeparatedStringToAuthorityList(authorities));
+                SecurityContextHolder.getContext().setAuthentication(authentication);
             }
 
-            String username = jwt.getClaim("sub");
-            String authorities = jwt.getClaim("scope");
-
-            Authentication authentication = new UsernamePasswordAuthenticationToken(username, null,
-                    AuthorityUtils.commaSeparatedStringToAuthorityList(authorities));
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-
+            filterChain.doFilter(request, response);
         } catch (JwtException e) {
-            ApiResponse<Void> apiResponse = ApiResponse.<Void>builder()
-                                                       .code(ErrorCode.JWT_INVALID.getCode())
-                                                       .message(ErrorCode.JWT_INVALID.getMessage())
-                                                       .build();
-
-            response.setContentType("application/json");
-            response.setCharacterEncoding("UTF-8");
-            response.getWriter().write(JsonUtils.toJson(apiResponse));
+            ApiResponse(ErrorCode.JWT_INVALID, response);
+        } catch (AppException e) {
+            ApiResponse(e.getErrorCode(), response);
         } catch (Exception e) {
-            ApiResponse<Void> apiResponse = ApiResponse.<Void>builder()
-                                                       .code(ErrorCode.UNCATEGORIZED_EXCEPTION.getCode())
-                                                       .message(ErrorCode.UNCATEGORIZED_EXCEPTION.getMessage())
-                                                       .build();
-
-            response.setContentType("application/json");
-            response.setCharacterEncoding("UTF-8");
-            response.getWriter().write(JsonUtils.toJson(apiResponse));
+            ApiResponse(ErrorCode.UNCATEGORIZED_EXCEPTION, response);
         }
-
-        filterChain.doFilter(request, response);
     }
 
+    private static void ApiResponse(ErrorCode errorCode, HttpServletResponse response) throws IOException {
+        ApiResponse<Void> apiResponse = ApiResponse.<Void>builder()
+                                                   .code(errorCode.getCode())
+                                                   .message(errorCode.getMessage())
+                                                   .build();
+
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        response.getWriter().write(JsonUtils.toJson(apiResponse));
+    }
+
+    @Override
     public boolean shouldNotFilter(HttpServletRequest request) {
-        return request.getServletPath().equals("/auth/login");
+        return request.getServletPath().equals("/auth/login") || request.getServletPath().equals("/auth/refresh-token");
     }
 }

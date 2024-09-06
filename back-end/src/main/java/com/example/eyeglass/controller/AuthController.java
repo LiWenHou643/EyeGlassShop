@@ -8,12 +8,14 @@ import com.example.eyeglass.dto.response.PersonResponse;
 import com.example.eyeglass.entity.ValidationGroups.Create;
 import com.example.eyeglass.entity.ValidationGroups.Login;
 import com.example.eyeglass.service.auth.AuthenticationService;
+import com.example.eyeglass.service.auth.LogoutHandlerService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -27,6 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/auth")
 public class AuthController {
     AuthenticationService authenticationService;
+    private final LogoutHandlerService logoutHandlerService;
 
     @PostMapping("/login")
     public ApiResponse<AuthenticationResponse> authenticateUser(
@@ -48,10 +51,10 @@ public class AuthController {
     }
 
     @PostMapping("/logout")
-    public ApiResponse<String> logoutUser(HttpServletRequest request, HttpServletResponse response) {
+    public ApiResponse<String> logoutUser(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
+        logoutHandlerService.logout(request, response, authentication);
         ApiResponse<String> res = new ApiResponse<>();
         res.setMessage("User logged out successfully");
-        res.setData(authenticationService.logout(request, response));
         return res;
     }
 

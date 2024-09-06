@@ -93,61 +93,12 @@ public class AuthenticationService {
         return mapper.toDTO(isSaved);
     }
 
-    public String logout(HttpServletRequest request, HttpServletResponse response) {
-        Cookie[] cookies = request.getCookies();
-
-        if (cookies == null) {
-            return "User logged out successfully";
-        }
-
-        for (Cookie cookie : cookies) {
-            if (cookie.getName().equals("refresh_token")) {
-                refreshTokenRepository.findByRefreshToken(cookie.getValue())
-                                      .map(token -> {
-                                          token.setRevoked(true);
-                                          refreshTokenRepository.save(token);
-                                          return token;
-                                      })
-                                      .orElseThrow(() -> new AppException(
-                                              ErrorCode.REFRESH_TOKEN_INVALID));
-            }
-        }
-
-        Cookie refreshTokenCookie = new Cookie("refresh_token", null);
-        refreshTokenCookie.setHttpOnly(true);
-        refreshTokenCookie.setSecure(true);
-        refreshTokenCookie.setMaxAge(0);
-        response.addCookie(refreshTokenCookie);
-
-        return "User logged out successfully";
-    }
-
     public AuthenticationResponse refreshToken(HttpServletRequest request, HttpServletResponse response) {
-//        Cookie[] cookies = request.getCookies();
-//        String refreshToken = null;
-//
-//        if (cookies != null) {
-//            for (Cookie cookie : cookies) {
-//                if (cookie.getName().equals("refresh_token")) {
-//                    refreshToken = cookie.getValue();
-//                    break;
-//                }
-//            }
-//        }
-
-        String refreshToken = request.getHeader("Authorization");
-
-        if (refreshToken == null) {
-            throw new AppException(ErrorCode.REFRESH_TOKEN_INVALID);
-        }
-
-        refreshToken = refreshToken.replace("Bearer ", "");
-
+        String refreshToken = getRefreshToken(request);
 
         RefreshToken token = refreshTokenRepository.findByRefreshToken(refreshToken)
                                                    .orElseThrow(() -> new AppException(
                                                            ErrorCode.REFRESH_TOKEN_INVALID));
-
         if (token.isRevoked()) {
             throw new AppException(ErrorCode.REFRESH_TOKEN_REVOKED);
         }
@@ -165,5 +116,23 @@ public class AuthenticationService {
         return AuthenticationResponse.builder().accessToken(newAccessToken).accessTokenExpiry(5 * 60)
                                      .tokenType(TokenType.Bearer).username(person.getEmail())
                                      .role(person.getRoles().getName()).build();
+    }
+
+    private static String getRefreshToken(HttpServletRequest request) {
+        Cookie[] cookies = request.getCookies();
+        String refreshToken = null;
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals("refresh_token")) {
+                    refreshToken = cookie.getValue();
+                    break;
+                }
+            }
+        }
+        if (refreshToken == null) {
+            throw new AppException(ErrorCode.REFRESH_TOKEN_INVALID);
+        }
+        refreshToken = refreshToken.replace("Bearer ", "");
+        return refreshToken;
     }
 }

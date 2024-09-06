@@ -18,9 +18,7 @@ import java.util.Date;
 @Entity
 @Table(name = "invalidated_tokens")
 public class InvalidatedToken {
-
     @Id
-    String id;
-
+    String token;
     Date expiration;
 }

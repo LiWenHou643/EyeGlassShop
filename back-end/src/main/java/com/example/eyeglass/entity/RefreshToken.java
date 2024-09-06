@@ -12,11 +12,10 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Table(name = "refresh_tokens")
 public class RefreshToken {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
-    // Increase the length to a value that can accommodate your actual token lengths
+
     @Column(name = "refresh_token", nullable = false, length = 10000)
     String refreshToken;
 
@@ -26,5 +25,4 @@ public class RefreshToken {
     @ManyToOne
     @JoinColumn(name = "person_id", referencedColumnName = "id")
     Person person;
-
 }

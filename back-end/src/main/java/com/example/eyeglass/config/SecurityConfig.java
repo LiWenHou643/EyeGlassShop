@@ -45,7 +45,7 @@ public class SecurityConfig {
     JwtUtils jwtUtils;
 
     String[] PUBLIC_ENDPOINTS = {
-            "/auth/login", "/auth/introspect", "/auth/logout", "/auth/refresh-token", "/auth/register", "/error"
+            "public/**", "/auth/login", "/auth/introspect", "/auth/logout", "/auth/refresh-token", "/auth/register", "/error"
     };
 
     @Bean
