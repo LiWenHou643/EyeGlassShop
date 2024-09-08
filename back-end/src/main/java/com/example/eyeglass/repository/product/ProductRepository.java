@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @NonNullApi
@@ -20,6 +21,10 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             "JOIN ProductInventory pi ON p.id = pi.product.id " +
             "WHERE p.id = :productId")
     Optional<ProductResponse> findProductById(Long productId);
+
+    List<Product> findAllByCategory_Id(Long categoryId);
+
+    List<Product> findAllByIsDeletedIsFalse();
 
     boolean existsByProductCode(String title);
 }

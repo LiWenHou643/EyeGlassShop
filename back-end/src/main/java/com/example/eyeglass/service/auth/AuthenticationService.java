@@ -12,7 +12,7 @@ import com.example.eyeglass.entity.RefreshToken;
 import com.example.eyeglass.entity.Roles;
 import com.example.eyeglass.exception.AppException;
 import com.example.eyeglass.exception.ErrorCode;
-import com.example.eyeglass.mapper.Mapper;
+import com.example.eyeglass.mapper.PersonMapper;
 import com.example.eyeglass.repository.auth.RefreshTokenRepository;
 import com.example.eyeglass.repository.person.PersonRepository;
 import jakarta.servlet.http.Cookie;
@@ -25,12 +25,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import static com.example.eyeglass.mapper.PersonMapper.PERSON_MAPPER;
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class AuthenticationService {
-    Mapper mapper;
     JwtGenerator jwtGenerator;
     PasswordEncoder passwordEncoder;
     PersonRepository personRepository;
@@ -90,7 +91,7 @@ public class AuthenticationService {
                               .build();
         Person isSaved = personRepository.save(person);
 
-        return mapper.toDTO(isSaved);
+        return PERSON_MAPPER.toPersonResponse(isSaved);
     }
 
     public AuthenticationResponse refreshToken(HttpServletRequest request, HttpServletResponse response) {

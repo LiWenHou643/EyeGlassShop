@@ -4,7 +4,6 @@ import com.example.eyeglass.dto.response.PersonResponse;
 import com.example.eyeglass.entity.Person;
 import com.example.eyeglass.exception.AppException;
 import com.example.eyeglass.exception.ErrorCode;
-import com.example.eyeglass.mapper.Mapper;
 import com.example.eyeglass.repository.person.PersonRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +15,8 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.example.eyeglass.mapper.PersonMapper.PERSON_MAPPER;
+
 @Service
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
@@ -23,25 +24,25 @@ import java.util.stream.Collectors;
 public class PersonService {
     PersonRepository personRepository;
     PasswordEncoder passwordEncoder;
-    Mapper Mapper;
+
 
     public List<PersonResponse> getAllUsers() {
         List<Person> people = personRepository.findAll();
         return people.stream()
-                     .map(Mapper::toDTO)
+                     .map(PERSON_MAPPER::toPersonResponse)
                      .collect(Collectors.toList());
     }
 
     public PersonResponse getUserById(Long id) {
         Person person = personRepository.findById(id)
                                         .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
-        return Mapper.toDTO(person);
+        return PERSON_MAPPER.toPersonResponse(person);
     }
 
     public PersonResponse getUserByEmail(String email) {
         Person person = personRepository.findByEmail(email)
                                         .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
-        return Mapper.toDTO(person);
+        return PERSON_MAPPER.toPersonResponse(person);
     }
 
     public PersonResponse updateUser(Long id, PersonResponse personResponse) {
@@ -53,6 +54,6 @@ public class PersonService {
         person.setAddress(personResponse.getAddress());
         person.setPassword(passwordEncoder.encode(personResponse.getPassword()));
         Person updatedPerson = personRepository.save(person);
-        return Mapper.toDTO(updatedPerson);
+        return PERSON_MAPPER.toPersonResponse(updatedPerson);
     }
 }
