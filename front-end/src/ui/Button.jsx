@@ -23,19 +23,17 @@ const sizes = {
 const variations = {
     primary: css`
         color: var(--color-grey-0);
-        background-color: var(--color-brand-500);
-
+        background-color: var(--color-sky-500);
         &:hover {
-            background-color: var(--color-brand-600);
+            background-color: var(--color-sky-600);
         }
     `,
     secondary: css`
         color: var(--color-grey-800);
         background: var(--color-grey-0);
-        border: 1px solid var(--color-grey-200);
 
         &:hover {
-            background-color: var(--color-grey-100);
+            background-color: var(--color-grey-300);
         }
     `,
     danger: css`

@@ -126,8 +126,8 @@ function Header() {
                                         text: 'Sunglasses',
                                     },
                                     {
-                                        link: '/glasses?type=eyeframes',
-                                        text: 'Eyeframe',
+                                        link: '/glasses?type=eyelens',
+                                        text: 'Eyelens',
                                     },
                                 ]}
                             >

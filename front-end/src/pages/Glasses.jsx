@@ -3,10 +3,10 @@ import GlassCard from '../features/glasses/GlassCard';
 import { useAllGlasses } from '../features/glasses/useAllGlasses';
 import RingLoader from 'react-spinners/RingLoader';
 import EmptyData from '../ui/EmptyData';
-import FilterBar from '../ui/FilterBar';
 import styled from 'styled-components';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
+import FilterSortBar from '../features/glasses/FilterSortBar';
 
 const Container = styled.div`
     margin-top: 200px;
@@ -15,9 +15,11 @@ const Container = styled.div`
         margin-top: 40px;
     }
 `;
+
 function AllGlasses() {
     const navigate = useNavigate();
     const location = useLocation();
+    const searchParams = new URLSearchParams(location.search);
 
     // Redirect to /glasses?type=all if there is no query string
     useEffect(() => {
@@ -38,25 +40,31 @@ function AllGlasses() {
     if (data.length === 0) return <EmptyData resourceName={'glasses'} />;
 
     // Filter glasses based on the query string
-    let dataFiltered = data;
-    const type = new URLSearchParams(location.search).get('type');
+    let filterData = data;
+    const type = searchParams.get('type');
     if (type !== 'all') {
-        dataFiltered = data.filter((item) => item.category === type);
+        filterData = data.filter((item) => item.category === type);
     }
+
+    // Sort glasses based on the query string
+    const sortBy = searchParams.get('sort') || 'title-asc';
+    const [field, direction] = sortBy.split('-');
+    const modifier = direction === 'asc' ? 1 : -1;
+
+    const sortedData = filterData.sort((a, b) => {
+        if (typeof a[field] === 'string' && typeof b[field] === 'string') {
+            // For string fields
+            return a[field].localeCompare(b[field]) * modifier;
+        }
+        // For numeric fields
+        return (a[field] - b[field]) * modifier;
+    });
 
     return (
         <Container className='container'>
-            <FilterBar
-                filterField='type'
-                options={[
-                    { label: 'All', value: 'all' },
-                    { label: 'Eyeglasses', value: 'eyeglasses' },
-                    { label: 'Sunglasses', value: 'sunglasses' },
-                    { label: 'Eyelens', value: 'eyelens' },
-                ]}
-            />
+            <FilterSortBar />
             <div className='row justify-content-start row-gap-5'>
-                {dataFiltered.map((item) => {
+                {sortedData.map((item) => {
                     return (
                         <div
                             key={item.id}

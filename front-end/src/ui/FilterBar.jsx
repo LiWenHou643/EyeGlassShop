@@ -7,9 +7,6 @@ const StyledFilterBar = styled.div`
     justify-content: center;
     gap: 10px;
     align-items: center;
-    margin-bottom: 40px;
-    padding-bottom: 20px;
-    border-bottom: 1px solid #000000;
 `;
 const StyledButton = styled.button`
     font-size: 1.6rem;
