@@ -12,9 +12,12 @@ export function useLogin() {
         mutationFn: ({ username, password }) =>
             loginApi({ username, password }),
         onSuccess: (response) => {
-            if (response?.data?.accessToken) {
-                localStorage.setItem('user', JSON.stringify(response.data));
-                queryClient.setQueryData(['user'], response.data);
+            if (response?.data?.data.accessToken) {
+                localStorage.setItem(
+                    'user',
+                    JSON.stringify(response.data.data)
+                );
+                queryClient.setQueryData(['user'], response.data.data);
                 const redirectPath = location.state?.from?.pathname || '/';
                 navigate(redirectPath, { replace: true });
             }

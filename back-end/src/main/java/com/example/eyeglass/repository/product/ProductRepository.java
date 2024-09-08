@@ -15,7 +15,7 @@ import java.util.Optional;
 public interface ProductRepository extends JpaRepository<Product, Long> {
 
     @Query("SELECT new com.example.eyeglass.dto.response.ProductResponse(" +
-            "p.id, p.title, p.price, p.discount, p.thumbnail, p.description, c.name, pi.stockQuantity, pi.soldQuantity) " +
+            "p.id, p.productCode, p.title, p.price, p.discount, p.thumbnail, p.description, c.name, pi.stockQuantity, pi.soldQuantity) " +
             "FROM Product p " +
             "JOIN p.category c " +
             "JOIN ProductInventory pi ON p.id = pi.product.id " +
@@ -24,7 +24,13 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     List<Product> findAllByCategory_Id(Long categoryId);
 
-    List<Product> findAllByIsDeletedIsFalse();
+    @Query("SELECT new com.example.eyeglass.dto.response.ProductResponse(" +
+            "p.id, p.productCode, p.title, p.price, p.discount, p.thumbnail, p.description, c.name, pi.stockQuantity, pi.soldQuantity) " +
+            "FROM Product p " +
+            "JOIN p.category c " +
+            "JOIN ProductInventory pi ON p.id = pi.product.id " +
+            "WHERE p.isDeleted = false")
+    List<ProductResponse> findAllByIsDeletedIsFalse();
 
     boolean existsByProductCode(String title);
 }

@@ -43,7 +43,7 @@ public class AuthenticationService {
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
 
         boolean authenticated = passwordEncoder.matches(request.password(), person.getPassword());
-        if (!authenticated) throw new AppException(ErrorCode.UNAUTHENTICATED);
+        if (!authenticated) throw new AppException(ErrorCode.PASSWORD_NOT_MATCH);
 
         String token = jwtGenerator.generateAccessToken(person);
         String refreshToken = jwtGenerator.generateRefreshToken(person);

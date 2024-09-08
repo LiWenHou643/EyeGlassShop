@@ -12,6 +12,7 @@ public enum ErrorCode {
 
     USER_EXISTED(1001, "User existed", HttpStatus.BAD_REQUEST),
     USER_NOT_EXISTED(1002, "User not existed", HttpStatus.NOT_FOUND),
+    PASSWORD_NOT_MATCH(1003, "Password not match", HttpStatus.BAD_REQUEST),
     JWT_INVALID(1003, "JWT invalid", HttpStatus.UNAUTHORIZED),
     JWT_EXPIRED(1004, "JWT expired", HttpStatus.UNAUTHORIZED),
     REFRESH_TOKEN_INVALID(1005, "Refresh token invalid", HttpStatus.UNAUTHORIZED),

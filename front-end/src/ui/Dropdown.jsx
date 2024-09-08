@@ -49,7 +49,7 @@ function Dropdown({ items, children }) {
         >
             {children}
             {isDropdownOpen && (
-                <DropdownMenu className='position-absolute top-100'>
+                <DropdownMenu className='position-absolute top-100 border border-dark'>
                     {items.map((item, index) => (
                         <li key={index}>
                             <BaseStyledLink

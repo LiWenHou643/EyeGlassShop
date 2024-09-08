@@ -29,10 +29,7 @@ public class ProductService {
     ProductInventoryRepository productInventoryRepository;
 
     public List<ProductResponse> getAllProducts() {
-        return productRepository.findAllByIsDeletedIsFalse()
-                                .stream()
-                                .map(PRODUCT_MAPPER::toProductResponse)
-                                .toList();
+        return productRepository.findAllByIsDeletedIsFalse();
     }
 
     public ProductResponse getProductById(Long productId) {
@@ -47,8 +44,7 @@ public class ProductService {
         }
 
         // Save product to database
-        Product product = new Product();
-        product = PRODUCT_MAPPER.toProductEntity(productRequest);
+        Product product = PRODUCT_MAPPER.toProductEntity(productRequest);
         Category category = categoryService.getCategoryById(productRequest.categoryId());
         product.setCategory(category);
         productRepository.save(product);

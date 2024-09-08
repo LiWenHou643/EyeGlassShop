@@ -1,4 +1,4 @@
-import api from './apiClient';
+import { privateApi as api } from './apiClient';
 
 export const login = ({ username, password }) =>
     api.post('/auth/login', {

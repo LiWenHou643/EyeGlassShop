@@ -8,13 +8,9 @@ import Login from './pages/Login';
 import Glasses from './pages/Glasses';
 import AppLayout from './ui/AppLayout';
 import GlobalStyles from './styles/GlobalStyles';
-import Eyeglasses from './features/glasses/Eyeglasses';
-import Sunglasses from './features/glasses/Sunglasses';
 import Home from './pages/Home';
 import ProtectedRoutes from './ProtectedRoutes';
 import Profile from './pages/Profile';
-import AllGlasses from './features/glasses/AllGlasses';
-import Eyeframes from './features/glasses/Eyeframes';
 import ForgotPwd from './pages/ForgotPwd';
 import Register from './pages/Register';
 
@@ -38,25 +34,7 @@ function App() {
                                 path='forgot-password'
                                 element={<ForgotPwd />}
                             />
-                            <Route path='glasses' element={<Glasses />}>
-                                <Route
-                                    index
-                                    element={<Navigate replace to='all' />}
-                                />
-                                <Route path='all' element={<AllGlasses />} />
-                                <Route
-                                    path='sunglasses'
-                                    element={<Sunglasses />}
-                                />
-                                <Route
-                                    path='eyeglasses'
-                                    element={<Eyeglasses />}
-                                />
-                                <Route
-                                    path='eyeframes'
-                                    element={<Eyeframes />}
-                                />
-                            </Route>
+                            <Route path='glasses/*' element={<Glasses />} />
 
                             <Route element={<ProtectedRoutes />}>
                                 <Route

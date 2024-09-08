@@ -12,8 +12,6 @@ public interface ProductMapper {
     ProductMapper PRODUCT_MAPPER = Mappers.getMapper(ProductMapper.class);
 
     @Mapping(source = "category.name", target = "category")
-    @Mapping(target = "stockQuantity", ignore = true)
-    @Mapping(target = "soldQuantity", ignore = true)
     ProductResponse toProductResponse(Product product);
 
     Product toProductEntity(ProductRequest productRequest);
