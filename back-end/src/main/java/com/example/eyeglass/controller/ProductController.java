@@ -12,25 +12,36 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Slf4j
 @RestController
-@RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+@RequiredArgsConstructor
 @RequestMapping("/public/products")
 public class ProductController {
     ProductService productService;
 
     @GetMapping
     public ApiResponse<Page<ProductResponse>> getProducts(
-            @RequestParam(name = "category", required = false) String filter,
+            @RequestParam(name = "category", required = false) String category,
             @RequestParam(name = "sort", defaultValue = "title-asc") String sort,
             @RequestParam(name = "page", defaultValue = "0") int page,
             @RequestParam(name = "size", defaultValue = "10") int size) {
 
         ApiResponse<Page<ProductResponse>> response = new ApiResponse<>();
-        response.setData(productService.getAllProducts(filter, page, size, sort));
+        response.setData(productService.getProducts(category, page, size, sort));
         return response;
     }
+
+    @GetMapping("/search")
+    public ApiResponse<List<ProductResponse>> searchProducts(@RequestParam String search) {
+        List<ProductResponse> products = productService.searchProducts(search);
+        ApiResponse<List<ProductResponse>> response = new ApiResponse<>();
+        response.setData(products);
+        return response;
+    }
+
 
     @GetMapping("/{productId}")
     public ResponseEntity<ProductResponse> getProductById(@PathVariable Long productId) {

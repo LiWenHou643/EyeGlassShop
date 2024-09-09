@@ -118,15 +118,15 @@ function Header() {
                             <Dropdown
                                 items={[
                                     {
-                                        link: '/glasses?type=eyeglasses',
+                                        link: '/glasses?category=eyeglasses',
                                         text: 'Eyeglasses',
                                     },
                                     {
-                                        link: '/glasses?type=sunglasses',
+                                        link: '/glasses?category=sunglasses',
                                         text: 'Sunglasses',
                                     },
                                     {
-                                        link: '/glasses?type=eyelens',
+                                        link: '/glasses?category=eyelens',
                                         text: 'Eyelens',
                                     },
                                 ]}

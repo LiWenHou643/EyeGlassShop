@@ -3,9 +3,8 @@ import styled from 'styled-components';
 
 const StyledFilterBar = styled.div`
     display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 10px;
+    justify-content: space-between;
+    gap: 8px;
     align-items: center;
 `;
 const StyledButton = styled.button`
@@ -23,11 +22,11 @@ const StyledButton = styled.button`
     ${(props) => props.$active && `box-shadow: 0 5px 5px rgba(0, 0, 0, 0.2)`}
 `;
 
-function FilterBar({ filterField, options }) {
+function FilterBar({ filterField, options, className }) {
     const [searchParams, setSearchParams] = useSearchParams();
     const currentFilter = searchParams.get(filterField) || options.at(0).value;
     return (
-        <StyledFilterBar>
+        <StyledFilterBar className={className}>
             {options.map((options) => {
                 return (
                     <StyledButton

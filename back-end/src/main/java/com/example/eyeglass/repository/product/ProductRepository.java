@@ -10,6 +10,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @NonNullApi
@@ -32,6 +33,15 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             "WHERE p.isDeleted = false " +
             "AND (:category IS NULL OR c.name = :category)")
     Page<ProductResponse> findAllByIsDeletedIsFalse(@Param("category") String category, Pageable pageable);
+
+    @Query("SELECT new com.example.eyeglass.dto.response.ProductResponse(" +
+            "p.id, p.productCode, p.title, p.price, p.discount, p.thumbnail, p.description, c.name, pi.stockQuantity, pi.soldQuantity) " +
+            "FROM Product p " +
+            "JOIN p.category c " +
+            "JOIN ProductInventory pi ON p.id = pi.product.id " +
+            "WHERE p.isDeleted = false " +
+            "AND LOWER(REPLACE(p.title, ' ', '')) LIKE LOWER(CONCAT('%', REPLACE(:search, ' ', ''), '%'))")
+    List<ProductResponse> findByTitleContainingIgnoreCase(@Param("search") String search);
 
     boolean existsByProductCode(String title);
 }

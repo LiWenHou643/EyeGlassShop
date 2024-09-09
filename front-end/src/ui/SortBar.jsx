@@ -1,7 +1,7 @@
 import { useSearchParams } from 'react-router-dom';
 import Select from './Select';
 
-function SortBar({ sortField, options }) {
+function SortBar({ sortField, options, className }) {
     const [searchParams, setSearchParams] = useSearchParams();
     const sortBy = searchParams.get(sortField) || options.at(0).value;
 
@@ -10,7 +10,11 @@ function SortBar({ sortField, options }) {
         setSearchParams(searchParams);
     }
 
-    return <Select options={options} value={sortBy} onChange={handleChange} />;
+    return (
+        <div className={className}>
+            <Select options={options} value={sortBy} onChange={handleChange} />
+        </div>
+    );
 }
 
 export default SortBar;

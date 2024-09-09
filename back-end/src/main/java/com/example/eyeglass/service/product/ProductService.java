@@ -19,6 +19,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 import static com.example.eyeglass.mapper.ProductMapper.PRODUCT_MAPPER;
 
 @Slf4j
@@ -30,13 +32,18 @@ public class ProductService {
     ProductRepository productRepository;
     ProductInventoryRepository productInventoryRepository;
 
-    public Page<ProductResponse> getAllProducts(String filter, int page, int size, String sort) {
+    public Page<ProductResponse> getProducts(String category, int page, int size, String sort) {
         String[] sortParams = sort.split("-");
         String sortField = sortParams[0];
         Sort.Direction sortDirection = sortParams[1].equals("asc") ? Sort.Direction.ASC : Sort.Direction.DESC;
         if (page < 1) page = 1;
+        if (sortField.equals("soldQuantity")) sortField = "pi.soldQuantity";
         Pageable pageable = PageRequest.of(page - 1, size, Sort.by(sortDirection, sortField));
-        return productRepository.findAllByIsDeletedIsFalse(filter, pageable);
+        return productRepository.findAllByIsDeletedIsFalse(category, pageable);
+    }
+
+    public List<ProductResponse> searchProducts(String search) {
+        return productRepository.findByTitleContainingIgnoreCase(search);
     }
 
     public ProductResponse getProductById(Long productId) {

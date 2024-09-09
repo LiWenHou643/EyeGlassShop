@@ -4,9 +4,8 @@ import { useGlasses } from '../features/glasses/useGlasses';
 import RingLoader from 'react-spinners/RingLoader';
 import EmptyData from '../ui/EmptyData';
 import styled from 'styled-components';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { useEffect } from 'react';
-import FilterSortBar from '../features/glasses/FilterSortBar';
+import { useLocation } from 'react-router-dom';
+import GlassesOperationBar from '../features/glasses/GlassesOperationBar';
 
 const Container = styled.div`
     margin-top: 200px;
@@ -26,20 +25,31 @@ const Error = styled.div`
     }
 `;
 
-function AllGlasses() {
-    const navigate = useNavigate();
+function Glasses() {
     const location = useLocation();
     const searchParams = new URLSearchParams(location.search);
 
-    // Redirect to /glasses?type=all if there is no query string
-    useEffect(() => {
-        if (!location.search) {
-            navigate('/glasses?type=all', { replace: true });
-        }
-    }, [location.search, navigate]);
+    // Filter glasses based on the query string
+    const categoryValue = searchParams.get('category');
+    const category =
+        !categoryValue || categoryValue === 'all' ? null : categoryValue;
+
+    // Sort glasses based on the query string
+    const sortBy = searchParams.get('sort') || 'title-asc';
+    const [field, direction] = sortBy.split('-');
+    const sort = `${field}-${direction}`;
+
+    // Pagination
+    const page = !searchParams.get('page')
+        ? 1
+        : Number(searchParams.get('page'));
 
     // Fetch all glasses
-    const { isLoading, error, data } = useGlasses();
+    const { isLoading, error, data } = useGlasses({
+        category,
+        sort,
+        page,
+    });
     if (isLoading)
         return (
             <Spinner>
@@ -49,32 +59,11 @@ function AllGlasses() {
     if (error) return <Error>Error: {error.message}</Error>;
     if (data.length === 0) return <EmptyData resourceName={'glasses'} />;
 
-    // Filter glasses based on the query string
-    let filterData = data;
-    const type = searchParams.get('type');
-    if (type !== 'all') {
-        filterData = data.filter((item) => item.category === type);
-    }
-
-    // Sort glasses based on the query string
-    const sortBy = searchParams.get('sort') || 'title-asc';
-    const [field, direction] = sortBy.split('-');
-    const modifier = direction === 'asc' ? 1 : -1;
-
-    const sortedData = filterData.sort((a, b) => {
-        if (typeof a[field] === 'string' && typeof b[field] === 'string') {
-            // For string fields
-            return a[field].localeCompare(b[field]) * modifier;
-        }
-        // For numeric fields
-        return (a[field] - b[field]) * modifier;
-    });
-
     return (
         <Container className='container'>
-            <FilterSortBar />
+            <GlassesOperationBar />
             <div className='row justify-content-start row-gap-5'>
-                {sortedData.map((item) => {
+                {data.map((item) => {
                     return (
                         <div
                             key={item.id}
@@ -89,4 +78,4 @@ function AllGlasses() {
     );
 }
 
-export default AllGlasses;
+export default Glasses;
