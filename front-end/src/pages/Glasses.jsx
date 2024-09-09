@@ -1,6 +1,6 @@
 import Spinner from '../ui/Spinner';
 import GlassCard from '../features/glasses/GlassCard';
-import { useAllGlasses } from '../features/glasses/useAllGlasses';
+import { useGlasses } from '../features/glasses/useGlasses';
 import RingLoader from 'react-spinners/RingLoader';
 import EmptyData from '../ui/EmptyData';
 import styled from 'styled-components';
@@ -10,6 +10,16 @@ import FilterSortBar from '../features/glasses/FilterSortBar';
 
 const Container = styled.div`
     margin-top: 200px;
+
+    @media (max-width: 1023px) {
+        margin-top: 40px;
+    }
+`;
+
+const Error = styled.div`
+    text-align: center;
+    margin-top: 200px;
+    color: red;
 
     @media (max-width: 1023px) {
         margin-top: 40px;
@@ -29,14 +39,14 @@ function AllGlasses() {
     }, [location.search, navigate]);
 
     // Fetch all glasses
-    const { isLoading, error, data } = useAllGlasses();
+    const { isLoading, error, data } = useGlasses();
     if (isLoading)
         return (
             <Spinner>
                 <RingLoader color='blue' />
             </Spinner>
         );
-    if (error) return <div>Error: {error.message}</div>;
+    if (error) return <Error>Error: {error.message}</Error>;
     if (data.length === 0) return <EmptyData resourceName={'glasses'} />;
 
     // Filter glasses based on the query string
