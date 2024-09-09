@@ -14,53 +14,53 @@ INSERT INTO `defaultdb`.`category` (`id`, `name`) VALUES ('2', 'sunglasses');
 INSERT INTO `defaultdb`.`category` (`id`, `name`) VALUES ('3', 'eyelens');
 
 INSERT INTO `defaultdb`.`product` (`category_id`, `product_code`, `title`, `price`, `discount`, `thumbnail`, `description`)
-	VALUES ('1', 'EG01', 'Eye Glasses 01', '200000', '0', '/data-image/eg-01.jpg', 'good glasses for protect eyes');
+	VALUES ('1', 'EG01', 'Eye Glasses 01', '599000', '0', '/data-image/eg-01.jpg', 'good glasses for protect eyes');
 INSERT INTO `defaultdb`.`product` (`category_id`, `product_code`, `title`, `price`, `discount`, `thumbnail`, `description`)
-	VALUES ('1', 'EG02', 'Eye Glasses 02', '200000', '10', '/data-image/eg-02.jpg', 'good glasses for protect eyes');
+	VALUES ('1', 'EG02', 'Eye Glasses 02', '350000', '10', '/data-image/eg-02.jpg', 'good glasses for protect eyes');
 INSERT INTO `defaultdb`.`product` (`category_id`, `product_code`, `title`, `price`, `discount`, `thumbnail`, `description`)
-	VALUES ('1', 'EG03', 'Eye Glasses 03', '200000', '20', '/data-image/eg-03.jpg', 'good glasses for protect eyes');
+	VALUES ('1', 'EG03', 'Eye Glasses 03', '299000', '20', '/data-image/eg-03.jpg', 'good glasses for protect eyes');
 INSERT INTO `defaultdb`.`product` (`category_id`, `product_code`, `title`, `price`, `discount`, `thumbnail`, `description`)
-	VALUES ('1', 'EG04', 'Eye Glasses 04', '200000', '30', '/data-image/eg-04.jpg', 'good glasses for protect eyes');
+	VALUES ('1', 'EG04', 'Eye Glasses 04', '180000', '30', '/data-image/eg-04.jpg', 'good glasses for protect eyes');
 INSERT INTO `defaultdb`.`product` (`category_id`, `product_code`, `title`, `price`, `discount`, `thumbnail`, `description`)
-	VALUES ('1', 'EG05', 'Eye Glasses 05', '200000', '0', '/data-image/eg-05.jpg', 'good glasses for protect eyes');
+	VALUES ('1', 'EG05', 'Eye Glasses 05', '290000', '0', '/data-image/eg-05.jpg', 'good glasses for protect eyes');
 INSERT INTO `defaultdb`.`product` (`category_id`, `product_code`, `title`, `price`, `discount`, `thumbnail`, `description`)
-	VALUES ('1', 'EG06', 'Eye Glasses 06', '200000', '10', '/data-image/eg-06.jpg', 'good glasses for protect eyes');
+	VALUES ('1', 'EG06', 'Eye Glasses 06', '230000', '10', '/data-image/eg-06.jpg', 'good glasses for protect eyes');
 INSERT INTO `defaultdb`.`product` (`category_id`, `product_code`, `title`, `price`, `discount`, `thumbnail`, `description`)
-	VALUES ('1', 'EG07', 'Eye Glasses 07', '200000', '20', '/data-image/eg-07.jpg', 'good glasses for protect eyes');
+	VALUES ('1', 'EG07', 'Eye Glasses 07', '470000', '20', '/data-image/eg-07.jpg', 'good glasses for protect eyes');
 INSERT INTO `defaultdb`.`product` (`category_id`, `product_code`, `title`, `price`, `discount`, `thumbnail`, `description`)
-	VALUES ('1', 'EG08', 'Eye Glasses 08', '200000', '30', '/data-image/eg-08.jpg', 'good glasses for protect eyes');
+	VALUES ('1', 'EG08', 'Eye Glasses 08', '830000', '30', '/data-image/eg-08.jpg', 'good glasses for protect eyes');
 INSERT INTO `defaultdb`.`product` (`category_id`, `product_code`, `title`, `price`, `discount`, `thumbnail`, `description`)
-	VALUES ('1', 'EG09', 'Eye Glasses 09', '200000', '0', '/data-image/eg-09.jpg', 'good glasses for protect eyes');
+	VALUES ('1', 'EG09', 'Eye Glasses 09', '620000', '0', '/data-image/eg-09.jpg', 'good glasses for protect eyes');
 INSERT INTO `defaultdb`.`product` (`category_id`, `product_code`, `title`, `price`, `discount`, `thumbnail`, `description`)
-	VALUES ('1', 'EG10', 'Eye Glasses 10', '200000', '10', '/data-image/eg-10.jpg', 'good glasses for protect eyes');
+	VALUES ('1', 'EG10', 'Eye Glasses 10', '450000', '10', '/data-image/eg-10.jpg', 'good glasses for protect eyes');
     
 INSERT INTO `defaultdb`.`product` (`category_id`, `product_code`, `title`, `price`, `discount`, `thumbnail`, `description`)
-	VALUES ('2', 'SG01', 'Sun Glasses 01', '200000', '0', '/data-image/sg-01.jpg', 'good glasses for protect eyes');
+	VALUES ('2', 'SG01', 'Sun Glasses 01', '430000', '0', '/data-image/sg-01.jpg', 'good glasses for protect eyes');
 INSERT INTO `defaultdb`.`product` (`category_id`, `product_code`, `title`, `price`, `discount`, `thumbnail`, `description`)
-	VALUES ('2', 'SG02', 'Sun Glasses 02', '200000', '10', '/data-image/sg-02.jpg', 'good glasses for protect eyes');
+	VALUES ('2', 'SG02', 'Sun Glasses 02', '670000', '10', '/data-image/sg-02.jpg', 'good glasses for protect eyes');
 INSERT INTO `defaultdb`.`product` (`category_id`, `product_code`, `title`, `price`, `discount`, `thumbnail`, `description`)
-	VALUES ('2', 'SG03', 'Sun Glasses 03', '200000', '20', '/data-image/sg-03.jpg', 'good glasses for protect eyes');
+	VALUES ('2', 'SG03', 'Sun Glasses 03', '550000', '20', '/data-image/sg-03.jpg', 'good glasses for protect eyes');
 INSERT INTO `defaultdb`.`product` (`category_id`, `product_code`, `title`, `price`, `discount`, `thumbnail`, `description`)
-	VALUES ('2', 'SG04', 'Sun Glasses 04', '200000', '30', '/data-image/sg-04.jpg', 'good glasses for protect eyes');
+	VALUES ('2', 'SG04', 'Sun Glasses 04', '260000', '30', '/data-image/sg-04.jpg', 'good glasses for protect eyes');
 INSERT INTO `defaultdb`.`product` (`category_id`, `product_code`, `title`, `price`, `discount`, `thumbnail`, `description`)
-	VALUES ('2', 'SG05', 'Sun Glasses 05', '200000', '0', '/data-image/sg-05.jpg', 'good glasses for protect eyes');
+	VALUES ('2', 'SG05', 'Sun Glasses 05', '280000', '0', '/data-image/sg-05.jpg', 'good glasses for protect eyes');
 INSERT INTO `defaultdb`.`product` (`category_id`, `product_code`, `title`, `price`, `discount`, `thumbnail`, `description`)
-	VALUES ('2', 'SG06', 'Sun Glasses 06', '200000', '10', '/data-image/sg-06.jpg', 'good glasses for protect eyes');
+	VALUES ('2', 'SG06', 'Sun Glasses 06', '240000', '10', '/data-image/sg-06.jpg', 'good glasses for protect eyes');
 INSERT INTO `defaultdb`.`product` (`category_id`, `product_code`, `title`, `price`, `discount`, `thumbnail`, `description`)
-	VALUES ('2', 'SG07', 'Sun Glasses 07', '200000', '20', '/data-image/sg-07.jpg', 'good glasses for protect eyes');
+	VALUES ('2', 'SG07', 'Sun Glasses 07', '190000', '20', '/data-image/sg-07.jpg', 'good glasses for protect eyes');
 INSERT INTO `defaultdb`.`product` (`category_id`, `product_code`, `title`, `price`, `discount`, `thumbnail`, `description`)
-	VALUES ('2', 'SG08', 'Sun Glasses 08', '200000', '30', '/data-image/sg-08.jpg', 'good glasses for protect eyes');
+	VALUES ('2', 'SG08', 'Sun Glasses 08', '460000', '30', '/data-image/sg-08.jpg', 'good glasses for protect eyes');
 INSERT INTO `defaultdb`.`product` (`category_id`, `product_code`, `title`, `price`, `discount`, `thumbnail`, `description`)
-	VALUES ('2', 'SG09', 'Sun Glasses 09', '200000', '0', '/data-image/sg-09.jpg', 'good glasses for protect eyes');
+	VALUES ('2', 'SG09', 'Sun Glasses 09', '320000', '0', '/data-image/sg-09.jpg', 'good glasses for protect eyes');
 INSERT INTO `defaultdb`.`product` (`category_id`, `product_code`, `title`, `price`, `discount`, `thumbnail`, `description`)
-	VALUES ('2', 'SG10', 'Sun Glasses 10', '200000', '10', '/data-image/sg-10.jpg', 'good glasses for protect eyes');
+	VALUES ('2', 'SG10', 'Sun Glasses 10', '290000', '10', '/data-image/sg-10.jpg', 'good glasses for protect eyes');
     
 INSERT INTO `defaultdb`.`product` (`category_id`, `product_code`, `title`, `price`, `discount`, `thumbnail`, `description`)
-	VALUES ('3', 'EL01', 'Eye Lens 01', '200000', '0', '/data-image/el-01.jpg', 'good glasses for protect eyes');
+	VALUES ('3', 'EL01', 'Eye Lens 01', '400000', '0', '/data-image/el-01.jpg', 'good glasses for protect eyes');
 INSERT INTO `defaultdb`.`product` (`category_id`, `product_code`, `title`, `price`, `discount`, `thumbnail`, `description`)
-	VALUES ('3', 'EL02', 'Eye Lens 02', '300000', '10', '/data-image/el-02.jpg', 'good glasses for protect eyes');
+	VALUES ('3', 'EL02', 'Eye Lens 02', '500000', '10', '/data-image/el-02.jpg', 'good glasses for protect eyes');
 INSERT INTO `defaultdb`.`product` (`category_id`, `product_code`, `title`, `price`, `discount`, `thumbnail`, `description`)
-	VALUES ('3', 'EL03', 'Eye Lens 03', '400000', '20', '/data-image/el-03.jpg', 'good glasses for protect eyes');
+	VALUES ('3', 'EL03', 'Eye Lens 03', '600000', '20', '/data-image/el-03.jpg', 'good glasses for protect eyes');
 
 INSERT INTO `defaultdb`.`color` (`product_id`, `name`, `hex`) VALUES ('21', 'white', '#ffffff');
 INSERT INTO `defaultdb`.`color` (`product_id`, `name`, `hex`) VALUES ('21', 'black', '#000000');

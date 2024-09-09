@@ -1,10 +1,10 @@
-import { getAllGlassProducts } from '../../services/apiProduct';
+import { getGlassProducts } from '../../services/apiProduct';
 import { useQuery } from '@tanstack/react-query';
 
-export function useAllGlasses() {
+export function useGlasses() {
     const { isLoading, error, data } = useQuery({
         queryKey: ['glasses'],
-        queryFn: getAllGlassProducts,
+        queryFn: getGlassProducts,
     });
 
     return { isLoading, error, data: data?.data };

@@ -13,9 +13,11 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 import static com.example.eyeglass.mapper.ProductMapper.PRODUCT_MAPPER;
 
@@ -28,8 +30,13 @@ public class ProductService {
     ProductRepository productRepository;
     ProductInventoryRepository productInventoryRepository;
 
-    public List<ProductResponse> getAllProducts() {
-        return productRepository.findAllByIsDeletedIsFalse();
+    public Page<ProductResponse> getAllProducts(String filter, int page, int size, String sort) {
+        String[] sortParams = sort.split("-");
+        String sortField = sortParams[0];
+        Sort.Direction sortDirection = sortParams[1].equals("asc") ? Sort.Direction.ASC : Sort.Direction.DESC;
+        if (page < 1) page = 1;
+        Pageable pageable = PageRequest.of(page - 1, size, Sort.by(sortDirection, sortField));
+        return productRepository.findAllByIsDeletedIsFalse(filter, pageable);
     }
 
     public ProductResponse getProductById(Long productId) {

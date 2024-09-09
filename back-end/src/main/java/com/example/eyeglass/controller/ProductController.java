@@ -7,14 +7,10 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
+import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RestController
@@ -25,9 +21,14 @@ public class ProductController {
     ProductService productService;
 
     @GetMapping
-    public ApiResponse<List<ProductResponse>> getAllProducts() {
-        ApiResponse<List<ProductResponse>> response = new ApiResponse<>();
-        response.setData(productService.getAllProducts());
+    public ApiResponse<Page<ProductResponse>> getProducts(
+            @RequestParam(name = "category", required = false) String filter,
+            @RequestParam(name = "sort", defaultValue = "title-asc") String sort,
+            @RequestParam(name = "page", defaultValue = "0") int page,
+            @RequestParam(name = "size", defaultValue = "10") int size) {
+
+        ApiResponse<Page<ProductResponse>> response = new ApiResponse<>();
+        response.setData(productService.getAllProducts(filter, page, size, sort));
         return response;
     }
 
