@@ -42,6 +42,11 @@ public class ProductService {
         return productRepository.findAllByIsDeletedIsFalse(category, pageable);
     }
 
+    public List<ProductResponse> getBestSellerProducts(int limit) {
+        Pageable pageable = PageRequest.of(0, limit, Sort.by(Sort.Direction.DESC, "pi.soldQuantity"));
+        return productRepository.findBestSellerProducts(pageable);
+    }
+
     public List<ProductResponse> searchProducts(String search) {
         return productRepository.findByTitleContainingIgnoreCase(search);
     }
