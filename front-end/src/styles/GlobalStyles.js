@@ -16,19 +16,6 @@ const GlobalStyles = createGlobalStyle`
     --color-grey-800: #1f2937;
     --color-grey-900: #111827;
 
-    /* Sky */
-    --color-sky-50: #f0f9ff;
-    --color-sky-100: #e0f2fe;
-    --color-sky-200: #bae6fd;
-    --color-sky-300: #7dd3fc;
-    --color-sky-400: #38bdf8;
-    --color-sky-500: #0ea5e9;
-    --color-sky-600: #0284c7;
-    --color-sky-700: #0369a1;
-    --color-sky-800: #075985;
-    --color-sky-900: #0c4a6e;
-    --color-sky-950: #082f49;
-
     --backdrop-color: rgba(255, 255, 255, 0.1);
 
     --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
@@ -66,7 +53,7 @@ const GlobalStyles = createGlobalStyle`
     --image-opacity: 80%;
 
     --color-header: radial-gradient(circle, rgba(122,102,193,1) 0%, rgba(55,126,210,1) 100%);
-    --color-bg: linear-gradient(90deg, rgba(76,114,161,1) 0%, rgba(0,56,71,1) 50%, rgba(76,114,161,1) 100%);
+    --color-bg: linear-gradient(90deg, rgba(76,114,161,1) 0%, rgba(94,136,155,1) 30%, rgba(107,114,152,1) 70%, rgba(76,114,161,1) 100%);
     --color-footer: radial-gradient(circle, rgba(20, 30, 30, 1) 0%, rgba(0, 0, 20, 1) 100%);
 
   }
@@ -77,6 +64,12 @@ const GlobalStyles = createGlobalStyle`
   --border-radius-lg: 9px;
 
   --color-red-300: #FF9696;
+  --color-pink-100: #fce7f3;
+  --color-pink-200: #fbcfe8;
+  --color-pink-300: #f9a8d4;
+  --color-indigo-300: #a5b4fc;
+  --color-indigo-400: #818cf8;
+  --color-blue-200: #bfdbfe;
 
   --color-const-grey-0: #fff;
   --color-const-grey-50: #f9fafb;
@@ -139,13 +132,6 @@ input:disabled {
     color: var(--color-grey-500);
 }
 
-input:focus,
-button:focus,
-textarea:focus,
-select:focus {
-    outline: 2px solid var(--color-grey-800);
-    outline-offset: -1px;
-}
 
 /* Parent selector, finally 😃 */
 button:has(svg) {
@@ -186,30 +172,30 @@ ul {
     margin: 0 !important;
 }
 
-.active>.page-link {
-    background-color: var(--color-brand-600);
-    border-color: var(--color-brand-600);
-}
-
 .pagination {
-    gap: 0.6rem;
+    gap: 0.5rem;
+    border-top: 1px solid var(--color-grey-800);
+    border-bottom: 1px solid var(--color-grey-800);
+    padding: 0.5rem !important;
 }
 
-.page-link {
-    color: var(--color-grey-700);
-    font-size: 1.4rem;
-    padding: 0.2rem 1.2rem;
+.pagination a{
+    display: inline-block;
+    width: 4rem;
+    text-align: center;
+    padding: 0.5rem;
+    border-radius: var(--border-radius-sm);
+    transition: 0s;
 }
 
-.page-link::hover {
-    background-color: var(--color-brand-500);
-}
-
-.page-link:focus {
-    outline: 2px solid var(--color-brand-600);
-    outline-offset: -1px;
-    box-shadow: none;
+.pagination a:hover {
     background-color: var(--color-grey-0);
+}
+
+.pagination li.active a{
+    background-color: var(--color-const-grey-100);
+    color: var(--color-const-grey-800);
+
 }
 
 

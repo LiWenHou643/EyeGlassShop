@@ -1,6 +1,11 @@
 import { styled } from 'styled-components';
 import { useEffect, useState } from 'react';
-import { HiOutlineMoon, HiOutlineSun } from 'react-icons/hi2';
+import {
+    HiBars3,
+    HiOutlineMoon,
+    HiOutlineSun,
+    HiOutlineXMark,
+} from 'react-icons/hi2';
 import { useDarkMode } from '../context/DarkModeContext';
 import Dropdown from './Dropdown';
 import BaseStyledLink from './Link';
@@ -10,10 +15,12 @@ import UserMenu from '../features/user/UserMenu';
 const StyledHeader = styled.header`
     background: var(--color-header);
     color: var(--color-grey-100);
-    padding: 0 3.6rem 0 2rem;
+    padding: 0 2rem;
     margin: 0 auto;
-
     z-index: 1000;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 
     @media (min-width: 1024px) {
         max-width: ${({ $scrolled }) => ($scrolled ? '100%' : '1000px')};
@@ -23,10 +30,6 @@ const StyledHeader = styled.header`
         position: ${({ $scrolled }) => ($scrolled ? 'fixed' : 'absolute')};
         inset: 0;
         transition: height 0s, border-radius 0.5s, max-width 0.3s ease;
-
-        > nav {
-            margin-top: ${({ $scrolled }) => !$scrolled && '10px'};
-        }
     }
 `;
 
@@ -48,32 +51,99 @@ const StyledLink = styled(BaseStyledLink)`
 `;
 
 const LoginButton = styled(StyledLink)`
-    transition: 0.5s ease;
-    &:hover {
-        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    button {
+        transition: 0.5s ease;
+        border: none;
+        outline: none;
+        background-color: transparent;
+        color: var(--color-grey-700);
+        padding: 0.2rem 1rem;
+
+        &:hover {
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+            color: var(--color-grey-100);
+        }
+    }
+
+    @media (max-width: 768px) {
+        justify-content: start;
+        padding: 0.6rem !important;
+
+        &:hover button {
+            box-shadow: none;
+            color: var(--color-grey-100);
+        }
     }
 `;
 
 const ToggleDarkMode = styled.button`
     font-size: 2.5rem;
-    padding: 1rem 1rem;
+    padding: 0rem 1rem;
+    height: 40px;
     color: var(--color-grey-800);
     margin-left: 1rem;
     transition: 0.5s ease;
+    background-color: transparent;
+    border: none;
     &:hover {
         box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+        color: var(--color-grey-100);
     }
-    &:focus {
-        color: var(--color-grey-800);
+    @media (max-width: 768px) {
+        margin-left: auto;
     }
+`;
+
+const ToggleHeaderMenu = styled.button`
+    position: absolute;
+    right: 4rem;
+    top: 53%;
+    transform: translateY(-50%);
+    font-size: 2.8rem;
+    transition: 0.3s ease;
+    height: 40px;
+
+    ${({ $active }) => ($active ? 'color: var(--color-grey-100)' : '')}
+`;
+
+const StyledHeaderMenu = styled.div`
     display: flex;
+    flex-grow: 1;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    z-index: 2;
+    color: var(--color-grey-100);
+    background: var(--color-header);
+    transition: 0.3s ease;
+
+    ${({ $display }) => ($display ? 'display: flex;' : 'display: none;')}
+
+    a {
+        padding: 0.6rem 0;
+    }
+    @media (min-width: 768px) {
+        background: transparent;
+        display: flex;
+        background-color: transparent;
+        position: relative;
+        flex-direction: row;
+        justify-content: end;
+    }
 `;
+
 function Header() {
     const { isAuthenticated } = useUser();
-    const [scrolled, setScrolled] = useState(false);
     const { isDarkMode, toggleDarkMode } = useDarkMode();
+    const [scrolled, setScrolled] = useState(false);
+    const [showHeaderMenu, setShowHeaderMenu] = useState(false);
 
     useEffect(() => {
         const handleScroll = () => {
@@ -93,78 +163,61 @@ function Header() {
 
     return (
         <StyledHeader $scrolled={scrolled} className='w-100'>
-            <nav className='navbar navbar-expand-lg'>
-                <div className='container-fluid'>
-                    <StyledLink className='navbar-brand px-4' to='/'>
-                        EYES HERO
+            <nav className='w-100 d-flex justify-content-between align-items-center position-relative'>
+                <StyledLink className='navbar-brand px-4' to='/'>
+                    EYES HERO
+                </StyledLink>
+                <ToggleHeaderMenu
+                    $active={showHeaderMenu}
+                    className='d-flex d-md-none btn'
+                    onClick={() => setShowHeaderMenu(!showHeaderMenu)}
+                >
+                    {showHeaderMenu ? <HiOutlineXMark /> : <HiBars3 />}
+                </ToggleHeaderMenu>
+                <StyledHeaderMenu $display={showHeaderMenu}>
+                    <Dropdown
+                        items={[
+                            {
+                                link: '/glasses?category=eyeglasses',
+                                text: 'Eyeglasses',
+                            },
+                            {
+                                link: '/glasses?category=sunglasses',
+                                text: 'Sunglasses',
+                            },
+                            {
+                                link: '/glasses?category=eyelens',
+                                text: 'Eyelens',
+                            },
+                        ]}
+                    >
+                        <StyledLink
+                            className='text-left text-md-center ps-4 ps-md-0'
+                            to='/glasses'
+                        >
+                            Glasses
+                        </StyledLink>
+                    </Dropdown>
+
+                    <StyledLink
+                        className='text-left text-md-center ps-4 ps-md-0'
+                        href='#'
+                    >
+                        Contact
                     </StyledLink>
-                    <button
-                        href='/eyeglass'
-                        className='navbar-toggler'
-                        type='button'
-                        data-bs-toggle='collapse'
-                        data-bs-target='#navbarSupportedContent'
-                        aria-controls='navbarSupportedContent'
-                        aria-expanded='false'
-                        aria-label='Toggle navigation'
-                    >
-                        <span className='navbar-toggler-icon'></span>
-                    </button>
-                    <div
-                        className='collapse navbar-collapse pb-3 pb-lg-0'
-                        id='navbarSupportedContent'
-                    >
-                        <ul className='navbar-nav me-auto mb-2 mb-lg-0 gap-lg-2 px-lg-5 pb-2 pb-lg-0'>
-                            <Dropdown
-                                items={[
-                                    {
-                                        link: '/glasses?category=eyeglasses',
-                                        text: 'Eyeglasses',
-                                    },
-                                    {
-                                        link: '/glasses?category=sunglasses',
-                                        text: 'Sunglasses',
-                                    },
-                                    {
-                                        link: '/glasses?category=eyelens',
-                                        text: 'Eyelens',
-                                    },
-                                ]}
-                            >
-                                <StyledLink
-                                    className='rounded-2 text-center'
-                                    to='/glasses'
-                                >
-                                    Glasses
-                                </StyledLink>
-                            </Dropdown>
-
-                            <li className='nav-item'>
-                                <StyledLink
-                                    className='dropdown-item text-center'
-                                    href='#'
-                                >
-                                    Contact
-                                </StyledLink>
-                            </li>
-                        </ul>
-
+                    <LoginButton>
                         {isAuthenticated ? (
                             <UserMenu />
                         ) : (
-                            <LoginButton className='btn' to='/login'>
-                                Login
-                            </LoginButton>
+                            <button to='/login'>
+                                <p>Login</p>
+                            </button>
                         )}
-
-                        <ToggleDarkMode
-                            className='btn'
-                            onClick={toggleDarkMode}
-                        >
-                            {isDarkMode ? <HiOutlineMoon /> : <HiOutlineSun />}
-                        </ToggleDarkMode>
-                    </div>
-                </div>
+                    </LoginButton>
+                </StyledHeaderMenu>
+                <ToggleDarkMode onClick={toggleDarkMode}>
+                    {isDarkMode ? <HiOutlineMoon /> : <HiOutlineSun />}
+                </ToggleDarkMode>
             </nav>
         </StyledHeader>
     );

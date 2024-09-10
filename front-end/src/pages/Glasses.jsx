@@ -4,8 +4,9 @@ import { useGlasses } from '../features/glasses/useGlasses';
 import RingLoader from 'react-spinners/RingLoader';
 import EmptyData from '../ui/EmptyData';
 import styled from 'styled-components';
-import { useLocation } from 'react-router-dom';
 import GlassesOperationBar from '../features/glasses/GlassesOperationBar';
+import Pagination from '../ui/Pagination';
+import { PAGE_SIZE } from '../utils/constant';
 
 const Container = styled.div`
     margin-top: 200px;
@@ -26,30 +27,7 @@ const Error = styled.div`
 `;
 
 function Glasses() {
-    const location = useLocation();
-    const searchParams = new URLSearchParams(location.search);
-
-    // Filter glasses based on the query string
-    const categoryValue = searchParams.get('category');
-    const category =
-        !categoryValue || categoryValue === 'all' ? null : categoryValue;
-
-    // Sort glasses based on the query string
-    const sortBy = searchParams.get('sort') || 'title-asc';
-    const [field, direction] = sortBy.split('-');
-    const sort = `${field}-${direction}`;
-
-    // Pagination
-    const page = !searchParams.get('page')
-        ? 1
-        : Number(searchParams.get('page'));
-
-    // Fetch all glasses
-    const { isLoading, error, data } = useGlasses({
-        category,
-        sort,
-        page,
-    });
+    const { isLoading, error, data, count } = useGlasses();
     if (isLoading)
         return (
             <Spinner>
@@ -57,7 +35,9 @@ function Glasses() {
             </Spinner>
         );
     if (error) return <Error>Error: {error.message}</Error>;
-    if (data.length === 0) return <EmptyData resourceName={'glasses'} />;
+    if (count === 0) return <EmptyData resourceName={'glasses'} />;
+
+    const pageCount = Math.ceil(count / PAGE_SIZE);
 
     return (
         <Container className='container'>
@@ -74,6 +54,11 @@ function Glasses() {
                     );
                 })}
             </div>
+            {pageCount > 1 && (
+                <div className='d-flex justify-content-center mt-5'>
+                    <Pagination totalPages={pageCount} />
+                </div>
+            )}
         </Container>
     );
 }

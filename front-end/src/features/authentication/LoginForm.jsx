@@ -112,7 +112,7 @@ export default function LoginForm() {
                 </Button>
                 <Button
                     type='submit'
-                    className='col-3 py-3 btn btn-success text-capitalize'
+                    className='col-3 py-3 text-capitalize'
                     disabled={isLoggingin}
                 >
                     {isLoggingin ? <SyncLoader color='#ffffff' /> : 'Log in'}

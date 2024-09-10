@@ -31,7 +31,7 @@ function HomeStoreLocation() {
                     </p>
 
                     <button className='btn btn-dark text-uppercase fw-bold py-lg-4 pt-3 mt-2'>
-                        <h3>
+                        <h3 className='mb-0'>
                             Discovery now <HiArrowRight />
                         </h3>
                     </button>

@@ -153,6 +153,7 @@ export default function RegisterForm() {
             </div>
             <div className='row mt-4 d-flex justify-content-between'>
                 <Button
+                    $variation='secondary'
                     type='reset'
                     className='col-3 py-3 btn btn-secondary text-capitalize'
                     disabled={isCreatingUser}

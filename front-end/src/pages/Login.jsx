@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import LoginForm from '../features/authentication/LoginForm';
+import Pagination from '../ui/Pagination';
 
 const StyledContainer = styled.div`
     min-height: 600px;

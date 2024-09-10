@@ -3,7 +3,7 @@ import styled, { css } from 'styled-components';
 const sizes = {
     small: css`
         font-size: 1.2rem;
-        padding: 0.4rem 0.8rem;
+        padding: 0.8rem 1.2rem;
         text-transform: uppercase;
         font-weight: 600;
         text-align: center;
@@ -15,7 +15,7 @@ const sizes = {
     `,
     large: css`
         font-size: 1.6rem;
-        padding: 1.2rem 2.4rem;
+        padding: 1.6rem 2.4rem;
         font-weight: 500;
     `,
 };
@@ -23,16 +23,28 @@ const sizes = {
 const variations = {
     primary: css`
         color: var(--color-grey-0);
-        background-color: var(--color-sky-500);
+        background-color: var(--color-indigo-400);
         &:hover {
-            background-color: var(--color-sky-600);
+            background-color: var(--color-indigo-300);
+            border: 1px solid var(--color-grey-800);
+        }
+
+        &:disabled {
+            color: var(--color-grey-500);
+            border: 1px solid var(--color-grey-500);
+            background-color: var(--color-grey-300);
         }
     `,
     secondary: css`
         color: var(--color-grey-800);
-        background: var(--color-grey-0);
+        background: var(--color-grey-200);
 
         &:hover {
+            background-color: var(--color-grey-0);
+        }
+        &:disabled {
+            color: var(--color-grey-500);
+            border: 1px solid var(--color-grey-500);
             background-color: var(--color-grey-300);
         }
     `,
@@ -47,7 +59,7 @@ const variations = {
 };
 
 const Button = styled.button`
-    border: none;
+    border: 1px solid var(--color-grey-800);
     border-radius: var(--border-radius-sm);
     box-shadow: var(--shadow-sm);
 

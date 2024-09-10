@@ -8,9 +8,10 @@ const SearchValueDropdown = styled.div`
     max-height: 300px;
     top: 100%;
     z-index: 3;
-    background-color: #f8f9fa;
+    background-color: var(--color-const-grey-100);
     width: 100%;
     overflow-y: scroll;
+    color: var(--color-const-grey-800);
 `;
 
 const SearchValueItem = styled.div`
@@ -28,7 +29,7 @@ const SearchValueItem = styled.div`
         object-fit: contain;
     }
     &:hover {
-        background-color: #d0cbff;
+        background-color: var(--color-blue-200);
         cursor: pointer;
     }
 `;
@@ -37,6 +38,26 @@ const Title = styled.div`
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
+`;
+
+const Input = styled.input`
+    font-size: 1.6rem;
+    background-color: transparent;
+    color: var(--color-grey-800);
+    border: 1px solid var(--color-grey-800);
+    &::placeholder {
+        color: var(--color-grey-800);
+    }
+
+    &:focus {
+        outline: none;
+        background-color: var(--color-const-grey-100);
+        box-shadow: none;
+        border-color: var(--color-grey-800);
+        &::placeholder {
+            color: var(--color-const-grey-800);
+        }
+    }
 `;
 
 function SearchBar({ apiSearch, className }) {
@@ -65,8 +86,8 @@ function SearchBar({ apiSearch, className }) {
 
     return (
         <form className={`${className} d-flex position-relative`} role='search'>
-            <input
-                className='form-control py-3 px-4 bg-transparent border border-1 border-black fs-4'
+            <Input
+                className='form-control py-3 px-4'
                 type='search'
                 placeholder='Search product by title...'
                 aria-label='Search'

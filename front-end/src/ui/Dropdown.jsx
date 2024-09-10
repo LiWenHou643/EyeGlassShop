@@ -3,18 +3,20 @@ import styled from 'styled-components';
 import BaseStyledLink from './Link';
 
 const DropdownMenu = styled.ul`
-    color: var(--color-grey-900);
-    background-color: var(--color-grey-0);
+    color: var(--color-const-grey-800);
+    background-color: var(--color-blue-200);
     border-radius: 0.5rem;
     z-index: 1000;
     width: 120px;
+    position: absolute;
+    top: 100%;
 
     li {
         &:not(:last-child) {
             border-bottom: 1px solid var(--color-grey-200);
         }
         &:hover {
-            background-color: var(--color-grey-300);
+            background-color: var(--color-indigo-300);
         }
         &:first-child {
             border-radius: 0.5rem 0.5rem 0 0;
@@ -22,6 +24,12 @@ const DropdownMenu = styled.ul`
         &:last-child {
             border-radius: 0 0 0.5rem 0.5rem;
         }
+    }
+
+    @media (max-width: 768px) {
+        top: 0;
+        left: -120px;
+        border-radius: 0;
     }
 `;
 
@@ -49,7 +57,7 @@ function Dropdown({ items, children }) {
         >
             {children}
             {isDropdownOpen && (
-                <DropdownMenu className='position-absolute top-100 border border-dark'>
+                <DropdownMenu>
                     {items.map((item, index) => (
                         <li key={index}>
                             <BaseStyledLink
