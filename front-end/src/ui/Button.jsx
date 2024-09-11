@@ -23,15 +23,13 @@ const sizes = {
 const variations = {
     primary: css`
         color: var(--color-grey-0);
-        background-color: var(--color-indigo-400);
+        background-color: var(--color-indigo-500);
         &:hover {
-            background-color: var(--color-indigo-300);
-            border: 1px solid var(--color-grey-800);
+            background-color: var(--color-indigo-400);
         }
 
         &:disabled {
             color: var(--color-grey-500);
-            border: 1px solid var(--color-grey-500);
             background-color: var(--color-grey-300);
         }
     `,
@@ -44,7 +42,6 @@ const variations = {
         }
         &:disabled {
             color: var(--color-grey-500);
-            border: 1px solid var(--color-grey-500);
             background-color: var(--color-grey-300);
         }
     `,
@@ -59,7 +56,7 @@ const variations = {
 };
 
 const Button = styled.button`
-    border: 1px solid var(--color-grey-800);
+    border: none;
     border-radius: var(--border-radius-sm);
     box-shadow: var(--shadow-sm);
 
