@@ -16,7 +16,7 @@ function HomeStoreLocation() {
         <Section className='p-section'>
             <Background className='row'>
                 <div className='col-12 col-md-7 p-0'>
-                    <ImgContainer>
+                    <ImgContainer $ratio='5/3'>
                         <img src='he_thong_cua_hang.jpg' alt='store' />
                     </ImgContainer>
                 </div>

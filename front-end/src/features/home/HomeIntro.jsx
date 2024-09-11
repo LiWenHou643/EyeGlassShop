@@ -7,7 +7,7 @@ import {
 import { HiOutlineRefresh } from 'react-icons/hi';
 
 const IntroContainer = styled.section`
-    margin: 60px 0;
+    margin: 40px 0 60px;
     background-color: var(--color-grey-100);
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
     h3 {

@@ -1,4 +1,4 @@
-import Carousels from '../../ui/Carousels';
+import Carousels from './Carousels';
 import styled from 'styled-components';
 
 const hotPosts = [
@@ -42,7 +42,7 @@ function HotPost() {
     return (
         <StyledContainer>
             <h1 className='mb-4'>Hot Post</h1>
-            <Carousels id='hotpost' data={hotPosts} />
+            <Carousels ratio='5/3' data={hotPosts} />
         </StyledContainer>
     );
 }

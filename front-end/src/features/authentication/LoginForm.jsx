@@ -1,12 +1,12 @@
-import { useForm } from 'react-hook-form';
-import Button from '../../ui/Button';
-import FormRow from '../../ui/FormRow';
-import { Link } from 'react-router-dom';
-import Form from '../../ui/Form';
-import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
+import { useForm } from 'react-hook-form';
+import { Link } from 'react-router-dom';
+import { yupResolver } from '@hookform/resolvers/yup';
 import { useLogin } from '../../features/authentication/useLogin';
 import { SyncLoader } from 'react-spinners';
+import Button from '../../ui/Button';
+import FormRow from '../../ui/FormRow';
+import Form from '../../ui/Form';
 
 const schema = yup.object({
     email: yup

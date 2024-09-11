@@ -5,34 +5,27 @@ import {
     formatPrice,
     formatSoldAmount,
 } from '../../utils/helperFunction';
+import ImageContainer from '../../ui/ImageContainer';
 
 const CardContainer = styled.div`
     border: none;
-    &:hover {
-        .btn-buying {
-            transform: translate(-50%, -100%);
-            opacity: 1;
-        }
-    }
     position: relative;
     transition: all 0s;
-    height: 100%;
     color: var(--color-const-grey-800);
+
     .dark-mode & {
         filter: brightness(0.85);
     }
-    box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.2);
-`;
 
-const CardImage = styled.div`
-    width: 100%;
-    aspect-ratio: 11/9;
-
-    img {
-        width: 100%;
-        height: 100%;
-        object-fit: contain;
+    &:hover {
+        .btn-buying {
+            transform: translate(-50%, -50%);
+            opacity: 1;
+        }
     }
+
+    border-right: ${(props) =>
+        props.$isSlider ? '1px solid var(--color-pink-300)' : 'none'};
 `;
 
 const CardTitle = styled.p`
@@ -49,23 +42,27 @@ const CardTitle = styled.p`
 `;
 
 const CardBuy = styled(BaseStyledLink)`
-    background-color: #c3c9ff;
+    background-color: var(--color-pink-200);
     color: var(--color-const-grey-900);
     position: absolute;
     bottom: 16px;
+    width: 65%;
     left: 50%;
-    transform: translate(-50%, 50%);
+    top: 50%;
+    height: 40px;
+    transform: translate(-50%, 100%);
     text-transform: uppercase;
     font-size: 1.4rem;
     border-radius: 30px;
     padding: 0.8rem 1.4rem;
     opacity: 0;
+    text-align: center;
     border: 1px solid transparent;
 
     &:hover {
         background-color: var(--color-const-grey-0);
         color: var(--color-const-grey-800);
-        border: 1px solid var(--color-const-grey-700);
+        border: 1px solid var(--color-pink-300);
     }
 
     transition: all 0.3s;
@@ -100,22 +97,22 @@ const CardSold = styled.div`
     z-index: 100;
 `;
 
-function GlassCard({ item }) {
+function GlassCard({ item, isSlider }) {
     return (
-        <CardContainer className='card'>
+        <CardContainer className='card' $isSlider={isSlider}>
             <div className='position-relative z-1 h-100'>
                 {item.discount !== 0 && (
                     <CardDiscount>-{item.discount}%</CardDiscount>
                 )}
                 <CardSold>sold {formatSoldAmount(item.soldQuantity)}</CardSold>
 
-                <CardImage>
+                <ImageContainer $ratio='11/9' $fit='contain'>
                     <img
                         src={item.thumbnail}
                         className='card-img-top'
                         alt={item.title}
                     />
-                </CardImage>
+                </ImageContainer>
                 <CardBuy href='' className='btn-buying'>
                     Buy Now
                 </CardBuy>
@@ -130,15 +127,15 @@ function GlassCard({ item }) {
                                 <h4 className='text-decoration-line-through mb-0'>
                                     {formatPrice(item.price)}đ
                                 </h4>
-                                <h3 className='text-danger mb-0'>
+                                <h4 className='text-danger mb-0'>
                                     {formatPrice(
                                         countDiscount(item.price, item.discount)
                                     )}
-                                    đ
-                                </h3>
+                                    d
+                                </h4>
                             </>
                         ) : (
-                            <h4>{formatPrice(item.price)}đ</h4>
+                            <h4 className='mb-0'>{formatPrice(item.price)}d</h4>
                         )}
                     </div>
                 </CardPrice>

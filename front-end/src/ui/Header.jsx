@@ -51,32 +51,18 @@ const StyledLink = styled(BaseStyledLink)`
 `;
 
 const LoginButton = styled(StyledLink)`
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    button {
-        transition: 0.5s ease;
-        border: none;
-        outline: none;
-        background-color: transparent;
-        color: var(--color-grey-700);
-        padding: 0.2rem 1rem;
-
-        &:hover {
-            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
-            color: var(--color-grey-100);
-        }
+    text-align: center;
+    transition: 0.5s ease;
+    &:hover {
+        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
     }
 
     @media (max-width: 768px) {
-        justify-content: start;
-        padding: 0.6rem !important;
-
-        &:hover button {
+        &:hover {
             box-shadow: none;
-            color: var(--color-grey-100);
         }
+
+        text-align: left;
     }
 `;
 
@@ -161,6 +147,20 @@ function Header() {
         };
     }, []);
 
+    useEffect(() => {
+        const handleResize = () => {
+            if (window.innerWidth > 768) {
+                setShowHeaderMenu(false);
+            }
+        };
+
+        window.addEventListener('resize', handleResize);
+
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
+    }, []);
+
     return (
         <StyledHeader $scrolled={scrolled} className='w-100'>
             <nav className='w-100 d-flex justify-content-between align-items-center position-relative'>
@@ -205,15 +205,13 @@ function Header() {
                     >
                         Contact
                     </StyledLink>
-                    <LoginButton>
-                        {isAuthenticated ? (
-                            <UserMenu />
-                        ) : (
-                            <button to='/login'>
-                                <p>Login</p>
-                            </button>
-                        )}
-                    </LoginButton>
+                    {isAuthenticated ? (
+                        <UserMenu />
+                    ) : (
+                        <LoginButton className='ps-4 ps-md-0' to='/login'>
+                            Login
+                        </LoginButton>
+                    )}
                 </StyledHeaderMenu>
                 <ToggleDarkMode onClick={toggleDarkMode}>
                     {isDarkMode ? <HiOutlineMoon /> : <HiOutlineSun />}

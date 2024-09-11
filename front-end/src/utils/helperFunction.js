@@ -6,6 +6,15 @@ export function calDateAgo(givenDate) {
     return dayDifference;
 }
 
+export function formatDate(date) {
+    const dateObj = new Date(date);
+    return dateObj.toLocaleDateString('en-US', {
+        month: 'short', // Abbreviated month name
+        day: '2-digit', // Day of the month with leading zeros if necessary
+        year: 'numeric', // Full numeric year
+    });
+}
+
 export function exactNameFromEmail(email) {
     return email.split('@')[0];
 }

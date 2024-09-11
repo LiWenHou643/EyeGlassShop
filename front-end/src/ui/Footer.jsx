@@ -16,15 +16,15 @@ const P = styled.p`
 `;
 
 const Button = styled.button`
-    background-color: var(--color-grey-200);
-    color: var(--color-grey-900);
+    background-color: var(--color-pink-200);
+    color: var(--color-const-grey-900);
     border: none;
     padding: 1rem 2rem;
     border-radius: 1rem;
     font-size: 1.8rem;
 
     &:hover {
-        background-color: var(--color-grey-300);
+        background-color: var(--color-pink-300);
     }
 
     transition: background-color 0.5s;

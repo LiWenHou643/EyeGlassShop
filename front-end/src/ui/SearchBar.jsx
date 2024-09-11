@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import useDebounce from '../hooks/useDebounce';
 import styled from 'styled-components';
-import { countDiscount, formatPrice } from '../utils/helperFunction';
 
 const SearchValueDropdown = styled.div`
     position: absolute;
@@ -12,32 +11,6 @@ const SearchValueDropdown = styled.div`
     width: 100%;
     overflow-y: scroll;
     color: var(--color-const-grey-800);
-`;
-
-const SearchValueItem = styled.div`
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    align-items: center;
-    aspect-ratio: 1;
-    max-height: 50px;
-    width: 100%;
-    padding: 0.5rem 1.5rem;
-    img {
-        width: 70px;
-        height: 50px;
-        object-fit: contain;
-    }
-    &:hover {
-        background-color: var(--color-blue-200);
-        cursor: pointer;
-    }
-`;
-
-const Title = styled.div`
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden;
 `;
 
 const Input = styled.input`
@@ -60,7 +33,7 @@ const Input = styled.input`
     }
 `;
 
-function SearchBar({ apiSearch, className }) {
+function SearchBar({ apiSearch, render }) {
     const [searchTerm, setSearchTerm] = useState('');
     const [isClosed, setIsClosed] = useState(true);
     const [data, setData] = useState([]);
@@ -85,7 +58,7 @@ function SearchBar({ apiSearch, className }) {
     }, [debouncedSearchTerm, apiSearch]);
 
     return (
-        <form className={`${className} d-flex position-relative`} role='search'>
+        <form className='d-flex position-relative' role='search'>
             <Input
                 className='form-control py-3 px-4'
                 type='search'
@@ -96,42 +69,7 @@ function SearchBar({ apiSearch, className }) {
                 onFocus={() => setIsClosed(false)}
             />
             <SearchValueDropdown>
-                {!isClosed &&
-                    data.length > 0 &&
-                    data.map((item, index) => {
-                        return (
-                            <SearchValueItem key={item.id}>
-                                <span className='col-1'>{index + 1}</span>
-                                <img
-                                    className='col-3'
-                                    src={item.thumbnail}
-                                    alt={`${item.title}`}
-                                />
-                                <Title className='col-5 ps-4'>
-                                    {item.title}
-                                </Title>
-                                <div className='col-3 d-flex flex-column text-end'>
-                                    {item.discount ? (
-                                        <>
-                                            <span className='text-decoration-line-through'>
-                                                {item.price}
-                                            </span>
-                                            <span className='text-danger'>
-                                                {formatPrice(
-                                                    countDiscount(
-                                                        item.price,
-                                                        item.discount
-                                                    )
-                                                )}
-                                            </span>
-                                        </>
-                                    ) : (
-                                        <span>{item.price}</span>
-                                    )}
-                                </div>
-                            </SearchValueItem>
-                        );
-                    })}
+                {!isClosed && data.length > 0 && data.map(render)}
             </SearchValueDropdown>
         </form>
     );

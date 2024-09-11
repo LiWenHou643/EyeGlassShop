@@ -1,8 +1,9 @@
 import React from 'react';
+import styled from 'styled-components';
+import ImageContainer from '../../ui/ImageContainer';
 import { Link } from 'react-router-dom';
 import { calDateAgo } from '../../utils/helperFunction';
-import styled from 'styled-components';
-
+import { formatDate } from '../../utils/helperFunction';
 const dummyData = [
     {
         id: 1,
@@ -37,23 +38,12 @@ const StyledLink = styled(Link)`
     height: 160px;
 `;
 
-const ImgContainer = styled.div`
-    height: 100%;
-    aspect-ratio: 1;
-    flex-shrink: 0;
-`;
-
-const Img = styled.img`
-    height: 100%;
-    object-fit: cover;
-`;
-
 const Content = styled.p`
     overflow: hidden;
     width: 100%;
     height: 50px;
     display: -webkit-box;
-    -webkit-line-clamp: 3;
+    -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
 `;
 
@@ -62,34 +52,34 @@ function BlogPosts() {
         <div>
             <h1 className='mb-4'>Blog Posts</h1>
 
-            <div className='d-flex flex-wrap gap-4'>
+            <div>
                 {dummyData.map((post) => (
                     <StyledLink
                         key={post.id}
                         href='#'
-                        className='d-flex rounded-3'
+                        className='d-flex rounded-3 mb-4'
                         aria-current='true'
                     >
-                        <ImgContainer>
-                            <Img
-                                className='rounded-start'
-                                src={post.img}
-                                alt={post.title}
-                            />
-                        </ImgContainer>
-                        <div className='d-flex flex-column justify-content-between p-5 p-lg-3 p-xl-5'>
+                        <div className='col-5'>
+                            <ImageContainer $ratio='3/2'>
+                                <img src={post.img} alt={post.title} />
+                            </ImageContainer>
+                        </div>
+                        <div className='col-7 p-4 d-flex flex-column justify-content-between'>
+                            <h3 className='fw-bold'>{post.title}</h3>
+                            <Content>{post.content}</Content>
                             <div className='d-flex justify-content-between'>
-                                <h3 className='mb-3 fw-bold'>{post.title}</h3>
+                                <small>{formatDate(post.postedDate)}</small>
                                 <small>
                                     {calDateAgo(post.postedDate) === 0
                                         ? 'Today'
+                                        : calDateAgo(post.postedDate) === 1
+                                        ? 'Yesterday'
                                         : `${calDateAgo(
                                               post.postedDate
                                           )} days ago`}
                                 </small>
                             </div>
-                            <Content>{post.content}</Content>
-                            <small>Posted date: {post.postedDate}</small>
                         </div>
                     </StyledLink>
                 ))}

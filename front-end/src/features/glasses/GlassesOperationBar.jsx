@@ -3,6 +3,7 @@ import FilterBar from '../../ui/FilterBar';
 import SortBar from '../../ui/SortBar';
 import SearchBar from '../../ui/SearchBar';
 import { searchProducts } from '../../services/apiProduct';
+import { countDiscount, formatPrice } from '../../utils/helperFunction';
 
 const Container = styled.div`
     margin-bottom: 40px;
@@ -76,6 +77,32 @@ const GlassesSearchBar = styled(SearchBar)`
     }
 `;
 
+const SearchItem = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    align-items: center;
+    aspect-ratio: 1;
+    max-height: 50px;
+    width: 100%;
+    padding: 0.5rem 1.5rem;
+    img {
+        width: 70px;
+        height: 50px;
+        object-fit: contain;
+    }
+    &:hover {
+        background-color: var(--color-blue-200);
+        cursor: pointer;
+    }
+`;
+
+const Title = styled.div`
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+`;
+
 function GlassesOperationBar() {
     return (
         <Container className='d-flex justify-content-between align-items-center flex-wrap'>
@@ -111,7 +138,41 @@ function GlassesOperationBar() {
                     },
                 ]}
             />
-            <GlassesSearchBar apiSearch={searchProducts} />
+            <GlassesSearchBar
+                apiSearch={searchProducts}
+                render={(item, index) => {
+                    return (
+                        <SearchItem key={item.id}>
+                            <span className='col-1'>{index + 1}</span>
+                            <img
+                                className='col-3'
+                                src={item.thumbnail}
+                                alt={`${item.title}`}
+                            />
+                            <Title className='col-5 ps-4'>{item.title}</Title>
+                            <div className='col-3 d-flex flex-column text-end'>
+                                {item.discount ? (
+                                    <>
+                                        <span className='text-decoration-line-through'>
+                                            {item.price}
+                                        </span>
+                                        <span className='text-danger'>
+                                            {formatPrice(
+                                                countDiscount(
+                                                    item.price,
+                                                    item.discount
+                                                )
+                                            )}
+                                        </span>
+                                    </>
+                                ) : (
+                                    <span>{item.price}</span>
+                                )}
+                            </div>
+                        </SearchItem>
+                    );
+                }}
+            />
         </Container>
     );
 }

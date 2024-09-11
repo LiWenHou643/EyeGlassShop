@@ -2,6 +2,8 @@ import HomeBlog from '../features/home/HomeBlog';
 import HomeIntro from '../features/home/HomeIntro';
 import HomeBanner from '../features/home/HomeBanner';
 import HomeStoreLocation from '../features/home/HomeStoreLocation';
+import { ProductSlider } from '../features/glasses/ProductSlider';
+import { data } from '../features/glasses/glassesData';
 
 function Home() {
     return (
@@ -9,6 +11,16 @@ function Home() {
             <HomeBanner />
             <div className='container'>
                 <HomeIntro />
+                <ProductSlider>
+                    <ProductSlider.Title>
+                        Best seller - Most favorite products
+                    </ProductSlider.Title>
+                    <ProductSlider.Products products={data} />
+                </ProductSlider>
+                <ProductSlider>
+                    <ProductSlider.Title>Limited Sales</ProductSlider.Title>
+                    <ProductSlider.Products products={data} />
+                </ProductSlider>
                 <HomeStoreLocation />
                 <HomeBlog />
             </div>

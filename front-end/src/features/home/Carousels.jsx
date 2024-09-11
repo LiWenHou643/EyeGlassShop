@@ -1,7 +1,7 @@
 import React from 'react';
 import Slider from 'react-slick';
 import styled from 'styled-components';
-import ImgContainer from './ImageContainer';
+import ImageContainer from '../../ui/ImageContainer';
 
 const Title = styled.h3`
     overflow: hidden;
@@ -22,7 +22,7 @@ const Content = styled.p`
     color: var(--color-grey-600);
 `;
 
-export default function Carousels({ data, isBanner }) {
+export default function Carousels({ data, ratio, hasArrow }) {
     var settings = {
         dots: true,
         infinite: true,
@@ -32,15 +32,15 @@ export default function Carousels({ data, isBanner }) {
         pauseOnHover: true,
         slidesToShow: 1,
         slidesToScroll: 1,
-        arrows: isBanner,
+        arrows: hasArrow,
     };
     return (
         <Slider {...settings}>
             {data?.map((item, index) => (
                 <div key={index}>
-                    <ImgContainer $isBanner={isBanner}>
+                    <ImageContainer $ratio={ratio}>
                         <img src={item?.img ? item.img : item} alt='' />
-                    </ImgContainer>
+                    </ImageContainer>
 
                     {item.title && (
                         <Title className='mt-2 mb-4'>{item.title}</Title>

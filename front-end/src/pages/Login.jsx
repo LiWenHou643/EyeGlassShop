@@ -1,12 +1,12 @@
 import styled from 'styled-components';
 import LoginForm from '../features/authentication/LoginForm';
-import Pagination from '../ui/Pagination';
 
 const StyledContainer = styled.div`
     min-height: 600px;
 
+    margin-top: 100px;
     @media (min-width: 1024px) {
-        margin-top: 200px;
+        margin-top: 270px;
     }
 `;
 const FormContainer = styled.div`
