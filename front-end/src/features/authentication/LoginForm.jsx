@@ -7,6 +7,7 @@ import { SyncLoader } from 'react-spinners';
 import Button from '../../ui/Button';
 import FormRow from '../../ui/FormRow';
 import Form from '../../ui/Form';
+import styled from 'styled-components';
 
 const schema = yup.object({
     email: yup
@@ -18,6 +19,10 @@ const schema = yup.object({
         .min(8, 'Password must be at least 8 characters')
         .required('Password is required'),
 });
+
+const StyledLink = styled(Link)`
+    color: var(--color-blue-700);
+`;
 
 export default function LoginForm() {
     const {
@@ -86,17 +91,17 @@ export default function LoginForm() {
             <div className='d-flex justify-content-between align-items-center'>
                 <div className='col-7 d-md-flex justify-content-md-start align-items-md-center'>
                     <p>Has no account? &nbsp;</p>
-                    <Link className='py-3 rounded-2 link-primary' to='/signin'>
+                    <StyledLink className='py-3 rounded-2' to='/signin'>
                         Register now
-                    </Link>
+                    </StyledLink>
                 </div>
                 <div className='col-5 d-flex justify-content-end align-items-center'>
-                    <Link
-                        className='py-3 rounded-2 link-primary'
+                    <StyledLink
+                        className='py-3 rounded-2'
                         to='/forgot-password'
                     >
                         Forgot password
-                    </Link>
+                    </StyledLink>
                 </div>
             </div>
 

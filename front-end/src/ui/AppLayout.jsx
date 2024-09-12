@@ -8,7 +8,7 @@ function AppLayout() {
         <div>
             <Header />
 
-            <Main>
+            <Main className='container'>
                 <Outlet />
             </Main>
 

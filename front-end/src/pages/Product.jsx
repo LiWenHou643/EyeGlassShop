@@ -1,7 +1,7 @@
 import { Outlet } from 'react-router-dom';
 import styled from 'styled-components';
 
-const Container = styled.div`
+const StyledContainer = styled.div`
     margin-top: 200px;
 
     @media (max-width: 1023px) {
@@ -11,9 +11,9 @@ const Container = styled.div`
 
 function Product() {
     return (
-        <Container className='container'>
+        <StyledContainer>
             <Outlet />
-        </Container>
+        </StyledContainer>
     );
 }
 

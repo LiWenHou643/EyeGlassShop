@@ -22,14 +22,14 @@ const sizes = {
 
 const variations = {
     primary: css`
-        color: var(--color-const-grey-800);
+        color: var(--color-grey-800);
         background-color: var(--color-indigo-400);
         &:hover,
         &:active,
         &:focus,
         &:focus-visible {
             background-color: var(--color-indigo-500);
-            color: var(--color-grey-0);
+            color: var(--color-grey-800);
         }
 
         &:disabled {
@@ -42,15 +42,16 @@ const variations = {
         background-color: var(--color-grey-0);
 
         &:hover {
-            background-color: var(--color-pink-200);
+            background-color: var(--color-grey-400);
+            color: var(--color-const-grey-800);
         }
     `,
     secondary: css`
         color: var(--color-grey-800);
-        background: var(--color-grey-200);
+        background: var(--color-grey-0);
 
         &:hover {
-            background-color: var(--color-grey-0);
+            background-color: var(--color-grey-200);
         }
         &:disabled {
             color: var(--color-grey-500);
@@ -58,11 +59,31 @@ const variations = {
         }
     `,
     danger: css`
-        color: var(--color-red-100);
-        background-color: var(--color-red-700);
+        color: var(--color-grey-100);
+        background-color: var(--color-red-600);
 
         &:hover {
-            background-color: var(--color-red-800);
+            background-color: var(--color-red-500);
+        }
+    `,
+    toggle: css`
+        font-size: 2.5rem;
+        padding: 0rem 1rem;
+        height: 40px;
+        color: var(--color-grey-800);
+        background-color: transparent;
+        border: none;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        transition: 0.3s ease;
+        &:hover {
+            color: var(--color-grey-100);
+        }
+        @media (max-width: 768px) {
+            margin-left: auto;
         }
     `,
 };
@@ -70,7 +91,6 @@ const variations = {
 const Button = styled.button`
     border: none;
     border-radius: var(--border-radius-sm);
-    box-shadow: var(--shadow-sm);
 
     ${(props) => sizes[props.$size]}
     ${(props) => variations[props.$variation]}

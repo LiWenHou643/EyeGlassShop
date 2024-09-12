@@ -16,6 +16,31 @@ const GlobalStyles = createGlobalStyle`
     --color-grey-800: #1f2937;
     --color-grey-900: #111827;
 
+    --color-indigo-50: #eef2ff;
+    --color-indigo-100: #e0e7ff;
+    --color-indigo-100: #c7d2fe;
+    --color-indigo-300: #a5b4fc;
+    --color-indigo-400: #818cf8;
+    --color-indigo-500: #6366f1;
+    --color-indigo-600: #4f46e5;
+    --color-indigo-700: #4338ca;
+    --color-indigo-800: #3730a3;
+    --color-indigo-900: #312e81;
+    --color-indigo-950: #1e1b4b;
+
+    --color-blue-50: #eff6ff;
+    --color-blue-100: #dbeafe;
+    --color-blue-100: #bfdbfe;
+    --color-blue-300: #93c5fd;
+    --color-blue-400: #60a5fa;
+    --color-blue-500: #3b82f6;
+    --color-blue-600: #2563eb;
+    --color-blue-700: #1d4ed8;
+    --color-blue-800: #1e40af;
+    --color-blue-900: #1e3a8a;
+    --color-blue-950: #1e1b4b;
+
+
     --backdrop-color: rgba(255, 255, 255, 0.1);
 
     --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
@@ -28,6 +53,7 @@ const GlobalStyles = createGlobalStyle`
 
     --color-header: radial-gradient(circle, rgba(183, 163, 255, 1) 0%, rgba(91, 166, 255, 1) 100%);
     --color-bg: linear-gradient(90deg, rgba(196,255,248,1) 0%, rgba(186,200,255,1) 50%, rgba(186,217,255,1) 100%);
+    --color-footer: rgba(255, 255, 255, 0.4);
   }
   
   &.dark-mode {
@@ -42,6 +68,30 @@ const GlobalStyles = createGlobalStyle`
     --color-grey-700: #e5e7eb;
     --color-grey-800: #f3f4f6;
     --color-grey-900: #f9fafb;
+    
+    --color-indigo-950: #eef2ff;
+    --color-indigo-900: #e0e7ff;
+    --color-indigo-800: #c7d2fe;
+    --color-indigo-700: #a5b4fc;
+    --color-indigo-600: #818cf8;
+    --color-indigo-500: #6366f1;
+    --color-indigo-400: #4f46e5;
+    --color-indigo-300: #4338ca;
+    --color-indigo-200: #3730a3;
+    --color-indigo-100: #312e81;
+    --color-indigo-50: #1e1b4b;
+
+    --color-blue-950: #eff6ff;
+    --color-blue-900: #dbeafe;
+    --color-blue-800: #bfdbfe;
+    --color-blue-700: #93c5fd;
+    --color-blue-600: #60a5fa;
+    --color-blue-500: #3b82f6;
+    --color-blue-400: #2563eb;
+    --color-blue-300: #1d4ed8;
+    --color-blue-200: #1e40af;
+    --color-blue-100: #1e3a8a;
+    --color-blue-50: #1e1b4b;
 
     --backdrop-color: rgba(0, 0, 0, 0.3);
 
@@ -54,7 +104,7 @@ const GlobalStyles = createGlobalStyle`
 
     --color-header: radial-gradient(circle, rgba(122,102,193,1) 0%, rgba(55,126,210,1) 100%);
     --color-bg: linear-gradient(90deg, rgba(76,114,161,1) 0%, rgba(94,136,155,1) 30%, rgba(107,114,152,1) 70%, rgba(76,114,161,1) 100%);
-    --color-footer: radial-gradient(circle, rgba(20, 30, 30, 1) 0%, rgba(0, 0, 20, 1) 100%);
+    --color-footer: rgba(0, 0, 0, 0.3);
 
   }
   
@@ -63,14 +113,13 @@ const GlobalStyles = createGlobalStyle`
   --border-radius-md: 7px;
   --border-radius-lg: 9px;
 
-  --color-red-300: #FF9696;
   --color-pink-100: #fce7f3;
   --color-pink-200: #fbcfe8;
   --color-pink-300: #f9a8d4;
-  --color-indigo-300: #a5b4fc;
-  --color-indigo-400: #818cf8;
-  --color-indigo-500: #6366f1;
-  --color-blue-200: #bfdbfe;
+  --color-red-300: #FF9696;
+  --color-red-400: #f87171;
+  --color-red-500: #ef4444;
+  --color-red-600: #dc2626;
 
   --color-const-grey-0: #fff;
   --color-const-grey-50: #f9fafb;
@@ -94,7 +143,7 @@ const GlobalStyles = createGlobalStyle`
     margin: 0;
 
     /* Creating animations for dark mode */
-    transition: background-color 0.3s, border 0.3s;
+    transition: background-color 0.3s, border 0s;
 }
 
 html {
@@ -132,14 +181,14 @@ input:disabled {
     background-color: var(--color-grey-200);
     color: var(--color-grey-500);
 }
-
+button:focus,
+input:focus,
+button:focus-visible,
 input:focus-visible {
     outline: none;
-    border: none;
 }
 
 
-/* Parent selector, finally 😃 */
 button:has(svg) {
     line-height: 0;
 }
@@ -263,6 +312,28 @@ ul {
 .breadcrumb-item.active {
     color: var(--color-grey-600);
 }
+
+
+.table {
+    --bs-table-color: var(--color-grey-800);
+    --bs-table-bg: transparent;
+    --bs-table-border-color: var(--color-grey-800);
+}
+
+table, th, td {
+  text-align: center;
+  vertical-align: middle; /* This ensures that content vertically aligns in the center */
+}
+
+thead {
+    height: 60px;
+}
+
+td {
+    height: 100px;
+}   
+
+
 `;
 
 export default GlobalStyles;

@@ -11,6 +11,7 @@ import Dropdown from './Dropdown';
 import BaseStyledLink from './Link';
 import useUser from '../features/authentication/useUser';
 import UserMenu from '../features/user/UserMenu';
+import Button from './Button';
 
 const StyledHeader = styled.header`
     background: var(--color-header);
@@ -52,7 +53,7 @@ const StyledLink = styled(BaseStyledLink)`
 
 const LoginButton = styled(StyledLink)`
     text-align: center;
-    transition: 0.5s ease;
+    transition: 0.3s ease;
     &:hover {
         box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
     }
@@ -66,15 +67,7 @@ const LoginButton = styled(StyledLink)`
     }
 `;
 
-const ToggleDarkMode = styled.button`
-    font-size: 2.5rem;
-    padding: 0rem 1rem;
-    height: 40px;
-    color: var(--color-grey-800);
-    margin-left: 1rem;
-    transition: 0.5s ease;
-    background-color: transparent;
-    border: none;
+const ToggleDarkMode = styled(Button)`
     &:hover {
         box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
         color: var(--color-grey-100);
@@ -84,14 +77,11 @@ const ToggleDarkMode = styled.button`
     }
 `;
 
-const ToggleHeaderMenu = styled.button`
+const ToggleHeaderMenu = styled(Button)`
     position: absolute;
     right: 4rem;
-    top: 53%;
+    top: 50%;
     transform: translateY(-50%);
-    font-size: 2.8rem;
-    transition: 0.3s ease;
-    height: 40px;
 
     ${({ $active }) => ($active ? 'color: var(--color-grey-100)' : '')}
 `;
@@ -168,8 +158,9 @@ function Header() {
                     EYES HERO
                 </StyledLink>
                 <ToggleHeaderMenu
+                    $variation='toggle'
                     $active={showHeaderMenu}
-                    className='d-flex d-md-none btn'
+                    className='d-flex d-md-none'
                     onClick={() => setShowHeaderMenu(!showHeaderMenu)}
                 >
                     {showHeaderMenu ? <HiOutlineXMark /> : <HiBars3 />}
@@ -213,7 +204,7 @@ function Header() {
                         </LoginButton>
                     )}
                 </StyledHeaderMenu>
-                <ToggleDarkMode onClick={toggleDarkMode}>
+                <ToggleDarkMode $variation='toggle' onClick={toggleDarkMode}>
                     {isDarkMode ? <HiOutlineMoon /> : <HiOutlineSun />}
                 </ToggleDarkMode>
             </nav>

@@ -6,6 +6,7 @@ import FormRow from '../../ui/FormRow';
 import Form from '../../ui/Form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
+import styled from 'styled-components';
 
 const schema = yup.object({
     fullname: yup.string().required('Full name is required'),
@@ -19,6 +20,10 @@ const schema = yup.object({
         .required('Password is required'),
     pwdc: yup.string().oneOf([yup.ref('pwd'), null], 'Passwords must match'),
 });
+
+const StyledLink = styled(Link)`
+    color: var(--color-blue-700);
+`;
 
 export default function RegisterForm() {
     const {
@@ -142,20 +147,20 @@ export default function RegisterForm() {
             <div className='d-flex justify-content-start'>
                 <p>
                     Already have an account?{' '}
-                    <Link
-                        className='col-6 col-sm-5 col-lg-4 py-3 rounded-2 link-primary'
+                    <StyledLink
+                        className='col-6 col-sm-5 col-lg-4 py-3 rounded-2'
                         to='/login'
                         disabled={isCreatingUser}
                     >
                         Login now
-                    </Link>
+                    </StyledLink>
                 </p>
             </div>
             <div className='row mt-4 d-flex justify-content-between'>
                 <Button
                     $variation='secondary'
                     type='reset'
-                    className='col-3 py-3 btn btn-secondary text-capitalize'
+                    className='col-3 py-3 text-capitalize'
                     disabled={isCreatingUser}
                     onClick={onReset}
                 >
@@ -163,7 +168,7 @@ export default function RegisterForm() {
                 </Button>
                 <Button
                     type='submit'
-                    className='col-5 py-3 btn btn-success text-capitalize'
+                    className='col-5 py-3 text-capitalize'
                     disabled={isCreatingUser}
                 >
                     Create account

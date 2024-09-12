@@ -9,7 +9,7 @@ function Home() {
     return (
         <div>
             <HomeBanner />
-            <div className='container'>
+            <div>
                 <HomeIntro />
                 <ProductSlider>
                     <ProductSlider.Title>
@@ -21,8 +21,8 @@ function Home() {
                     <ProductSlider.Title>Limited Sales</ProductSlider.Title>
                     <ProductSlider.Products products={data} />
                 </ProductSlider>
-                <HomeStoreLocation />
                 <HomeBlog />
+                <HomeStoreLocation />
             </div>
         </div>
     );

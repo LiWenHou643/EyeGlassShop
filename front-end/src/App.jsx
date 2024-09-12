@@ -15,6 +15,7 @@ import ForgotPwd from './pages/ForgotPwd';
 import Register from './pages/Register';
 import ProductsGridView from './features/product/ProductsGridView';
 import ProductDetails from './features/product/ProductDetails';
+import Cart from './pages/Cart';
 
 const queryClient = new QueryClient();
 
@@ -43,6 +44,8 @@ function App() {
                                     element={<ProductDetails />}
                                 />
                             </Route>
+
+                            <Route path='cart' element={<Cart />} />
 
                             <Route element={<ProtectedRoutes />}>
                                 <Route

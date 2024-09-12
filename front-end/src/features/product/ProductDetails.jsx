@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { data } from './glassesData';
 import {
@@ -11,7 +12,6 @@ import Button from '../../ui/Button';
 import StarRatings from 'react-star-ratings';
 import styled from 'styled-components';
 import NumberInput from '../../ui/NumberInput';
-import { useState } from 'react';
 
 const StyledContainer = styled.div`
     @media (min-width: 1200px) {
@@ -34,7 +34,7 @@ const StyledReview = styled.div`
     background-color: var(--color-grey-200);
 `;
 
-function GlassesDetails() {
+function ProductDetails() {
     const { id } = useParams();
     const product = data.at(id);
 
@@ -286,4 +286,4 @@ function GlassesDetails() {
     );
 }
 
-export default GlassesDetails;
+export default ProductDetails;

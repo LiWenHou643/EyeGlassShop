@@ -5,9 +5,9 @@ import {
     HiOutlineUserGroup,
 } from 'react-icons/hi2';
 import { HiOutlineRefresh } from 'react-icons/hi';
+import Section from '../../ui/Section';
 
 const IntroContainer = styled.section`
-    margin: 40px 0 60px;
     background-color: var(--color-grey-100);
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
     h3 {
@@ -48,41 +48,50 @@ const IntroItem = styled.div`
         }
     }
 `;
+
 function HomeIntro() {
     return (
-        <IntroContainer className='row justify-content-between flex-wrap p-5 gap-5 gap-sm-0'>
-            <IntroItem className='text-center col-12 col-sm-6 col-md-3 my-sm-4'>
-                <IntroIcon className='w-100 text-center'>
-                    <HiOutlineTruck />
-                </IntroIcon>
-                <h3 className='fw-semibold'>Free Delivery</h3>
-                <h4 className='text-secondary'>Free Shipping on all order</h4>
-            </IntroItem>
+        <Section>
+            <IntroContainer className='row mx-0 justify-content-between flex-wrap p-5 gap-sm-0'>
+                <IntroItem className='text-center col-12 col-sm-6 col-md-3 my-sm-4'>
+                    <IntroIcon className='w-100 text-center'>
+                        <HiOutlineTruck />
+                    </IntroIcon>
+                    <h3 className='fw-semibold'>Free Delivery</h3>
+                    <h4 className='text-secondary'>
+                        Free Shipping on all order
+                    </h4>
+                </IntroItem>
 
-            <IntroItem className='text-center col-12 col-sm-6 col-md-3 my-sm-4'>
-                <IntroIcon className='w-100 text-center'>
-                    <HiOutlineRefresh />
-                </IntroIcon>
-                <h3 className='fw-semibold'>Return Policy</h3>
-                <h4 className='text-secondary'>30-day Money Back Guarantee</h4>
-            </IntroItem>
+                <IntroItem className='text-center col-12 col-sm-6 col-md-3 my-sm-4'>
+                    <IntroIcon className='w-100 text-center'>
+                        <HiOutlineRefresh />
+                    </IntroIcon>
+                    <h3 className='fw-semibold'>Return Policy</h3>
+                    <h4 className='text-secondary'>
+                        30-day Money Back Guarantee
+                    </h4>
+                </IntroItem>
 
-            <IntroItem className='text-center col-12 col-sm-6 col-md-3 my-sm-4'>
-                <IntroIcon className='w-100 text-center'>
-                    <HiOutlineUserGroup />
-                </IntroIcon>
-                <h3 className='fw-semibold'>24/7 Support</h3>
-                <h4 className='text-secondary'>Customer Support Friendly</h4>
-            </IntroItem>
+                <IntroItem className='text-center col-12 col-sm-6 col-md-3 my-sm-4'>
+                    <IntroIcon className='w-100 text-center'>
+                        <HiOutlineUserGroup />
+                    </IntroIcon>
+                    <h3 className='fw-semibold'>24/7 Support</h3>
+                    <h4 className='text-secondary'>
+                        Customer Support Friendly
+                    </h4>
+                </IntroItem>
 
-            <IntroItem className='text-center col-12 col-sm-6 col-md-3 my-sm-4'>
-                <IntroIcon className='w-100 text-center'>
-                    <HiOutlineShieldCheck />
-                </IntroIcon>
-                <h3 className='fw-semibold'>Secure Payment</h3>
-                <h4 className='text-secondary'>100% Secure Payment</h4>
-            </IntroItem>
-        </IntroContainer>
+                <IntroItem className='text-center col-12 col-sm-6 col-md-3 my-sm-4'>
+                    <IntroIcon className='w-100 text-center'>
+                        <HiOutlineShieldCheck />
+                    </IntroIcon>
+                    <h3 className='fw-semibold'>Secure Payment</h3>
+                    <h4 className='text-secondary'>100% Secure Payment</h4>
+                </IntroItem>
+            </IntroContainer>
+        </Section>
     );
 }
 

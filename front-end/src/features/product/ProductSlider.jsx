@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 import Slider from 'react-slick';
 import GlassCard from './ProductCard';
+import Section from '../../ui/Section';
 
 const ProductSliderContext = createContext();
 
@@ -28,7 +29,7 @@ function ProductSlider({ children }) {
         <ProductSliderContext.Provider
             value={{ slidesToShow, setSlidesToShow }}
         >
-            {children}
+            <Section>{children}</Section>
         </ProductSliderContext.Provider>
     );
 }

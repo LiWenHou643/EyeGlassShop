@@ -7,7 +7,6 @@ const StyledFooter = styled.footer`
     background: var(--color-footer);
     color: var(--color-grey-900);
     margin-top: 6rem;
-    border-top: 2px solid var(--color-grey-500);
 `;
 
 const P = styled.p`
@@ -74,10 +73,15 @@ const ALink = styled.a`
     }
 `;
 
+const StyledMiddleContainer = styled.div`
+    @media (max-width: 767px) {
+        padding: 0 0 0 10rem;
+    }
+`;
 const Footer = () => (
     <StyledFooter className='page-footer font-small blue'>
         <div className='container py-md-5'>
-            <div className='mb-md-5 pt-4 mt-4 container-fluid text-center text-md-start'>
+            <div className='mb-md-5 pt-4 mt-4 text-center text-md-start'>
                 <div className='row'>
                     <div className='col-md-4 mt-md-0 mt-3'>
                         <h2 className='text-uppercase mb-4'>Your Opinion</h2>
@@ -93,11 +97,17 @@ const Footer = () => (
 
                     <div className='col-md-3 offset-md-1 mt-md-0 mt-3'>
                         <h2 className='text-uppercase'>Hot line</h2>
-                        <P>0939 999 999</P>
-                        <P>(9:00 - 22:00)</P>
+                        <P className='text-center text-md-start'>
+                            0939 999 999
+                        </P>
+                        <P className='text-center text-md-start'>
+                            (9:00 - 22:00)
+                        </P>
                         <br />
                         <h2 className='text-uppercase'>Email</h2>
-                        <P>eyehero@gmail.com</P>
+                        <P className='text-center text-md-start'>
+                            eyehero@gmail.com
+                        </P>
                     </div>
 
                     <hr className='clearfix w-100 d-md-none pb-0 my-4' />
@@ -123,7 +133,7 @@ const Footer = () => (
 
             <hr />
 
-            <div className='mt-md-5 pb-4 mb-4 container-fluid text-center text-md-start'>
+            <div className='mt-md-5 pb-4 mb-4 text-center text-md-start'>
                 <div className='row'>
                     <div className='col-md-3 mt-md-0 mt-3'>
                         <h2 className='text-uppercase mb-4'>Introduce</h2>
@@ -137,62 +147,69 @@ const Footer = () => (
 
                     <div className='col-md-3 mt-md-0 mt-3'>
                         <h2 className='text-uppercase mb-4'>Policies</h2>
-                        <ul>
-                            <li>
-                                <ALink href=''>
-                                    <HiOutlinePaperAirplane />
-                                    <span className='ms-3'>
-                                        Insurance Policy
-                                    </span>
-                                </ALink>
-                            </li>
-                            <li>
-                                <ALink href=''>
-                                    <HiOutlinePaperAirplane />
-                                    <span className='ms-3'>
-                                        Shipping and Inspection Policy
-                                    </span>
-                                </ALink>
-                            </li>
-                            <li>
-                                <ALink href=''>
-                                    <HiOutlinePaperAirplane />
-                                    <span className='ms-3'>Payment Policy</span>
-                                </ALink>
-                            </li>
-                            <li>
-                                <ALink href=''>
-                                    <HiOutlinePaperAirplane />
-                                    <span className='ms-3'>
-                                        Warranty Policy
-                                    </span>
-                                </ALink>
-                            </li>
-                        </ul>
+                        <StyledMiddleContainer>
+                            <ul className='text-start'>
+                                <li>
+                                    <ALink href=''>
+                                        <HiOutlinePaperAirplane />
+                                        <span className='ms-3'>
+                                            Insurance Policy
+                                        </span>
+                                    </ALink>
+                                </li>
+                                <li>
+                                    <ALink href=''>
+                                        <HiOutlinePaperAirplane />
+                                        <span className='ms-3'>
+                                            Shipping and Inspection Policy
+                                        </span>
+                                    </ALink>
+                                </li>
+                                <li>
+                                    <ALink href=''>
+                                        <HiOutlinePaperAirplane />
+                                        <span className='ms-3'>
+                                            Payment Policy
+                                        </span>
+                                    </ALink>
+                                </li>
+                                <li>
+                                    <ALink href=''>
+                                        <HiOutlinePaperAirplane />
+                                        <span className='ms-3'>
+                                            Warranty Policy
+                                        </span>
+                                    </ALink>
+                                </li>
+                            </ul>
+                        </StyledMiddleContainer>
                     </div>
 
                     <hr className='clearfix w-100 d-md-none pb-0 my-4' />
 
                     <div className='col-md-3 mb-md-0 mb-3'>
                         <h2 className='text-uppercase mb-4'>Contacts</h2>
-                        <ul className='list-unstyled'>
-                            <li>
-                                <P href='#!'>
-                                    <strong>Address: </strong>Mau Than, Ninh
-                                    Kieu, Can Tho, Viet Nam
-                                </P>
-                            </li>
-                            <li>
-                                <P href='#!'>
-                                    <strong>Hotline: </strong>0939 999 999
-                                </P>
-                            </li>
-                            <li>
-                                <P href='#!'>
-                                    <strong>Email: </strong>eyehero@gmail.com
-                                </P>
-                            </li>
-                        </ul>
+                        <StyledMiddleContainer>
+                            <ul className='list-unstyled'>
+                                <li>
+                                    <P href='#!'>
+                                        <strong>Address: </strong>Mau Than, Ninh
+                                        Kieu, Can Tho, Viet Nam
+                                    </P>
+                                </li>
+                                <li>
+                                    <P href='#!'>
+                                        <strong>Hotline: </strong>0939 999 999
+                                    </P>
+                                </li>
+                                <li>
+                                    <P href='#!'>
+                                        <strong>Email: </strong>
+                                        eyehero@gmail.com
+                                    </P>
+                                </li>
+                            </ul>
+                        </StyledMiddleContainer>
                     </div>
                     <hr className='clearfix w-100 d-md-none pb-0 my-4' />
 

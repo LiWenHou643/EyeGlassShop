@@ -13,8 +13,8 @@ const ContentContainer = styled.div`
 `;
 function HomeStoreLocation() {
     return (
-        <Section className='p-section'>
-            <Background className='row'>
+        <Section>
+            <Background className='row mx-0'>
                 <div className='col-12 col-md-7 p-0'>
                     <ImgContainer $ratio='5/3'>
                         <img src='he_thong_cua_hang.jpg' alt='store' />
