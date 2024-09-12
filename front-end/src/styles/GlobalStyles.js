@@ -133,6 +133,11 @@ input:disabled {
     color: var(--color-grey-500);
 }
 
+input:focus-visible {
+    outline: none;
+    border: none;
+}
+
 
 /* Parent selector, finally 😃 */
 button:has(svg) {
@@ -157,6 +162,10 @@ h5,
 h6 {
     overflow-wrap: break-word;
     hyphens: auto;
+}
+
+p {
+    text-align: justify;
 }
 
 img {
@@ -251,7 +260,9 @@ ul {
     opacity: 1;
 }
 
-
+.breadcrumb-item.active {
+    color: var(--color-grey-600);
+}
 `;
 
 export default GlobalStyles;

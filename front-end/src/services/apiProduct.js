@@ -1,7 +1,7 @@
 import { publicApi } from './apiClient';
 import { PAGE_SIZE } from '../utils/constant';
 
-export const getGlassProducts = async ({
+export const getProducts = async ({
     category,
     sort = 'title-asc',
     page = 1,

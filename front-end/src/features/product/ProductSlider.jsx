@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 import Slider from 'react-slick';
-import GlassCard from './GlassCard';
+import GlassCard from './ProductCard';
 
 const ProductSliderContext = createContext();
 

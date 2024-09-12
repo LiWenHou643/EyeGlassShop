@@ -3,34 +3,46 @@ import styled, { css } from 'styled-components';
 const sizes = {
     small: css`
         font-size: 1.2rem;
-        padding: 0.8rem 1.2rem;
+        padding: 0.6rem 1.2rem;
         text-transform: uppercase;
         font-weight: 600;
         text-align: center;
     `,
     medium: css`
         font-size: 1.4rem;
-        padding: 1.2rem 1.6rem;
+        padding: 0.8rem 1.6rem;
         font-weight: 500;
     `,
     large: css`
         font-size: 1.6rem;
-        padding: 1.6rem 2.4rem;
+        padding: 1.2rem 2.2rem;
         font-weight: 500;
     `,
 };
 
 const variations = {
     primary: css`
-        color: var(--color-grey-0);
-        background-color: var(--color-indigo-500);
-        &:hover {
-            background-color: var(--color-indigo-400);
+        color: var(--color-const-grey-800);
+        background-color: var(--color-indigo-400);
+        &:hover,
+        &:active,
+        &:focus,
+        &:focus-visible {
+            background-color: var(--color-indigo-500);
+            color: var(--color-grey-0);
         }
 
         &:disabled {
             color: var(--color-grey-500);
             background-color: var(--color-grey-300);
+        }
+    `,
+    white: css`
+        color: var(--color-grey-800);
+        background-color: var(--color-grey-0);
+
+        &:hover {
+            background-color: var(--color-pink-200);
         }
     `,
     secondary: css`

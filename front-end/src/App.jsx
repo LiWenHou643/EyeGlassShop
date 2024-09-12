@@ -5,7 +5,7 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { DarkModeProvider } from './context/DarkModeContext';
 import PageNotFound from './pages/PageNotFound';
 import Login from './pages/Login';
-import Glasses from './pages/Glasses';
+import Product from './pages/Product';
 import AppLayout from './ui/AppLayout';
 import GlobalStyles from './styles/GlobalStyles';
 import Home from './pages/Home';
@@ -13,6 +13,8 @@ import ProtectedRoutes from './ProtectedRoutes';
 import Profile from './pages/Profile';
 import ForgotPwd from './pages/ForgotPwd';
 import Register from './pages/Register';
+import ProductsGridView from './features/product/ProductsGridView';
+import ProductDetails from './features/product/ProductDetails';
 
 const queryClient = new QueryClient();
 
@@ -34,7 +36,13 @@ function App() {
                                 path='forgot-password'
                                 element={<ForgotPwd />}
                             />
-                            <Route path='glasses/*' element={<Glasses />} />
+                            <Route path='products' element={<Product />}>
+                                <Route index element={<ProductsGridView />} />
+                                <Route
+                                    path=':id'
+                                    element={<ProductDetails />}
+                                />
+                            </Route>
 
                             <Route element={<ProtectedRoutes />}>
                                 <Route

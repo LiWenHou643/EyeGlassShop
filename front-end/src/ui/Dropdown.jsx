@@ -4,7 +4,7 @@ import BaseStyledLink from './Link';
 
 const DropdownMenu = styled.ul`
     color: var(--color-const-grey-800);
-    background-color: var(--color-blue-200);
+    background-color: var(--color-indigo-300);
     border-radius: 0.5rem;
     z-index: 1000;
     width: 120px;
@@ -16,7 +16,7 @@ const DropdownMenu = styled.ul`
             border-bottom: 1px solid var(--color-grey-200);
         }
         &:hover {
-            background-color: var(--color-indigo-300);
+            background-color: var(--color-blue-200);
         }
         &:first-child {
             border-radius: 0.5rem 0.5rem 0 0;

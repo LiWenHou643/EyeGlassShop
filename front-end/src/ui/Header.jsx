@@ -178,22 +178,22 @@ function Header() {
                     <Dropdown
                         items={[
                             {
-                                link: '/glasses?category=eyeglasses',
+                                link: '/products?category=eyeglasses',
                                 text: 'Eyeglasses',
                             },
                             {
-                                link: '/glasses?category=sunglasses',
+                                link: '/products?category=sunglasses',
                                 text: 'Sunglasses',
                             },
                             {
-                                link: '/glasses?category=eyelens',
+                                link: '/products?category=eyelens',
                                 text: 'Eyelens',
                             },
                         ]}
                     >
                         <StyledLink
                             className='text-left text-md-center ps-4 ps-md-0'
-                            to='/glasses'
+                            to='/products'
                         >
                             Glasses
                         </StyledLink>

@@ -3,13 +3,13 @@ export const data = [
         id: 1,
         productCode: 'GLA-001',
         title: 'Glasses super beautiful for men and women. Have all color and size for choosing 1',
-        price: 100,
+        price: 100000,
         discount: 10,
         thumbnail: '/data-image/eg-01.jpg',
         description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
         stockQuantity: 7900,
         soldQuantity: 10700,
-        category_id: 1,
+        category: 'eyeglasses',
     },
     {
         id: 2,
@@ -21,7 +21,7 @@ export const data = [
         description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
         stockQuantity: 7900,
         soldQuantity: 10700,
-        category_id: 1,
+        category: 'eyeglasses',
     },
     {
         id: 3,
@@ -33,7 +33,7 @@ export const data = [
         description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
         stockQuantity: 7900,
         soldQuantity: 10700,
-        category_id: 2,
+        category: 'eyelens',
     },
     {
         id: 4,
@@ -45,7 +45,7 @@ export const data = [
         description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
         stockQuantity: 7900,
         soldQuantity: 10700,
-        category_id: 2,
+        category: 'eyelens',
     },
     {
         id: 5,
@@ -57,7 +57,7 @@ export const data = [
         description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
         stockQuantity: 7900,
         soldQuantity: 10700,
-        category_id: 3,
+        category: 'sunglasses',
     },
     {
         id: 6,
@@ -69,7 +69,7 @@ export const data = [
         description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
         stockQuantity: 7900,
         soldQuantity: 10700,
-        category_id: 3,
+        category: 'sunglasses',
     },
     {
         id: 7,
@@ -81,7 +81,7 @@ export const data = [
         description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
         stockQuantity: 7900,
         soldQuantity: 10700,
-        category_id: 1,
+        category: 'eyeglasses',
     },
 
     {
@@ -94,7 +94,7 @@ export const data = [
         description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
         stockQuantity: 7900,
         soldQuantity: 10700,
-        category_id: 1,
+        category: 'eyeglasses',
     },
     {
         id: 9,
@@ -106,7 +106,7 @@ export const data = [
         description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
         stockQuantity: 7900,
         soldQuantity: 10700,
-        category_id: 2,
+        category: 'eyelens',
     },
     {
         id: 10,
@@ -118,7 +118,7 @@ export const data = [
         description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
         stockQuantity: 7900,
         soldQuantity: 10700,
-        category_id: 2,
+        category: 'eyelens',
     },
 
     {
@@ -131,7 +131,7 @@ export const data = [
         description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
         stockQuantity: 7900,
         soldQuantity: 10700,
-        category_id: 3,
+        category: 'sunglasses',
     },
 
     {
@@ -144,7 +144,7 @@ export const data = [
         description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
         stockQuantity: 7900,
         soldQuantity: 10700,
-        category_id: 3,
+        category: 'sunglasses',
     },
 
     {
@@ -157,7 +157,7 @@ export const data = [
         description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
         stockQuantity: 7900,
         soldQuantity: 10700,
-        category_id: 1,
+        category: 'eyeglasses',
     },
 
     {
@@ -170,7 +170,7 @@ export const data = [
         description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
         stockQuantity: 7900,
         soldQuantity: 10700,
-        category_id: 1,
+        category: 'eyeglasses',
     },
 
     {
@@ -183,7 +183,7 @@ export const data = [
         description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
         stockQuantity: 7900,
         soldQuantity: 10700,
-        category_id: 2,
+        category: 'eyelens',
     },
 
     {
@@ -196,7 +196,7 @@ export const data = [
         description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
         stockQuantity: 7900,
         soldQuantity: 10700,
-        category_id: 2,
+        category: 'eyelens',
     },
 
     {
@@ -209,7 +209,7 @@ export const data = [
         description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
         stockQuantity: 7900,
         soldQuantity: 10700,
-        category_id: 3,
+        category: 'sunglasses',
     },
 
     {
@@ -222,7 +222,7 @@ export const data = [
         description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
         stockQuantity: 7900,
         soldQuantity: 10700,
-        category_id: 3,
+        category: 'sunglasses',
     },
 
     {
@@ -235,7 +235,7 @@ export const data = [
         description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
         stockQuantity: 7900,
         soldQuantity: 10700,
-        category_id: 1,
+        category: 'eyeglasses',
     },
 
     {
@@ -248,6 +248,6 @@ export const data = [
         description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
         stockQuantity: 7900,
         soldQuantity: 10700,
-        category_id: 1,
+        category: 'eyeglasses',
     },
 ];

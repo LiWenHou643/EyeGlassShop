@@ -184,12 +184,12 @@ const Footer = () => (
                             </li>
                             <li>
                                 <P href='#!'>
-                                    <strong>Hotline: </strong>
+                                    <strong>Hotline: </strong>0939 999 999
                                 </P>
                             </li>
                             <li>
                                 <P href='#!'>
-                                    <strong>Email: </strong>
+                                    <strong>Email: </strong>eyehero@gmail.com
                                 </P>
                             </li>
                         </ul>

@@ -27,13 +27,13 @@ export function countDiscount(price, discount) {
     return price - (price * discount) / 100;
 }
 
+export function formatPrice(price) {
+    return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+}
+
 export function formatSoldAmount(soldAmount) {
     if (soldAmount >= 1000) {
         return (soldAmount / 1000).toFixed(1).replace('.0', '') + 'k';
     }
     return soldAmount.toString();
-}
-
-export function formatPrice(price) {
-    return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
 }

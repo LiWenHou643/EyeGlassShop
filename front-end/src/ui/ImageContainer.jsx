@@ -1,9 +1,9 @@
 import styled from 'styled-components';
 
 const ImageContainer = styled.div`
-    background-color: var(--color-grey-0);
+    background-color: transparent;
     height: 100%;
-    width: 100%;
+    width: ${(props) => (props.$width ? `${props.$width}px` : '100%')};
     overflow: hidden;
     aspect-ratio: ${(props) => (props.$ratio ? props.$ratio : '1')};
     img {

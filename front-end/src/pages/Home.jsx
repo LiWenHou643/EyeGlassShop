@@ -2,8 +2,8 @@ import HomeBlog from '../features/home/HomeBlog';
 import HomeIntro from '../features/home/HomeIntro';
 import HomeBanner from '../features/home/HomeBanner';
 import HomeStoreLocation from '../features/home/HomeStoreLocation';
-import { ProductSlider } from '../features/glasses/ProductSlider';
-import { data } from '../features/glasses/glassesData';
+import { ProductSlider } from '../features/product/ProductSlider';
+import { data } from '../features/product/glassesData';
 
 function Home() {
     return (

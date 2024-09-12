@@ -1,18 +1,18 @@
 import { useSearchParams } from 'react-router-dom';
-import { getGlassProducts } from '../../services/apiProduct';
+import { getProducts } from '../../services/apiProduct';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { PAGE_SIZE } from '../../utils/constant';
 
-export function useGlasses() {
+export function useProducts() {
     const [searchParams] = useSearchParams();
     const queryClient = useQueryClient();
 
-    // Filter glasses based on the query string
+    // Filter products based on the query string
     const categoryValue = searchParams.get('category');
     const category =
         !categoryValue || categoryValue === 'all' ? null : categoryValue;
 
-    // Sort glasses based on the query string
+    // Sort products based on the query string
     const sortBy = searchParams.get('sort') || 'title-asc';
     const [field, direction] = sortBy.split('-');
     const sort = `${field}-${direction}`;
@@ -24,8 +24,8 @@ export function useGlasses() {
 
     // Query the API
     const { isLoading, error, data } = useQuery({
-        queryKey: ['glasses', category, sort, page],
-        queryFn: () => getGlassProducts({ category, sort, page }),
+        queryKey: ['products', category, sort, page],
+        queryFn: () => getProducts({ category, sort, page }),
         refetchOnWindowFocus: false,
         keepPreviousData: true,
         staleTime: 60000,
@@ -36,14 +36,14 @@ export function useGlasses() {
 
     if (page < totalPages)
         queryClient.prefetchQuery({
-            queryKey: ['glasses', category, sort, page + 1],
-            queryFn: () => getGlassProducts({ category, sort, page: page + 1 }),
+            queryKey: ['products', category, sort, page + 1],
+            queryFn: () => getProducts({ category, sort, page: page + 1 }),
         });
 
     if (page > 1)
         queryClient.prefetchQuery({
-            queryKey: ['glasses', category, sort, page - 1],
-            queryFn: () => getGlassProducts({ category, sort, page: page - 1 }),
+            queryKey: ['products', category, sort, page - 1],
+            queryFn: () => getProducts({ category, sort, page: page - 1 }),
         });
 
     // Return the data
