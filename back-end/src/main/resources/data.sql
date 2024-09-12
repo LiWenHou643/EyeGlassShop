@@ -358,7 +358,7 @@ INSERT INTO `defaultdb`.`product_inventory` (`product_id`, `stock_quantity`, `so
 INSERT INTO `defaultdb`.`product_inventory` (`product_id`, `stock_quantity`, `sold_quantity`) VALUES ('72', '200', '55089');
 INSERT INTO `defaultdb`.`product_inventory` (`product_id`, `stock_quantity`, `sold_quantity`) VALUES ('73', '300', '45809');
 INSERT INTO `defaultdb`.`product_inventory` (`product_id`, `stock_quantity`, `sold_quantity`) VALUES ('74', '300', '25309');
-INSERT INTO `defaultdb`.`product_inventory` (`product_id`, `stock_quantity`, `sold_quantity`) VALUES ('75', '200', '545590');
+INSERT INTO `defaultdb`.`product_inventory` (`product_id`, `stock_quantity`, `sold_quantity`) VALUES ('75', '200', '45590');
 INSERT INTO `defaultdb`.`product_inventory` (`product_id`, `stock_quantity`, `sold_quantity`) VALUES ('76', '100', '36509');
 INSERT INTO `defaultdb`.`product_inventory` (`product_id`, `stock_quantity`, `sold_quantity`) VALUES ('77', '200', '746590');
 INSERT INTO `defaultdb`.`product_inventory` (`product_id`, `stock_quantity`, `sold_quantity`) VALUES ('78', '300', '37509');
@@ -408,4 +408,3 @@ INSERT INTO `defaultdb`.`product_inventory` (`product_id`, `stock_quantity`, `so
 INSERT INTO `defaultdb`.`product_inventory` (`product_id`, `stock_quantity`, `sold_quantity`) VALUES ('121', '100', '32340');
 INSERT INTO `defaultdb`.`product_inventory` (`product_id`, `stock_quantity`, `sold_quantity`) VALUES ('122', '100', '10250');
 INSERT INTO `defaultdb`.`product_inventory` (`product_id`, `stock_quantity`, `sold_quantity`) VALUES ('123', '100', '1050');
-

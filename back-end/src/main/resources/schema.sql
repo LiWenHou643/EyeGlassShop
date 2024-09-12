@@ -59,13 +59,6 @@ CREATE TABLE `color`
     `hex`        VARCHAR(7)  NOT NULL
 );
 
-CREATE TABLE `galery`
-(
-    `id`         int PRIMARY KEY AUTO_INCREMENT,
-    `product_id` int          NOT NULL,
-    `thumbnail`  varchar(500) NOT NULL
-);
-
 CREATE TABLE `cart`
 (
     `id`        int PRIMARY KEY AUTO_INCREMENT,
@@ -78,7 +71,7 @@ CREATE TABLE `cart_item`
     `id`         int PRIMARY KEY AUTO_INCREMENT,
     `cart_id`    int NOT NULL,
     `product_id` int NOT NULL,
-    `quantiy`    int NOT NULL
+    `quantity`   int NOT NULL
 );
 
 CREATE TABLE `payment_details`
@@ -115,15 +108,23 @@ CREATE TABLE `product_inventory`
     `sold_quantity`  int NOT NULL DEFAULT 0
 );
 
+CREATE TABLE `ratings`
+(
+    `id`           int PRIMARY KEY AUTO_INCREMENT,
+    `product_id`   int NOT NULL,
+    `person_id`    int NOT NULL,
+    `rating_value` int NOT NULL,
+    `review_text`  text,
+    `created_at`   timestamp default current_timestamp
+);
+
+
 
 ALTER TABLE `person`
     ADD FOREIGN KEY (`role`) REFERENCES `roles` (`name`);
 
 ALTER TABLE `refresh_tokens`
     ADD FOREIGN KEY (`person_id`) REFERENCES `person` (`id`);
-
-ALTER TABLE `galery`
-    ADD FOREIGN KEY (`product_id`) REFERENCES `product` (`id`);
 
 ALTER TABLE `orders`
     ADD FOREIGN KEY (`person_id`) REFERENCES `person` (`id`);
@@ -154,3 +155,9 @@ ALTER TABLE `product_inventory`
 
 ALTER TABLE `color`
     ADD FOREIGN KEY (`product_id`) REFERENCES `product` (`id`);
+
+ALTER TABLE `ratings`
+    ADD FOREIGN KEY (`product_id`) REFERENCES `product` (`id`);
+
+ALTER TABLE `ratings`
+    ADD FOREIGN KEY (`person_id`) REFERENCES `person` (`id`);
