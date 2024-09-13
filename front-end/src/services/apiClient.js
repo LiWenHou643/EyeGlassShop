@@ -14,7 +14,7 @@ const publicApi = axios.create({
 });
 
 privateApi.interceptors.request.use((config) => {
-    const token = localStorage.getItem('user')?.accessToken; // Function to get token from cookies
+    const token = localStorage.getItem('user')?.accessToken;
     if (token) {
         config.headers['Authorization'] = `Bearer ${token}`;
     }

@@ -22,7 +22,7 @@ export const getProducts = async ({
 export const searchProducts = async (debouncedSearch) => {
     const response = await publicApi.get('/products/search', {
         params: {
-            search: debouncedSearch,
+            title: debouncedSearch,
         },
     });
     return response.data;

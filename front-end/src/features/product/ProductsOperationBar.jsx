@@ -11,72 +11,6 @@ const Container = styled.div`
     border-bottom: 1px solid #000000;
 `;
 
-const GlassesFilterBar = styled(FilterBar)`
-    width: calc(4 / 12 * 100%);
-
-    @media (max-width: 1400px) {
-        width: calc(4 / 12 * 100%);
-    }
-
-    @media (max-width: 1200px) {
-        width: calc(6 / 12 * 100%);
-    }
-
-    @media (max-width: 994px) {
-        width: calc(7 / 12 * 100%);
-    }
-
-    @media (max-width: 768px) {
-        width: calc(12 / 12 * 100%);
-    }
-`;
-
-const GlassesSortBar = styled(SortBar)`
-    width: calc(4 / 12 * 100%);
-    padding: 0 20px;
-
-    @media (max-width: 1400px) {
-        width: calc(4 / 12 * 100%);
-    }
-
-    @media (max-width: 1200px) {
-        width: calc(5 / 12 * 100%);
-    }
-
-    @media (max-width: 994px) {
-        width: calc(5 / 12 * 100%);
-    }
-
-    @media (max-width: 768px) {
-        width: calc(12 / 12 * 100%);
-        padding: 0;
-        margin: 20px 0;
-    }
-`;
-
-const GlassesSearchBar = styled(SearchBar)`
-    width: calc(4 / 12 * 100%);
-
-    @media (max-width: 1400px) {
-        width: calc(4 / 12 * 100%);
-    }
-
-    @media (max-width: 1200px) {
-        width: calc(6 / 12 * 100%);
-        margin: 20px auto 0;
-    }
-
-    @media (max-width: 994px) {
-        width: calc(6 / 12 * 100%);
-        margin: 20px auto 0;
-    }
-
-    @media (max-width: 768px) {
-        width: calc(12 / 12 * 100%);
-        margin-top: 0;
-    }
-`;
-
 const SearchItem = styled.div`
     display: flex;
     align-items: center;
@@ -103,10 +37,11 @@ const Title = styled.div`
     overflow: hidden;
 `;
 
-function GlassesOperationBar() {
+function ProductsOperationBar() {
     return (
-        <Container className='d-flex justify-content-between align-items-center flex-wrap'>
-            <GlassesFilterBar
+        <Container className='row mx-0 justify-content-between'>
+            <FilterBar
+                className='col-12 col-md-6 col-xl-4'
                 filterField='category'
                 options={[
                     { label: 'All', value: 'all' },
@@ -115,7 +50,8 @@ function GlassesOperationBar() {
                     { label: 'Eyelens', value: 'eyelens' },
                 ]}
             />
-            <GlassesSortBar
+            <SortBar
+                className='my-4 my-md-0 col-12 col-md-5 col-xl-3'
                 sortField='sort'
                 options={[
                     { label: 'Sort by name (A-Z)', value: 'title-asc' },
@@ -138,7 +74,8 @@ function GlassesOperationBar() {
                     },
                 ]}
             />
-            <GlassesSearchBar
+            <SearchBar
+                className='col-12 col-md-6 col-xl-4'
                 apiSearch={searchProducts}
                 render={(item, index) => {
                     return (
@@ -146,7 +83,7 @@ function GlassesOperationBar() {
                             <span className='col-1'>{index + 1}</span>
                             <img
                                 className='col-3'
-                                src={item.thumbnail}
+                                src={item.image}
                                 alt={`${item.title}`}
                             />
                             <Title className='col-5 ps-4'>{item.title}</Title>
@@ -177,4 +114,4 @@ function GlassesOperationBar() {
     );
 }
 
-export default GlassesOperationBar;
+export default ProductsOperationBar;

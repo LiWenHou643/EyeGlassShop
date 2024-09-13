@@ -33,7 +33,7 @@ const Input = styled.input`
     }
 `;
 
-function SearchBar({ apiSearch, render }) {
+function SearchBar({ apiSearch, render, className }) {
     const [searchTerm, setSearchTerm] = useState('');
     const [isClosed, setIsClosed] = useState(true);
     const [data, setData] = useState([]);
@@ -58,7 +58,10 @@ function SearchBar({ apiSearch, render }) {
     }, [debouncedSearchTerm, apiSearch]);
 
     return (
-        <form className='d-flex position-relative' role='search'>
+        <form
+            className={`${className} d-flex position-relative my-0 my-md-4 my-xl-0`}
+            role='search'
+        >
             <Input
                 className='form-control py-3 px-4'
                 type='search'

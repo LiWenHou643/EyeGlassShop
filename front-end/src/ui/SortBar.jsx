@@ -11,7 +11,7 @@ function SortBar({ sortField, options, className }) {
     }
 
     return (
-        <div className={className}>
+        <div className={`${className} d-flex align-items-center`}>
             <Select options={options} value={sortBy} onChange={handleChange} />
         </div>
     );
