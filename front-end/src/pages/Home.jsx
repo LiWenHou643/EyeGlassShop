@@ -21,18 +21,6 @@ function Home() {
         error: errorBigSales,
     } = useBigSalesProducts();
 
-    if (errorBestSellers || errorBigSales)
-        return (
-            <div>
-                {errorBestSellers && (
-                    <Error>Error: {errorBestSellers?.message}</Error>
-                )}
-                {errorBigSales && (
-                    <Error>Error: {errorBigSales?.message}</Error>
-                )}
-            </div>
-        );
-
     return (
         <div>
             <HomeBanner />
@@ -42,6 +30,8 @@ function Home() {
                     <Loading>
                         <SyncLoader color='var(--color-grey-600)' />
                     </Loading>
+                ) : errorBestSellers ? (
+                    <Error>Error: {errorBestSellers?.message}</Error>
                 ) : (
                     <ProductSlider>
                         <ProductSlider.Title>
@@ -54,13 +44,14 @@ function Home() {
                     <Loading>
                         <SyncLoader color='var(--color-grey-600)' />
                     </Loading>
+                ) : errorBigSales ? (
+                    <Error>Error: {errorBigSales?.message}</Error>
                 ) : (
                     <ProductSlider>
                         <ProductSlider.Title>Big Sales</ProductSlider.Title>
                         <ProductSlider.Products products={bigsales} />
                     </ProductSlider>
                 )}
-
                 <HomeBlog />
                 <HomeStoreLocation />
             </div>

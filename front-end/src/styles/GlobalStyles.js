@@ -16,30 +16,7 @@ const GlobalStyles = createGlobalStyle`
     --color-grey-800: #1f2937;
     --color-grey-900: #111827;
 
-    --color-indigo-50: #eef2ff;
-    --color-indigo-100: #e0e7ff;
-    --color-indigo-100: #c7d2fe;
-    --color-indigo-300: #a5b4fc;
-    --color-indigo-400: #818cf8;
-    --color-indigo-500: #6366f1;
-    --color-indigo-600: #4f46e5;
-    --color-indigo-700: #4338ca;
-    --color-indigo-800: #3730a3;
-    --color-indigo-900: #312e81;
-    --color-indigo-950: #1e1b4b;
 
-    --color-blue-50: #eff6ff;
-    --color-blue-100: #dbeafe;
-    --color-blue-100: #bfdbfe;
-    --color-blue-300: #93c5fd;
-    --color-blue-400: #60a5fa;
-    --color-blue-500: #3b82f6;
-    --color-blue-600: #2563eb;
-    --color-blue-700: #1d4ed8;
-    --color-blue-800: #1e40af;
-    --color-blue-900: #1e3a8a;
-    --color-blue-950: #1e1b4b;
-    
 
     --image-grayscale: 0;
     --image-opacity: 100%;
@@ -62,30 +39,6 @@ const GlobalStyles = createGlobalStyle`
     --color-grey-700: #e5e7eb;
     --color-grey-800: #f3f4f6;
     --color-grey-900: #f9fafb;
-    
-    --color-indigo-950: #eef2ff;
-    --color-indigo-900: #e0e7ff;
-    --color-indigo-800: #c7d2fe;
-    --color-indigo-700: #a5b4fc;
-    --color-indigo-600: #818cf8;
-    --color-indigo-500: #6366f1;
-    --color-indigo-400: #4f46e5;
-    --color-indigo-300: #4338ca;
-    --color-indigo-200: #3730a3;
-    --color-indigo-100: #312e81;
-    --color-indigo-50: #1e1b4b;
-
-    --color-blue-950: #eff6ff;
-    --color-blue-900: #dbeafe;
-    --color-blue-800: #bfdbfe;
-    --color-blue-700: #93c5fd;
-    --color-blue-600: #60a5fa;
-    --color-blue-500: #3b82f6;
-    --color-blue-400: #2563eb;
-    --color-blue-300: #1d4ed8;
-    --color-blue-200: #1e40af;
-    --color-blue-100: #1e3a8a;
-    --color-blue-50: #1e1b4b;
 
     --image-grayscale: 10%;
     --image-opacity: 80%;
@@ -109,6 +62,18 @@ const GlobalStyles = createGlobalStyle`
   --color-red-400: #f87171;
   --color-red-500: #ef4444;
   --color-red-600: #dc2626;
+  --color-indigo-100: #e0e7ff;
+  --color-indigo-100: #c7d2fe;
+  --color-indigo-300: #a5b4fc;
+  --color-indigo-400: #818cf8;
+  --color-indigo-500: #6366f1;
+
+  --color-blue-100: #dbeafe;
+  --color-blue-200: #bfdbfe;
+  --color-blue-300: #93c5fd;
+  --color-blue-400: #60a5fa;
+  --color-blue-500: #3b82f6;
+    
 
   --color-const-grey-0: #fff;
   --color-const-grey-50: #f9fafb;

@@ -4,7 +4,7 @@ import BaseStyledLink from './Link';
 
 const DropdownMenu = styled.ul`
     color: var(--color-const-grey-800);
-    background-color: var(--color-indigo-300);
+    background-color: var(--color-blue-300);
     border-radius: 0.5rem;
     z-index: 1000;
     width: 120px;
@@ -27,9 +27,8 @@ const DropdownMenu = styled.ul`
     }
 
     @media (max-width: 768px) {
-        top: 0;
-        left: -120px;
-        border-radius: 0;
+        top: 20px;
+        right: 110px;
     }
 `;
 

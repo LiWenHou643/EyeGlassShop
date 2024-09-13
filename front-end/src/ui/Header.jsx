@@ -92,19 +92,22 @@ const StyledHeaderMenu = styled.div`
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    position: absolute;
-    top: 100%;
-    right: 0;
-    z-index: 2;
     color: var(--color-grey-100);
     background: var(--color-header);
     transition: 0.3s ease;
+
+    position: absolute;
+    top: 80%;
+    right: 50px;
+    z-index: 2;
+    border-radius: 0.5rem;
 
     ${({ $display }) => ($display ? 'display: flex;' : 'display: none;')}
 
     a {
         padding: 0.6rem 0;
     }
+
     @media (min-width: 768px) {
         background: transparent;
         display: flex;
