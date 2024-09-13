@@ -35,16 +35,24 @@ public class ProductController {
     }
 
     @GetMapping("/best-seller")
-    public ApiResponse<List<ProductResponse>> getBestSellerProducts(@RequestParam(name = "limit", defaultValue = "20") int limit) {
-        List<ProductResponse> products = productService.getBestSellerProducts(limit);
-        ApiResponse<List<ProductResponse>> response = new ApiResponse<>();
+    public ApiResponse<Page<ProductResponse>> getBestSellerProducts(@RequestParam(name = "limit", defaultValue = "12") int limit) {
+        Page<ProductResponse> products = productService.getBestSellerProducts(limit);
+        ApiResponse<Page<ProductResponse>> response = new ApiResponse<>();
+        response.setData(products);
+        return response;
+    }
+
+    @GetMapping("/most-discount")
+    public ApiResponse<Page<ProductResponse>> getMostDiscountProducts(@RequestParam(name = "limit", defaultValue = "12") int limit) {
+        Page<ProductResponse> products = productService.getMostDiscountProducts(limit);
+        ApiResponse<Page<ProductResponse>> response = new ApiResponse<>();
         response.setData(products);
         return response;
     }
 
     @GetMapping("/search")
-    public ApiResponse<List<ProductResponse>> searchProducts(@RequestParam String search) {
-        List<ProductResponse> products = productService.searchProducts(search);
+    public ApiResponse<List<ProductResponse>> searchProducts(@RequestParam(name = "title", required = false) String title) {
+        List<ProductResponse> products = productService.searchProducts(title);
         ApiResponse<List<ProductResponse>> response = new ApiResponse<>();
         response.setData(products);
         return response;

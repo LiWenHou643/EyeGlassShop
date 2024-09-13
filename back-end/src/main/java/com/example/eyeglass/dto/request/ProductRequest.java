@@ -4,11 +4,11 @@ public record ProductRequest(
         Long id,
         String productCode,
         String title,
-        int price,
-        int discount,
-        String thumbnail,
+        String image,
         String description,
         Long categoryId,
+        int discount,
+        int price,
         int stockQuantity,
         int soldQuantity
 ) {

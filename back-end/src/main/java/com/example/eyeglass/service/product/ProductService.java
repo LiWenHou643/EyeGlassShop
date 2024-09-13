@@ -4,10 +4,8 @@ import com.example.eyeglass.dto.request.ProductRequest;
 import com.example.eyeglass.dto.response.ProductResponse;
 import com.example.eyeglass.entity.Category;
 import com.example.eyeglass.entity.Product;
-import com.example.eyeglass.entity.ProductInventory;
 import com.example.eyeglass.exception.AppException;
 import com.example.eyeglass.exception.ErrorCode;
-import com.example.eyeglass.repository.product.ProductInventoryRepository;
 import com.example.eyeglass.repository.product.ProductRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -30,30 +28,43 @@ import static com.example.eyeglass.mapper.ProductMapper.PRODUCT_MAPPER;
 public class ProductService {
     CategoryService categoryService;
     ProductRepository productRepository;
-    ProductInventoryRepository productInventoryRepository;
 
     public Page<ProductResponse> getProducts(String category, int page, int size, String sort) {
         String[] sortParams = sort.split("-");
         String sortField = sortParams[0];
         Sort.Direction sortDirection = sortParams[1].equals("asc") ? Sort.Direction.ASC : Sort.Direction.DESC;
         if (page < 1) page = 1;
-        if (sortField.equals("soldQuantity")) sortField = "pi.soldQuantity";
         Pageable pageable = PageRequest.of(page - 1, size, Sort.by(sortDirection, sortField));
-        return productRepository.findAllByIsDeletedIsFalse(category, pageable);
+
+        Page<Product> productPage = productRepository.findAllByCategory_NameAndDeletedIsFalse(category, pageable);
+        // Map Product entities to ProductResponse DTOs
+        return productPage.map(PRODUCT_MAPPER::toProductResponse);
     }
 
-    public List<ProductResponse> getBestSellerProducts(int limit) {
-        Pageable pageable = PageRequest.of(0, limit, Sort.by(Sort.Direction.DESC, "pi.soldQuantity"));
-        return productRepository.findBestSellerProducts(pageable);
+    public Page<ProductResponse> getBestSellerProducts(int limit) {
+        Pageable pageable = PageRequest.of(0, limit, Sort.by(Sort.Direction.DESC, "soldQuantity"));
+        Page<Product> productPage = productRepository.findAllByDeletedIsFalse(pageable);
+        // Map Product entities to ProductResponse DTOs
+        return productPage.map(PRODUCT_MAPPER::toProductResponse);
     }
 
-    public List<ProductResponse> searchProducts(String search) {
-        return productRepository.findByTitleContainingIgnoreCase(search);
+    public Page<ProductResponse> getMostDiscountProducts(int limit) {
+        Pageable pageable = PageRequest.of(0, limit, Sort.by(Sort.Direction.DESC, "discount"));
+        Page<Product> productPage = productRepository.findAllByDeletedIsFalse(pageable);
+        // Map Product entities to ProductResponse DTOs
+        return productPage.map(PRODUCT_MAPPER::toProductResponse);
+    }
+
+    public List<ProductResponse> searchProducts(String title) {
+        List<Product> products = productRepository.findAllByTitleContainingIgnoreCaseAndDeletedIsFalse(title);
+        // Map Product entities to ProductResponse DTOs
+        return products.stream().map(PRODUCT_MAPPER::toProductResponse).toList();
     }
 
     public ProductResponse getProductById(Long productId) {
-        return productRepository.findProductById(productId)
-                                .orElseThrow(() -> new AppException(ErrorCode.PRODUCT_NOT_FOUND));
+        return PRODUCT_MAPPER.toProductResponse(productRepository.findByIdAndDeletedIsFalse(productId)
+                                                                 .orElseThrow(() -> new AppException(
+                                                                         ErrorCode.PRODUCT_NOT_FOUND)));
     }
 
     public ProductResponse addProduct(ProductRequest productRequest) {
@@ -68,17 +79,7 @@ public class ProductService {
         product.setCategory(category);
         productRepository.save(product);
 
-        //Save product inventory to database
-        ProductInventory productInventory = new ProductInventory();
-        productInventory.setStockQuantity(productRequest.stockQuantity());
-        productInventory.setSoldQuantity(0);
-        productInventory.setProduct(product);
-        productInventoryRepository.save(productInventory);
-
-        ProductResponse productResponse = PRODUCT_MAPPER.toProductResponse(product);
-        productResponse.setSoldQuantity(0);
-        productResponse.setStockQuantity(productRequest.stockQuantity());
-        return productResponse;
+        return PRODUCT_MAPPER.toProductResponse(product);
     }
 
     public ProductResponse updateProduct(ProductRequest productRequest) {
@@ -88,16 +89,14 @@ public class ProductService {
         product.setTitle(productRequest.title());
         product.setPrice(productRequest.price());
         product.setDiscount(productRequest.discount());
-        product.setThumbnail(productRequest.thumbnail());
+        product.setImage(productRequest.image());
         product.setDescription(productRequest.description());
+        product.setStockQuantity(productRequest.stockQuantity());
         Category category = categoryService.getCategoryById(productRequest.categoryId());
         product.setCategory(category);
         productRepository.save(product);
 
-        ProductResponse productResponse = PRODUCT_MAPPER.toProductResponse(product);
-        productResponse.setStockQuantity(productRequest.stockQuantity());
-        productResponse.setSoldQuantity(productRequest.soldQuantity());
-        return productResponse;
+        return PRODUCT_MAPPER.toProductResponse(product);
     }
 
     public void deleteProduct(ProductRequest productRequest) {

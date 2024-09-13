@@ -1,7 +1,7 @@
 package com.example.eyeglass.service.auth;
 
 import com.example.eyeglass.config.Authentication.JwtGenerator;
-import com.example.eyeglass.constants.EyeGlassConstants;
+import com.example.eyeglass.constants.AppConstants;
 import com.example.eyeglass.dto.request.AuthenticationRequest;
 import com.example.eyeglass.dto.request.RegisterRequest;
 import com.example.eyeglass.dto.response.AuthenticationResponse;
@@ -12,7 +12,6 @@ import com.example.eyeglass.entity.RefreshToken;
 import com.example.eyeglass.entity.Roles;
 import com.example.eyeglass.exception.AppException;
 import com.example.eyeglass.exception.ErrorCode;
-import com.example.eyeglass.mapper.PersonMapper;
 import com.example.eyeglass.repository.auth.RefreshTokenRepository;
 import com.example.eyeglass.repository.person.PersonRepository;
 import jakarta.servlet.http.Cookie;
@@ -74,7 +73,7 @@ public class AuthenticationService {
     }
 
     public PersonResponse register(RegisterRequest request) {
-        Roles role = Roles.builder().name(EyeGlassConstants.ROLE_USER).build();
+        Roles role = Roles.builder().name(AppConstants.ROLE_USER).build();
 
         request.setFullName(request.getFullName().trim());
         request.setEmail(request.getEmail().trim());

@@ -40,15 +40,17 @@ CREATE TABLE `category`
 
 CREATE TABLE `product`
 (
-    `id`           int PRIMARY KEY AUTO_INCREMENT,
-    `category_id`  int                 NOT NULL,
-    `product_code` VARCHAR(255) UNIQUE NOT NULL,
-    `title`        varchar(250)        NOT NULL,
-    `price`        int                 NOT NULL,
-    `discount`     int                 NOT NULL,
-    `thumbnail`    varchar(500)        NOT NULL,
-    `description`  longtext            NOT NULL,
-    `is_deleted`   boolean             NOT NULL DEFAULT FALSE
+    `id`             int PRIMARY KEY AUTO_INCREMENT,
+    `category_id`    int                 NOT NULL,
+    `product_code`   VARCHAR(255) UNIQUE NOT NULL,
+    `title`          varchar(250)        NOT NULL,
+    `price`          int                 NOT NULL,
+    `discount`       int                 NOT NULL,
+    `image`     	 varchar(500)        NOT NULL,
+    `description`    longtext            NOT NULL,
+    `stock_quantity` int                 NOT NULL DEFAULT 0,
+    `sold_quantity`  int                 NOT NULL DEFAULT 0,
+    `is_deleted`     boolean             NOT NULL DEFAULT FALSE
 );
 
 CREATE TABLE `color`
@@ -100,14 +102,6 @@ CREATE TABLE `order_detail`
     `quantity`   int NOT NULL
 );
 
-CREATE TABLE `product_inventory`
-(
-    `id`             int PRIMARY KEY AUTO_INCREMENT,
-    `product_id`     int NOT NULL,
-    `stock_quantity` int NOT NULL DEFAULT 0,
-    `sold_quantity`  int NOT NULL DEFAULT 0
-);
-
 CREATE TABLE `ratings`
 (
     `id`           int PRIMARY KEY AUTO_INCREMENT,
@@ -117,7 +111,6 @@ CREATE TABLE `ratings`
     `review_text`  text,
     `created_at`   timestamp default current_timestamp
 );
-
 
 
 ALTER TABLE `person`
@@ -149,9 +142,6 @@ ALTER TABLE `order_detail`
 
 ALTER TABLE `orders`
     ADD FOREIGN KEY (`payment_id`) REFERENCES `payment_details` (`id`);
-
-ALTER TABLE `product_inventory`
-    ADD FOREIGN KEY (`product_id`) REFERENCES `product` (`id`);
 
 ALTER TABLE `color`
     ADD FOREIGN KEY (`product_id`) REFERENCES `product` (`id`);

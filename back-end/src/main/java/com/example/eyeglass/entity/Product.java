@@ -36,14 +36,20 @@ public class Product {
     @Max(value = 100, message = "Discount cannot be more than 100")
     int discount;
 
-    @NotBlank(message = "Thumbnail cannot be blank")
-    String thumbnail;
+    @NotBlank(message = "Image cannot be blank")
+    String image;
 
     @NotBlank(message = "Description cannot be blank")
     String description;
 
+    @Column(name = "stock_quantity")
+    int stockQuantity = 0;
+
+    @Column(name = "sold_quantity")
+    int soldQuantity = 0;
+
     @Column(name = "is_deleted")
-    boolean isDeleted;
+    boolean deleted = false;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST, targetEntity = Category.class)
     @JoinColumn(name = "category_id", referencedColumnName = "id", nullable = false)
