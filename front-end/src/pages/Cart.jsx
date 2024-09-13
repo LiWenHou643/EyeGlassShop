@@ -6,11 +6,6 @@ import { useState } from 'react';
 import { HiOutlineArrowRight, HiOutlineTrash } from 'react-icons/hi2';
 
 const StyledContainer = styled.div`
-    margin-top: 200px;
-
-    @media (max-width: 1023px) {
-        margin-top: 40px;
-    }
     @media (min-width: 1200px) {
         padding: 0rem;
     }
@@ -19,9 +14,9 @@ const StyledContainer = styled.div`
     }
 
     > div {
+        border-radius: 4rem;
         position: relative;
         overflow: hidden;
-        border-radius: 4rem;
         &::before {
             content: '';
             position: absolute;

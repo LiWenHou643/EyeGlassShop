@@ -39,13 +39,6 @@ const GlobalStyles = createGlobalStyle`
     --color-blue-800: #1e40af;
     --color-blue-900: #1e3a8a;
     --color-blue-950: #1e1b4b;
-
-
-    --backdrop-color: rgba(255, 255, 255, 0.1);
-
-    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
-    --shadow-md: 0px 0.6rem 2.4rem rgba(0, 0, 0, 0.06);
-    --shadow-lg: 0 2.4rem 3.2rem rgba(0, 0, 0, 0.12);
     
 
     --image-grayscale: 0;
@@ -54,6 +47,7 @@ const GlobalStyles = createGlobalStyle`
     --color-header: radial-gradient(circle, rgba(183, 163, 255, 1) 0%, rgba(91, 166, 255, 1) 100%);
     --color-bg: linear-gradient(90deg, rgba(196,255,248,1) 0%, rgba(186,200,255,1) 50%, rgba(186,217,255,1) 100%);
     --color-footer: rgba(255, 255, 255, 0.4);
+    --color-bg-opcacity: rgba(255, 255, 255, 0.4);
   }
   
   &.dark-mode {
@@ -93,18 +87,13 @@ const GlobalStyles = createGlobalStyle`
     --color-blue-100: #1e3a8a;
     --color-blue-50: #1e1b4b;
 
-    --backdrop-color: rgba(0, 0, 0, 0.3);
-
-    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
-    --shadow-md: 0px 0.6rem 2.4rem rgba(0, 0, 0, 0.3);
-    --shadow-lg: 0 2.4rem 3.2rem rgba(0, 0, 0, 0.4);
-
     --image-grayscale: 10%;
     --image-opacity: 80%;
 
     --color-header: radial-gradient(circle, rgba(122,102,193,1) 0%, rgba(55,126,210,1) 100%);
     --color-bg: linear-gradient(90deg, rgba(76,114,161,1) 0%, rgba(94,136,155,1) 30%, rgba(107,114,152,1) 70%, rgba(76,114,161,1) 100%);
     --color-footer: rgba(0, 0, 0, 0.3);
+    --color-bg-opcacity: rgba(0, 0, 0, 0.3);
 
   }
   
@@ -281,7 +270,7 @@ ul {
 .slick-prev::before,
 .slick-next::before {
     z-index: 1;
-    color: var(--color-grey-900);
+    color: var(--color-const-grey-900);
     width: 40px;
     /* Optional: adjust width */
 
@@ -312,7 +301,9 @@ ul {
 .breadcrumb-item.active {
     color: var(--color-grey-600);
 }
-
+.breadcrumb-item+.breadcrumb-item::before {
+    color: var(--color-grey-600);
+}
 
 .table {
     --bs-table-color: var(--color-grey-800);
@@ -333,7 +324,22 @@ td {
     height: 100px;
 }   
 
-
+.bg-light-opacity {
+    position: relative;
+    overflow: hidden;
+    &::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: var(--color-grey-100);
+        opacity: 0.6;
+        z-index: 1;
+    }
+    & > * {
+        position: relative;
+        z-index: 2;
+    }
+}
 `;
 
 export default GlobalStyles;

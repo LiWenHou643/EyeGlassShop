@@ -4,7 +4,7 @@ import ProductCard from './ProductCard';
 import ProductsOperationBar from './ProductsOperationBar';
 import EmptyData from '../../ui/EmptyData';
 import Pagination from '../../ui/Pagination';
-import Spinner from '../../ui/Spinner';
+import Loading from '../../ui/Loading';
 import RingLoader from 'react-spinners/RingLoader';
 import Error from '../../ui/Error';
 
@@ -12,9 +12,9 @@ function ProductsGridView() {
     const { isLoading, error, data, count } = useProducts();
     if (isLoading)
         return (
-            <Spinner>
+            <Loading>
                 <RingLoader color='blue' />
-            </Spinner>
+            </Loading>
         );
     if (error) return <Error>Error: {error.message}</Error>;
     if (count === 0) return <EmptyData resourceName={'products'} />;

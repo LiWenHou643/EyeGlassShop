@@ -6,12 +6,14 @@ import {
     formatSoldAmount,
 } from '../../utils/helperFunction';
 import ImageContainer from '../../ui/ImageContainer';
+import { useNavigate } from 'react-router-dom';
 
 const CardContainer = styled.div`
     border: none;
     position: relative;
     transition: all 0s;
     color: var(--color-const-grey-800);
+    cursor: pointer;
 
     .dark-mode & {
         filter: brightness(0.85);
@@ -97,9 +99,17 @@ const CardSold = styled.div`
     z-index: 100;
 `;
 
-function GlassCard({ item, isSlider }) {
+function ProductCard({ item, isSlider }) {
+    const navigate = useNavigate();
+    const handleClickCard = () => {
+        navigate(`/products/${item.id}`);
+    };
     return (
-        <CardContainer className='card' $isSlider={isSlider}>
+        <CardContainer
+            className='card'
+            $isSlider={isSlider}
+            onClick={handleClickCard}
+        >
             <div className='position-relative z-1 h-100'>
                 {item.discount !== 0 && (
                     <CardDiscount>-{item.discount}%</CardDiscount>
@@ -108,7 +118,7 @@ function GlassCard({ item, isSlider }) {
 
                 <ImageContainer $ratio='11/9' $fit='contain'>
                     <img
-                        src={item.thumbnail}
+                        src={item.image}
                         className='card-img-top'
                         alt={item.title}
                     />
@@ -125,7 +135,7 @@ function GlassCard({ item, isSlider }) {
                         {item.discount !== 0 ? (
                             <>
                                 <h4 className='text-decoration-line-through mb-0'>
-                                    {formatPrice(item.price)}đ
+                                    {formatPrice(item.price)}d
                                 </h4>
                                 <h4 className='text-danger mb-0'>
                                     {formatPrice(
@@ -144,4 +154,4 @@ function GlassCard({ item, isSlider }) {
     );
 }
 
-export default GlassCard;
+export default ProductCard;

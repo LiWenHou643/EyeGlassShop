@@ -5,7 +5,7 @@ import Section from '../../ui/Section';
 function HomeBlog() {
     return (
         <Section className='row justify-content-between'>
-            <div className='col-12 col-lg-6'>
+            <div className='col-12 col-lg-6 mb-5 mb-lg-0'>
                 <HotPost />
             </div>
             <div className='col-12 col-lg-5'>

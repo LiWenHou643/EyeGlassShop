@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 import Slider from 'react-slick';
-import GlassCard from './ProductCard';
+import ProductCard from './ProductCard';
 import Section from '../../ui/Section';
 
 const ProductSliderContext = createContext();
@@ -19,11 +19,13 @@ function ProductSlider({ children }) {
             }
         };
 
+        handleResize();
+
         window.addEventListener('resize', handleResize);
         return () => {
             window.removeEventListener('resize', handleResize);
         };
-    }, [slidesToShow]);
+    }, []);
 
     return (
         <ProductSliderContext.Provider
@@ -55,7 +57,7 @@ function Products({ products }) {
     return (
         <Slider {...settings}>
             {products.map((item, index) => (
-                <GlassCard key={index} item={item} isSlider />
+                <ProductCard key={index} item={item} isSlider />
             ))}
         </Slider>
     );

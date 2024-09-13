@@ -1,12 +1,13 @@
 import { useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { data } from './glassesData';
 import {
     capitalizeFirstLetter,
     countDiscount,
     formatPrice,
     formatSoldAmount,
 } from '../../utils/helperFunction';
+import { useProduct } from './useProduct';
+import Loading from '../../ui/Loading';
 import ImageContainer from '../../ui/ImageContainer';
 import Button from '../../ui/Button';
 import StarRatings from 'react-star-ratings';
@@ -14,20 +15,21 @@ import styled from 'styled-components';
 import NumberInput from '../../ui/NumberInput';
 
 const StyledContainer = styled.div`
+    padding: 2rem 4rem;
+    border-radius: 2rem;
     @media (min-width: 1200px) {
-        padding: 0 6rem;
+        padding: 6rem;
     }
     @media (min-width: 1400px) {
-        padding: 0 15rem;
+        padding: 6rem 15rem;
     }
 `;
 
 const ProductContainer = styled.div`
-    background-color: var(--color-blue-200);
+    padding: 4rem 2rem;
+    color: var(--color-grey-900);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
     border-radius: 1rem;
-    padding: 2rem;
-    color: var(--color-const-grey-900);
-    box-shadow: 0 1rem 1rem rgba(0, 0, 0, 0.1);
 `;
 
 const StyledReview = styled.div`
@@ -36,16 +38,23 @@ const StyledReview = styled.div`
 
 function ProductDetails() {
     const { id } = useParams();
-    const product = data.at(id);
-
     const [numberValue, setNumberValue] = useState(1);
 
     const handleValueChange = (newValue) => {
         setNumberValue(newValue);
     };
 
+    const { data: product, isLoading, error } = useProduct(id);
+
+    if (isLoading) {
+        return <Loading>Loading...</Loading>;
+    }
+    if (error) {
+        return <div>Error: {error.message}</div>;
+    }
+
     return (
-        <StyledContainer>
+        <StyledContainer className='bg-light-opacity'>
             <nav className='mb-3' aria-label='breadcrumb'>
                 <ol className='breadcrumb'>
                     <li className='breadcrumb-item'>
@@ -76,14 +85,14 @@ function ProductDetails() {
             </nav>
             <ProductContainer className='row'>
                 <div className='col-12 col-md-5'>
-                    <ImageContainer $fit='fill'>
-                        <img src={product.thumbnail} alt={product.title} />
+                    <ImageContainer className='rounded-3' $fit='fill'>
+                        <img src={product.image} alt={product.title} />
                     </ImageContainer>
                 </div>
-                <div className='col-12 col-md-7'>
+                <div className='col-12 col-md-7 py-4 py-md-0 ps-lg-5'>
                     <div className='h-100 d-flex flex-column justify-content-between'>
                         <h1>{product.title}</h1>
-                        <p className='text-muted'>
+                        <p>
                             Product code: <strong>{product.productCode}</strong>
                         </p>
                         <div className='d-flex my-3 justify-content-start gap-4'>
@@ -114,7 +123,7 @@ function ProductDetails() {
                                 </h3>
                             </div>
                         </div>
-                        <div className='d-flex align-items-center w-100 justify-content-start ps-5 p-4 bg-light'>
+                        <div className='d-flex align-items-center w-100 justify-content-start py-4'>
                             {product.discount > 0 ? (
                                 <>
                                     <span>

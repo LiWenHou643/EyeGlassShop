@@ -28,7 +28,7 @@ export function useProducts() {
         queryFn: () => getProducts({ category, sort, page }),
         refetchOnWindowFocus: false,
         keepPreviousData: true,
-        staleTime: 60000,
+        staleTime: 1000 * 60 * 5, // 5 minutes
     });
 
     // Prefetch the next and previous pages

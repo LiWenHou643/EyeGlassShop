@@ -32,3 +32,13 @@ export const getProductById = async (id) => {
     const response = await publicApi.get(`/products/${id}`);
     return response.data;
 };
+
+export const getBestSellerProducts = async () => {
+    const response = await publicApi.get('/products/best-seller');
+    return response.data;
+};
+
+export const getBigSalesProducts = async () => {
+    const response = await publicApi.get('/products/most-discount');
+    return response.data;
+};

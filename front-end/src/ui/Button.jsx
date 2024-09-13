@@ -24,12 +24,9 @@ const variations = {
     primary: css`
         color: var(--color-grey-800);
         background-color: var(--color-indigo-400);
-        &:hover,
-        &:active,
-        &:focus,
-        &:focus-visible {
+
+        &:hover {
             background-color: var(--color-indigo-500);
-            color: var(--color-grey-800);
         }
 
         &:disabled {
