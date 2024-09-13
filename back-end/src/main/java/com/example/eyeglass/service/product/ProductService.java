@@ -36,7 +36,12 @@ public class ProductService {
         if (page < 1) page = 1;
         Pageable pageable = PageRequest.of(page - 1, size, Sort.by(sortDirection, sortField));
 
-        Page<Product> productPage = productRepository.findAllByCategory_NameAndDeletedIsFalse(category, pageable);
+        Page<Product> productPage;
+        if (category != null && !category.isEmpty()) {
+            productPage = productRepository.findAllByCategory_NameAndDeletedIsFalse(category, pageable);
+        } else {
+            productPage = productRepository.findAllByDeletedIsFalse(pageable);
+        }
         // Map Product entities to ProductResponse DTOs
         return productPage.map(PRODUCT_MAPPER::toProductResponse);
     }
