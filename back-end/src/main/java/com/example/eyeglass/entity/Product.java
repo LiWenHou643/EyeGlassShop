@@ -8,6 +8,9 @@ import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -27,6 +30,12 @@ public class Product {
     @NotBlank(message = "Title cannot be blank")
     String title;
 
+    @NotBlank(message = "Image cannot be blank")
+    String image;
+
+    @NotBlank(message = "Description cannot be blank")
+    String description;
+
     @NotNull(message = "Price cannot be null")
     @Min(value = 0, message = "Price cannot be less than 0")
     int price;
@@ -35,12 +44,6 @@ public class Product {
     @Min(value = 0, message = "Discount cannot be less than 0")
     @Max(value = 100, message = "Discount cannot be more than 100")
     int discount;
-
-    @NotBlank(message = "Image cannot be blank")
-    String image;
-
-    @NotBlank(message = "Description cannot be blank")
-    String description;
 
     @Column(name = "stock_quantity")
     int stockQuantity = 0;
@@ -54,4 +57,7 @@ public class Product {
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST, targetEntity = Category.class)
     @JoinColumn(name = "category_id", referencedColumnName = "id", nullable = false)
     Category category;
+
+    @OneToMany(mappedBy = "product")
+    Set<CartItem> cartItems = new HashSet<>();
 }

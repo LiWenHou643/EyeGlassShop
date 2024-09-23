@@ -7,13 +7,16 @@ import com.example.eyeglass.dto.request.RegisterRequest;
 import com.example.eyeglass.dto.response.AuthenticationResponse;
 import com.example.eyeglass.dto.response.PersonResponse;
 import com.example.eyeglass.dto.response.TokenType;
+import com.example.eyeglass.entity.Cart;
 import com.example.eyeglass.entity.Person;
 import com.example.eyeglass.entity.RefreshToken;
 import com.example.eyeglass.entity.Roles;
 import com.example.eyeglass.exception.AppException;
 import com.example.eyeglass.exception.ErrorCode;
 import com.example.eyeglass.repository.auth.RefreshTokenRepository;
+import com.example.eyeglass.repository.auth.RolesRepository;
 import com.example.eyeglass.repository.person.PersonRepository;
+import com.example.eyeglass.repository.product.CartRepository;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -23,6 +26,8 @@ import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 import static com.example.eyeglass.mapper.PersonMapper.PERSON_MAPPER;
 
@@ -35,6 +40,8 @@ public class AuthenticationService {
     PasswordEncoder passwordEncoder;
     PersonRepository personRepository;
     RefreshTokenRepository refreshTokenRepository;
+    CartRepository cartRepository;
+    RolesRepository rolesRepository;
 
     public AuthenticationResponse authenticate(AuthenticationRequest request, HttpServletResponse response) {
         Person person = personRepository
@@ -73,8 +80,9 @@ public class AuthenticationService {
     }
 
     public PersonResponse register(RegisterRequest request) {
-        Roles role = Roles.builder().name(AppConstants.ROLE_USER).build();
-
+        Optional<Roles> role = rolesRepository.getByName(AppConstants.ROLE_USER);
+        if (role.isEmpty()) throw new AppException(ErrorCode.ROLE_NOT_FOUND);
+        
         request.setFullName(request.getFullName().trim());
         request.setEmail(request.getEmail().trim());
         request.setPassword(request.getPassword().trim());
@@ -86,9 +94,12 @@ public class AuthenticationService {
                               .fullName(request.getFullName())
                               .email(request.getEmail())
                               .password(passwordEncoder.encode(request.getPassword()))
-                              .roles(role)
+                              .roles(role.get())
                               .build();
         Person isSaved = personRepository.save(person);
+
+        Cart cart = Cart.builder().person(isSaved).build();
+        cartRepository.save(cart);
 
         return PERSON_MAPPER.toPersonResponse(isSaved);
     }

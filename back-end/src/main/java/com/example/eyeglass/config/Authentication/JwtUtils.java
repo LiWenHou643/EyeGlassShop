@@ -20,9 +20,5 @@ public class JwtUtils {
     public boolean isInvalidated(Jwt jwtToken) {
         return invalidatedTokenRepository.existsByToken(jwtToken.getTokenValue());
     }
-
-    public boolean isValid(Jwt jwtToken) {
-        return !isExpired(jwtToken) && !isInvalidated(jwtToken);
-    }
 }
 

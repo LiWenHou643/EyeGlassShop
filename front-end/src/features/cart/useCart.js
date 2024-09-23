@@ -1,0 +1,5 @@
+export function useCart() {
+    const x = 0;
+
+    return x;
+}

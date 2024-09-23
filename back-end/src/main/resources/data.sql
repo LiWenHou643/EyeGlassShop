@@ -2,110 +2,110 @@ INSERT INTO `defaultdb`.`roles` (`name`) VALUES ('ADMIN');
 INSERT INTO `defaultdb`.`roles` (`name`) VALUES ('USER');
 
 -- pwd: admin@123
-INSERT INTO `defaultdb`.`person` (`full_name`, `email`, `password`, `role`)
-	VALUES ('admin', 'admin123@gmail.com', '{bcrypt}$2a$12$rxH7HRYrFkM212zXqOf7EOAIIFu02ctrpPgVWogJjufdvBO4NKxoK', 'ADMIN');
+INSERT INTO `defaultdb`.`person` (`full_name`, `email`, `password`, `role_id`)
+	VALUES ('admin', 'admin123@gmail.com', '{bcrypt}$2a$12$rxH7HRYrFkM212zXqOf7EOAIIFu02ctrpPgVWogJjufdvBO4NKxoK', '1');
 
 -- pwd: user@123
-INSERT INTO `defaultdb`.`person` (`full_name`, `email`, `phone_number`,`address`,`password`, `role`)
-	VALUES ('le van hau', 'user001@gmail.com', '0939000001','1 Mau Than, Ninh Kieu, Can Tho','{bcrypt}$2a$12$WDeN1faM.smq94LVHZHnc.OyNmUe0nlGHEVgSYLFh6earRZal0F3y', 'USER');
-INSERT INTO `defaultdb`.`person` (`full_name`, `email`, `phone_number`,`address`,`password`, `role`)
-	VALUES ('thien de', 'user002@gmail.com', '0939000002','2 Mau Than, Ninh Kieu, Can Tho', '{bcrypt}$2a$12$WDeN1faM.smq94LVHZHnc.OyNmUe0nlGHEVgSYLFh6earRZal0F3y', 'USER');
-INSERT INTO `defaultdb`.`person` (`full_name`, `email`, `phone_number`,`address`,`password`, `role`)
-	VALUES ('duy nga doc ton', 'user003@gmail.com', '0939000003','3 Mau Than, Ninh Kieu, Can Tho', '{bcrypt}$2a$12$WDeN1faM.smq94LVHZHnc.OyNmUe0nlGHEVgSYLFh6earRZal0F3y', 'USER');
-INSERT INTO `defaultdb`.`person` (`full_name`, `email`, `phone_number`,`address`,`password`, `role`)
-	VALUES ('de bat kiem tien', 'user004@gmail.com', '0939000004','4 Mau Than, Ninh Kieu, Can Tho', '{bcrypt}$2a$12$WDeN1faM.smq94LVHZHnc.OyNmUe0nlGHEVgSYLFh6earRZal0F3y', 'USER');
-INSERT INTO `defaultdb`.`person` (`full_name`, `email`, `phone_number`,`address`,`password`, `role`)
-	VALUES ('luc duong', 'user005@gmail.com', '0939000005','5 Mau Than, Ninh Kieu, Can Tho', '{bcrypt}$2a$12$WDeN1faM.smq94LVHZHnc.OyNmUe0nlGHEVgSYLFh6earRZal0F3y', 'USER');
-INSERT INTO `defaultdb`.`person` (`full_name`, `email`, `phone_number`,`address`,`password`, `role`)
-	VALUES ('van chi', 'user006@gmail.com', '0939000006','6 Mau Than, Ninh Kieu, Can Tho', '{bcrypt}$2a$12$WDeN1faM.smq94LVHZHnc.OyNmUe0nlGHEVgSYLFh6earRZal0F3y', 'USER');
-INSERT INTO `defaultdb`.`person` (`full_name`, `email`, `phone_number`,`address`,`password`, `role`)
-	VALUES ('manh canh chu', 'user007@gmail.com', '0939000007','7 Mau Than, Ninh Kieu, Can Tho', '{bcrypt}$2a$12$WDeN1faM.smq94LVHZHnc.OyNmUe0nlGHEVgSYLFh6earRZal0F3y', 'USER');
-INSERT INTO `defaultdb`.`person` (`full_name`, `email`, `phone_number`,`address`,`password`, `role`)
-	VALUES ('duong khai', 'user008@gmail.com', '0939000008','8 Mau Than, Ninh Kieu, Can Tho', '{bcrypt}$2a$12$WDeN1faM.smq94LVHZHnc.OyNmUe0nlGHEVgSYLFh6earRZal0F3y', 'USER');
-INSERT INTO `defaultdb`.`person` (`full_name`, `email`, `phone_number`,`address`,`password`, `role`)
-	VALUES ('tu tieu thu', 'user009@gmail.com', '0939000009','9 Mau Than, Ninh Kieu, Can Tho', '{bcrypt}$2a$12$WDeN1faM.smq94LVHZHnc.OyNmUe0nlGHEVgSYLFh6earRZal0F3y', 'USER');
-INSERT INTO `defaultdb`.`person` (`full_name`, `email`, `phone_number`,`address`,`password`, `role`)
-	VALUES ('han lap', 'user010@gmail.com', '0939000010','10 Mau Than, Ninh Kieu, Can Tho', '{bcrypt}$2a$12$WDeN1faM.smq94LVHZHnc.OyNmUe0nlGHEVgSYLFh6earRZal0F3y', 'USER');
-INSERT INTO `defaultdb`.`person` (`full_name`, `email`, `phone_number`,`address`,`password`, `role`)
-	VALUES ('le phi vu', 'user011@gmail.com', '0939000011','11 Mau Than, Ninh Kieu, Can Tho', '{bcrypt}$2a$12$WDeN1faM.smq94LVHZHnc.OyNmUe0nlGHEVgSYLFh6earRZal0F3y', 'USER');
-INSERT INTO `defaultdb`.`person` (`full_name`, `email`, `phone_number`,`address`,`password`, `role`)
-	VALUES ('tran binh an', 'user012@gmail.com', '0939000012','12 Mau Than, Ninh Kieu, Can Tho', '{bcrypt}$2a$12$WDeN1faM.smq94LVHZHnc.OyNmUe0nlGHEVgSYLFh6earRZal0F3y', 'USER');
-INSERT INTO `defaultdb`.`person` (`full_name`, `email`, `phone_number`,`address`,`password`, `role`)
-	VALUES ('lam vinh da', 'user013@gmail.com', '0939000013','13 Mau Than, Ninh Kieu, Can Tho', '{bcrypt}$2a$12$WDeN1faM.smq94LVHZHnc.OyNmUe0nlGHEVgSYLFh6earRZal0F3y', 'USER');
-INSERT INTO `defaultdb`.`person` (`full_name`, `email`, `phone_number`,`address`,`password`, `role`)
-	VALUES ('muc tran', 'user014@gmail.com', '0939000014','14 Mau Than, Ninh Kieu, Can Tho', '{bcrypt}$2a$12$WDeN1faM.smq94LVHZHnc.OyNmUe0nlGHEVgSYLFh6earRZal0F3y', 'USER');
-INSERT INTO `defaultdb`.`person` (`full_name`, `email`, `phone_number`,`address`,`password`, `role`)
-	VALUES ('tieu viem', 'user015@gmail.com', '0939000015','15 Mau Than, Ninh Kieu, Can Tho', '{bcrypt}$2a$12$WDeN1faM.smq94LVHZHnc.OyNmUe0nlGHEVgSYLFh6earRZal0F3y', 'USER');
-INSERT INTO `defaultdb`.`person` (`full_name`, `email`, `phone_number`,`address`,`password`, `role`)
-	VALUES ('hao thien de', 'user016@gmail.com', '0939000016','16 Mau Than, Ninh Kieu, Can Tho', '{bcrypt}$2a$12$WDeN1faM.smq94LVHZHnc.OyNmUe0nlGHEVgSYLFh6earRZal0F3y', 'USER');
-INSERT INTO `defaultdb`.`person` (`full_name`, `email`, `phone_number`,`address`,`password`, `role`)
-	VALUES ('ly that da', 'user017@gmail.com', '0939000017','17 Mau Than, Ninh Kieu, Can Tho', '{bcrypt}$2a$12$WDeN1faM.smq94LVHZHnc.OyNmUe0nlGHEVgSYLFh6earRZal0F3y', 'USER');
-INSERT INTO `defaultdb`.`person` (`full_name`, `email`, `phone_number`,`address`,`password`, `role`)
-	VALUES ('de ba', 'user018@gmail.com', '0939000018','18 Mau Than, Ninh Kieu, Can Tho', '{bcrypt}$2a$12$WDeN1faM.smq94LVHZHnc.OyNmUe0nlGHEVgSYLFh6earRZal0F3y', 'USER');
-INSERT INTO `defaultdb`.`person` (`full_name`, `email`, `phone_number`,`address`,`password`, `role`)
-	VALUES ('hoang thien de', 'user019@gmail.com', '0939000019','19 Mau Than, Ninh Kieu, Can Tho', '{bcrypt}$2a$12$WDeN1faM.smq94LVHZHnc.OyNmUe0nlGHEVgSYLFh6earRZal0F3y', 'USER');
-INSERT INTO `defaultdb`.`person` (`full_name`, `email`, `phone_number`,`address`,`password`, `role`)
-	VALUES ('thach hao', 'user020@gmail.com', '0939000020','20 Mau Than, Ninh Kieu, Can Tho', '{bcrypt}$2a$12$WDeN1faM.smq94LVHZHnc.OyNmUe0nlGHEVgSYLFh6earRZal0F3y', 'USER');
-INSERT INTO `defaultdb`.`person` (`full_name`, `email`, `phone_number`,`address`,`password`, `role`)
-	VALUES ('ton ngo khong', 'user021@gmail.com', '0939000021','21 Mau Than, Ninh Kieu, Can Tho', '{bcrypt}$2a$12$WDeN1faM.smq94LVHZHnc.OyNmUe0nlGHEVgSYLFh6earRZal0F3y', 'USER');
-INSERT INTO `defaultdb`.`person` (`full_name`, `email`, `phone_number`,`address`,`password`, `role`)
-	VALUES ('duong tang', 'user022@gmail.com', '0939000022','22 Mau Than, Ninh Kieu, Can Tho', '{bcrypt}$2a$12$WDeN1faM.smq94LVHZHnc.OyNmUe0nlGHEVgSYLFh6earRZal0F3y', 'USER');
-INSERT INTO `defaultdb`.`person` (`full_name`, `email`, `phone_number`,`address`,`password`, `role`)
-	VALUES ('tru bat gioi', 'user023@gmail.com', '0939000023','23 Mau Than, Ninh Kieu, Can Tho', '{bcrypt}$2a$12$WDeN1faM.smq94LVHZHnc.OyNmUe0nlGHEVgSYLFh6earRZal0F3y', 'USER');
-INSERT INTO `defaultdb`.`person` (`full_name`, `email`, `phone_number`,`address`,`password`, `role`)
-	VALUES ('sa ngo tinh', 'user024@gmail.com', '0939000024','24 Mau Than, Ninh Kieu, Can Tho', '{bcrypt}$2a$12$WDeN1faM.smq94LVHZHnc.OyNmUe0nlGHEVgSYLFh6earRZal0F3y', 'USER');
-INSERT INTO `defaultdb`.`person` (`full_name`, `email`, `phone_number`,`address`,`password`, `role`)
-	VALUES ('bach long ma', 'user025@gmail.com', '0939000025','25 Mau Than, Ninh Kieu, Can Tho', '{bcrypt}$2a$12$WDeN1faM.smq94LVHZHnc.OyNmUe0nlGHEVgSYLFh6earRZal0F3y', 'USER');
-INSERT INTO `defaultdb`.`person` (`full_name`, `email`, `phone_number`,`address`,`password`, `role`)
-	VALUES ('nu oa', 'user026@gmail.com', '0939000026','26 Mau Than, Ninh Kieu, Can Tho', '{bcrypt}$2a$12$WDeN1faM.smq94LVHZHnc.OyNmUe0nlGHEVgSYLFh6earRZal0F3y', 'USER');
-INSERT INTO `defaultdb`.`person` (`full_name`, `email`, `phone_number`,`address`,`password`, `role`)
-	VALUES ('hau tho', 'user027@gmail.com', '0939000027','27 Mau Than, Ninh Kieu, Can Tho', '{bcrypt}$2a$12$WDeN1faM.smq94LVHZHnc.OyNmUe0nlGHEVgSYLFh6earRZal0F3y', 'USER');
-INSERT INTO `defaultdb`.`person` (`full_name`, `email`, `phone_number`,`address`,`password`, `role`)
-	VALUES ('duong tien', 'user028@gmail.com', '0939000028','28 Mau Than, Ninh Kieu, Can Tho', '{bcrypt}$2a$12$WDeN1faM.smq94LVHZHnc.OyNmUe0nlGHEVgSYLFh6earRZal0F3y', 'USER');
-INSERT INTO `defaultdb`.`person` (`full_name`, `email`, `phone_number`,`address`,`password`, `role`)
-	VALUES ('hang nga', 'user029@gmail.com', '0939000029','29 Mau Than, Ninh Kieu, Can Tho', '{bcrypt}$2a$12$WDeN1faM.smq94LVHZHnc.OyNmUe0nlGHEVgSYLFh6earRZal0F3y', 'USER');
-INSERT INTO `defaultdb`.`person` (`full_name`, `email`, `phone_number`,`address`,`password`, `role`)
-	VALUES ('dai vu', 'user030@gmail.com', '0939000030','30 Mau Than, Ninh Kieu, Can Tho', '{bcrypt}$2a$12$WDeN1faM.smq94LVHZHnc.OyNmUe0nlGHEVgSYLFh6earRZal0F3y', 'USER');
-INSERT INTO `defaultdb`.`person` (`full_name`, `email`, `phone_number`,`address`,`password`, `role`)
-	VALUES ('vu chinh', 'user031@gmail.com', '0939000031','31 Mau Than, Ninh Kieu, Can Tho', '{bcrypt}$2a$12$WDeN1faM.smq94LVHZHnc.OyNmUe0nlGHEVgSYLFh6earRZal0F3y', 'USER');
-INSERT INTO `defaultdb`.`person` (`full_name`, `email`, `phone_number`,`address`,`password`, `role`)
-	VALUES ('thai at', 'user032@gmail.com', '0939000032','32 Mau Than, Ninh Kieu, Can Tho', '{bcrypt}$2a$12$WDeN1faM.smq94LVHZHnc.OyNmUe0nlGHEVgSYLFh6earRZal0F3y', 'USER');
-INSERT INTO `defaultdb`.`person` (`full_name`, `email`, `phone_number`,`address`,`password`, `role`)
-	VALUES ('luc ap', 'user033@gmail.com', '0939000033','33 Mau Than, Ninh Kieu, Can Tho', '{bcrypt}$2a$12$WDeN1faM.smq94LVHZHnc.OyNmUe0nlGHEVgSYLFh6earRZal0F3y', 'USER');
-INSERT INTO `defaultdb`.`person` (`full_name`, `email`, `phone_number`,`address`,`password`, `role`)
-	VALUES ('thai thanh', 'user034@gmail.com', '0939000034','34 Mau Than, Ninh Kieu, Can Tho', '{bcrypt}$2a$12$WDeN1faM.smq94LVHZHnc.OyNmUe0nlGHEVgSYLFh6earRZal0F3y', 'USER');
-INSERT INTO `defaultdb`.`person` (`full_name`, `email`, `phone_number`,`address`,`password`, `role`)
-	VALUES ('thong thien', 'user035@gmail.com', '0939000035','35 Mau Than, Ninh Kieu, Can Tho', '{bcrypt}$2a$12$WDeN1faM.smq94LVHZHnc.OyNmUe0nlGHEVgSYLFh6earRZal0F3y', 'USER');
-INSERT INTO `defaultdb`.`person` (`full_name`, `email`, `phone_number`,`address`,`password`, `role`)
-	VALUES ('tran pham', 'user036@gmail.com', '0939000036','36 Mau Than, Ninh Kieu, Can Tho', '{bcrypt}$2a$12$WDeN1faM.smq94LVHZHnc.OyNmUe0nlGHEVgSYLFh6earRZal0F3y', 'USER');
-INSERT INTO `defaultdb`.`person` (`full_name`, `email`, `phone_number`,`address`,`password`, `role`)
-	VALUES ('ly mo uyen', 'user037@gmail.com', '0939000037','37 Mau Than, Ninh Kieu, Can Tho', '{bcrypt}$2a$12$WDeN1faM.smq94LVHZHnc.OyNmUe0nlGHEVgSYLFh6earRZal0F3y', 'USER');
-INSERT INTO `defaultdb`.`person` (`full_name`, `email`, `phone_number`,`address`,`password`, `role`)
-	VALUES ('vuong lam', 'user038@gmail.com', '0939000038','38 Mau Than, Ninh Kieu, Can Tho', '{bcrypt}$2a$12$WDeN1faM.smq94LVHZHnc.OyNmUe0nlGHEVgSYLFh6earRZal0F3y', 'USER');
-INSERT INTO `defaultdb`.`person` (`full_name`, `email`, `phone_number`,`address`,`password`, `role`)
-	VALUES ('long ngao thien', 'user039@gmail.com', '0939000039','39 Mau Than, Ninh Kieu, Can Tho', '{bcrypt}$2a$12$WDeN1faM.smq94LVHZHnc.OyNmUe0nlGHEVgSYLFh6earRZal0F3y', 'USER');
-INSERT INTO `defaultdb`.`person` (`full_name`, `email`, `phone_number`,`address`,`password`, `role`)
-	VALUES ('duong tam', 'user040@gmail.com', '0939000040','40 Mau Than, Ninh Kieu, Can Tho', '{bcrypt}$2a$12$WDeN1faM.smq94LVHZHnc.OyNmUe0nlGHEVgSYLFh6earRZal0F3y', 'USER');
-INSERT INTO `defaultdb`.`person` (`full_name`, `email`, `phone_number`,`address`,`password`, `role`)
-	VALUES ('mac pham', 'user041@gmail.com', '0939000041','41 Mau Than, Ninh Kieu, Can Tho', '{bcrypt}$2a$12$WDeN1faM.smq94LVHZHnc.OyNmUe0nlGHEVgSYLFh6earRZal0F3y', 'USER');
-INSERT INTO `defaultdb`.`person` (`full_name`, `email`, `phone_number`,`address`,`password`, `role`)
-	VALUES ('ly chau', 'user042@gmail.com', '0939000042','42 Mau Than, Ninh Kieu, Can Tho', '{bcrypt}$2a$12$WDeN1faM.smq94LVHZHnc.OyNmUe0nlGHEVgSYLFh6earRZal0F3y', 'USER');
-INSERT INTO `defaultdb`.`person` (`full_name`, `email`, `phone_number`,`address`,`password`, `role`)
-	VALUES ('la chinh', 'user043@gmail.com', '0939000043','43 Mau Than, Ninh Kieu, Can Tho', '{bcrypt}$2a$12$WDeN1faM.smq94LVHZHnc.OyNmUe0nlGHEVgSYLFh6earRZal0F3y', 'USER');
-INSERT INTO `defaultdb`.`person` (`full_name`, `email`, `phone_number`,`address`,`password`, `role`)
-	VALUES ('la thien', 'user044@gmail.com', '0939000044','44 Mau Than, Ninh Kieu, Can Tho', '{bcrypt}$2a$12$WDeN1faM.smq94LVHZHnc.OyNmUe0nlGHEVgSYLFh6earRZal0F3y', 'USER');
-INSERT INTO `defaultdb`.`person` (`full_name`, `email`, `phone_number`,`address`,`password`, `role`)
-	VALUES ('tieu ly', 'user045@gmail.com', '0939000045','45 Mau Than, Ninh Kieu, Can Tho', '{bcrypt}$2a$12$WDeN1faM.smq94LVHZHnc.OyNmUe0nlGHEVgSYLFh6earRZal0F3y', 'USER');
-INSERT INTO `defaultdb`.`person` (`full_name`, `email`, `phone_number`,`address`,`password`, `role`)
-	VALUES ('hao nhien', 'user046@gmail.com', '0939000046','46 Mau Than, Ninh Kieu, Can Tho', '{bcrypt}$2a$12$WDeN1faM.smq94LVHZHnc.OyNmUe0nlGHEVgSYLFh6earRZal0F3y', 'USER');
-INSERT INTO `defaultdb`.`person` (`full_name`, `email`, `phone_number`,`address`,`password`, `role`)
-	VALUES ('bach da', 'user047@gmail.com', '0939000047','47 Mau Than, Ninh Kieu, Can Tho', '{bcrypt}$2a$12$WDeN1faM.smq94LVHZHnc.OyNmUe0nlGHEVgSYLFh6earRZal0F3y', 'USER');
-INSERT INTO `defaultdb`.`person` (`full_name`, `email`, `phone_number`,`address`,`password`, `role`)
-	VALUES ('cam diem', 'user048@gmail.com', '0939000048','48 Mau Than, Ninh Kieu, Can Tho', '{bcrypt}$2a$12$WDeN1faM.smq94LVHZHnc.OyNmUe0nlGHEVgSYLFh6earRZal0F3y', 'USER');
-INSERT INTO `defaultdb`.`person` (`full_name`, `email`, `phone_number`,`address`,`password`, `role`)
-	VALUES ('diep tieu kim', 'user049@gmail.com', '0939000049','49 Mau Than, Ninh Kieu, Can Tho', '{bcrypt}$2a$12$WDeN1faM.smq94LVHZHnc.OyNmUe0nlGHEVgSYLFh6earRZal0F3y', 'USER');
-INSERT INTO `defaultdb`.`person` (`full_name`, `email`, `phone_number`,`address`,`password`, `role`)
-	VALUES ('thai than', 'user050@gmail.com', '0939000050','50 Mau Than, Ninh Kieu, Can Tho', '{bcrypt}$2a$12$WDeN1faM.smq94LVHZHnc.OyNmUe0nlGHEVgSYLFh6earRZal0F3y', 'USER');
+INSERT INTO `defaultdb`.`person` (`full_name`, `email`, `phone_number`,`address`,`password`, `role_id`)
+	VALUES ('le van hau', 'user001@gmail.com', '0939000001','1 Mau Than, Ninh Kieu, Can Tho','{bcrypt}$2a$12$WDeN1faM.smq94LVHZHnc.OyNmUe0nlGHEVgSYLFh6earRZal0F3y', '2');
+INSERT INTO `defaultdb`.`person` (`full_name`, `email`, `phone_number`,`address`,`password`, `role_id`)
+	VALUES ('thien de', 'user002@gmail.com', '0939000002','2 Mau Than, Ninh Kieu, Can Tho', '{bcrypt}$2a$12$WDeN1faM.smq94LVHZHnc.OyNmUe0nlGHEVgSYLFh6earRZal0F3y', '2');
+INSERT INTO `defaultdb`.`person` (`full_name`, `email`, `phone_number`,`address`,`password`, `role_id`)
+	VALUES ('duy nga doc ton', 'user003@gmail.com', '0939000003','3 Mau Than, Ninh Kieu, Can Tho', '{bcrypt}$2a$12$WDeN1faM.smq94LVHZHnc.OyNmUe0nlGHEVgSYLFh6earRZal0F3y', '2');
+INSERT INTO `defaultdb`.`person` (`full_name`, `email`, `phone_number`,`address`,`password`, `role_id`)
+	VALUES ('de bat kiem tien', 'user004@gmail.com', '0939000004','4 Mau Than, Ninh Kieu, Can Tho', '{bcrypt}$2a$12$WDeN1faM.smq94LVHZHnc.OyNmUe0nlGHEVgSYLFh6earRZal0F3y', '2');
+INSERT INTO `defaultdb`.`person` (`full_name`, `email`, `phone_number`,`address`,`password`, `role_id`)
+	VALUES ('luc duong', 'user005@gmail.com', '0939000005','5 Mau Than, Ninh Kieu, Can Tho', '{bcrypt}$2a$12$WDeN1faM.smq94LVHZHnc.OyNmUe0nlGHEVgSYLFh6earRZal0F3y', '2');
+INSERT INTO `defaultdb`.`person` (`full_name`, `email`, `phone_number`,`address`,`password`, `role_id`)
+	VALUES ('van chi', 'user006@gmail.com', '0939000006','6 Mau Than, Ninh Kieu, Can Tho', '{bcrypt}$2a$12$WDeN1faM.smq94LVHZHnc.OyNmUe0nlGHEVgSYLFh6earRZal0F3y', '2');
+INSERT INTO `defaultdb`.`person` (`full_name`, `email`, `phone_number`,`address`,`password`, `role_id`)
+	VALUES ('manh canh chu', 'user007@gmail.com', '0939000007','7 Mau Than, Ninh Kieu, Can Tho', '{bcrypt}$2a$12$WDeN1faM.smq94LVHZHnc.OyNmUe0nlGHEVgSYLFh6earRZal0F3y', '2');
+INSERT INTO `defaultdb`.`person` (`full_name`, `email`, `phone_number`,`address`,`password`, `role_id`)
+	VALUES ('duong khai', 'user008@gmail.com', '0939000008','8 Mau Than, Ninh Kieu, Can Tho', '{bcrypt}$2a$12$WDeN1faM.smq94LVHZHnc.OyNmUe0nlGHEVgSYLFh6earRZal0F3y', '2');
+INSERT INTO `defaultdb`.`person` (`full_name`, `email`, `phone_number`,`address`,`password`, `role_id`)
+	VALUES ('tu tieu thu', 'user009@gmail.com', '0939000009','9 Mau Than, Ninh Kieu, Can Tho', '{bcrypt}$2a$12$WDeN1faM.smq94LVHZHnc.OyNmUe0nlGHEVgSYLFh6earRZal0F3y', '2');
+INSERT INTO `defaultdb`.`person` (`full_name`, `email`, `phone_number`,`address`,`password`, `role_id`)
+	VALUES ('han lap', 'user010@gmail.com', '0939000010','10 Mau Than, Ninh Kieu, Can Tho', '{bcrypt}$2a$12$WDeN1faM.smq94LVHZHnc.OyNmUe0nlGHEVgSYLFh6earRZal0F3y', '2');
+INSERT INTO `defaultdb`.`person` (`full_name`, `email`, `phone_number`,`address`,`password`, `role_id`)
+	VALUES ('le phi vu', 'user011@gmail.com', '0939000011','11 Mau Than, Ninh Kieu, Can Tho', '{bcrypt}$2a$12$WDeN1faM.smq94LVHZHnc.OyNmUe0nlGHEVgSYLFh6earRZal0F3y', '2');
+INSERT INTO `defaultdb`.`person` (`full_name`, `email`, `phone_number`,`address`,`password`, `role_id`)
+	VALUES ('tran binh an', 'user012@gmail.com', '0939000012','12 Mau Than, Ninh Kieu, Can Tho', '{bcrypt}$2a$12$WDeN1faM.smq94LVHZHnc.OyNmUe0nlGHEVgSYLFh6earRZal0F3y', '2');
+INSERT INTO `defaultdb`.`person` (`full_name`, `email`, `phone_number`,`address`,`password`, `role_id`)
+	VALUES ('lam vinh da', 'user013@gmail.com', '0939000013','13 Mau Than, Ninh Kieu, Can Tho', '{bcrypt}$2a$12$WDeN1faM.smq94LVHZHnc.OyNmUe0nlGHEVgSYLFh6earRZal0F3y', '2');
+INSERT INTO `defaultdb`.`person` (`full_name`, `email`, `phone_number`,`address`,`password`, `role_id`)
+	VALUES ('muc tran', 'user014@gmail.com', '0939000014','14 Mau Than, Ninh Kieu, Can Tho', '{bcrypt}$2a$12$WDeN1faM.smq94LVHZHnc.OyNmUe0nlGHEVgSYLFh6earRZal0F3y', '2');
+INSERT INTO `defaultdb`.`person` (`full_name`, `email`, `phone_number`,`address`,`password`, `role_id`)
+	VALUES ('tieu viem', 'user015@gmail.com', '0939000015','15 Mau Than, Ninh Kieu, Can Tho', '{bcrypt}$2a$12$WDeN1faM.smq94LVHZHnc.OyNmUe0nlGHEVgSYLFh6earRZal0F3y', '2');
+INSERT INTO `defaultdb`.`person` (`full_name`, `email`, `phone_number`,`address`,`password`, `role_id`)
+	VALUES ('hao thien de', 'user016@gmail.com', '0939000016','16 Mau Than, Ninh Kieu, Can Tho', '{bcrypt}$2a$12$WDeN1faM.smq94LVHZHnc.OyNmUe0nlGHEVgSYLFh6earRZal0F3y', '2');
+INSERT INTO `defaultdb`.`person` (`full_name`, `email`, `phone_number`,`address`,`password`, `role_id`)
+	VALUES ('ly that da', 'user017@gmail.com', '0939000017','17 Mau Than, Ninh Kieu, Can Tho', '{bcrypt}$2a$12$WDeN1faM.smq94LVHZHnc.OyNmUe0nlGHEVgSYLFh6earRZal0F3y', '2');
+INSERT INTO `defaultdb`.`person` (`full_name`, `email`, `phone_number`,`address`,`password`, `role_id`)
+	VALUES ('de ba', 'user018@gmail.com', '0939000018','18 Mau Than, Ninh Kieu, Can Tho', '{bcrypt}$2a$12$WDeN1faM.smq94LVHZHnc.OyNmUe0nlGHEVgSYLFh6earRZal0F3y', '2');
+INSERT INTO `defaultdb`.`person` (`full_name`, `email`, `phone_number`,`address`,`password`, `role_id`)
+	VALUES ('hoang thien de', 'user019@gmail.com', '0939000019','19 Mau Than, Ninh Kieu, Can Tho', '{bcrypt}$2a$12$WDeN1faM.smq94LVHZHnc.OyNmUe0nlGHEVgSYLFh6earRZal0F3y', '2');
+INSERT INTO `defaultdb`.`person` (`full_name`, `email`, `phone_number`,`address`,`password`, `role_id`)
+	VALUES ('thach hao', 'user020@gmail.com', '0939000020','20 Mau Than, Ninh Kieu, Can Tho', '{bcrypt}$2a$12$WDeN1faM.smq94LVHZHnc.OyNmUe0nlGHEVgSYLFh6earRZal0F3y', '2');
+INSERT INTO `defaultdb`.`person` (`full_name`, `email`, `phone_number`,`address`,`password`, `role_id`)
+	VALUES ('ton ngo khong', 'user021@gmail.com', '0939000021','21 Mau Than, Ninh Kieu, Can Tho', '{bcrypt}$2a$12$WDeN1faM.smq94LVHZHnc.OyNmUe0nlGHEVgSYLFh6earRZal0F3y', '2');
+INSERT INTO `defaultdb`.`person` (`full_name`, `email`, `phone_number`,`address`,`password`, `role_id`)
+	VALUES ('duong tang', 'user022@gmail.com', '0939000022','22 Mau Than, Ninh Kieu, Can Tho', '{bcrypt}$2a$12$WDeN1faM.smq94LVHZHnc.OyNmUe0nlGHEVgSYLFh6earRZal0F3y', '2');
+INSERT INTO `defaultdb`.`person` (`full_name`, `email`, `phone_number`,`address`,`password`, `role_id`)
+	VALUES ('tru bat gioi', 'user023@gmail.com', '0939000023','23 Mau Than, Ninh Kieu, Can Tho', '{bcrypt}$2a$12$WDeN1faM.smq94LVHZHnc.OyNmUe0nlGHEVgSYLFh6earRZal0F3y', '2');
+INSERT INTO `defaultdb`.`person` (`full_name`, `email`, `phone_number`,`address`,`password`, `role_id`)
+	VALUES ('sa ngo tinh', 'user024@gmail.com', '0939000024','24 Mau Than, Ninh Kieu, Can Tho', '{bcrypt}$2a$12$WDeN1faM.smq94LVHZHnc.OyNmUe0nlGHEVgSYLFh6earRZal0F3y', '2');
+INSERT INTO `defaultdb`.`person` (`full_name`, `email`, `phone_number`,`address`,`password`, `role_id`)
+	VALUES ('bach long ma', 'user025@gmail.com', '0939000025','25 Mau Than, Ninh Kieu, Can Tho', '{bcrypt}$2a$12$WDeN1faM.smq94LVHZHnc.OyNmUe0nlGHEVgSYLFh6earRZal0F3y', '2');
+INSERT INTO `defaultdb`.`person` (`full_name`, `email`, `phone_number`,`address`,`password`, `role_id`)
+	VALUES ('nu oa', 'user026@gmail.com', '0939000026','26 Mau Than, Ninh Kieu, Can Tho', '{bcrypt}$2a$12$WDeN1faM.smq94LVHZHnc.OyNmUe0nlGHEVgSYLFh6earRZal0F3y', '2');
+INSERT INTO `defaultdb`.`person` (`full_name`, `email`, `phone_number`,`address`,`password`, `role_id`)
+	VALUES ('hau tho', 'user027@gmail.com', '0939000027','27 Mau Than, Ninh Kieu, Can Tho', '{bcrypt}$2a$12$WDeN1faM.smq94LVHZHnc.OyNmUe0nlGHEVgSYLFh6earRZal0F3y', '2');
+INSERT INTO `defaultdb`.`person` (`full_name`, `email`, `phone_number`,`address`,`password`, `role_id`)
+	VALUES ('duong tien', 'user028@gmail.com', '0939000028','28 Mau Than, Ninh Kieu, Can Tho', '{bcrypt}$2a$12$WDeN1faM.smq94LVHZHnc.OyNmUe0nlGHEVgSYLFh6earRZal0F3y', '2');
+INSERT INTO `defaultdb`.`person` (`full_name`, `email`, `phone_number`,`address`,`password`, `role_id`)
+	VALUES ('hang nga', 'user029@gmail.com', '0939000029','29 Mau Than, Ninh Kieu, Can Tho', '{bcrypt}$2a$12$WDeN1faM.smq94LVHZHnc.OyNmUe0nlGHEVgSYLFh6earRZal0F3y', '2');
+INSERT INTO `defaultdb`.`person` (`full_name`, `email`, `phone_number`,`address`,`password`, `role_id`)
+	VALUES ('dai vu', 'user030@gmail.com', '0939000030','30 Mau Than, Ninh Kieu, Can Tho', '{bcrypt}$2a$12$WDeN1faM.smq94LVHZHnc.OyNmUe0nlGHEVgSYLFh6earRZal0F3y', '2');
+INSERT INTO `defaultdb`.`person` (`full_name`, `email`, `phone_number`,`address`,`password`, `role_id`)
+	VALUES ('vu chinh', 'user031@gmail.com', '0939000031','31 Mau Than, Ninh Kieu, Can Tho', '{bcrypt}$2a$12$WDeN1faM.smq94LVHZHnc.OyNmUe0nlGHEVgSYLFh6earRZal0F3y', '2');
+INSERT INTO `defaultdb`.`person` (`full_name`, `email`, `phone_number`,`address`,`password`, `role_id`)
+	VALUES ('thai at', 'user032@gmail.com', '0939000032','32 Mau Than, Ninh Kieu, Can Tho', '{bcrypt}$2a$12$WDeN1faM.smq94LVHZHnc.OyNmUe0nlGHEVgSYLFh6earRZal0F3y', '2');
+INSERT INTO `defaultdb`.`person` (`full_name`, `email`, `phone_number`,`address`,`password`, `role_id`)
+	VALUES ('luc ap', 'user033@gmail.com', '0939000033','33 Mau Than, Ninh Kieu, Can Tho', '{bcrypt}$2a$12$WDeN1faM.smq94LVHZHnc.OyNmUe0nlGHEVgSYLFh6earRZal0F3y', '2');
+INSERT INTO `defaultdb`.`person` (`full_name`, `email`, `phone_number`,`address`,`password`, `role_id`)
+	VALUES ('thai thanh', 'user034@gmail.com', '0939000034','34 Mau Than, Ninh Kieu, Can Tho', '{bcrypt}$2a$12$WDeN1faM.smq94LVHZHnc.OyNmUe0nlGHEVgSYLFh6earRZal0F3y', '2');
+INSERT INTO `defaultdb`.`person` (`full_name`, `email`, `phone_number`,`address`,`password`, `role_id`)
+	VALUES ('thong thien', 'user035@gmail.com', '0939000035','35 Mau Than, Ninh Kieu, Can Tho', '{bcrypt}$2a$12$WDeN1faM.smq94LVHZHnc.OyNmUe0nlGHEVgSYLFh6earRZal0F3y', '2');
+INSERT INTO `defaultdb`.`person` (`full_name`, `email`, `phone_number`,`address`,`password`, `role_id`)
+	VALUES ('tran pham', 'user036@gmail.com', '0939000036','36 Mau Than, Ninh Kieu, Can Tho', '{bcrypt}$2a$12$WDeN1faM.smq94LVHZHnc.OyNmUe0nlGHEVgSYLFh6earRZal0F3y', '2');
+INSERT INTO `defaultdb`.`person` (`full_name`, `email`, `phone_number`,`address`,`password`, `role_id`)
+	VALUES ('ly mo uyen', 'user037@gmail.com', '0939000037','37 Mau Than, Ninh Kieu, Can Tho', '{bcrypt}$2a$12$WDeN1faM.smq94LVHZHnc.OyNmUe0nlGHEVgSYLFh6earRZal0F3y', '2');
+INSERT INTO `defaultdb`.`person` (`full_name`, `email`, `phone_number`,`address`,`password`, `role_id`)
+	VALUES ('vuong lam', 'user038@gmail.com', '0939000038','38 Mau Than, Ninh Kieu, Can Tho', '{bcrypt}$2a$12$WDeN1faM.smq94LVHZHnc.OyNmUe0nlGHEVgSYLFh6earRZal0F3y', '2');
+INSERT INTO `defaultdb`.`person` (`full_name`, `email`, `phone_number`,`address`,`password`, `role_id`)
+	VALUES ('long ngao thien', 'user039@gmail.com', '0939000039','39 Mau Than, Ninh Kieu, Can Tho', '{bcrypt}$2a$12$WDeN1faM.smq94LVHZHnc.OyNmUe0nlGHEVgSYLFh6earRZal0F3y', '2');
+INSERT INTO `defaultdb`.`person` (`full_name`, `email`, `phone_number`,`address`,`password`, `role_id`)
+	VALUES ('duong tam', 'user040@gmail.com', '0939000040','40 Mau Than, Ninh Kieu, Can Tho', '{bcrypt}$2a$12$WDeN1faM.smq94LVHZHnc.OyNmUe0nlGHEVgSYLFh6earRZal0F3y', '2');
+INSERT INTO `defaultdb`.`person` (`full_name`, `email`, `phone_number`,`address`,`password`, `role_id`)
+	VALUES ('mac pham', 'user041@gmail.com', '0939000041','41 Mau Than, Ninh Kieu, Can Tho', '{bcrypt}$2a$12$WDeN1faM.smq94LVHZHnc.OyNmUe0nlGHEVgSYLFh6earRZal0F3y', '2');
+INSERT INTO `defaultdb`.`person` (`full_name`, `email`, `phone_number`,`address`,`password`, `role_id`)
+	VALUES ('ly chau', 'user042@gmail.com', '0939000042','42 Mau Than, Ninh Kieu, Can Tho', '{bcrypt}$2a$12$WDeN1faM.smq94LVHZHnc.OyNmUe0nlGHEVgSYLFh6earRZal0F3y', '2');
+INSERT INTO `defaultdb`.`person` (`full_name`, `email`, `phone_number`,`address`,`password`, `role_id`)
+	VALUES ('la chinh', 'user043@gmail.com', '0939000043','43 Mau Than, Ninh Kieu, Can Tho', '{bcrypt}$2a$12$WDeN1faM.smq94LVHZHnc.OyNmUe0nlGHEVgSYLFh6earRZal0F3y', '2');
+INSERT INTO `defaultdb`.`person` (`full_name`, `email`, `phone_number`,`address`,`password`, `role_id`)
+	VALUES ('la thien', 'user044@gmail.com', '0939000044','44 Mau Than, Ninh Kieu, Can Tho', '{bcrypt}$2a$12$WDeN1faM.smq94LVHZHnc.OyNmUe0nlGHEVgSYLFh6earRZal0F3y', '2');
+INSERT INTO `defaultdb`.`person` (`full_name`, `email`, `phone_number`,`address`,`password`, `role_id`)
+	VALUES ('tieu ly', 'user045@gmail.com', '0939000045','45 Mau Than, Ninh Kieu, Can Tho', '{bcrypt}$2a$12$WDeN1faM.smq94LVHZHnc.OyNmUe0nlGHEVgSYLFh6earRZal0F3y', '2');
+INSERT INTO `defaultdb`.`person` (`full_name`, `email`, `phone_number`,`address`,`password`, `role_id`)
+	VALUES ('hao nhien', 'user046@gmail.com', '0939000046','46 Mau Than, Ninh Kieu, Can Tho', '{bcrypt}$2a$12$WDeN1faM.smq94LVHZHnc.OyNmUe0nlGHEVgSYLFh6earRZal0F3y', '2');
+INSERT INTO `defaultdb`.`person` (`full_name`, `email`, `phone_number`,`address`,`password`, `role_id`)
+	VALUES ('bach da', 'user047@gmail.com', '0939000047','47 Mau Than, Ninh Kieu, Can Tho', '{bcrypt}$2a$12$WDeN1faM.smq94LVHZHnc.OyNmUe0nlGHEVgSYLFh6earRZal0F3y', '2');
+INSERT INTO `defaultdb`.`person` (`full_name`, `email`, `phone_number`,`address`,`password`, `role_id`)
+	VALUES ('cam diem', 'user048@gmail.com', '0939000048','48 Mau Than, Ninh Kieu, Can Tho', '{bcrypt}$2a$12$WDeN1faM.smq94LVHZHnc.OyNmUe0nlGHEVgSYLFh6earRZal0F3y', '2');
+INSERT INTO `defaultdb`.`person` (`full_name`, `email`, `phone_number`,`address`,`password`, `role_id`)
+	VALUES ('diep tieu kim', 'user049@gmail.com', '0939000049','49 Mau Than, Ninh Kieu, Can Tho', '{bcrypt}$2a$12$WDeN1faM.smq94LVHZHnc.OyNmUe0nlGHEVgSYLFh6earRZal0F3y', '2');
+INSERT INTO `defaultdb`.`person` (`full_name`, `email`, `phone_number`,`address`,`password`, `role_id`)
+	VALUES ('thai than', 'user050@gmail.com', '0939000050','50 Mau Than, Ninh Kieu, Can Tho', '{bcrypt}$2a$12$WDeN1faM.smq94LVHZHnc.OyNmUe0nlGHEVgSYLFh6earRZal0F3y', '2');
     
 INSERT INTO `defaultdb`.`category` (`id`, `name`) VALUES ('1', 'eyeglasses');
 INSERT INTO `defaultdb`.`category` (`id`, `name`) VALUES ('2', 'sunglasses');

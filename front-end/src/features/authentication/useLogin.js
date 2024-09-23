@@ -25,7 +25,9 @@ export function useLogin() {
         },
         onError: (error) => {
             const errorMessage =
-                error.response?.data?.message || 'An unknown error occurred';
+                error.response?.data?.message ||
+                error.message ||
+                'An unknown error occurred';
 
             toast.error(errorMessage);
         },

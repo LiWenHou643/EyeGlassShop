@@ -11,6 +11,7 @@ import jakarta.validation.constraints.Size;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Getter
@@ -50,11 +51,14 @@ public class Person {
             groups = {Create.class, Update.class, Login.class})
     String password;
 
-    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE, targetEntity = Roles.class)
-    @JoinColumn(name = "role", referencedColumnName = "name", nullable = false)
+    @OneToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "role_id", referencedColumnName = "id", nullable = false)
     Roles roles;
 
-    @OneToMany(mappedBy = "person", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Set<RefreshToken> refreshTokens;
+    @OneToOne(mappedBy = "person", cascade = CascadeType.PERSIST)
+    Cart cart;
+
+    @OneToMany(mappedBy = "person", cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    Set<RefreshToken> refreshTokens = new HashSet<>();
 
 }

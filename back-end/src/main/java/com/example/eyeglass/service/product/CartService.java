@@ -1,0 +1,98 @@
+package com.example.eyeglass.service.product;
+
+import com.example.eyeglass.dto.response.CartItemResponse;
+import com.example.eyeglass.dto.response.CartResponse;
+import com.example.eyeglass.entity.Cart;
+import com.example.eyeglass.entity.CartItem;
+import com.example.eyeglass.entity.Person;
+import com.example.eyeglass.entity.Product;
+import com.example.eyeglass.repository.person.PersonRepository;
+import com.example.eyeglass.repository.product.CartItemRepository;
+import com.example.eyeglass.repository.product.CartRepository;
+import com.example.eyeglass.repository.product.ProductRepository;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import static com.example.eyeglass.mapper.CartMapper.CART_MAPPER;
+
+@Slf4j
+@RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+@Service
+public class CartService {
+
+    CartRepository cartRepository;
+    CartItemRepository cartItemRepository;
+    private final ProductRepository productRepository;
+    private final PersonRepository personRepository;
+
+    public CartResponse getCartItems(String userName) {
+        Person person = personRepository.findByEmail(userName)
+                                        .orElseThrow(() -> new RuntimeException("Person not found"));
+        Long personId = person.getId();
+
+        Optional<Cart> cart = cartRepository.findByPersonId(personId);
+
+        if (cart.isPresent()) {
+            Set<CartItem> cartItems = cart.get().getCartItems();
+            log.info("Cart items: {}", cartItems);
+            Set<CartItemResponse> cartItemResponses = cart.get().getCartItems()
+                                                          .stream()
+                                                          .map(CART_MAPPER::toCartItemResponse)
+                                                          .collect(Collectors.toSet());
+
+            log.info("Cart items response: {}", cartItemResponses);
+            return new CartResponse(cart.get().getId(), personId, cartItemResponses);
+        }
+
+        return null;
+    }
+
+    public Long getCartId(String userName) {
+        Person person = personRepository.findByEmail(userName)
+                                        .orElseThrow(() -> new RuntimeException("Person not found"));
+        Long personId = person.getId();
+
+        Optional<Cart> cart = cartRepository.findByPersonId(personId);
+
+        return cart.map(Cart::getId).orElse(null);
+
+    }
+
+    public void addItemToCart(Long cartId, Long productId, int quantity) {
+        Product product = productRepository.findById(productId)
+                                           .orElseThrow(() -> new RuntimeException("Product not found"));
+        int price = product.getPrice();
+        int discount = product.getDiscount();
+
+        Cart cart = cartRepository.findById(cartId)
+                                  .orElseThrow(() -> new RuntimeException("Cart not found"));
+
+        // Check if the cart already has the product
+        Optional<CartItem> existingItem = cartItemRepository.findByCartIdAndProductId(cartId, productId);
+
+        if (existingItem.isPresent()) {
+            // Update quantity and total price if item already exists
+            existingItem.get().setQuantity(existingItem.get().getQuantity() + quantity);
+            existingItem.get().setTotalPrice((long) existingItem.get().getQuantity() * price * discount / 100);
+            cartItemRepository.save(existingItem.get());
+        } else {
+            // Add new item to cart
+            CartItem cartItem = new CartItem();
+            cartItem.setCart(cart);
+            cartItem.setProduct(product);
+            cartItem.setQuantity(quantity);
+            cartItem.setPriceAtTime(price * discount / 100);
+            cartItem.setTotalPrice((long) quantity * price * discount / 100);
+            cartItemRepository.save(cartItem);
+        }
+    }
+
+}

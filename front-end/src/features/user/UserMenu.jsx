@@ -10,7 +10,7 @@ import { useLogout } from '../authentication/useLogout';
 const MenuList = styled.ul`
     background-color: var(--color-grey-100);
     position: absolute;
-    top: 3.4rem;
+    top: 3.8rem;
     width: 120px;
     z-index: 1000;
     color: var(--color-grey-800);
@@ -37,6 +37,10 @@ const UserButton = styled.div`
     padding: 0.5rem 1rem;
 `;
 
+const UserName = styled.p`
+    font-size: 2rem;
+    color: var(--color-grey-700);
+`;
 function UserMenu() {
     const [showMenu, setShowMenu] = useState(false);
     const { username, role } = useUser();
@@ -60,13 +64,21 @@ function UserMenu() {
         >
             <UserButton className='d-flex justify-content-center align-items-center gap-2'>
                 <HiOutlineUser />
-                <p>{exactNameFromEmail(username)}</p>
+                <UserName>{exactNameFromEmail(username)}</UserName>
             </UserButton>
             {showMenu && (
                 <MenuList className='rounded-3'>
                     <li>
                         <BaseStyledLink
-                            className='dropdown-item py-2 px-4'
+                            className='dropdown-item py-3 px-5'
+                            to='/user/cart'
+                        >
+                            {isAdmin ? 'Dashboard' : 'Profile'}
+                        </BaseStyledLink>
+                    </li>
+                    <li>
+                        <BaseStyledLink
+                            className='dropdown-item py-3 px-5'
                             to={isAdmin ? '/admin/setting' : '/user/profile'}
                         >
                             {isAdmin ? 'Setting' : 'Profile'}
@@ -76,7 +88,7 @@ function UserMenu() {
                         <Modal>
                             <Modal.Open opens='logout'>
                                 <BaseStyledLink
-                                    className='dropdown-item py-2 px-4'
+                                    className='dropdown-item py-3 px-5'
                                     to='#'
                                 >
                                     Logout
