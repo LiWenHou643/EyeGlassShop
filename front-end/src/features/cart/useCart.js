@@ -1,5 +1,7 @@
+import { useQuery } from '@tanstack/react-query';
+import { getCart } from '../../services/apiCart';
 export function useCart() {
-    const x = 0;
+    const { isLoading, data, error } = useQuery('cart', getCart);
 
-    return x;
+    return { isLoading, data, error };
 }

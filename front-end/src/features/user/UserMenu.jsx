@@ -73,7 +73,7 @@ function UserMenu() {
                             className='dropdown-item py-3 px-5'
                             to='/user/cart'
                         >
-                            {isAdmin ? 'Dashboard' : 'Profile'}
+                            {!isAdmin && 'Cart'}
                         </BaseStyledLink>
                     </li>
                     <li>
