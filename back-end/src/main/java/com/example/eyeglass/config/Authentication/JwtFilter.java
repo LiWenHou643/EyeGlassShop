@@ -4,13 +4,15 @@ import com.example.eyeglass.config.RSAKeyRecord;
 import com.example.eyeglass.dto.response.ApiResponse;
 import com.example.eyeglass.exception.AppException;
 import com.example.eyeglass.exception.ErrorCode;
-import com.example.eyeglass.utils.JsonUtils;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.AuthorityUtils;
@@ -19,27 +21,41 @@ import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.JwtException;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
-import org.springframework.stereotype.Component;
+import org.springframework.util.AntPathMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
+@Slf4j
 @RequiredArgsConstructor
 public class JwtFilter extends OncePerRequestFilter {
     private final RSAKeyRecord rsaKeyRecord;
     private final JwtUtils jwtUtils;
+    private final String[] publicEndpoints;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain)
+    protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain)
             throws ServletException, IOException {
 
-        String authorizationHeader = request.getHeader("Authorization");
-        if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
-            filterChain.doFilter(request, response);
-            return;
+        String requestURI = request.getRequestURI();
+        AntPathMatcher antPathMatcher = new AntPathMatcher();
+
+        for (String publicEndpoint : publicEndpoints) {
+            boolean isPublicEndpoint = antPathMatcher.match(publicEndpoint, requestURI);
+
+            if (isPublicEndpoint) {
+                filterChain.doFilter(request, response);
+                return;
+            }
         }
 
+
         try {
+            String authorizationHeader = request.getHeader("Authorization");
+            if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
+                throw new AppException(ErrorCode.JWT_INVALID);
+            }
+
             String token = authorizationHeader.substring(7);
             JwtDecoder jwtDecoder = NimbusJwtDecoder.withPublicKey(rsaKeyRecord.rsaPublicKey()).build();
 
@@ -60,28 +76,55 @@ public class JwtFilter extends OncePerRequestFilter {
             }
 
             filterChain.doFilter(request, response);
-        } catch (JwtException e) {
-            ApiResponse(ErrorCode.JWT_INVALID, response);
+
         } catch (AppException e) {
-            ApiResponse(e.getErrorCode(), response);
+            ApiResponse<Void> errorResponse = new ApiResponse<>();
+            errorResponse.setCode(e.getErrorCode().getCode());
+            errorResponse.setMessage(e.getErrorCode().getMessage());
+
+            responseException(response, errorResponse);
+            return;
+
+        } catch (JwtException e) {
+            ApiResponse<Void> errorResponse = new ApiResponse<>();
+            if (isTokenExpired(e)) {
+                errorResponse.setCode(ErrorCode.JWT_EXPIRED.getCode());
+                errorResponse.setMessage(ErrorCode.JWT_EXPIRED.getMessage());
+            } else {
+                errorResponse.setCode(ErrorCode.JWT_INVALID.getCode());
+                errorResponse.setMessage(ErrorCode.JWT_INVALID.getMessage());
+            }
+
+            responseException(response, errorResponse);
+            return;
+
         } catch (Exception e) {
-            ApiResponse(ErrorCode.UNCATEGORIZED_EXCEPTION, response);
+            ApiResponse<Void> errorResponse = new ApiResponse<>();
+            errorResponse.setCode(ErrorCode.UNCATEGORIZED_EXCEPTION.getCode());
+            errorResponse.setMessage(e.getMessage());
+
+            responseException(response, errorResponse);
+            return;
         }
+        filterChain.doFilter(request, response);
     }
 
-    private static void ApiResponse(ErrorCode errorCode, HttpServletResponse response) throws IOException {
-        ApiResponse<Void> apiResponse = ApiResponse.<Void>builder()
-                                                   .code(errorCode.getCode())
-                                                   .message(errorCode.getMessage())
-                                                   .build();
-
+    private void responseException(HttpServletResponse response, ApiResponse<Void> errorResponse) throws IOException {
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
-        response.getWriter().write(JsonUtils.toJson(apiResponse));
+        response.getWriter().write(convertObjectToJson(errorResponse));
     }
 
-    @Override
-    public boolean shouldNotFilter(HttpServletRequest request) {
-        return request.getServletPath().equals("/auth/login") || request.getServletPath().equals("/auth/refresh-token");
+    private boolean isTokenExpired(JwtException e) {
+        String errorMessage = e.getMessage();
+        return errorMessage != null && errorMessage.toLowerCase().contains("expired");
+    }
+
+    public String convertObjectToJson(Object object) throws JsonProcessingException {
+        if (object == null) {
+            return null;
+        }
+        ObjectMapper mapper = new ObjectMapper();
+        return mapper.writeValueAsString(object);
     }
 }

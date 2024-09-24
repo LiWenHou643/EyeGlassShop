@@ -55,6 +55,14 @@ const variations = {
             background-color: var(--color-grey-300);
         }
     `,
+    success: css`
+        color: var(--color-grey-100);
+        background-color: var(--color-green-400);
+
+        &:hover {
+            background-color: var(--color-green-500);
+        }
+    `,
     danger: css`
         color: var(--color-grey-100);
         background-color: var(--color-red-600);

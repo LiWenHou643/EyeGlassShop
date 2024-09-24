@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @Slf4j
 @RequestMapping("/auth")
-public class AuthController {
+public class AuthenticationController {
     AuthenticationService authenticationService;
     private final LogoutHandlerService logoutHandlerService;
 
@@ -59,10 +59,10 @@ public class AuthController {
     }
 
     @PostMapping("/refresh-token")
-    public ApiResponse<AuthenticationResponse> refreshToken(HttpServletRequest request, HttpServletResponse response) {
+    public ApiResponse<AuthenticationResponse> refreshToken(HttpServletRequest request) {
         ApiResponse<AuthenticationResponse> res = new ApiResponse<>();
         res.setMessage("Token refreshed successfully");
-        res.setData(authenticationService.refreshToken(request, response));
+        res.setData(authenticationService.refreshToken(request));
         return res;
     }
 }

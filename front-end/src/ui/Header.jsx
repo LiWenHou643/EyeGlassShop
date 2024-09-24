@@ -99,7 +99,7 @@ const StyledHeaderMenu = styled.div`
     position: absolute;
     top: 80%;
     right: 50px;
-    z-index: 2;
+    z-index: 10;
     border-radius: 0.5rem;
 
     ${({ $display }) => ($display ? 'display: flex;' : 'display: none;')}

@@ -52,6 +52,7 @@ function App() {
                                     path='user/profile'
                                     element={<Profile />}
                                 />
+                                <Route path='user/cart' element={<Cart />} />
                             </Route>
 
                             <Route path='*' element={<PageNotFound />} />

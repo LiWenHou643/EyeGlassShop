@@ -82,7 +82,7 @@ public class AuthenticationService {
     public PersonResponse register(RegisterRequest request) {
         Optional<Roles> role = rolesRepository.getByName(AppConstants.ROLE_USER);
         if (role.isEmpty()) throw new AppException(ErrorCode.ROLE_NOT_FOUND);
-        
+
         request.setFullName(request.getFullName().trim());
         request.setEmail(request.getEmail().trim());
         request.setPassword(request.getPassword().trim());
@@ -104,7 +104,7 @@ public class AuthenticationService {
         return PERSON_MAPPER.toPersonResponse(isSaved);
     }
 
-    public AuthenticationResponse refreshToken(HttpServletRequest request, HttpServletResponse response) {
+    public AuthenticationResponse refreshToken(HttpServletRequest request) {
         String refreshToken = getRefreshToken(request);
 
         RefreshToken token = refreshTokenRepository.findByRefreshToken(refreshToken)
@@ -116,13 +116,6 @@ public class AuthenticationService {
 
         Person person = token.getPerson();
         String newAccessToken = jwtGenerator.generateAccessToken(person);
-        String newRefreshToken = jwtGenerator.generateRefreshToken(person);
-
-        token.setRevoked(true);
-        refreshTokenRepository.save(token);
-
-        saveUserRefreshToken(person, newRefreshToken);
-        createRefreshTokenCookie(response, newRefreshToken);
 
         return AuthenticationResponse.builder().accessToken(newAccessToken).accessTokenExpiry(5 * 60)
                                      .tokenType(TokenType.Bearer).username(person.getEmail())

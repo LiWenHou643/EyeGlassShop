@@ -10,11 +10,16 @@ const privateApi = axios.create({
 
 const publicApi = axios.create({
     baseURL: `${REST_API_BASE_URL}/public`,
-    withCredentials: true,
 });
 
 privateApi.interceptors.request.use((config) => {
-    const token = localStorage.getItem('user')?.accessToken;
+    let user = localStorage.getItem('user');
+    if (user && user !== 'undefined') {
+        user = JSON.parse(user);
+    } else {
+        user = null;
+    }
+    const token = user?.accessToken;
     if (token) {
         config.headers['Authorization'] = `Bearer ${token}`;
     }
@@ -23,23 +28,34 @@ privateApi.interceptors.request.use((config) => {
 
 // Add a response interceptor to handle 401 errors
 privateApi.interceptors.response.use(
-    (response) => response,
-    async (error) => {
-        if (error.response?.code === 1003 || error.response?.code === 1004) {
-            try {
-                const user = await refreshToken();
-                if (user) {
-                    localStorage.setItem('user', JSON.stringify(user));
-                }
+    async (response) => {
+        const data = response.data;
+        const code = data.code;
 
-                const originalRequest = error.config;
-                const newToken = user?.accessToken;
+        if (code === 1005 || code === 1006) {
+            const newToken = await refreshToken();
+            if (newToken) {
+                console.log('newToken:', newToken);
+                const originalRequest = response.config;
                 originalRequest.headers['Authorization'] = `Bearer ${newToken}`;
-                return axios(originalRequest);
-            } catch (refreshError) {
-                console.error('Failed to refresh token:', refreshError);
-                localStorage.removeItem('user');
-                window.location.href = '/login'; // Redirect to login
+                return privateApi(originalRequest);
+            }
+        }
+        return response.data;
+    },
+    async (error) => {
+        const response = error.response;
+        const data = response.data;
+        const code = data.code;
+
+        if (code === 1005 || code === 1006) {
+            const auth = await refreshToken();
+            const newToken = auth.accessToken;
+            if (auth && newToken) {
+                console.log('newToken:', newToken);
+                const originalRequest = error.config;
+                originalRequest.headers['Authorization'] = `Bearer ${newToken}`;
+                return privateApi(originalRequest);
             }
         }
         return Promise.reject(error);

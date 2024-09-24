@@ -1,31 +1,28 @@
 import { privateApi as api } from './apiClient';
 
-export const login = ({ username, password }) =>
-    api.post('/auth/login', {
+export const login = async ({ username, password }) => {
+    const response = await api.post('/auth/login', {
         username,
         password,
     });
-
-export const register = (user) =>
-    api.post('/auth/register', user).then((response) => response.data);
-
-export const logout = () => {
-    localStorage.removeItem('user');
-    api.post('/auth/logout')
-        .then((response) => {
-            if (response.status === 200) {
-                window.location.href = '/'; // Redirect or reload after logout
-            }
-        })
-        .catch((error) => {
-            console.error('Error logging out:', error);
-        });
+    return response.data;
 };
 
-export const refreshToken = () =>
-    api
-        .post('/auth/refresh-token')
-        .then((response) => response.data)
-        .catch((error) => {
-            throw error;
-        });
+export const register = async (user) => {
+    const response = await api.post('/auth/register', user);
+    return response.data;
+};
+
+export const logout = async () => {
+    localStorage.removeItem('user');
+
+    const response = await api.post('/auth/logout');
+
+    window.location.href = '/login';
+    return response.data;
+};
+
+export const refreshToken = async () => {
+    const response = await api.post('/auth/refresh-token');
+    return response?.data || null;
+};
