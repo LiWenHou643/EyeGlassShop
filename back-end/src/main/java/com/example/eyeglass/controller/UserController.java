@@ -1,11 +1,12 @@
 package com.example.eyeglass.controller;
 
-import com.example.eyeglass.entity.Person;
-import com.example.eyeglass.repository.person.PersonRepository;
+import com.example.eyeglass.dto.response.ApiResponse;
+import com.example.eyeglass.dto.response.PersonResponse;
 import com.example.eyeglass.service.person.PersonService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,12 +19,14 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
 
     PersonService personService;
-    private final PersonRepository personRepository;
 
-    //    @PreAuthorize("hasAuthority('SCOPE_USER')")
+    @PreAuthorize("hasAuthority('SCOPE_USER')")
     @GetMapping
-    public Person getUser() {
+    public ApiResponse<PersonResponse> getUser() {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        return personRepository.findById((long) 10).orElse(null);
+        ApiResponse<PersonResponse> response = new ApiResponse<>();
+        response.setMessage("User get successfully");
+        response.setData(personService.getPersonByEmail(username));
+        return response;
     }
 }

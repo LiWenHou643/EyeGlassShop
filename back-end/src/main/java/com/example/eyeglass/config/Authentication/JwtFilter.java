@@ -76,14 +76,13 @@ public class JwtFilter extends OncePerRequestFilter {
             }
 
             filterChain.doFilter(request, response);
-
+            
         } catch (AppException e) {
             ApiResponse<Void> errorResponse = new ApiResponse<>();
             errorResponse.setCode(e.getErrorCode().getCode());
             errorResponse.setMessage(e.getErrorCode().getMessage());
 
             responseException(response, errorResponse);
-            return;
 
         } catch (JwtException e) {
             ApiResponse<Void> errorResponse = new ApiResponse<>();
@@ -96,7 +95,6 @@ public class JwtFilter extends OncePerRequestFilter {
             }
 
             responseException(response, errorResponse);
-            return;
 
         } catch (Exception e) {
             ApiResponse<Void> errorResponse = new ApiResponse<>();
@@ -104,9 +102,7 @@ public class JwtFilter extends OncePerRequestFilter {
             errorResponse.setMessage(e.getMessage());
 
             responseException(response, errorResponse);
-            return;
         }
-        filterChain.doFilter(request, response);
     }
 
     private void responseException(HttpServletResponse response, ApiResponse<Void> errorResponse) throws IOException {

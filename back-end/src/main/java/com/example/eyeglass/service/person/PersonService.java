@@ -26,26 +26,26 @@ public class PersonService {
     PasswordEncoder passwordEncoder;
 
 
-    public List<PersonResponse> getAllUsers() {
+    public List<PersonResponse> getAll() {
         List<Person> people = personRepository.findAll();
         return people.stream()
                      .map(PERSON_MAPPER::toPersonResponse)
                      .collect(Collectors.toList());
     }
 
-    public PersonResponse getUserById(Long id) {
+    public PersonResponse getPersonById(Long id) {
         Person person = personRepository.findById(id)
                                         .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
         return PERSON_MAPPER.toPersonResponse(person);
     }
 
-    public PersonResponse getUserByEmail(String email) {
+    public PersonResponse getPersonByEmail(String email) {
         Person person = personRepository.findByEmail(email)
                                         .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
         return PERSON_MAPPER.toPersonResponse(person);
     }
 
-    public PersonResponse updateUser(Long id, PersonResponse personResponse) {
+    public PersonResponse updatePerson(Long id, PersonResponse personResponse) {
         Person person = personRepository.findById(id)
                                         .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
         person.setFullName(personResponse.getFullName());
