@@ -9,7 +9,6 @@ import {
 import { useDarkMode } from '../context/DarkModeContext';
 import Dropdown from './Dropdown';
 import BaseStyledLink from './Link';
-import useUser from '../features/authentication/useUser';
 import UserMenu from '../features/user/UserMenu';
 import Button from './Button';
 
@@ -119,7 +118,8 @@ const StyledHeaderMenu = styled.div`
 `;
 
 function Header() {
-    const { isAuthenticated } = useUser();
+    // const { isAuthenticated } = useUser();
+    const isAuthenticated = true;
     const { isDarkMode, toggleDarkMode } = useDarkMode();
     const [scrolled, setScrolled] = useState(false);
     const [showHeaderMenu, setShowHeaderMenu] = useState(false);

@@ -1,5 +1,5 @@
 import { useMutation } from '@tanstack/react-query';
-import { register } from '../../services/apiAuth';
+import { register } from '../../api/apiAuth';
 import { toast } from 'react-hot-toast';
 
 export function useCreateUser() {

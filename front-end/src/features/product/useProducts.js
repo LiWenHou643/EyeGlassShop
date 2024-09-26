@@ -1,5 +1,5 @@
 import { useSearchParams } from 'react-router-dom';
-import { getProducts } from '../../services/apiProduct';
+import { getProducts } from '../../api/apiProduct';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { PAGE_SIZE } from '../../utils/constant';
 

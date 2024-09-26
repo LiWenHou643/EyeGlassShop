@@ -21,6 +21,7 @@ import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.JwtException;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
+import org.springframework.security.oauth2.server.resource.InvalidBearerTokenException;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -76,7 +77,7 @@ public class JwtFilter extends OncePerRequestFilter {
             }
 
             filterChain.doFilter(request, response);
-            
+
         } catch (AppException e) {
             ApiResponse<Void> errorResponse = new ApiResponse<>();
             errorResponse.setCode(e.getErrorCode().getCode());
@@ -84,7 +85,8 @@ public class JwtFilter extends OncePerRequestFilter {
 
             responseException(response, errorResponse);
 
-        } catch (JwtException e) {
+        } catch (JwtException | InvalidBearerTokenException e) {
+            log.info("Invalid JWT token: {}", e.getMessage());
             ApiResponse<Void> errorResponse = new ApiResponse<>();
             if (isTokenExpired(e)) {
                 errorResponse.setCode(ErrorCode.JWT_EXPIRED.getCode());
@@ -111,7 +113,7 @@ public class JwtFilter extends OncePerRequestFilter {
         response.getWriter().write(convertObjectToJson(errorResponse));
     }
 
-    private boolean isTokenExpired(JwtException e) {
+    private boolean isTokenExpired(Exception e) {
         String errorMessage = e.getMessage();
         return errorMessage != null && errorMessage.toLowerCase().contains("expired");
     }

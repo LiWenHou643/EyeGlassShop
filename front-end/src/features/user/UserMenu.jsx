@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { HiOutlineUser } from 'react-icons/hi2';
-import useUser from '../authentication/useUser';
 import { exactNameFromEmail } from '../../utils/helperFunction';
 import styled from 'styled-components';
 import BaseStyledLink from '../../ui/Link';
@@ -43,10 +42,9 @@ const UserName = styled.p`
 `;
 function UserMenu() {
     const [showMenu, setShowMenu] = useState(false);
-    const { username, role } = useUser();
     const { logout } = useLogout();
 
-    const isAdmin = role === 'ROLE_ADMIN';
+    const isAdmin = true;
 
     const handleMouseEnter = () => {
         setShowMenu(true);
@@ -64,7 +62,7 @@ function UserMenu() {
         >
             <UserButton className='d-flex justify-content-center align-items-center gap-2'>
                 <HiOutlineUser />
-                <UserName>{exactNameFromEmail(username)}</UserName>
+                {'Hau' && <UserName>{exactNameFromEmail('Hau')}</UserName>}
             </UserButton>
             {showMenu && (
                 <MenuList className='rounded-3'>

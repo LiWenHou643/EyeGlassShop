@@ -1,4 +1,4 @@
-import { publicApi } from './apiClient';
+import axios from './axios';
 import { PAGE_SIZE } from '../utils/constant';
 
 export const getProducts = async ({
@@ -7,7 +7,7 @@ export const getProducts = async ({
     page = 1,
     debouncedSearch,
 }) => {
-    const response = await publicApi.get('/products', {
+    const response = await axios.get('/public/products', {
         params: {
             category,
             page,
@@ -20,7 +20,7 @@ export const getProducts = async ({
 };
 
 export const searchProducts = async (debouncedSearch) => {
-    const response = await publicApi.get('/products/search', {
+    const response = await axios.get('/public/products/search', {
         params: {
             title: debouncedSearch,
         },
@@ -29,16 +29,16 @@ export const searchProducts = async (debouncedSearch) => {
 };
 
 export const getProductById = async (id) => {
-    const response = await publicApi.get(`/products/${id}`);
+    const response = await axios.get(`/public/products/${id}`);
     return response.data;
 };
 
 export const getBestSellerProducts = async () => {
-    const response = await publicApi.get('/products/best-seller');
+    const response = await axios.get('/public/products/best-seller');
     return response.data;
 };
 
 export const getBigSalesProducts = async () => {
-    const response = await publicApi.get('/products/most-discount');
+    const response = await axios.get('/public/products/most-discount');
     return response.data;
 };

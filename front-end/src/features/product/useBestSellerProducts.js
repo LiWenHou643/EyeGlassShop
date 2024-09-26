@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { getBestSellerProducts } from '../../services/apiProduct';
+import { getBestSellerProducts } from '../../api/apiProduct';
 
 export function useBestSellerProducts() {
     const { data, isLoading, error } = useQuery(

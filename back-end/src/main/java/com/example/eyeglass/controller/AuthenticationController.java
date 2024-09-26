@@ -17,10 +17,7 @@ import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -50,7 +47,7 @@ public class AuthenticationController {
         return res;
     }
 
-    @PostMapping("/logout")
+    @GetMapping("/logout")
     public ApiResponse<String> logoutUser(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
         logoutHandlerService.logout(request, response, authentication);
         ApiResponse<String> res = new ApiResponse<>();
@@ -58,7 +55,7 @@ public class AuthenticationController {
         return res;
     }
 
-    @PostMapping("/refresh-token")
+    @GetMapping("/refresh")
     public ApiResponse<AuthenticationResponse> refreshToken(HttpServletRequest request) {
         ApiResponse<AuthenticationResponse> res = new ApiResponse<>();
         res.setMessage("Token refreshed successfully");

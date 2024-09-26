@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import FilterBar from '../../ui/FilterBar';
 import SortBar from '../../ui/SortBar';
 import SearchBar from '../../ui/SearchBar';
-import { searchProducts } from '../../services/apiProduct';
+import { searchProducts } from '../../api/apiProduct';
 import { countDiscount, formatPrice } from '../../utils/helperFunction';
 
 const Container = styled.div`

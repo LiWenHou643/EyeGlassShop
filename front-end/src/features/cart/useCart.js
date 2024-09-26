@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { getCart } from '../../services/apiCart';
+import { getCart } from '../../api/apiCart';
 
 export function useCart() {
     const { isLoading, isFetching, data, error } = useQuery({
@@ -7,6 +7,7 @@ export function useCart() {
         queryFn: getCart,
         keepPreviousData: true, // Keep the previous data during refetch
         refetchOnWindowFocus: false,
+        retryDelay: (attempt) => Math.min(1000 * 2 ** attempt, 30000),
     });
 
     return {

@@ -1,3 +1,5 @@
+import { jwtDecode } from 'jwt-decode';
+
 export function calDateAgo(givenDate) {
     const currentDate = new Date();
     const pastDate = new Date(givenDate);
@@ -36,4 +38,23 @@ export function formatSoldAmount(soldAmount) {
         return (soldAmount / 1000).toFixed(1).replace('.0', '') + 'k';
     }
     return soldAmount.toString();
+}
+
+export function logJwtLifeTime(token) {
+    if (!token) return;
+
+    const decodedToken = jwtDecode(token);
+    const currentTime = Math.floor(Date.now() / 1000);
+    const isExpired = decodedToken.exp < currentTime;
+    !isExpired
+        ? console.log(
+              'token will expire in: ',
+              decodedToken.exp - currentTime,
+              ' seconds'
+          )
+        : console.log(
+              'token expired in ',
+              decodedToken.exp - currentTime,
+              ' seconds'
+          );
 }

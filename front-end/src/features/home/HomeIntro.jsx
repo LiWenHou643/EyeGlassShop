@@ -6,7 +6,6 @@ import {
 } from 'react-icons/hi2';
 import { HiOutlineRefresh } from 'react-icons/hi';
 import Section from '../../ui/Section';
-
 const IntroContainer = styled.section`
     background-color: var(--color-grey-100);
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
