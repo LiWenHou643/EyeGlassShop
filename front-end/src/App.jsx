@@ -73,7 +73,7 @@ function App() {
                                         <Route path='home' element={<Home />} />
                                     </Route>
 
-                                    {/* <Route
+                                    <Route
                                         element={
                                             <RequireAuth
                                                 allowedRoles={[ROLES.user]}
@@ -96,7 +96,7 @@ function App() {
                                             path='user/cart'
                                             element={<Cart />}
                                         />
-                                    </Route> */}
+                                    </Route>
                                 </Route>
 
                                 <Route path='*' element={<PageNotFound />} />

@@ -11,6 +11,8 @@ import Dropdown from './Dropdown';
 import BaseStyledLink from './Link';
 import UserMenu from '../features/user/UserMenu';
 import Button from './Button';
+import useAuth from '../hooks/useAuth';
+import { useUser } from '../hooks/useUser';
 
 const StyledHeader = styled.header`
     background: var(--color-header);
@@ -118,7 +120,8 @@ const StyledHeaderMenu = styled.div`
 `;
 
 function Header() {
-    const isAuthenticated = true;
+    const { auth } = useAuth();
+    const { data, isLoading } = useUser();
     const { isDarkMode, toggleDarkMode } = useDarkMode();
     const [scrolled, setScrolled] = useState(false);
     const [showHeaderMenu, setShowHeaderMenu] = useState(false);
@@ -198,8 +201,8 @@ function Header() {
                     >
                         Contact
                     </StyledLink>
-                    {isAuthenticated ? (
-                        <UserMenu />
+                    {auth ? (
+                        <UserMenu user={data} />
                     ) : (
                         <LoginButton className='ps-4 ps-md-0' to='/login'>
                             Login

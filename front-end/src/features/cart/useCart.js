@@ -2,12 +2,19 @@ import { useQuery } from '@tanstack/react-query';
 import { getCart } from '../../api/apiCart';
 
 export function useCart() {
+    console.log('fetching cart...');
     const { isLoading, isFetching, data, error } = useQuery({
         queryKey: ['cart'],
         queryFn: getCart,
+        onSuccess: (res) => {
+            console.log('res', res);
+        },
+        onError: (err) => {
+            console.log('error', err);
+        },
         keepPreviousData: true, // Keep the previous data during refetch
         refetchOnWindowFocus: false,
-        retryDelay: (attempt) => Math.min(1000 * 2 ** attempt, 30000),
+        retry: false,
     });
 
     return {

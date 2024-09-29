@@ -6,6 +6,7 @@ export const useUser = () => {
 
     const getUser = async () => {
         try {
+            console.log('fetching user...');
             const response = await axiosPrivate.get('/user');
             return response.data;
         } catch (error) {

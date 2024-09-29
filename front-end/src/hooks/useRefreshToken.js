@@ -6,6 +6,7 @@ const useRefreshToken = () => {
 
     const refresh = async () => {
         try {
+            console.log('refreshing..');
             const response = await refreshToken();
 
             if (response.code === 1006 || response.code === 1007) {

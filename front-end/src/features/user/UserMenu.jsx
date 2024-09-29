@@ -5,9 +5,6 @@ import styled from 'styled-components';
 import BaseStyledLink from '../../ui/Link';
 import Modal from '../../ui/Modal';
 import { useLogout } from '../authentication/useLogout';
-import Loading from '../../ui/Loading';
-import FadeLoader from 'react-spinners/FadeLoader';
-import { useUser } from '../../hooks/useUser';
 
 const MenuList = styled.ul`
     background-color: var(--color-grey-100);
@@ -44,12 +41,12 @@ const UserName = styled.p`
     color: var(--color-grey-700);
 `;
 
-function UserMenu() {
+function UserMenu({ user }) {
     const [showMenu, setShowMenu] = useState(false);
     const { logout } = useLogout();
-    const { data, isLoading } = useUser();
+    console.log('usermenu', user);
 
-    const isAdmin = data?.roles.name === 'ADMIN';
+    const isAdmin = user?.roles.name === 'ADMIN';
 
     const handleMouseEnter = () => {
         setShowMenu(true);
@@ -59,74 +56,67 @@ function UserMenu() {
         setShowMenu(false);
     };
 
-    if (!isLoading)
-        return (
-            <div
-                className='dropdown-container d-flex align-items-center position-relative me-2'
-                onMouseEnter={handleMouseEnter}
-                onMouseLeave={handleMouseLeave}
-            >
-                <UserButton className='d-flex justify-content-center align-items-center gap-2'>
-                    <HiOutlineUser />
-                    {data && (
-                        <UserName>{exactNameFromEmail(data?.email)}</UserName>
-                    )}
-                </UserButton>
-                {showMenu && (
-                    <MenuList className='rounded-3'>
-                        <li>
-                            <BaseStyledLink
-                                className='dropdown-item py-3 px-5'
-                                to='/user/cart'
-                            >
-                                {isAdmin ? 'Orders' : 'Cart'}
-                            </BaseStyledLink>
-                        </li>
-                        <li>
-                            <BaseStyledLink
-                                className='dropdown-item py-3 px-5'
-                                to={
-                                    isAdmin ? '/admin/setting' : '/user/profile'
-                                }
-                            >
-                                {isAdmin ? 'Setting' : 'Profile'}
-                            </BaseStyledLink>
-                        </li>
-                        <li>
-                            <Modal>
-                                <Modal.Open opens='logout'>
-                                    <BaseStyledLink
-                                        className='dropdown-item py-3 px-5'
-                                        to='#'
+    return (
+        <div
+            className='dropdown-container d-flex align-items-center position-relative me-2'
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
+        >
+            <UserButton className='d-flex justify-content-center align-items-center gap-2'>
+                <HiOutlineUser />
+                {user && <UserName>{exactNameFromEmail(user?.email)}</UserName>}
+            </UserButton>
+            {showMenu && (
+                <MenuList className='rounded-3'>
+                    <li>
+                        <BaseStyledLink
+                            className='dropdown-item py-3 px-5'
+                            to='/user/cart'
+                        >
+                            {isAdmin ? 'Orders' : 'Cart'}
+                        </BaseStyledLink>
+                    </li>
+                    <li>
+                        <BaseStyledLink
+                            className='dropdown-item py-3 px-5'
+                            to={isAdmin ? '/admin/setting' : '/user/profile'}
+                        >
+                            {isAdmin ? 'Setting' : 'Profile'}
+                        </BaseStyledLink>
+                    </li>
+                    <li>
+                        <Modal>
+                            <Modal.Open opens='logout'>
+                                <BaseStyledLink
+                                    className='dropdown-item py-3 px-5'
+                                    to='#'
+                                >
+                                    Logout
+                                </BaseStyledLink>
+                            </Modal.Open>
+                            <Modal.Window name='logout'>
+                                <Modal.Header>Logout</Modal.Header>
+                                <Modal.Body>
+                                    Are you sure you want to logout?
+                                </Modal.Body>
+                                <Modal.Footer>
+                                    <Modal.Close variation='secondary'>
+                                        Cancel
+                                    </Modal.Close>
+                                    <Modal.Close
+                                        variation='danger'
+                                        onClick={() => logout()}
                                     >
                                         Logout
-                                    </BaseStyledLink>
-                                </Modal.Open>
-                                <Modal.Window name='logout'>
-                                    <Modal.Header>Logout</Modal.Header>
-                                    <Modal.Body>
-                                        Are you sure you want to logout?
-                                    </Modal.Body>
-                                    <Modal.Footer>
-                                        <Modal.Close variation='secondary'>
-                                            Cancel
-                                        </Modal.Close>
-                                        <Modal.Close
-                                            variation='danger'
-                                            onClick={() => logout()}
-                                        >
-                                            Logout
-                                        </Modal.Close>
-                                    </Modal.Footer>
-                                </Modal.Window>
-                            </Modal>
-                        </li>
-                    </MenuList>
-                )}
-            </div>
-        );
-
-    return null;
+                                    </Modal.Close>
+                                </Modal.Footer>
+                            </Modal.Window>
+                        </Modal>
+                    </li>
+                </MenuList>
+            )}
+        </div>
+    );
 }
 
 export default UserMenu;
