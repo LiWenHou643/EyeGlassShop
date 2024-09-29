@@ -1,32 +1,31 @@
-import { useState, useEffect } from 'react';
 import useRefreshToken from '../../hooks/useRefreshToken';
-import useAuth from '../../hooks/useAuth';
 import { Outlet } from 'react-router-dom';
+import useAuth from '../../hooks/useAuth';
+import { useEffect, useState } from 'react';
 
 const PersistLogin = () => {
     const [isLoading, setIsLoading] = useState(true);
-    // const refresh = useRefreshToken();
-    // const { auth } = useAuth();
-    // console.log('auth in Persist/Context', auth);
+    const refresh = useRefreshToken();
+    const { auth } = useAuth();
 
-    // useEffect(() => {
-    //     const verifyRefreshToken = async () => {
-    //         try {
-    //             await refresh();
-    //         } catch (error) {
-    //             console.log(error);
-    //         } finally {
-    //             setIsLoading(false);
-    //         }
-    //     };
+    useEffect(() => {
+        let isMounted = true;
 
-    //     !auth?.accessToken ? verifyRefreshToken() : setIsLoading(false);
-    // }, [auth, refresh]);
+        const verifyRefreshToken = async () => {
+            try {
+                await refresh();
+            } catch (err) {
+                console.error(err);
+            } finally {
+                isMounted && setIsLoading(false);
+            }
+        };
 
-    // useEffect(() => {
-    //     console.log('isLoading: ', isLoading);
-    //     console.log('accessToken: ', JSON.stringify(auth?.accessToken));
-    // }, [isLoading, auth]);
+        // Avoids unwanted call to verifyRefreshToken
+        !auth?.accessToken ? verifyRefreshToken() : setIsLoading(false);
+
+        return () => (isMounted = false);
+    }, []);
 
     return <>{isLoading ? <p>Loadding...</p> : <Outlet />}</>;
 };

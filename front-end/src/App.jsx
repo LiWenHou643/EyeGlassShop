@@ -39,7 +39,7 @@ function App() {
                                     index
                                     element={<Navigate replace to='home' />}
                                 />
-                                <Route path='home' element={<Home />} />
+
                                 <Route path='login' element={<Login />} />
                                 <Route path='signin' element={<Register />} />
                                 <Route
@@ -70,6 +70,16 @@ function App() {
                                             />
                                         }
                                     >
+                                        <Route path='home' element={<Home />} />
+                                    </Route>
+
+                                    {/* <Route
+                                        element={
+                                            <RequireAuth
+                                                allowedRoles={[ROLES.user]}
+                                            />
+                                        }
+                                    >
                                         <Route
                                             path='user/profile'
                                             element={<Profile />}
@@ -86,7 +96,7 @@ function App() {
                                             path='user/cart'
                                             element={<Cart />}
                                         />
-                                    </Route>
+                                    </Route> */}
                                 </Route>
 
                                 <Route path='*' element={<PageNotFound />} />

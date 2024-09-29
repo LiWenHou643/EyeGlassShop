@@ -15,7 +15,6 @@ export function useLogin() {
         mutationFn: ({ username, password }) =>
             loginApi({ username, password }),
         onSuccess: (response) => {
-            console.log('response login:', response);
             if (response.code !== 1000) throw new Error(response.message);
 
             if (response.data.accessToken) {

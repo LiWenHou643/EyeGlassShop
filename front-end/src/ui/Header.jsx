@@ -118,7 +118,6 @@ const StyledHeaderMenu = styled.div`
 `;
 
 function Header() {
-    // const { isAuthenticated } = useUser();
     const isAuthenticated = true;
     const { isDarkMode, toggleDarkMode } = useDarkMode();
     const [scrolled, setScrolled] = useState(false);

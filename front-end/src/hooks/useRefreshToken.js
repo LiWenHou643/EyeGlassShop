@@ -5,7 +5,6 @@ const useRefreshToken = () => {
     const { setAuth } = useAuth();
 
     const refresh = async () => {
-        console.log('sending refresh request...');
         try {
             const response = await refreshToken();
 
@@ -14,19 +13,19 @@ const useRefreshToken = () => {
             }
 
             setAuth((prev) => {
-                console.log('prev in useRefreshToken:', prev);
-                console.log(
-                    'newtoken in useRefreshToken:',
-                    response.data.accessToken
-                );
                 return {
-                    ...prev,
+                    username: response.data.username,
+                    role: response.data.role,
                     accessToken: response.data.accessToken,
                 };
             });
             return response.data.accessToken;
         } catch (error) {
             console.log('error in useRefreshToken:', error);
+
+            // If the refresh token is invalid, logout the user
+            setAuth({});
+
             return;
         }
     };

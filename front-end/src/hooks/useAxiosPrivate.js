@@ -7,41 +7,44 @@ const useAxiosPrivate = () => {
     const refresh = useRefreshToken();
     const { auth } = useAuth();
 
-    // useEffect(() => {
-    //     const requestIntercept = axiosPrivate.interceptors.request.use(
-    //         (config) => {
-    //             console.log('token in useAxiosPrivate:', auth?.accessToken);
-    //             if (!config.headers['Authorization']) {
-    //                 config.headers[
-    //                     'Authorization'
-    //                 ] = `Bearer ${auth?.accessToken}`;
-    //             }
-    //             return config;
-    //         },
-    //         (error) => Promise.reject(error)
-    //     );
+    useEffect(() => {
+        const requestIntercept = axiosPrivate.interceptors.request.use(
+            (config) => {
+                if (!config.headers['Authorization']) {
+                    config.headers[
+                        'Authorization'
+                    ] = `Bearer ${auth?.accessToken}`;
+                }
+                return config;
+            },
+            (error) => Promise.reject(error)
+        );
 
-    //     const responseIntercept = axiosPrivate.interceptors.response.use(
-    //         (response) => response,
-    //         async (error) => {
-    //             const prevRequest = error?.config;
-    //             if (error?.response?.status === 403 && !prevRequest?.sent) {
-    //                 prevRequest.sent = true;
-    //                 const newAccessToken = await refresh();
-    //                 prevRequest.headers[
-    //                     'Authorization'
-    //                 ] = `Bearer ${newAccessToken}`;
-    //                 return axiosPrivate(prevRequest);
-    //             }
-    //             return Promise.reject(error);
-    //         }
-    //     );
+        const responseIntercept = axiosPrivate.interceptors.response.use(
+            async (response) => {
+                const code = response?.data?.code;
+                const prevRequest = response?.config;
 
-    //     return () => {
-    //         axiosPrivate.interceptors.request.eject(requestIntercept);
-    //         axiosPrivate.interceptors.response.eject(responseIntercept);
-    //     };
-    // }, [auth, refresh]);
+                if ((code === 1005 || code === 1006) && !prevRequest._retry) {
+                    prevRequest._retry = true; // Mark this request as retried
+                    const newAccessToken = await refresh();
+                    prevRequest.headers[
+                        'Authorization'
+                    ] = `Bearer ${newAccessToken}`;
+                    return axiosPrivate(prevRequest); // Retry the original request
+                }
+                return response.data;
+            },
+            async (error) => {
+                return Promise.reject(error);
+            }
+        );
+
+        return () => {
+            axiosPrivate.interceptors.request.eject(requestIntercept);
+            axiosPrivate.interceptors.response.eject(responseIntercept);
+        };
+    }, [auth, refresh]);
 
     return axiosPrivate;
 };
