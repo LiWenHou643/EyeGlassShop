@@ -1,12 +1,14 @@
-import useRefreshToken from '../../hooks/useRefreshToken';
 import { Outlet } from 'react-router-dom';
-import useAuth from '../../hooks/useAuth';
 import { useEffect, useState } from 'react';
+import { RingLoader } from 'react-spinners';
+import useRefreshToken from '../../hooks/useRefreshToken';
+import useAuth from '../../hooks/useAuth';
+import Loading from '../../ui/Loading';
 
 const PersistLogin = () => {
     const [isLoading, setIsLoading] = useState(true);
     const refresh = useRefreshToken();
-    const { auth } = useAuth();
+    const { auth, persist } = useAuth();
 
     useEffect(() => {
         let isMounted = true;
@@ -25,9 +27,21 @@ const PersistLogin = () => {
         !auth?.accessToken ? verifyRefreshToken() : setIsLoading(false);
 
         return () => (isMounted = false);
-    }, []);
+    }, [auth, refresh]);
 
-    return <>{isLoading ? <p>Loadding...</p> : <Outlet />}</>;
+    return (
+        <>
+            {!persist ? (
+                <Outlet />
+            ) : isLoading ? (
+                <Loading>
+                    <RingLoader color='blue' />
+                </Loading>
+            ) : (
+                <Outlet />
+            )}
+        </>
+    );
 };
 
 export default PersistLogin;

@@ -15,12 +15,12 @@ export const useUser = () => {
         }
     };
 
-    const { isLoading, data, error } = useQuery({
+    const { isLoading, isFetching, data, error } = useQuery({
         queryKey: ['user'],
         queryFn: getUser,
         retry: false,
         refetchOnWindowFocus: false,
     });
 
-    return { isLoading, data, error };
+    return { isLoading, isFetching, data, error };
 };

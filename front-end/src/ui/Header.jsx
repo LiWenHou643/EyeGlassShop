@@ -12,7 +12,6 @@ import BaseStyledLink from './Link';
 import UserMenu from '../features/user/UserMenu';
 import Button from './Button';
 import useAuth from '../hooks/useAuth';
-import { useUser } from '../hooks/useUser';
 
 const StyledHeader = styled.header`
     background: var(--color-header);
@@ -46,7 +45,7 @@ const StyledLink = styled(BaseStyledLink)`
         color: var(--color-grey-100);
     }
     &:focus {
-        color: var(--color-grey-100);
+        color: var(--color-grey-700);
     }
     border-radius: 0.5rem;
     transition: color 0.3s ease;
@@ -121,10 +120,11 @@ const StyledHeaderMenu = styled.div`
 
 function Header() {
     const { auth } = useAuth();
-    const { data, isLoading } = useUser();
     const { isDarkMode, toggleDarkMode } = useDarkMode();
     const [scrolled, setScrolled] = useState(false);
     const [showHeaderMenu, setShowHeaderMenu] = useState(false);
+
+    const isAuth = Object.keys(auth).length !== 0;
 
     useEffect(() => {
         const handleScroll = () => {
@@ -201,8 +201,8 @@ function Header() {
                     >
                         Contact
                     </StyledLink>
-                    {auth ? (
-                        <UserMenu user={data} />
+                    {isAuth ? (
+                        <UserMenu user={auth} />
                     ) : (
                         <LoginButton className='ps-4 ps-md-0' to='/login'>
                             Login

@@ -8,6 +8,7 @@ import Button from '../../ui/Button';
 import FormRow from '../../ui/FormRow';
 import Form from '../../ui/Form';
 import styled from 'styled-components';
+import useAuth from '../../hooks/useAuth';
 
 const schema = yup.object({
     email: yup
@@ -21,7 +22,8 @@ const schema = yup.object({
 });
 
 const StyledLink = styled(Link)`
-    color: var(--color-blue-700);
+    color: var(--color-grey-600);
+    font-style: italic;
 `;
 
 export default function LoginForm() {
@@ -34,15 +36,22 @@ export default function LoginForm() {
         defaultValues: {
             email: '',
             pwd: '',
+            persistent: false,
         },
         resolver: yupResolver(schema),
     });
+
+    const { persist, setPersist } = useAuth();
+
+    const togglePersist = () => {
+        setPersist((persist) => !persist);
+    };
 
     const { login, isLoggingin } = useLogin();
 
     function onSubmit(data) {
         login(
-            { username: data.email, password: data.pwd },
+            { username: data.email, password: data.pwd, persistent: persist },
             {
                 onSettled: () => {
                     reset();
@@ -86,6 +95,20 @@ export default function LoginForm() {
                 <p className='text-danger px-2 col-12 col-md-8 col-lg-8 h5'>
                     {errors?.pwd?.message}
                 </p>
+            </div>
+
+            <div className='form-check d-flex align-items-center justify-content-end'>
+                <input
+                    className='form-check-input'
+                    type='checkbox'
+                    id='persist'
+                    checked={persist}
+                    onChange={togglePersist}
+                    disabled={isLoggingin}
+                />
+                <label className='form-check-label ms-2 mt-2' htmlFor='persist'>
+                    Remember me
+                </label>
             </div>
 
             <div className='d-flex justify-content-between align-items-center'>

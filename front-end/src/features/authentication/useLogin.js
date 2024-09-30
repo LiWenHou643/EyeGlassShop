@@ -12,8 +12,8 @@ export function useLogin() {
     const from = location.state?.from?.pathname || '/';
 
     const { mutate: login, isLoading: isLoggingin } = useMutation({
-        mutationFn: ({ username, password }) =>
-            loginApi({ username, password }),
+        mutationFn: ({ username, password, persistent }) =>
+            loginApi({ username, password, persistent }),
         onSuccess: (response) => {
             if (response.code !== 1000) throw new Error(response.message);
 

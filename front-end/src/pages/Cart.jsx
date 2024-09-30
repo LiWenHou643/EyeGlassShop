@@ -93,43 +93,44 @@ function Cart() {
                     </label>
                 </div>
                 <ul>
-                    {data.cartItems.map((item) => (
-                        <Li
-                            key={item.id}
-                            className='row justify-content-between align-items-center'
-                        >
-                            <div className='col-1'>
-                                <input
-                                    className='form-check-input'
-                                    type='checkbox'
-                                    id='inlineCheckbox1'
-                                    value='option1'
-                                />
-                            </div>
-                            <div className='col-2'>
-                                <ImageContainer $fit='contain' $ratio='5/3'>
-                                    <img src={item.image} alt={item.name} />
-                                </ImageContainer>
-                            </div>
-                            <div className='col-9 d-flex justify-content-between align-items-center'>
-                                <div>
-                                    <h3>{item.title}</h3>
-                                    <p>{item.description}</p>
+                    {data &&
+                        data.map((item) => (
+                            <Li
+                                key={item.id}
+                                className='row justify-content-between align-items-center'
+                            >
+                                <div className='col-1'>
+                                    <input
+                                        className='form-check-input'
+                                        type='checkbox'
+                                        id='inlineCheckbox1'
+                                        value='option1'
+                                    />
                                 </div>
-                                <p>{item.price}</p>
-                                <NumberInput
-                                    value={numberValue}
-                                    onChange={handleValueChange}
-                                />
-                                <Button $variation='success'>
-                                    <HiOutlineArrowRight />
-                                </Button>
-                                <Button $variation='danger'>
-                                    <HiOutlineTrash />
-                                </Button>
-                            </div>
-                        </Li>
-                    ))}
+                                <div className='col-2'>
+                                    <ImageContainer $fit='contain' $ratio='5/3'>
+                                        <img src={item.image} alt={item.name} />
+                                    </ImageContainer>
+                                </div>
+                                <div className='col-9 d-flex justify-content-between align-items-center'>
+                                    <div>
+                                        <h3>{item.title}</h3>
+                                        <p>{item.description}</p>
+                                    </div>
+                                    <p>{item.price}</p>
+                                    <NumberInput
+                                        value={numberValue}
+                                        onChange={handleValueChange}
+                                    />
+                                    <Button $variation='success'>
+                                        <HiOutlineArrowRight />
+                                    </Button>
+                                    <Button $variation='danger'>
+                                        <HiOutlineTrash />
+                                    </Button>
+                                </div>
+                            </Li>
+                        ))}
                 </ul>
             </div>
         </StyledContainer>

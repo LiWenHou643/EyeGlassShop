@@ -55,7 +55,8 @@ public class AuthenticationService {
         String refreshToken = jwtGenerator.generateRefreshToken(person);
 
         saveUserRefreshToken(person, refreshToken);
-        createRefreshTokenCookie(response, refreshToken);
+        boolean persistent = request.persistent();
+        if (persistent) createRefreshTokenCookie(response, refreshToken);
 
         return AuthenticationResponse.builder().accessToken(token).accessTokenExpiry(5 * 60)
                                      .tokenType(TokenType.Bearer).username(person.getEmail())

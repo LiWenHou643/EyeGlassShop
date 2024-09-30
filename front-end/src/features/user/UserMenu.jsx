@@ -34,19 +34,20 @@ const UserButton = styled.div`
     cursor: pointer;
     color: var(--color-grey-800);
     padding: 0.5rem 1rem;
+    transition: color 0.3s ease;
 `;
 
 const UserName = styled.p`
     font-size: 2rem;
     color: var(--color-grey-700);
+    transition: color 0.3s ease;
 `;
 
 function UserMenu({ user }) {
     const [showMenu, setShowMenu] = useState(false);
     const { logout } = useLogout();
-    console.log('usermenu', user);
 
-    const isAdmin = user?.roles.name === 'ADMIN';
+    const isAdmin = user?.role === 'ADMIN';
 
     const handleMouseEnter = () => {
         setShowMenu(true);
@@ -64,18 +65,12 @@ function UserMenu({ user }) {
         >
             <UserButton className='d-flex justify-content-center align-items-center gap-2'>
                 <HiOutlineUser />
-                {user && <UserName>{exactNameFromEmail(user?.email)}</UserName>}
+                {user && (
+                    <UserName>{exactNameFromEmail(user?.username)}</UserName>
+                )}
             </UserButton>
             {showMenu && (
                 <MenuList className='rounded-3'>
-                    <li>
-                        <BaseStyledLink
-                            className='dropdown-item py-3 px-5'
-                            to='/user/cart'
-                        >
-                            {isAdmin ? 'Orders' : 'Cart'}
-                        </BaseStyledLink>
-                    </li>
                     <li>
                         <BaseStyledLink
                             className='dropdown-item py-3 px-5'

@@ -7,10 +7,10 @@ export function useCart() {
         queryKey: ['cart'],
         queryFn: getCart,
         onSuccess: (res) => {
-            console.log('res', res);
+            console.log('onSuccess', res);
         },
         onError: (err) => {
-            console.log('error', err);
+            console.log('onError', err);
         },
         keepPreviousData: true, // Keep the previous data during refetch
         refetchOnWindowFocus: false,
@@ -20,8 +20,8 @@ export function useCart() {
     return {
         isLoading,
         isFetching,
-        data: data?.data ?? {},
-        count: data?.data?.cartItems?.length ?? 0,
+        data: data?.cartItems ?? {},
+        count: data?.cartItems?.length ?? 0,
         error,
     };
 }
