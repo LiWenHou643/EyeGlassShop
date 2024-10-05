@@ -57,6 +57,10 @@ function UserMenu({ user }) {
         setShowMenu(false);
     };
 
+    const handleLinkClick = () => {
+        setShowMenu(false); // Close the menu when clicking a link
+    };
+
     return (
         <div
             className='dropdown-container d-flex align-items-center position-relative me-2'
@@ -75,6 +79,7 @@ function UserMenu({ user }) {
                         <BaseStyledLink
                             className='dropdown-item py-3 px-5'
                             to={isAdmin ? '/admin/setting' : '/user/profile'}
+                            onClick={handleLinkClick}
                         >
                             {isAdmin ? 'Setting' : 'Profile'}
                         </BaseStyledLink>

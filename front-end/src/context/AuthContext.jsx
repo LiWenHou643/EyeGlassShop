@@ -1,11 +1,14 @@
 import { createContext, useState } from 'react';
-import { useLocalStorageState } from '../hooks/useLocalStorageState';
 
-const AuthContext = createContext();
+const AuthContext = createContext({});
 
-export function AuthProvider({ children }) {
-    const [auth, setAuth] = useState({});
-    const [persist, setPersist] = useLocalStorageState(false, 'persist');
+export const AuthProvider = ({ children }) => {
+    const [auth, setAuth] = useState(
+        JSON.parse(localStorage.getItem('auth')) || {}
+    );
+    const [persist, setPersist] = useState(
+        JSON.parse(localStorage.getItem('persist')) || false
+    );
 
     return (
         <AuthContext.Provider
@@ -19,6 +22,6 @@ export function AuthProvider({ children }) {
             {children}
         </AuthContext.Provider>
     );
-}
+};
 
 export default AuthContext;

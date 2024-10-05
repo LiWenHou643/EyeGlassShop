@@ -1,5 +1,5 @@
 function FormRow({
-    htmlFor,
+    name,
     children,
     type = 'text',
     inputId,
@@ -11,7 +11,7 @@ function FormRow({
         <div className='row align-items-center'>
             <div className='col-12 col-md-4 col-lg-4'>
                 <label
-                    htmlFor={htmlFor}
+                    htmlFor={inputId}
                     className='col-form-label text-capitalize'
                 >
                     {children}
@@ -21,7 +21,8 @@ function FormRow({
                 <input
                     type={type}
                     id={inputId}
-                    className='form-control form-control-lg focus-ring focus-ring-success p-3'
+                    name={name}
+                    className='form-control form-control-lg focus-ring focus-ring-success py-2 px-4 fs-4'
                     placeholder={helpText}
                     disabled={disabled}
                     {...register(inputId)}

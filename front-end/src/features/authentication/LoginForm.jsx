@@ -4,11 +4,11 @@ import { Link } from 'react-router-dom';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useLogin } from '../../features/authentication/useLogin';
 import { SyncLoader } from 'react-spinners';
+import { useAuth } from '../../hooks/useAuth';
 import Button from '../../ui/Button';
 import FormRow from '../../ui/FormRow';
 import Form from '../../ui/Form';
 import styled from 'styled-components';
-import useAuth from '../../hooks/useAuth';
 
 const schema = yup.object({
     email: yup
@@ -63,7 +63,7 @@ export default function LoginForm() {
     return (
         <Form onSubmit={handleSubmit(onSubmit)}>
             <FormRow
-                htmlFor='email'
+                name='email'
                 inputId='email'
                 type='email'
                 helpText='Must be a valid email'
@@ -80,7 +80,7 @@ export default function LoginForm() {
             </div>
 
             <FormRow
-                htmlFor='pwd'
+                name='pwd'
                 inputId='pwd'
                 type='password'
                 helpText='Must be at 8-20 characters long'

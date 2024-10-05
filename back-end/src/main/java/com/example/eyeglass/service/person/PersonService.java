@@ -1,6 +1,8 @@
 package com.example.eyeglass.service.person;
 
+import com.example.eyeglass.dto.request.UpdateProfileRequest;
 import com.example.eyeglass.dto.response.PersonResponse;
+import com.example.eyeglass.entity.Address;
 import com.example.eyeglass.entity.Person;
 import com.example.eyeglass.exception.AppException;
 import com.example.eyeglass.exception.ErrorCode;
@@ -9,7 +11,6 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,8 +24,6 @@ import static com.example.eyeglass.mapper.PersonMapper.PERSON_MAPPER;
 @Slf4j
 public class PersonService {
     PersonRepository personRepository;
-    PasswordEncoder passwordEncoder;
-
 
     public List<PersonResponse> getAll() {
         List<Person> people = personRepository.findAll();
@@ -45,14 +44,25 @@ public class PersonService {
         return PERSON_MAPPER.toPersonResponse(person);
     }
 
-    public PersonResponse updatePerson(Long id, PersonResponse personResponse) {
-        Person person = personRepository.findById(id)
+    public PersonResponse updatePerson(String email, UpdateProfileRequest request) {
+        Person person = personRepository.findByEmail(email)
                                         .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
-        person.setFullName(personResponse.getFullName());
-        person.setEmail(personResponse.getEmail());
-        person.setPhoneNumber(personResponse.getPhoneNumber());
-        person.setAddress(personResponse.getAddress());
-        person.setPassword(passwordEncoder.encode(personResponse.getPassword()));
+        person.setFullName(request.fullName());
+        person.setPhoneNumber(request.phoneNumber());
+        person.setImage(request.image());
+
+        // Update address if it exists, otherwise create a new address object
+        Address existingAddress = person.getAddress();
+        if (existingAddress != null) {
+            existingAddress.setStreetAddress(request.address().getStreetAddress());
+            existingAddress.setWard(request.address().getWard());
+            existingAddress.setDistrict(request.address().getDistrict());
+            existingAddress.setCity(request.address().getCity());
+        } else {
+            // If there's no existing address, create a new one
+            person.setAddress(request.address());
+        }
+
         Person updatedPerson = personRepository.save(person);
         return PERSON_MAPPER.toPersonResponse(updatedPerson);
     }

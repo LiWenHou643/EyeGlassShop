@@ -12,7 +12,13 @@ function SortBar({ sortField, options, className }) {
 
     return (
         <div className={`${className} d-flex align-items-center`}>
-            <Select options={options} value={sortBy} onChange={handleChange} />
+            <Select value={sortBy} onChange={handleChange}>
+                {options.map((option) => (
+                    <option value={option.value} key={option.value}>
+                        {option.label}
+                    </option>
+                ))}
+            </Select>
         </div>
     );
 }

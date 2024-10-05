@@ -309,6 +309,11 @@ td {
         z-index: 2;
     }
 }
+
+select option {
+    background-color: var(--color-grey-0);
+    color: var(--color-grey-800);
+}
 `;
 
 export default GlobalStyles;

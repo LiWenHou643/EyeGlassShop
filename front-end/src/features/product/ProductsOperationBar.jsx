@@ -37,6 +37,27 @@ const Title = styled.div`
     overflow: hidden;
 `;
 
+const SortOptions = [
+    { label: 'Sort by name (A-Z)', value: 'title-asc' },
+    { label: 'Sort by name (Z-A)', value: 'title-desc' },
+    {
+        label: 'Sort by price (low first)',
+        value: 'price-asc',
+    },
+    {
+        label: 'Sort by price (high first)',
+        value: 'price-desc',
+    },
+    {
+        label: 'Sort by sold quantity (low first)',
+        value: 'soldQuantity-asc',
+    },
+    {
+        label: 'Sort by sold quantity (high first)',
+        value: 'soldQuantity-desc',
+    },
+];
+
 function ProductsOperationBar() {
     return (
         <Container className='row mx-0 justify-content-between'>
@@ -53,26 +74,7 @@ function ProductsOperationBar() {
             <SortBar
                 className='my-4 my-md-0 col-12 col-md-5 col-xl-3'
                 sortField='sort'
-                options={[
-                    { label: 'Sort by name (A-Z)', value: 'title-asc' },
-                    { label: 'Sort by name (Z-A)', value: 'title-desc' },
-                    {
-                        label: 'Sort by price (low first)',
-                        value: 'price-asc',
-                    },
-                    {
-                        label: 'Sort by price (high first)',
-                        value: 'price-desc',
-                    },
-                    {
-                        label: 'Sort by sold quantity (low first)',
-                        value: 'soldQuantity-asc',
-                    },
-                    {
-                        label: 'Sort by sold quantity (high first)',
-                        value: 'soldQuantity-desc',
-                    },
-                ]}
+                options={SortOptions}
             />
             <SearchBar
                 className='col-12 col-md-6 col-xl-4'

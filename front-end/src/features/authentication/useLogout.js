@@ -1,14 +1,16 @@
 import { useMutation } from '@tanstack/react-query';
 import { toast } from 'react-hot-toast';
 import { logout as logoutApi } from '../../api/apiAuth';
-import useAuth from '../../hooks/useAuth';
+import { useAuth } from '../../hooks/useAuth';
 
 export function useLogout() {
-    const { setAuth } = useAuth();
+    const { setAuth, setPersist } = useAuth();
     const { mutate: logout, isLoading: isLoggingout } = useMutation({
         mutationFn: logoutApi,
         onSuccess: () => {
             setAuth({});
+            setPersist(false);
+            localStorage.removeItem('auth');
         },
         onError: (error) => {
             const errorMessage =

@@ -42,8 +42,12 @@ public class Person {
     @Column(name = "phone_number", unique = true)
     String phoneNumber;
 
-    @Column
-    String address;
+    @OneToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(name = "address_id", referencedColumnName = "id")
+    Address address;
+
+    @Column(name = "image", unique = true)
+    String image;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @NotBlank(message = "Password cannot be blank", groups = {Create.class, Update.class, Login.class})

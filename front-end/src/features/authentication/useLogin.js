@@ -1,14 +1,13 @@
-import AuthContext from '../../context/AuthProvider';
 import { toast } from 'react-hot-toast';
-import { useContext } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { login as loginApi } from '../../api/apiAuth';
+import { useAuth } from '../../hooks/useAuth';
 
 export function useLogin() {
-    const { setAuth } = useContext(AuthContext);
     const navigate = useNavigate();
     const location = useLocation();
+    const { setAuth } = useAuth();
     const from = location.state?.from?.pathname || '/';
 
     const { mutate: login, isLoading: isLoggingin } = useMutation({
@@ -18,8 +17,12 @@ export function useLogin() {
             if (response.code !== 1000) throw new Error(response.message);
 
             if (response.data.accessToken) {
-                const { username, accessToken, role } = response.data;
-                setAuth({ username, accessToken, role });
+                const { accessToken, username, role } = response.data;
+                setAuth({ accessToken, username, role });
+                localStorage.setItem(
+                    'auth',
+                    JSON.stringify({ accessToken, username, role })
+                );
                 navigate(from, { replace: true });
             }
             return null;

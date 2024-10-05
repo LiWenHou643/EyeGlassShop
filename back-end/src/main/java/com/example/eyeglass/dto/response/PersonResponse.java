@@ -1,5 +1,6 @@
 package com.example.eyeglass.dto.response;
 
+import com.example.eyeglass.entity.Address;
 import com.example.eyeglass.entity.Roles;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
@@ -19,10 +20,12 @@ public class PersonResponse {
 
     String phoneNumber;
 
-    String address;
+    Address address;
 
     @JsonIgnore
     String password;
 
     Roles roles;
+
+    String image;
 }

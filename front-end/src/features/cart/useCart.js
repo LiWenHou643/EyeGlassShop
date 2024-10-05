@@ -1,8 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
-import { getCart } from '../../api/apiCart';
 
 export function useCart() {
-    console.log('fetching cart...');
+    const getCart = async () => {};
+
     const { isLoading, isFetching, data, error } = useQuery({
         queryKey: ['cart'],
         queryFn: getCart,

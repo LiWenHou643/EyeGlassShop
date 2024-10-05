@@ -4,7 +4,7 @@ import Section from '../../ui/Section';
 import { HiArrowRight } from 'react-icons/hi2';
 
 const Background = styled.div`
-    background-image: url('home-bg-banner.jpg');
+    background-image: url('/home-bg-banner.jpg');
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
 `;
 

@@ -3,7 +3,6 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Toaster } from 'react-hot-toast';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { DarkModeProvider } from './context/DarkModeContext';
-import { AuthProvider } from './context/AuthProvider';
 import GlobalStyles from './styles/GlobalStyles';
 import AppLayout from './ui/AppLayout';
 import Home from './pages/Home';
@@ -19,7 +18,7 @@ import ProductsGridView from './features/product/ProductsGridView';
 import ProductDetails from './features/product/ProductDetails';
 import PersistLogin from './features/authentication/PersistLogin';
 import RequireAuth from './features/authentication/RequireAuth';
-
+import { AuthProvider } from './context/AuthContext';
 const queryClient = new QueryClient();
 const ROLES = {
     user: 'USER',
@@ -61,18 +60,10 @@ function App() {
                                     />
                                 </Route>
 
-                                {/* private routes */}
-                                <Route element={<PersistLogin />}>
-                                    <Route
-                                        element={
-                                            <RequireAuth
-                                                allowedRoles={[ROLES.user]}
-                                            />
-                                        }
-                                    >
-                                        <Route path='home' element={<Home />} />
-                                    </Route>
+                                <Route path='home' element={<Home />} />
 
+                                {/* -- PROTECTED ROUTES -- */}
+                                <Route element={<PersistLogin />}>
                                     <Route
                                         element={
                                             <RequireAuth

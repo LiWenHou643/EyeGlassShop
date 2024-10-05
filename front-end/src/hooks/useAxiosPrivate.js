@@ -1,9 +1,9 @@
 import { axiosPrivate } from '../api/axios';
 import { useEffect } from 'react';
-import useRefreshToken from './useRefreshToken';
-import useAuth from './useAuth';
+import { useRefreshToken } from './useRefreshToken';
+import { useAuth } from './useAuth';
 
-const useAxiosPrivate = () => {
+export const useAxiosPrivate = () => {
     const refresh = useRefreshToken();
     const { auth } = useAuth();
 
@@ -33,7 +33,7 @@ const useAxiosPrivate = () => {
                     ] = `Bearer ${newAccessToken}`;
                     return axiosPrivate(prevRequest); // Retry the original request
                 }
-                return response.data;
+                return response;
             },
             async (error) => {
                 return Promise.reject(error);
@@ -48,5 +48,3 @@ const useAxiosPrivate = () => {
 
     return axiosPrivate;
 };
-
-export default useAxiosPrivate;

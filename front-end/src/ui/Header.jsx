@@ -7,11 +7,109 @@ import {
     HiOutlineXMark,
 } from 'react-icons/hi2';
 import { useDarkMode } from '../context/DarkModeContext';
+import { useAuth } from '../hooks/useAuth';
 import Dropdown from './Dropdown';
 import BaseStyledLink from './Link';
 import UserMenu from '../features/user/UserMenu';
 import Button from './Button';
-import useAuth from '../hooks/useAuth';
+
+const Header = () => {
+    const { isDarkMode, toggleDarkMode } = useDarkMode();
+    const [scrolled, setScrolled] = useState(false);
+    const [showHeaderMenu, setShowHeaderMenu] = useState(false);
+
+    useEffect(() => {
+        const handleScroll = () => {
+            if (window.scrollY > 50) {
+                setScrolled(true);
+            } else {
+                setScrolled(false);
+            }
+        };
+
+        window.addEventListener('scroll', handleScroll);
+
+        return () => {
+            window.removeEventListener('scroll', handleScroll);
+        };
+    }, []);
+
+    useEffect(() => {
+        const handleResize = () => {
+            if (window.innerWidth > 768) {
+                setShowHeaderMenu(false);
+            }
+        };
+
+        window.addEventListener('resize', handleResize);
+
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
+    }, []);
+
+    const { auth } = useAuth();
+
+    const isAuth = auth?.accessToken || false;
+    return (
+        <StyledHeader $scrolled={scrolled} className='w-100'>
+            <nav className='w-100 d-flex justify-content-between align-items-center position-relative'>
+                <StyledLink className='navbar-brand px-4' to='/'>
+                    EYES HERO
+                </StyledLink>
+                <ToggleHeaderMenu
+                    $variation='toggle'
+                    $active={showHeaderMenu}
+                    className='d-flex d-md-none'
+                    onClick={() => setShowHeaderMenu(!showHeaderMenu)}
+                >
+                    {showHeaderMenu ? <HiOutlineXMark /> : <HiBars3 />}
+                </ToggleHeaderMenu>
+                <StyledHeaderMenu $display={showHeaderMenu}>
+                    <Dropdown
+                        items={[
+                            {
+                                link: '/products?category=eyeglasses',
+                                text: 'Eyeglasses',
+                            },
+                            {
+                                link: '/products?category=sunglasses',
+                                text: 'Sunglasses',
+                            },
+                            {
+                                link: '/products?category=eyelens',
+                                text: 'Eyelens',
+                            },
+                        ]}
+                    >
+                        <StyledLink
+                            className='text-left text-md-center ps-4 ps-md-0'
+                            to='/products'
+                        >
+                            Glasses
+                        </StyledLink>
+                    </Dropdown>
+                    <StyledLink
+                        className='text-left text-md-center ps-4 ps-md-0'
+                        href='#'
+                    >
+                        Contact
+                    </StyledLink>
+                    {isAuth ? (
+                        <UserMenu user={auth} />
+                    ) : (
+                        <LoginButton className='ps-4 ps-md-0' to='/login'>
+                            Login
+                        </LoginButton>
+                    )}
+                </StyledHeaderMenu>
+                <ToggleDarkMode $variation='toggle' onClick={toggleDarkMode}>
+                    {isDarkMode ? <HiOutlineMoon /> : <HiOutlineSun />}
+                </ToggleDarkMode>
+            </nav>
+        </StyledHeader>
+    );
+};
 
 const StyledHeader = styled.header`
     background: var(--color-header);
@@ -117,104 +215,5 @@ const StyledHeaderMenu = styled.div`
         justify-content: end;
     }
 `;
-
-function Header() {
-    const { auth } = useAuth();
-    const { isDarkMode, toggleDarkMode } = useDarkMode();
-    const [scrolled, setScrolled] = useState(false);
-    const [showHeaderMenu, setShowHeaderMenu] = useState(false);
-
-    const isAuth = Object.keys(auth).length !== 0;
-
-    useEffect(() => {
-        const handleScroll = () => {
-            if (window.scrollY > 50) {
-                setScrolled(true);
-            } else {
-                setScrolled(false);
-            }
-        };
-
-        window.addEventListener('scroll', handleScroll);
-
-        return () => {
-            window.removeEventListener('scroll', handleScroll);
-        };
-    }, []);
-
-    useEffect(() => {
-        const handleResize = () => {
-            if (window.innerWidth > 768) {
-                setShowHeaderMenu(false);
-            }
-        };
-
-        window.addEventListener('resize', handleResize);
-
-        return () => {
-            window.removeEventListener('resize', handleResize);
-        };
-    }, []);
-
-    return (
-        <StyledHeader $scrolled={scrolled} className='w-100'>
-            <nav className='w-100 d-flex justify-content-between align-items-center position-relative'>
-                <StyledLink className='navbar-brand px-4' to='/'>
-                    EYES HERO
-                </StyledLink>
-                <ToggleHeaderMenu
-                    $variation='toggle'
-                    $active={showHeaderMenu}
-                    className='d-flex d-md-none'
-                    onClick={() => setShowHeaderMenu(!showHeaderMenu)}
-                >
-                    {showHeaderMenu ? <HiOutlineXMark /> : <HiBars3 />}
-                </ToggleHeaderMenu>
-                <StyledHeaderMenu $display={showHeaderMenu}>
-                    <Dropdown
-                        items={[
-                            {
-                                link: '/products?category=eyeglasses',
-                                text: 'Eyeglasses',
-                            },
-                            {
-                                link: '/products?category=sunglasses',
-                                text: 'Sunglasses',
-                            },
-                            {
-                                link: '/products?category=eyelens',
-                                text: 'Eyelens',
-                            },
-                        ]}
-                    >
-                        <StyledLink
-                            className='text-left text-md-center ps-4 ps-md-0'
-                            to='/products'
-                        >
-                            Glasses
-                        </StyledLink>
-                    </Dropdown>
-
-                    <StyledLink
-                        className='text-left text-md-center ps-4 ps-md-0'
-                        href='#'
-                    >
-                        Contact
-                    </StyledLink>
-                    {isAuth ? (
-                        <UserMenu user={auth} />
-                    ) : (
-                        <LoginButton className='ps-4 ps-md-0' to='/login'>
-                            Login
-                        </LoginButton>
-                    )}
-                </StyledHeaderMenu>
-                <ToggleDarkMode $variation='toggle' onClick={toggleDarkMode}>
-                    {isDarkMode ? <HiOutlineMoon /> : <HiOutlineSun />}
-                </ToggleDarkMode>
-            </nav>
-        </StyledHeader>
-    );
-}
 
 export default Header;

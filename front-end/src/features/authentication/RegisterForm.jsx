@@ -22,7 +22,8 @@ const schema = yup.object({
 });
 
 const StyledLink = styled(Link)`
-    color: var(--color-blue-700);
+    color: var(--color-grey-700);
+    font-style: italic;
 `;
 
 export default function RegisterForm() {
@@ -75,7 +76,7 @@ export default function RegisterForm() {
             onSubmit={handleSubmit(onSubmit)}
         >
             <FormRow
-                htmlFor='fullname'
+                name='fullname'
                 inputId='fullname'
                 helpText='Must be at least 3 characters long'
                 register={register}
@@ -92,7 +93,7 @@ export default function RegisterForm() {
             </div>
 
             <FormRow
-                htmlFor='email'
+                name='email'
                 inputId='email'
                 type='email'
                 helpText='Must be a valid email'
@@ -109,7 +110,7 @@ export default function RegisterForm() {
             </div>
 
             <FormRow
-                htmlFor='pwd'
+                name='pwd'
                 inputId='pwd'
                 type='password'
                 helpText='Must be at 8-20 characters long'
@@ -127,7 +128,7 @@ export default function RegisterForm() {
             </div>
 
             <FormRow
-                htmlFor='pwdc'
+                name='pwdc'
                 inputId='pwdc'
                 type='password'
                 helpText='Retype password above'

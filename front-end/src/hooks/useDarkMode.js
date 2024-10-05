@@ -1,16 +1,16 @@
-import { useState } from 'react';
+// import { useState } from 'react';
 
-function useDarkMode() {
-    const [theme, setTheme] = useState('light');
-    const toggleTheme = () => {
-        if (theme === 'light') {
-            setTheme('dark');
-        } else {
-            setTheme('light');
-        }
-    };
+// function useDarkMode() {
+//     const [theme, setTheme] = useState('light');
+//     const toggleTheme = () => {
+//         if (theme === 'light') {
+//             setTheme('dark');
+//         } else {
+//             setTheme('light');
+//         }
+//     };
 
-    return [theme, toggleTheme];
-}
+//     return [theme, toggleTheme];
+// }
 
-export default useDarkMode;
+// export default useDarkMode;
