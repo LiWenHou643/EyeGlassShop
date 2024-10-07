@@ -3,11 +3,13 @@ import { useEffect, useState } from 'react';
 import {
     HiBars3,
     HiOutlineMoon,
+    HiOutlineShoppingCart,
     HiOutlineSun,
     HiOutlineXMark,
 } from 'react-icons/hi2';
 import { useDarkMode } from '../context/DarkModeContext';
 import { useAuth } from '../hooks/useAuth';
+import { useCartCtx } from '../hooks/useCartCtx';
 import Dropdown from './Dropdown';
 import BaseStyledLink from './Link';
 import UserMenu from '../features/user/UserMenu';
@@ -49,6 +51,8 @@ const Header = () => {
     }, []);
 
     const { auth } = useAuth();
+
+    const { cartCount } = useCartCtx();
 
     const isAuth = auth?.accessToken || false;
     return (
@@ -103,9 +107,20 @@ const Header = () => {
                         </LoginButton>
                     )}
                 </StyledHeaderMenu>
-                <ToggleDarkMode $variation='toggle' onClick={toggleDarkMode}>
-                    {isDarkMode ? <HiOutlineMoon /> : <HiOutlineSun />}
-                </ToggleDarkMode>
+                <Actions>
+                    <CartIcon to={'user/cart'} $variation='toggle'>
+                        <HiOutlineShoppingCart className='fs-2' />
+                        <span className='position-absolute top-25 fs-6 start-25 translate-middle badge rounded-pill bg-danger'>
+                            {cartCount}
+                        </span>
+                    </CartIcon>
+                    <ToggleDarkMode
+                        $variation='toggle'
+                        onClick={toggleDarkMode}
+                    >
+                        {isDarkMode ? <HiOutlineMoon /> : <HiOutlineSun />}
+                    </ToggleDarkMode>
+                </Actions>
             </nav>
         </StyledHeader>
     );
@@ -175,9 +190,35 @@ const ToggleDarkMode = styled(Button)`
     }
 `;
 
+const CartIcon = styled(StyledLink)`
+    position: relative;
+    width: auto;
+    padding: 0.5rem 1.2rem;
+
+    &:hover {
+        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+        color: var(--color-grey-100);
+    }
+
+    @media (max-width: 768px) {
+        margin-left: auto !important;
+    }
+`;
+
+const Actions = styled.div`
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    justify-content: center;
+    @media (max-width: 768px) {
+        margin-left: auto;
+        margin-right: 5rem;
+    }
+`;
+
 const ToggleHeaderMenu = styled(Button)`
     position: absolute;
-    right: 4rem;
+    right: 0;
     top: 50%;
     transform: translateY(-50%);
 
@@ -196,7 +237,7 @@ const StyledHeaderMenu = styled.div`
 
     position: absolute;
     top: 80%;
-    right: 50px;
+    right: 0;
     z-index: 10;
     border-radius: 0.5rem;
 

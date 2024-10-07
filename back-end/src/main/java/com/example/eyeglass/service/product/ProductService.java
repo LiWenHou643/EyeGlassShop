@@ -17,7 +17,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.example.eyeglass.mapper.ProductMapper.PRODUCT_MAPPER;
 
@@ -60,11 +61,14 @@ public class ProductService {
         return productPage.map(PRODUCT_MAPPER::toProductResponse);
     }
 
-    public Optional<ProductResponse> searchProducts(String title) {
-        Optional<Product> products = productRepository.findAllByTitleContainingIgnoreCaseAndDeletedIsFalse(title);
+    public List<ProductResponse> searchProducts(String title) {
+        List<Product> products = productRepository.findAllByTitleContainingIgnoreCaseAndDeletedIsFalse(title);
         // Map Product entities to ProductResponse DTOs
-        return products.map(PRODUCT_MAPPER::toProductResponse);
+        return products.stream()
+                       .map(PRODUCT_MAPPER::toProductResponse)
+                       .collect(Collectors.toList());
     }
+
 
     public ProductResponse getProductById(Long productId) {
         return PRODUCT_MAPPER.toProductResponse(productRepository.findByIdAndDeletedIsFalse(productId)

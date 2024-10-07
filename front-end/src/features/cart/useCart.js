@@ -1,27 +1,30 @@
 import { useQuery } from '@tanstack/react-query';
+import { useAxiosPrivate } from '../../hooks/useAxiosPrivate';
 
 export function useCart() {
-    const getCart = async () => {};
+    const axiosPrivate = useAxiosPrivate();
+
+    const getCart = async () => {
+        const response = await axiosPrivate.get('user/cart');
+        return response.data;
+    };
 
     const { isLoading, isFetching, data, error } = useQuery({
         queryKey: ['cart'],
         queryFn: getCart,
-        onSuccess: (res) => {
-            console.log('onSuccess', res);
-        },
         onError: (err) => {
             console.log('onError', err);
         },
-        keepPreviousData: true, // Keep the previous data during refetch
         refetchOnWindowFocus: false,
+        staleTime: 1000 * 60 * 5, // 5 minutes
         retry: false,
     });
 
     return {
         isLoading,
         isFetching,
-        data: data?.cartItems ?? {},
-        count: data?.cartItems?.length ?? 0,
+        data: data?.data?.cartItems ?? {},
+        count: data?.data?.cartItems?.length ?? 0,
         error,
     };
 }

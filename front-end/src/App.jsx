@@ -19,6 +19,7 @@ import ProductDetails from './features/product/ProductDetails';
 import PersistLogin from './features/authentication/PersistLogin';
 import RequireAuth from './features/authentication/RequireAuth';
 import { AuthProvider } from './context/AuthContext';
+import { CartProvider } from './context/CartContext';
 const queryClient = new QueryClient();
 const ROLES = {
     user: 'USER',
@@ -28,78 +29,89 @@ const ROLES = {
 function App() {
     return (
         <AuthProvider>
-            <DarkModeProvider>
-                <QueryClientProvider client={queryClient}>
-                    <BrowserRouter>
-                        <Routes>
-                            <Route element={<AppLayout />}>
-                                {/* pubilc routes */}
-                                <Route
-                                    index
-                                    element={<Navigate replace to='home' />}
-                                />
-
-                                <Route path='login' element={<Login />} />
-                                <Route path='signin' element={<Register />} />
-                                <Route
-                                    path='unauthorized'
-                                    element={<Unauthorized />}
-                                />
-                                <Route
-                                    path='forgot-password'
-                                    element={<ForgotPwd />}
-                                />
-                                <Route path='products' element={<Product />}>
+            <CartProvider>
+                <DarkModeProvider>
+                    <QueryClientProvider client={queryClient}>
+                        <BrowserRouter>
+                            <Routes>
+                                <Route element={<AppLayout />}>
+                                    {/* pubilc routes */}
                                     <Route
                                         index
-                                        element={<ProductsGridView />}
+                                        element={<Navigate replace to='home' />}
+                                    />
+
+                                    <Route path='login' element={<Login />} />
+                                    <Route
+                                        path='signin'
+                                        element={<Register />}
                                     />
                                     <Route
-                                        path=':id'
-                                        element={<ProductDetails />}
+                                        path='unauthorized'
+                                        element={<Unauthorized />}
+                                    />
+                                    <Route
+                                        path='forgot-password'
+                                        element={<ForgotPwd />}
+                                    />
+                                    <Route
+                                        path='products'
+                                        element={<Product />}
+                                    >
+                                        <Route
+                                            index
+                                            element={<ProductsGridView />}
+                                        />
+                                        <Route
+                                            path=':id'
+                                            element={<ProductDetails />}
+                                        />
+                                    </Route>
+
+                                    <Route path='home' element={<Home />} />
+
+                                    {/* -- PROTECTED ROUTES -- */}
+                                    <Route element={<PersistLogin />}>
+                                        <Route
+                                            element={
+                                                <RequireAuth
+                                                    allowedRoles={[ROLES.user]}
+                                                />
+                                            }
+                                        >
+                                            <Route
+                                                path='user/profile'
+                                                element={<Profile />}
+                                            />
+                                        </Route>
+                                        <Route
+                                            element={
+                                                <RequireAuth
+                                                    allowedRoles={[ROLES.user]}
+                                                />
+                                            }
+                                        >
+                                            <Route
+                                                path='user/cart'
+                                                element={<Cart />}
+                                            />
+                                        </Route>
+                                    </Route>
+
+                                    <Route
+                                        path='*'
+                                        element={<PageNotFound />}
                                     />
                                 </Route>
+                            </Routes>
+                        </BrowserRouter>
 
-                                <Route path='home' element={<Home />} />
-
-                                {/* -- PROTECTED ROUTES -- */}
-                                <Route element={<PersistLogin />}>
-                                    <Route
-                                        element={
-                                            <RequireAuth
-                                                allowedRoles={[ROLES.user]}
-                                            />
-                                        }
-                                    >
-                                        <Route
-                                            path='user/profile'
-                                            element={<Profile />}
-                                        />
-                                    </Route>
-                                    <Route
-                                        element={
-                                            <RequireAuth
-                                                allowedRoles={[ROLES.user]}
-                                            />
-                                        }
-                                    >
-                                        <Route
-                                            path='user/cart'
-                                            element={<Cart />}
-                                        />
-                                    </Route>
-                                </Route>
-
-                                <Route path='*' element={<PageNotFound />} />
-                            </Route>
-                        </Routes>
-                    </BrowserRouter>
-
-                    <GlobalStyles />
-                    <Toaster position='top-center' reverseOrder={true} />
-                    <ReactQueryDevtools initialIsOpen={false} />
-                </QueryClientProvider>
-            </DarkModeProvider>
+                        <GlobalStyles />
+                        <Toaster position='top-center' reverseOrder={true} />
+                        <ReactQueryDevtools initialIsOpen={false} />
+                    </QueryClientProvider>
+                </DarkModeProvider>
+            </CartProvider>
         </AuthProvider>
     );
 }

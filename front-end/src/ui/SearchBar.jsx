@@ -8,8 +8,8 @@ const SearchValueDropdown = styled.div`
     top: 100%;
     z-index: 3;
     background-color: var(--color-const-grey-100);
-    width: 100%;
-    overflow-y: scroll;
+    width: 96%;
+    overflow-y: auto;
     color: var(--color-const-grey-800);
 `;
 
@@ -72,7 +72,7 @@ function SearchBar({ apiSearch, render, className }) {
                 onFocus={() => setIsClosed(false)}
             />
             <SearchValueDropdown>
-                {!isClosed && data.length > 0 && data.map(render)}
+                {!isClosed && data?.length > 0 && data.map(render)}
             </SearchValueDropdown>
         </form>
     );

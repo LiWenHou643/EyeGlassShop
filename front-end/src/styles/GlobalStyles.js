@@ -209,6 +209,10 @@ ul {
     background-color: var(--color-grey-0);
 }
 
+.pagination li.active a:hover {
+    color: #1f2937;
+}
+
 .pagination li.active a{
     background-color: var(--color-const-grey-100);
     color: var(--color-const-grey-800);

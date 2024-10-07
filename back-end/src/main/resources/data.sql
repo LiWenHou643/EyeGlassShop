@@ -554,3 +554,17 @@ INSERT INTO `defaultdb`.`color` (`product_id`, `name`, `hex`)
 VALUES ('123', 'blue', '#0097ff');
 INSERT INTO `defaultdb`.`color` (`product_id`, `name`, `hex`)
 VALUES ('123', 'green', '#00bd20');
+
+INSERT INTO `defaultdb`.`cart` (`id`, `person_id`) VALUES ('1', '2');
+INSERT INTO `defaultdb`.`cart` (`id`, `person_id`) VALUES ('2', '3');
+
+INSERT INTO `defaultdb`.`cart_item` (`id`, `cart_id`, `product_id`, `quantity`, `price_at_time`, `total_price`) 
+VALUES ('1', '1', '6', '3', '230000', '690000');
+INSERT INTO `defaultdb`.`cart_item` (`id`, `cart_id`, `product_id`, `quantity`, `price_at_time`, `total_price`) 
+VALUES ('2', '1', '8', '3', '664000', '1992000');
+INSERT INTO `defaultdb`.`cart_item` (`id`, `cart_id`, `product_id`, `quantity`, `price_at_time`, `total_price`)
+VALUES ('3', '1', '15', '2', '660000', '924000');
+
+INSERT INTO `defaultdb`.`codes` (`id`, `code`) VALUES ('1', 'vip10');
+INSERT INTO `defaultdb`.`codes` (`id`, `code`) VALUES ('2', 'vip20');
+INSERT INTO `defaultdb`.`codes` (`id`, `code`) VALUES ('3', 'vip30');

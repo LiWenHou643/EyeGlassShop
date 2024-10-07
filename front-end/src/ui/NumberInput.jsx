@@ -10,8 +10,8 @@ const Input = styled.input`
     padding: 0.3rem;
     background-color: var(--color-grey-100);
 `;
-function NumberInput({ onChange }) {
-    const [value, setValue] = useState(1);
+function NumberInput({ initialValue, onChange, disabled }) {
+    const [value, setValue] = useState(initialValue || 1);
     const inscrease = () => setValue(value + 1);
     const decrease = () => value > 1 && setValue(value - 1);
 
@@ -30,7 +30,12 @@ function NumberInput({ onChange }) {
 
     return (
         <div className='d-flex align-items-center justify-content-center gap-2'>
-            <Button $size='small' $variation='white' onClick={decrease}>
+            <Button
+                $size='small'
+                $variation='white'
+                onClick={decrease}
+                disabled={disabled}
+            >
                 -
             </Button>
             <Input
@@ -39,7 +44,12 @@ function NumberInput({ onChange }) {
                 onChange={handleOnChange}
                 onBlur={handleOnBlur}
             />
-            <Button $size='small' $variation='white' onClick={inscrease}>
+            <Button
+                $size='small'
+                $variation='white'
+                onClick={inscrease}
+                disabled={disabled}
+            >
                 +
             </Button>
         </div>

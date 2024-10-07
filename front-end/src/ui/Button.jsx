@@ -99,11 +99,13 @@ const Button = styled.button`
 
     ${(props) => sizes[props.$size]}
     ${(props) => variations[props.$variation]}
+    ${(props) => props.$nobg && 'background: transparent;'}
 `;
 
 Button.defaultProps = {
     $variation: 'primary',
     $size: 'medium',
+    $nobg: false,
 };
 
 export default Button;

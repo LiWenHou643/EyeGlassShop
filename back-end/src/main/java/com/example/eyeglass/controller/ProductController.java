@@ -12,7 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -51,9 +51,9 @@ public class ProductController {
     }
 
     @GetMapping("/search")
-    public ApiResponse<Optional<ProductResponse>> searchProducts(@RequestParam(name = "title", required = false) String title) {
-        Optional<ProductResponse> products = productService.searchProducts(title);
-        ApiResponse<Optional<ProductResponse>> response = new ApiResponse<>();
+    public ApiResponse<List<ProductResponse>> searchProducts(@RequestParam(name = "title", required = false) String title) {
+        List<ProductResponse> products = productService.searchProducts(title);
+        ApiResponse<List<ProductResponse>> response = new ApiResponse<>();
         response.setData(products);
         return response;
     }

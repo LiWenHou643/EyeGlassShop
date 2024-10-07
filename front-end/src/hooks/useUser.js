@@ -15,7 +15,7 @@ export const useUser = () => {
         onSuccess: () => {
             console.log('User data fetched successfully');
         },
-        staleTime: 1000 * 60 * 5, // 5 minutes
+        staleTime: 1000 * 5, // 5 seconds
         retry: false, // Disable retry on error
         refetchOnWindowFocus: false, // Prevent refetch when window regains focus
     });

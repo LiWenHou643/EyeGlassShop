@@ -125,6 +125,11 @@ CREATE TABLE `ratings`
     `created_at`   timestamp default current_timestamp
 );
 
+CREATE TABLE `codes` (
+	`id` bigint PRIMARY KEY AUTO_INCREMENT,
+    `code` varchar(100) NOT NULL 
+);
+
 
 ALTER TABLE `person`
     ADD FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`);
