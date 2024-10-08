@@ -1,25 +1,25 @@
-import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { Toaster } from 'react-hot-toast';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import { Toaster } from 'react-hot-toast';
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
+import { AuthProvider } from './context/AuthContext';
+import { CartProvider } from './context/CartContext';
 import { DarkModeProvider } from './context/DarkModeContext';
-import GlobalStyles from './styles/GlobalStyles';
-import AppLayout from './ui/AppLayout';
-import Home from './pages/Home';
+import PersistLogin from './features/authentication/PersistLogin';
+import RequireAuth from './features/authentication/RequireAuth';
+import ProductDetails from './features/product/ProductDetails';
+import ProductsGridView from './features/product/ProductsGridView';
 import Cart from './pages/Cart';
+import ForgotPwd from './pages/ForgotPwd';
+import Home from './pages/Home';
 import Login from './pages/Login';
+import PageNotFound from './pages/PageNotFound';
 import Product from './pages/Product';
 import Profile from './pages/Profile';
 import Register from './pages/Register';
-import ForgotPwd from './pages/ForgotPwd';
 import Unauthorized from './pages/Unauthorized';
-import PageNotFound from './pages/PageNotFound';
-import ProductsGridView from './features/product/ProductsGridView';
-import ProductDetails from './features/product/ProductDetails';
-import PersistLogin from './features/authentication/PersistLogin';
-import RequireAuth from './features/authentication/RequireAuth';
-import { AuthProvider } from './context/AuthContext';
-import { CartProvider } from './context/CartContext';
+import GlobalStyles from './styles/GlobalStyles';
+import AppLayout from './ui/AppLayout';
 const queryClient = new QueryClient();
 const ROLES = {
     user: 'USER',

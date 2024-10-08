@@ -19,7 +19,6 @@ export const CartProvider = ({ children }) => {
         setCart((prevCart) => prevCart.filter((item) => item.id !== itemId));
         setCartCount((prevCount) => prevCount - 1);
     };
-
     return (
         <CartContext.Provider
             value={{

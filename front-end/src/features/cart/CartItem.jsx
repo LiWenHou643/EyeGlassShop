@@ -1,23 +1,17 @@
+import { HiOutlineTrash } from 'react-icons/hi2';
 import styled from 'styled-components';
+import Button from '../../ui/Button';
 import ImageContainer from '../../ui/ImageContainer';
 import NumberInput from '../../ui/NumberInput';
-import Button from '../../ui/Button';
-import { HiOutlineArrowRight, HiOutlineTrash } from 'react-icons/hi2';
 import { formatPrice } from '../../utils/helperFunction';
-import { useAxiosPrivate } from '../../hooks/useAxiosPrivate';
+import { useUpdateCartItem } from './useUpdateCartItem';
 
-function CartItem({ item }) {
-    const axios = useAxiosPrivate();
+function CartItem({ item, isChecked, onChange }) {
+    const { updateCartItem, isUpdating } = useUpdateCartItem();
+
     const handleQuantityChange = async (newQuantity) => {
-        try {
-            await axios.put(`/user/cart/add/${item.id}`, {
-                quantity: newQuantity,
-            });
-            // Optionally refresh cart or show a success message
-        } catch (error) {
-            console.error('Error updating quantity:', error);
-            // Optionally revert the UI if needed
-        }
+        console.log('New quantity:', newQuantity);
+        updateCartItem({ id: item.id, quantity: newQuantity });
     };
 
     return (
@@ -29,8 +23,10 @@ function CartItem({ item }) {
                 <input
                     className='form-check-input'
                     type='checkbox'
-                    id='inlineCheckbox1'
-                    value='option1'
+                    id={`inlineCheckbox-${item.id}`}
+                    value={`option-${item.id}`}
+                    checked={isChecked || false}
+                    onChange={() => onChange(item.id)}
                 />
             </div>
             <div className='col-2'>
@@ -39,19 +35,18 @@ function CartItem({ item }) {
                 </ImageContainer>
             </div>
             <div className='col-9'>
-                <div className='d-flex justify-content-between align-items-center'>
-                    <div>
-                        <h3>{item.title}</h3>
-                        <p>{item.description}</p>
+                <div className='row align-items-center'>
+                    <div className='col-4'>
+                        <h3 className='m-0'>{item.title}</h3>
                     </div>
-                    <NumberInput
-                        initialValue={item.quantity}
-                        onChange={handleQuantityChange}
-                    />
-                    <div className='d-flex gap-2'>
-                        <Button $variation='success'>
-                            <HiOutlineArrowRight />
-                        </Button>
+                    <div className='col-4'>
+                        <NumberInput
+                            initialValue={item.quantity}
+                            onChange={handleQuantityChange}
+                            disabled={isUpdating}
+                        />
+                    </div>
+                    <div className='col-4 text-end'>
                         <Button $variation='danger'>
                             <HiOutlineTrash />
                         </Button>
@@ -59,11 +54,13 @@ function CartItem({ item }) {
                 </div>
                 <hr />
                 <div className='d-flex justify-content-between align-items-center'>
-                    <p className='col-5'>
-                        Price unit: {formatPrice(item.priceAtTime)} VND
-                    </p>
-                    <p className='col-3'>Discount: {item.discount}%</p>
                     <p className='col-4'>
+                        Price: {formatPrice(item.priceAtTime)} VND
+                    </p>
+                    <p className='col-4 text-center'>
+                        Discount: {item.discount}%
+                    </p>
+                    <p className='col-4 text-end'>
                         Total: {formatPrice(item.totalPrice)} VND
                     </p>
                 </div>

@@ -30,8 +30,8 @@ public class CartService {
 
     CartRepository cartRepository;
     CartItemRepository cartItemRepository;
-    private final ProductRepository productRepository;
-    private final PersonRepository personRepository;
+    ProductRepository productRepository;
+    PersonRepository personRepository;
 
     public CartResponse getCartItems(String userName) {
         Person person = personRepository.findByEmail(userName)
@@ -95,4 +95,22 @@ public class CartService {
         }
     }
 
+    public void removeItemFromCart(Long cartId, Long productId) {
+        Cart cart = cartRepository.findById(cartId)
+                                  .orElseThrow(() -> new RuntimeException("Cart not found"));
+
+        // Check if the cart already has the product
+        Optional<CartItem> existingItem = cartItemRepository.findByCartIdAndProductId(cartId, productId);
+
+        existingItem.ifPresent(cartItemRepository::delete);
+    }
+
+    public void updateItemInCart(Long cartItemId, int quantity) {
+        Optional<CartItem> existingItem = cartItemRepository.findById(cartItemId);
+
+        if (existingItem.isPresent()) {
+            existingItem.get().setQuantity(quantity);
+            cartItemRepository.save(existingItem.get());
+        }
+    }
 }

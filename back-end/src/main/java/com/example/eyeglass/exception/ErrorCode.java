@@ -18,6 +18,7 @@ public enum ErrorCode {
     JWT_EXPIRED(1006, "JWT expired", HttpStatus.UNAUTHORIZED),
     REFRESH_TOKEN_INVALID(1007, "Refresh token invalid", HttpStatus.UNAUTHORIZED),
     REFRESH_TOKEN_REVOKED(1008, "Refresh token revoked", HttpStatus.UNAUTHORIZED),
+    PROMOTION_CODE_INVALID(1009, "Promotion code invalid", HttpStatus.BAD_REQUEST),
 
     NAME_INVALID(1011, "Name invalid", HttpStatus.BAD_REQUEST),
     EMAIL_INVALID(1012, "Email invalid", HttpStatus.BAD_REQUEST),

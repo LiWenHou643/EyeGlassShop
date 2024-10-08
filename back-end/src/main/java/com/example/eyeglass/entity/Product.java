@@ -23,7 +23,7 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
-    @NotBlank(message = "Product code cannot be blank")
+    @NotBlank(message = "Product promoCode cannot be blank")
     @Column(name = "product_code")
     String productCode;
 

@@ -32,7 +32,7 @@ public class CartController {
         return response;
     }
 
-    @RequestMapping(value = "/add", method = {RequestMethod.POST, RequestMethod.PUT})
+    @PostMapping(value = "/add")
     @PreAuthorize("hasAuthority('SCOPE_USER')")
     public ApiResponse<Object> addItemToCart(@RequestParam(required = false) Long cartId, @RequestParam Long productId, @RequestParam int quantity) {
         if (cartId == null) {
@@ -41,7 +41,20 @@ public class CartController {
         }
         cartService.addItemToCart(cartId, productId, quantity);
         return ApiResponse.builder().message("Item added to cart").build();
+    }
 
+    @PostMapping(value = "/remove")
+    @PreAuthorize("hasAuthority('SCOPE_USER')")
+    public ApiResponse<Object> removeItemFromCart(@RequestParam Long cartId, @RequestParam Long productId) {
+//        cartService.removeItemFromCart(cartId, productId);
+        return ApiResponse.builder().message("Item removed from cart").build();
+    }
+
+    @PutMapping(value = "/update/{id}")
+    @PreAuthorize("hasAuthority('SCOPE_USER')")
+    public ApiResponse<Object> updateItemInCart(@PathVariable(name = "id") Long cartItemId, @RequestParam int quantity) {
+        cartService.updateItemInCart(cartItemId, quantity);
+        return ApiResponse.builder().message("Item updated in cart").build();
     }
 
 }

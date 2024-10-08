@@ -45,10 +45,10 @@ const variations = {
     `,
     secondary: css`
         color: var(--color-grey-800);
-        background: var(--color-grey-0);
+        background: var(--color-grey-200);
 
         &:hover {
-            background-color: var(--color-grey-200);
+            background-color: var(--color-grey-300);
         }
         &:disabled {
             color: var(--color-grey-500);

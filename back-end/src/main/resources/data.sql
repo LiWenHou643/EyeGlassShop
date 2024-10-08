@@ -565,6 +565,6 @@ VALUES ('2', '1', '8', '3', '664000', '1992000');
 INSERT INTO `defaultdb`.`cart_item` (`id`, `cart_id`, `product_id`, `quantity`, `price_at_time`, `total_price`)
 VALUES ('3', '1', '15', '2', '660000', '924000');
 
-INSERT INTO `defaultdb`.`codes` (`id`, `code`) VALUES ('1', 'vip10');
-INSERT INTO `defaultdb`.`codes` (`id`, `code`) VALUES ('2', 'vip20');
-INSERT INTO `defaultdb`.`codes` (`id`, `code`) VALUES ('3', 'vip30');
+INSERT INTO `defaultdb`.`codes` (`id`, `code`, `value`) VALUES ('1', 'vip10', '10');
+INSERT INTO `defaultdb`.`codes` (`id`, `code`, `value`) VALUES ('2', 'vip20', '20');
+INSERT INTO `defaultdb`.`codes` (`id`, `code`, `value`) VALUES ('3', 'vip30', '30');

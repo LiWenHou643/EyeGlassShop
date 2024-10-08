@@ -6,7 +6,7 @@ export function useCart() {
 
     const getCart = async () => {
         const response = await axiosPrivate.get('user/cart');
-        return response.data;
+        return response.data.data;
     };
 
     const { isLoading, isFetching, data, error } = useQuery({
@@ -23,8 +23,9 @@ export function useCart() {
     return {
         isLoading,
         isFetching,
-        data: data?.data?.cartItems ?? {},
-        count: data?.data?.cartItems?.length ?? 0,
+        cartId: data?.cartId ?? null,
+        data: data?.cartItems ?? {},
+        count: data?.cartItems?.length ?? 0,
         error,
     };
 }

@@ -49,7 +49,7 @@ export default function LoginForm() {
 
     const { login, isLoggingin } = useLogin();
 
-    function onSubmit(data) {
+    const onSubmit = (data) => {
         login(
             { username: data.email, password: data.pwd, persistent: persist },
             {
@@ -58,7 +58,7 @@ export default function LoginForm() {
                 },
             }
         );
-    }
+    };
 
     return (
         <Form onSubmit={handleSubmit(onSubmit)}>

@@ -33,7 +33,7 @@ CREATE TABLE `address` (
 CREATE TABLE `invalidated_tokens`
 (
     `token`      varchar(512) PRIMARY KEY,
-    `expiration` TIMESTAMP
+    `expiration` timestamp
 );
 
 CREATE TABLE `refresh_tokens`
@@ -54,7 +54,7 @@ CREATE TABLE `product`
 (
     `id`             bigint PRIMARY KEY AUTO_INCREMENT,
     `category_id`    bigint              NOT NULL,
-    `product_code`   VARCHAR(255) UNIQUE NOT NULL,
+    `product_code`   varchar(255) UNIQUE NOT NULL,
     `title`          varchar(250)        NOT NULL,
     `price`          int                 NOT NULL,
     `discount`       int                 NOT NULL,
@@ -127,7 +127,9 @@ CREATE TABLE `ratings`
 
 CREATE TABLE `codes` (
 	`id` bigint PRIMARY KEY AUTO_INCREMENT,
-    `code` varchar(100) NOT NULL 
+    `code` varchar(100) NOT NULL,
+    `value` int NOT NULL,
+    UNIQUE KEY `idx_code` (`code`)
 );
 
 
