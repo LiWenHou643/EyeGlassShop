@@ -6,11 +6,11 @@ const StyledForm = styled.form`
     }
 `;
 
-function Form({ onSubmit, children }) {
+function Form({ onSubmit, children, className }) {
     return (
         <StyledForm
             onSubmit={onSubmit}
-            className='w-100 d-flex flex-column gap-4'
+            className={`${className} w-100 d-flex flex-column gap-4`}
         >
             {children}
         </StyledForm>

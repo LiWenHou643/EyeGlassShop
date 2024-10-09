@@ -1,41 +1,9 @@
 import styled from 'styled-components';
-import FilterBar from '../../ui/FilterBar';
-import SortBar from '../../ui/SortBar';
-import SearchBar from '../../ui/SearchBar';
 import { searchProducts } from '../../api/apiProduct';
+import FilterBar from '../../ui/FilterBar';
+import SearchBar from '../../ui/SearchBar';
+import SortBar from '../../ui/SortBar';
 import { countDiscount, formatPrice } from '../../utils/helperFunction';
-
-const Container = styled.div`
-    margin-bottom: 40px;
-    padding-bottom: 20px;
-    border-bottom: 1px solid #000000;
-`;
-
-const SearchItem = styled.div`
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    align-items: center;
-    aspect-ratio: 1;
-    max-height: 50px;
-    width: 100%;
-    padding: 0.5rem 1.5rem;
-    img {
-        width: 70px;
-        height: 50px;
-        object-fit: contain;
-    }
-    &:hover {
-        background-color: var(--color-blue-200);
-        cursor: pointer;
-    }
-`;
-
-const Title = styled.div`
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden;
-`;
 
 const SortOptions = [
     { label: 'Sort by name (A-Z)', value: 'title-asc' },
@@ -81,7 +49,7 @@ function ProductsOperationBar() {
                 apiSearch={searchProducts}
                 render={(item, index) => {
                     return (
-                        <SearchItem key={item.id}>
+                        <SearchItem href={`/products/${item.id}`} key={item.id}>
                             <span className='col-1'>{index + 1}</span>
                             <img
                                 className='col-3'
@@ -117,3 +85,35 @@ function ProductsOperationBar() {
 }
 
 export default ProductsOperationBar;
+
+const Container = styled.div`
+    margin-bottom: 40px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #000000;
+`;
+
+const SearchItem = styled.a`
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    align-items: center;
+    aspect-ratio: 1;
+    max-height: 50px;
+    width: 100%;
+    padding: 0.5rem 1.5rem;
+    img {
+        width: 70px;
+        height: 50px;
+        object-fit: contain;
+    }
+    &:hover {
+        background-color: var(--color-blue-200);
+        cursor: pointer;
+    }
+`;
+
+const Title = styled.div`
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+`;

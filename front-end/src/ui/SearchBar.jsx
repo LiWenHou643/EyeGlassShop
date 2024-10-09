@@ -1,12 +1,64 @@
 import { useEffect, useState } from 'react';
-import useDebounce from '../hooks/useDebounce';
 import styled from 'styled-components';
+import useDebounce from '../hooks/useDebounce';
+import { useOutsideClick } from '../hooks/useOutsideClick';
+
+function SearchBar({ apiSearch, render, className }) {
+    const [searchTerm, setSearchTerm] = useState('');
+    const [isClosed, setIsClosed] = useState(true);
+    const [data, setData] = useState([]);
+    const debouncedSearchTerm = useDebounce(searchTerm, 500);
+    const dropdownRef = useOutsideClick(() => setIsClosed(true));
+
+    useEffect(() => {
+        const fetchData = async () => {
+            if (debouncedSearchTerm) {
+                try {
+                    // Call the searchProducts function to fetch data
+                    const results = await apiSearch(debouncedSearchTerm);
+                    setData(results.data); // Update state with the results
+                } catch (error) {
+                    console.error('Error fetching search results:', error);
+                }
+            } else {
+                setData([]); // Clear results if search term is empty
+            }
+        };
+
+        fetchData();
+    }, [debouncedSearchTerm, apiSearch]);
+
+    return (
+        <form
+            className={`${className} d-flex position-relative my-0 my-md-4 my-xl-0`}
+            role='search'
+            ref={dropdownRef}
+        >
+            <Input
+                className='form-control py-3 px-4'
+                type='search'
+                placeholder='Search product by title...'
+                aria-label='Search'
+                onChange={(e) => setSearchTerm(e.target.value)}
+                onFocus={() => setIsClosed(false)}
+            />
+            <SearchValueDropdown>
+                {!isClosed && data?.length > 0 && data.map(render)}
+                {!isClosed && data?.length === 0 && (
+                    <p className='px-4'>No items found</p>
+                )}
+            </SearchValueDropdown>
+        </form>
+    );
+}
+
+export default SearchBar;
 
 const SearchValueDropdown = styled.div`
     position: absolute;
     max-height: 300px;
     top: 100%;
-    z-index: 3;
+    z-index: 5;
     background-color: var(--color-const-grey-100);
     width: 96%;
     overflow-y: auto;
@@ -32,50 +84,3 @@ const Input = styled.input`
         }
     }
 `;
-
-function SearchBar({ apiSearch, render, className }) {
-    const [searchTerm, setSearchTerm] = useState('');
-    const [isClosed, setIsClosed] = useState(true);
-    const [data, setData] = useState([]);
-    const debouncedSearchTerm = useDebounce(searchTerm, 500);
-
-    useEffect(() => {
-        const fetchData = async () => {
-            if (debouncedSearchTerm) {
-                try {
-                    // Call the searchProducts function to fetch data
-                    const results = await apiSearch(debouncedSearchTerm);
-                    setData(results.data); // Update state with the results
-                } catch (error) {
-                    console.error('Error fetching search results:', error);
-                }
-            } else {
-                setData([]); // Clear results if search term is empty
-            }
-        };
-
-        fetchData();
-    }, [debouncedSearchTerm, apiSearch]);
-
-    return (
-        <form
-            className={`${className} d-flex position-relative my-0 my-md-4 my-xl-0`}
-            role='search'
-        >
-            <Input
-                className='form-control py-3 px-4'
-                type='search'
-                placeholder='Search product by title...'
-                aria-label='Search'
-                onChange={(e) => setSearchTerm(e.target.value)}
-                onBlur={() => setIsClosed(true)}
-                onFocus={() => setIsClosed(false)}
-            />
-            <SearchValueDropdown>
-                {!isClosed && data?.length > 0 && data.map(render)}
-            </SearchValueDropdown>
-        </form>
-    );
-}
-
-export default SearchBar;

@@ -240,7 +240,7 @@ const StyledContainer = styled.div`
             content: '';
             position: absolute;
             inset: 0;
-            background: var(--color-grey-400);
+            background: var(--color-grey-300);
             opacity: 0.6;
             z-index: 1;
         }

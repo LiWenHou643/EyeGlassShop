@@ -95,7 +95,7 @@ const CardContainer = styled.div`
         inset: 0;
         background: var(--color-grey-400);
         opacity: ${(props) => (props.$soldout ? 0.6 : 0)};
-        z-index: 100;
+        z-index: 3;
         transition: opacity 0.3s ease; // Optional: Add a transition for a smoother effect
     }
 `;

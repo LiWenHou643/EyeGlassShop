@@ -1,5 +1,5 @@
-import { useAxiosPrivate } from './useAxiosPrivate';
 import { useQuery } from '@tanstack/react-query';
+import { useAxiosPrivate } from './useAxiosPrivate';
 
 export const useUser = () => {
     const axiosPrivate = useAxiosPrivate();
@@ -15,7 +15,7 @@ export const useUser = () => {
         onSuccess: () => {
             console.log('User data fetched successfully');
         },
-        staleTime: 1000 * 5, // 5 seconds
+        staleTime: 1000 * 60 * 5, // 5 minutes
         retry: false, // Disable retry on error
         refetchOnWindowFocus: false, // Prevent refetch when window regains focus
     });
