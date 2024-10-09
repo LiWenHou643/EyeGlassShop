@@ -119,7 +119,6 @@ function Cart() {
         });
     };
 
-    console.log(data);
     return (
         <StyledContainer>
             <div className='p-5 row'>

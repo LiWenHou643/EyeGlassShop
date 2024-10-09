@@ -20,6 +20,7 @@ import Register from './pages/Register';
 import Unauthorized from './pages/Unauthorized';
 import GlobalStyles from './styles/GlobalStyles';
 import AppLayout from './ui/AppLayout';
+import ScrollToTop from './ui/ScrollToTop';
 const queryClient = new QueryClient();
 const ROLES = {
     user: 'USER',
@@ -33,6 +34,7 @@ function App() {
                 <DarkModeProvider>
                     <QueryClientProvider client={queryClient}>
                         <BrowserRouter>
+                            <ScrollToTop />
                             <Routes>
                                 <Route element={<AppLayout />}>
                                     {/* pubilc routes */}

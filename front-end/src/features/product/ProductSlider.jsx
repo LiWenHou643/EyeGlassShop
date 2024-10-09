@@ -1,7 +1,7 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 import Slider from 'react-slick';
-import ProductCard from './ProductCard';
 import Section from '../../ui/Section';
+import ProductCard from './ProductCard';
 
 const ProductSliderContext = createContext();
 
