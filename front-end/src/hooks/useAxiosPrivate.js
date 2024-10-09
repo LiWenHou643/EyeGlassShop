@@ -12,7 +12,7 @@ export const useAxiosPrivate = () => {
     useEffect(() => {
         const requestIntercept = axiosPrivate.interceptors.request.use(
             (config) => {
-                const userData = queryClient.getQueryData(['user']);
+                const userData = queryClient.getQueryData(['auth']);
                 const accessToken = userData?.accessToken || auth?.accessToken;
 
                 if (!config.headers['Authorization']) {

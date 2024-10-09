@@ -1,6 +1,7 @@
 package com.example.eyeglass.service.auth;
 
 import com.example.eyeglass.config.Authentication.JwtGenerator;
+import com.example.eyeglass.config.Authentication.JwtUtils;
 import com.example.eyeglass.constants.AppConstants;
 import com.example.eyeglass.dto.request.AuthenticationRequest;
 import com.example.eyeglass.dto.request.RegisterRequest;
@@ -25,6 +26,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -42,6 +44,7 @@ public class AuthenticationService {
     RefreshTokenRepository refreshTokenRepository;
     CartRepository cartRepository;
     RolesRepository rolesRepository;
+    JwtUtils jwtUtils;
 
     public AuthenticationResponse authenticate(AuthenticationRequest request, HttpServletResponse response) {
         Person person = personRepository
@@ -58,7 +61,10 @@ public class AuthenticationService {
         boolean persistent = request.persistent();
         if (persistent) createRefreshTokenCookie(response, refreshToken);
 
-        return AuthenticationResponse.builder().accessToken(token).accessTokenExpiry(5 * 60)
+        Jwt jwt = jwtUtils.getToken(token);
+        int duration = jwtUtils.getDuration(jwt);
+
+        return AuthenticationResponse.builder().accessToken(token).accessTokenExpiry(duration)
                                      .tokenType(TokenType.Bearer).username(person.getEmail())
                                      .role(person.getRoles().getName()).build();
     }

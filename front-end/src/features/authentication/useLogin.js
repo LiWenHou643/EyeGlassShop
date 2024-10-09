@@ -19,8 +19,6 @@ export function useLogin() {
         return response.data;
     };
 
-    const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-
     const queryClient = useQueryClient();
     const { mutate: login, isLoading: isLoggingin } = useMutation({
         mutationFn: ({ username, password, persistent }) =>
@@ -28,10 +26,10 @@ export function useLogin() {
         onSuccess: async (response) => {
             if (response.code !== 1000) throw new Error(response.message);
 
-            console.log('login response', response.data.accessToken);
+            console.log('login response', response.data);
             if (response.data.accessToken) {
                 const { accessToken, username, role } = response.data;
-                queryClient.setQueryData(['user'], {
+                queryClient.setQueryData(['auth'], {
                     accessToken,
                     username,
                     role,
@@ -42,9 +40,7 @@ export function useLogin() {
                     JSON.stringify({ accessToken, username, role })
                 );
 
-                delay(500);
                 const cart = await getCart();
-                console.log('cart', cart);
                 const cartCount = cart.data.cartItems.length;
                 const cartItems = cart.data.cartItems;
 

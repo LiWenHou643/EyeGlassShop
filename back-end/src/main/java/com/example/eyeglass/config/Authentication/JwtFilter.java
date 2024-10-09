@@ -18,9 +18,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.jwt.Jwt;
-import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.JwtException;
-import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.oauth2.server.resource.InvalidBearerTokenException;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -58,9 +56,8 @@ public class JwtFilter extends OncePerRequestFilter {
             }
 
             String token = authorizationHeader.substring(7);
-            JwtDecoder jwtDecoder = NimbusJwtDecoder.withPublicKey(rsaKeyRecord.rsaPublicKey()).build();
-
-            Jwt jwt = jwtDecoder.decode(token);
+            
+            Jwt jwt = jwtUtils.getToken(token);
             boolean isExpired = jwtUtils.isExpired(jwt);
             boolean isInvalidated = jwtUtils.isInvalidated(jwt);
 
