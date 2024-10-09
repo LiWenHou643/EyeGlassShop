@@ -1,13 +1,15 @@
 import { refreshToken } from '../api/apiAuth';
 import { useAuth } from './useAuth';
+import { useCartCtx } from './useCartCtx';
 
 export const useRefreshToken = () => {
-    const { setAuth } = useAuth();
-
+    const { setAuth, setPersist } = useAuth();
+    const { setCart, setCartCount } = useCartCtx();
     const refresh = async () => {
         try {
             console.log('refreshing token...');
             const response = await refreshToken();
+            console.log('token refresh:', response);
 
             const { code } = response;
             if (code === 1007 || code === 1008) {
@@ -23,8 +25,14 @@ export const useRefreshToken = () => {
             return response.data.accessToken;
         } catch (error) {
             console.log(error);
-            // If the refresh token is invalid, logout the user
+            localStorage.removeItem('auth');
+            localStorage.removeItem('cart');
+            localStorage.removeItem('cartCount');
+            localStorage.removeItem('persist');
+            setCartCount(0);
+            setCart([]);
             setAuth({});
+            setPersist(false);
 
             return;
         }

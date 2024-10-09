@@ -1,19 +1,22 @@
-import { axiosPrivate } from '../api/axios';
+import { useQueryClient } from '@tanstack/react-query';
 import { useEffect } from 'react';
-import { useRefreshToken } from './useRefreshToken';
+import { axiosPrivate } from '../api/axios';
 import { useAuth } from './useAuth';
+import { useRefreshToken } from './useRefreshToken';
 
 export const useAxiosPrivate = () => {
     const refresh = useRefreshToken();
     const { auth } = useAuth();
+    const queryClient = useQueryClient();
 
     useEffect(() => {
         const requestIntercept = axiosPrivate.interceptors.request.use(
             (config) => {
+                const userData = queryClient.getQueryData(['user']);
+                const accessToken = userData?.accessToken || auth?.accessToken;
+
                 if (!config.headers['Authorization']) {
-                    config.headers[
-                        'Authorization'
-                    ] = `Bearer ${auth?.accessToken}`;
+                    config.headers['Authorization'] = `Bearer ${accessToken}`;
                 }
                 return config;
             },
@@ -44,7 +47,7 @@ export const useAxiosPrivate = () => {
             axiosPrivate.interceptors.request.eject(requestIntercept);
             axiosPrivate.interceptors.response.eject(responseIntercept);
         };
-    }, [auth, refresh]);
+    }, [auth, refresh, queryClient]);
 
     return axiosPrivate;
 };

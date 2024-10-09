@@ -1,5 +1,5 @@
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'react-hot-toast';
-import { useMutation } from '@tanstack/react-query';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { login as loginApi } from '../../api/apiAuth';
 import { useAuth } from '../../hooks/useAuth';
@@ -19,20 +19,30 @@ export function useLogin() {
         return response.data;
     };
 
+    const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+    const queryClient = useQueryClient();
     const { mutate: login, isLoading: isLoggingin } = useMutation({
         mutationFn: ({ username, password, persistent }) =>
             loginApi({ username, password, persistent }),
         onSuccess: async (response) => {
             if (response.code !== 1000) throw new Error(response.message);
 
+            console.log('login response', response.data.accessToken);
             if (response.data.accessToken) {
                 const { accessToken, username, role } = response.data;
+                queryClient.setQueryData(['user'], {
+                    accessToken,
+                    username,
+                    role,
+                });
                 setAuth({ accessToken, username, role });
                 localStorage.setItem(
                     'auth',
                     JSON.stringify({ accessToken, username, role })
                 );
 
+                delay(500);
                 const cart = await getCart();
                 console.log('cart', cart);
                 const cartCount = cart.data.cartItems.length;

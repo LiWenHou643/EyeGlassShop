@@ -3,9 +3,11 @@ import React, { createContext, useState } from 'react';
 const CartContext = createContext();
 
 export const CartProvider = ({ children }) => {
-    const [cart, setCart] = useState(localStorage.getItem('cart') || []);
+    const [cart, setCart] = useState(
+        JSON.parse(localStorage.getItem('cart')) || []
+    );
     const [cartCount, setCartCount] = useState(
-        localStorage.getItem('cartCount') || 0
+        JSON.parse(localStorage.getItem('cartCount')) || 0
     );
     const [totalPrice, setTotalPrice] = useState(0);
     const [promoCode, setPromoCode] = useState('');
