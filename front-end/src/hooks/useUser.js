@@ -6,7 +6,7 @@ export const useUser = () => {
 
     const getUser = async () => {
         const response = await axiosPrivate.get('/user');
-        return response.data;
+        return response.data.data;
     };
 
     const { isLoading, isFetching, data, error } = useQuery({
@@ -20,5 +20,5 @@ export const useUser = () => {
         refetchOnWindowFocus: false, // Prevent refetch when window regains focus
     });
 
-    return { isLoading, isFetching, data: data?.data || data || {}, error };
+    return { isLoading, isFetching, data: data || {}, error };
 };

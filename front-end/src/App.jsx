@@ -10,6 +10,7 @@ import RequireAuth from './features/authentication/RequireAuth';
 import ProductDetails from './features/product/ProductDetails';
 import ProductsGridView from './features/product/ProductsGridView';
 import Cart from './pages/Cart';
+import Checkout from './pages/Checkout';
 import ForgotPwd from './pages/ForgotPwd';
 import Home from './pages/Home';
 import Login from './pages/Login';
@@ -42,6 +43,7 @@ function App() {
                                         index
                                         element={<Navigate replace to='home' />}
                                     />
+                                    <Route path='home' element={<Home />} />
 
                                     <Route path='login' element={<Login />} />
                                     <Route
@@ -70,7 +72,10 @@ function App() {
                                         />
                                     </Route>
 
-                                    <Route path='home' element={<Home />} />
+                                    <Route
+                                        path='checkout'
+                                        element={<Checkout />}
+                                    />
 
                                     {/* -- PROTECTED ROUTES -- */}
                                     <Route element={<PersistLogin />}>
