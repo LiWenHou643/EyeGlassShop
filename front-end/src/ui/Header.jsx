@@ -1,4 +1,3 @@
-import { styled } from 'styled-components';
 import { useEffect, useState } from 'react';
 import {
     HiBars3,
@@ -7,13 +6,14 @@ import {
     HiOutlineSun,
     HiOutlineXMark,
 } from 'react-icons/hi2';
+import { styled } from 'styled-components';
 import { useDarkMode } from '../context/DarkModeContext';
+import { useCart } from '../features/cart/useCart';
+import UserMenu from '../features/user/UserMenu';
 import { useAuth } from '../hooks/useAuth';
-import { useCartCtx } from '../hooks/useCartCtx';
+import Button from './Button';
 import Dropdown from './Dropdown';
 import BaseStyledLink from './Link';
-import UserMenu from '../features/user/UserMenu';
-import Button from './Button';
 
 const Header = () => {
     const { isDarkMode, toggleDarkMode } = useDarkMode();
@@ -52,7 +52,7 @@ const Header = () => {
 
     const { auth } = useAuth();
 
-    const { cartCount } = useCartCtx();
+    const { count } = useCart();
 
     const isAuth = auth?.accessToken || false;
     return (
@@ -111,7 +111,7 @@ const Header = () => {
                     <CartIcon to={'user/cart'} $variation='toggle'>
                         <HiOutlineShoppingCart className='fs-2' />
                         <span className='position-absolute top-25 fs-6 start-25 translate-middle badge rounded-pill bg-danger'>
-                            {cartCount}
+                            {count}
                         </span>
                     </CartIcon>
                     <ToggleDarkMode
@@ -202,7 +202,8 @@ const CartIcon = styled(StyledLink)`
 
     @media (max-width: 768px) {
         margin-left: auto !important;
-    }
+    }import { useCartCtx } from '../hooks/useCartCtx';
+
 `;
 
 const Actions = styled.div`

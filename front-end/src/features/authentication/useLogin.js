@@ -8,7 +8,7 @@ import { useCartCtx } from '../../hooks/useCartCtx';
 
 export function useLogin() {
     const { setAuth } = useAuth();
-    const { setCartCount, setCart } = useCartCtx();
+    const { setCart } = useCartCtx();
     const navigate = useNavigate();
     const location = useLocation();
     const from = location.state?.from?.pathname || '/';
@@ -41,13 +41,10 @@ export function useLogin() {
                 );
 
                 const cart = await getCart();
-                const cartCount = cart.data.cartItems.length;
-                const cartItems = cart.data.cartItems;
+                queryClient.setQueryData(['cart'], cart.data);
 
-                localStorage.setItem('cartCount', cartCount);
-                localStorage.setItem('cart', JSON.stringify(cartItems));
-                setCartCount(cartCount);
-                setCart(cartItems);
+                localStorage.setItem('cart', JSON.stringify(cart.data));
+                setCart(cart.data);
 
                 navigate(from, { replace: true });
             }

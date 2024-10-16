@@ -29,7 +29,6 @@ import static com.example.eyeglass.mapper.CartMapper.CART_MAPPER;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @Service
 public class CartService {
-
     CartRepository cartRepository;
     CartItemRepository cartItemRepository;
     ProductRepository productRepository;
@@ -51,7 +50,7 @@ public class CartService {
                                                                 .map(CART_MAPPER::toCartItemResponse)
                                                                 .collect(Collectors.toList());
 
-            return new CartResponse(cart.get().getId(), personId, cartItemResponses);
+            return new CartResponse(cart.get().getId(), personId, cartItemResponses.size(), cartItemResponses);
         }
 
         return null;

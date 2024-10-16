@@ -16,5 +16,6 @@ import java.util.List;
 public class CartResponse {
     Long id;
     Long personId;
+    int count;
     List<CartItemResponse> cartItems;
 }

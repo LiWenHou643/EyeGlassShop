@@ -1,57 +1,56 @@
 import { useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
+import RingLoader from 'react-spinners/RingLoader';
+import StarRatings from 'react-star-ratings';
+import styled from 'styled-components';
+import { useCartCtx } from '../../hooks/useCartCtx';
+import Button from '../../ui/Button';
+import ImageContainer from '../../ui/ImageContainer';
+import Loading from '../../ui/Loading';
+import NumberInput from '../../ui/NumberInput';
 import {
     capitalizeFirstLetter,
     countDiscount,
     formatPrice,
     formatSoldAmount,
 } from '../../utils/helperFunction';
+import { useAddToCart } from '../cart/useAddToCart';
 import { useProduct } from './useProduct';
-import Loading from '../../ui/Loading';
-import ImageContainer from '../../ui/ImageContainer';
-import Button from '../../ui/Button';
-import StarRatings from 'react-star-ratings';
-import styled from 'styled-components';
-import NumberInput from '../../ui/NumberInput';
-
-const StyledContainer = styled.div`
-    padding: 2rem 4rem;
-    border-radius: 2rem;
-    @media (min-width: 1200px) {
-        padding: 6rem;
-    }
-    @media (min-width: 1400px) {
-        padding: 6rem 15rem;
-    }
-`;
-
-const ProductContainer = styled.div`
-    padding: 4rem 2rem;
-    color: var(--color-grey-900);
-    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
-    border-radius: 1rem;
-`;
-
-const StyledReview = styled.div`
-    background-color: var(--color-grey-200);
-`;
 
 function ProductDetails() {
-    const { id } = useParams();
+    const { id: productId } = useParams();
     const [numberValue, setNumberValue] = useState(1);
 
     const handleValueChange = (newValue) => {
         setNumberValue(newValue);
     };
 
-    const { data: product, isLoading, error } = useProduct(id);
+    const {
+        cart: { id },
+    } = useCartCtx();
+
+    const { addToCart, isAdding } = useAddToCart();
+
+    const { data: product, isLoading, error } = useProduct(productId);
 
     if (isLoading) {
-        return <Loading>Loading...</Loading>;
+        return (
+            <Loading>
+                <RingLoader color='blue' />
+            </Loading>
+        );
     }
     if (error) {
         return <div>Error: {error.message}</div>;
     }
+
+    const handleAddToCart = () => {
+        addToCart({
+            cartId: id,
+            productId: Number(productId),
+            quantity: numberValue,
+        });
+    };
 
     return (
         <StyledContainer className='bg-light-opacity'>
@@ -169,7 +168,9 @@ function ProductDetails() {
                             </span>
                         </div>
                         <div className='d-flex gap-4 mt-3'>
-                            <Button>Add to cart</Button>
+                            <Button onClick={handleAddToCart}>
+                                Add to cart
+                            </Button>
                             <Button>Buy now</Button>
                         </div>
                     </div>
@@ -296,3 +297,25 @@ function ProductDetails() {
 }
 
 export default ProductDetails;
+
+const StyledContainer = styled.div`
+    padding: 2rem 4rem;
+    border-radius: 2rem;
+    @media (min-width: 1200px) {
+        padding: 6rem;
+    }
+    @media (min-width: 1400px) {
+        padding: 6rem 15rem;
+    }
+`;
+
+const ProductContainer = styled.div`
+    padding: 4rem 2rem;
+    color: var(--color-grey-900);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+    border-radius: 1rem;
+`;
+
+const StyledReview = styled.div`
+    background-color: var(--color-grey-200);
+`;
