@@ -156,6 +156,7 @@ function Cart() {
                                 data.map((item) => (
                                     <CartItem
                                         key={item.id}
+                                        $key={item.id}
                                         item={item}
                                         isChecked={checkedItems[item.id]} // Pass checked state
                                         onChange={handleItemChange} // Pass change handler

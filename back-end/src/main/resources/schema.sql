@@ -86,9 +86,10 @@ CREATE TABLE `cart_item`
     `product_id`    bigint NOT NULL,
     `quantity`      int    NOT NULL,
     `price_at_time` int    NOT NULL,
-    `total_price`   long   NOT NULL
+    `total_price`   long   NOT NULL,
+    `create_at` 	datetime not null default current_timestamp
 );
-
+alter table `cart_item` add column `create_at` datetime not null default current_timestamp;
 CREATE TABLE `payment_details`
 (
     `id`       bigint PRIMARY KEY AUTO_INCREMENT,

@@ -6,19 +6,15 @@ import NumberInput from '../../ui/NumberInput';
 import { formatPrice } from '../../utils/helperFunction';
 import { useUpdateCartItem } from './useUpdateCartItem';
 
-function CartItem({ item, isChecked, onChange }) {
+const CartItem = ({ item, isChecked, onChange }) => {
     const { updateCartItem, isUpdating } = useUpdateCartItem();
 
     const handleQuantityChange = async (newQuantity) => {
-        console.log('New quantity:', newQuantity);
         updateCartItem({ id: item.id, quantity: newQuantity });
     };
 
     return (
-        <Li
-            key={item.id}
-            className='row justify-content-between align-items-center'
-        >
+        <Li className='row justify-content-between align-items-center'>
             <div className='col-1'>
                 <input
                     className='form-check-input'
@@ -67,7 +63,7 @@ function CartItem({ item, isChecked, onChange }) {
             </div>
         </Li>
     );
-}
+};
 
 const Li = styled.li`
     border-radius: 1rem;

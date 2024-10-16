@@ -1,15 +1,13 @@
 package com.example.eyeglass.dto.response;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 @FieldDefaults(level = lombok.AccessLevel.PRIVATE)
 public class CartItemResponse {
     Long id;

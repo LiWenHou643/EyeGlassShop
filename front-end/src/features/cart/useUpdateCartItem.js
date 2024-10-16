@@ -15,7 +15,6 @@ export const useUpdateCartItem = () => {
                     params: { quantity },
                 }
             );
-            console.log('Updated item:', response.data);
             return response.data;
         },
         onMutate: async ({ id, quantity }) => {
@@ -28,13 +27,18 @@ export const useUpdateCartItem = () => {
             // Optimistically update to the new value
             queryClient.setQueryData(['cart'], (old) => {
                 if (!old) return; // If no old data, return nothing
-                return {
+                console.log(old.cartItems);
+                const newa = {
                     ...old,
                     cartItems: old.cartItems.map((item) =>
                         item.id === id ? { ...item, quantity } : item
                     ),
                 };
+
+                console.log(newa.cartItems);
+                return newa;
             });
+
             // Return a context object with the previous value
             return { previousCart };
         },

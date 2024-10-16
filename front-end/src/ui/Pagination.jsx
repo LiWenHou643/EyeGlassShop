@@ -1,9 +1,10 @@
 import ReactPaginate from 'react-paginate';
-import { PAGE_MAX_TO_SHOW } from '../utils/constant';
 import { useSearchParams } from 'react-router-dom';
+import { PAGE_MAX_TO_SHOW } from '../utils/constant';
 
 function Pagination({ totalPages }) {
-    const [, setSearchParams] = useSearchParams();
+    const [searchParams, setSearchParams] = useSearchParams();
+    const currentPage = Number(searchParams.get('page')) || 1;
 
     const handlePageChange = (selectedPage) => {
         const page = selectedPage.selected + 1; // ReactPaginate is zero-indexed, so add 1 for page number
@@ -20,6 +21,7 @@ function Pagination({ totalPages }) {
             onPageChange={handlePageChange}
             containerClassName={'pagination'}
             activeClassName={'active'}
+            forcePage={currentPage - 1}
         />
     );
 }

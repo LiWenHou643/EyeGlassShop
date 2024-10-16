@@ -492,10 +492,10 @@ INSERT INTO `defaultdb`.`cart` (`id`, `person_id`)
 VALUES ('1', '2'),
        ('2', '3');
 
-INSERT INTO `defaultdb`.`cart_item` (`id`, `cart_id`, `product_id`, `quantity`, `price_at_time`, `total_price`)
-VALUES ('1', '1', '6', '3', '230000', '690000'),
-       ('2', '1', '8', '3', '664000', '1992000'),
-       ('3', '1', '15', '2', '660000', '924000');
+INSERT INTO `defaultdb`.`cart_item` (`id`, `cart_id`, `product_id`, `quantity`, `price_at_time`, `total_price`, `created_at`)
+VALUES ('1', '1', '6', '3', '230000', '690000', '2024-10-9 05:24:33'),
+       ('2', '1', '8', '3', '664000', '1992000', '2024-10-10 05:24:33'),
+       ('3', '1', '15', '2', '660000', '924000', '2024-10-11 05:24:33');
 
 INSERT INTO `defaultdb`.`codes` (`id`, `code`, `value`)
 VALUES ('1', 'vip10', '10'),

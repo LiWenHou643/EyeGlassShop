@@ -1,6 +1,6 @@
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useSearchParams } from 'react-router-dom';
 import { getProducts } from '../../api/apiProduct';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { PAGE_SIZE } from '../../utils/constant';
 
 export function useProducts() {
@@ -38,12 +38,16 @@ export function useProducts() {
         queryClient.prefetchQuery({
             queryKey: ['products', category, sort, page + 1],
             queryFn: () => getProducts({ category, sort, page: page + 1 }),
+            keepPreviousData: true,
+            staleTime: 1000 * 60 * 5, // 5 minutes
         });
 
     if (page > 1)
         queryClient.prefetchQuery({
             queryKey: ['products', category, sort, page - 1],
             queryFn: () => getProducts({ category, sort, page: page - 1 }),
+            keepPreviousData: true,
+            staleTime: 1000 * 60 * 5, // 5 minutes
         });
 
     // Return the data

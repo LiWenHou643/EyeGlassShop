@@ -2,6 +2,44 @@ import { useState } from 'react';
 import styled from 'styled-components';
 import BaseStyledLink from './Link';
 
+const Dropdown = ({ items, children }) => {
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+    const handleMouseEnter = () => {
+        setIsDropdownOpen(true);
+    };
+
+    const handleMouseLeave = () => {
+        setIsDropdownOpen(false);
+    };
+
+    return (
+        <li
+            className='dropdown-container d-flex align-items-center position-relative'
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
+        >
+            {children}
+            {isDropdownOpen && (
+                <DropdownMenu>
+                    {items.map((item, index) => (
+                        <li key={index}>
+                            <BaseStyledLink
+                                className='dropdown-item'
+                                to={item.link}
+                            >
+                                <P>{item.text}</P>
+                            </BaseStyledLink>
+                        </li>
+                    ))}
+                </DropdownMenu>
+            )}
+        </li>
+    );
+};
+
+export default Dropdown;
+
 const DropdownMenu = styled.ul`
     color: var(--color-const-grey-800);
     background-color: var(--color-blue-300);
@@ -36,41 +74,3 @@ const P = styled.p`
     font-size: 1.6rem;
     padding: 0.5rem 1rem !important;
 `;
-
-function Dropdown({ items, children }) {
-    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-
-    const handleMouseEnter = () => {
-        setIsDropdownOpen(true);
-    };
-
-    const handleMouseLeave = () => {
-        setIsDropdownOpen(false);
-    };
-
-    return (
-        <li
-            className='dropdown-container d-flex align-items-center position-relative'
-            onMouseEnter={handleMouseEnter}
-            onMouseLeave={handleMouseLeave}
-        >
-            {children}
-            {isDropdownOpen && (
-                <DropdownMenu>
-                    {items.map((item, index) => (
-                        <li key={index}>
-                            <BaseStyledLink
-                                className='dropdown-item'
-                                to={item.link}
-                            >
-                                <P>{item.text}</P>
-                            </BaseStyledLink>
-                        </li>
-                    ))}
-                </DropdownMenu>
-            )}
-        </li>
-    );
-}
-
-export default Dropdown;

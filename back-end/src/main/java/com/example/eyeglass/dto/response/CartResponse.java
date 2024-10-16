@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.FieldDefaults;
 
-import java.util.Set;
+import java.util.List;
 
 @Setter
 @Getter
@@ -16,5 +16,5 @@ import java.util.Set;
 public class CartResponse {
     Long id;
     Long personId;
-    Set<CartItemResponse> cartItems;
+    List<CartItemResponse> cartItems;
 }

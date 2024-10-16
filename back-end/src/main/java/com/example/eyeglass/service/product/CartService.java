@@ -16,8 +16,9 @@ import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import static com.example.eyeglass.mapper.CartMapper.CART_MAPPER;
@@ -41,12 +42,11 @@ public class CartService {
         Optional<Cart> cart = cartRepository.findByPersonId(personId);
 
         if (cart.isPresent()) {
-            Set<CartItem> cartItems = cart.get().getCartItems();
+            List<CartItem> cartItems = new ArrayList<>(cart.get().getCartItems());
             log.info("Cart items: {}", cartItems);
-            Set<CartItemResponse> cartItemResponses = cart.get().getCartItems()
-                                                          .stream()
-                                                          .map(CART_MAPPER::toCartItemResponse)
-                                                          .collect(Collectors.toSet());
+            List<CartItemResponse> cartItemResponses = cartItems.stream()
+                                                                .map(CART_MAPPER::toCartItemResponse)
+                                                                .collect(Collectors.toList());
 
             log.info("Cart items response: {}", cartItemResponses);
             return new CartResponse(cart.get().getId(), personId, cartItemResponses);
