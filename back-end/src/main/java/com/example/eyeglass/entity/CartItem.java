@@ -12,7 +12,7 @@ import lombok.experimental.FieldDefaults;
 @ToString
 @Entity
 @Table(name = "cart_item")
-public class CartItem {
+public class CartItem extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
