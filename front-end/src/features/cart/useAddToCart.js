@@ -1,4 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { toast } from 'react-hot-toast';
 import { useAxiosPrivate } from '../../hooks/useAxiosPrivate';
 
 export function useAddToCart() {
@@ -52,6 +53,9 @@ export function useAddToCart() {
         },
         onError: (error) => {
             console.log(error);
+        },
+        onSuccess: (data) => {
+            toast.success(data?.data?.message);
         },
     });
 

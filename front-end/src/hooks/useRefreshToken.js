@@ -4,7 +4,7 @@ import { useCartCtx } from './useCartCtx';
 
 export const useRefreshToken = () => {
     const { setAuth, setPersist } = useAuth();
-    const { setCart, setCartCount } = useCartCtx();
+    const { setCart } = useCartCtx();
     const refresh = async () => {
         try {
             console.log('refreshing token...');
@@ -21,15 +21,21 @@ export const useRefreshToken = () => {
                 username: response.data.username,
                 role: response.data.role,
             });
+            localStorage.setItem(
+                'auth',
+                JSON.stringify({
+                    accessToken: response.data.accessToken,
+                    username: response.data.username,
+                    role: response.data.role,
+                })
+            );
 
             return response.data.accessToken;
         } catch (error) {
             console.log(error);
             localStorage.removeItem('auth');
             localStorage.removeItem('cart');
-            localStorage.removeItem('cartCount');
             localStorage.removeItem('persist');
-            setCartCount(0);
             setCart([]);
             setAuth({});
             setPersist(false);

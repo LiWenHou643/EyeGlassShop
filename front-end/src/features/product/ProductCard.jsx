@@ -34,7 +34,7 @@ function ProductCard({ item, isSlider }) {
                     />
                 </ImageContainer>
                 <CardBuy href='' className='btn-buying'>
-                    Buy Now
+                    View
                 </CardBuy>
             </div>
 

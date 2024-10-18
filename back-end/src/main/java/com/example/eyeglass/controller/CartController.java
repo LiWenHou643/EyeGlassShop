@@ -39,8 +39,8 @@ public class CartController {
             String userName = SecurityContextHolder.getContext().getAuthentication().getName();
             cartId = cartService.getCartId(userName);
         }
-        cartService.addItemToCart(cartId, productId, quantity);
-        return ApiResponse.builder().message("Item added to cart").build();
+        String message = cartService.addItemToCart(cartId, productId, quantity);
+        return ApiResponse.builder().message(message).build();
     }
 
     @PostMapping(value = "/remove")

@@ -2,6 +2,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
+import { useUser } from '../hooks/useUser';
 import Button from '../ui/Button';
 import Form from '../ui/Form';
 import FormRow from '../ui/FormRow';
@@ -11,10 +12,9 @@ import {
 } from '../utils/helperFunction';
 
 const schema = yup.object().shape({
-    fullname: yup.string().required('Please enter your fullname'),
     address: yup.string().required('Please enter your street address'),
-    phone: yup.string().required('Please enter your phone number'),
 });
+
 function Checkout() {
     const {
         register,
@@ -23,44 +23,25 @@ function Checkout() {
         formState: { errors },
     } = useForm({
         defaultValues: {
-            fullname: '',
             address: '',
-            phone: '',
             deliveryCost: 0,
         },
         resolver: yupResolver(schema),
     });
 
-    const user = {
-        id: 2,
-        fullName: 'Le Van Hau',
-        email: 'user001@gmail.com',
-        phoneNumber: '0939000001',
-        // address: {
-        //     id: 1,
-        //     streetAddress: '1 Mau Than',
-        //     ward: 'Phường An Nghiệp',
-        //     district: 'Quận Ninh Kiều',
-        //     city: 'Thành phố Cần Thơ',
-        // },
-        address: {
-            id: 1,
-            streetAddress: '122',
-            ward: 'Phường Xuân Khánh',
-            district: 'Quận Ninh Kiều',
-            city: 'Thành phố Cần Thơ',
-        },
-        roles: { id: 2, name: 'USER' },
-        image: null,
-    };
+    const { data: user, isLoading } = useUser();
 
     const [distance, setDistance] = useState(null);
     const [deliveryCost, setDeliveryCost] = useState(0);
 
     useEffect(() => {
+        if (!user || !user.address) return;
+
+        const formattedAddress = `${user.address.streetAddress}, ${user.address.ward}, ${user.address.district}, ${user.address.city}`;
+        reset({ address: formattedAddress, deliveryCost });
+
         const calculateDistance = async () => {
             try {
-                // Replace with actual coordinate fetching logic
                 const distance = await haversineDistance(user.address); // Assuming this function returns coordinates
                 const cost = await calculateDeliveryCost(distance);
                 setDistance(distance);
@@ -72,7 +53,7 @@ function Checkout() {
         };
 
         calculateDistance();
-    }, [user.address]);
+    }, [user, reset, deliveryCost]);
 
     const onSubmit = (data) => {
         console.log(data);
@@ -81,42 +62,13 @@ function Checkout() {
         reset();
     };
 
+    if (isLoading) {
+        return <p>Loading...</p>;
+    }
     return (
         <div>
             <Form className='p-5' onSubmit={handleSubmit(onSubmit)}>
-                <FormRow
-                    name='fullname'
-                    inputId='fullname'
-                    helpText='Must be at least 3 characters long'
-                    register={register}
-                    required
-                    minLength={3}
-                    disabled={false}
-                >
-                    full name
-                </FormRow>
-                <div className='d-flex justify-content-end'>
-                    <p className='text-danger px-2 col-12 col-md-8 col-lg-8 h5'>
-                        {errors?.fullname?.message}
-                    </p>
-                </div>
-
-                <FormRow
-                    name='phone'
-                    inputId='phone'
-                    helpText='Must be at 10 digits long'
-                    register={register}
-                    required
-                    minLength={3}
-                    disabled={false}
-                >
-                    phone number
-                </FormRow>
-                <div className='d-flex justify-content-end'>
-                    <p className='text-danger px-2 col-12 col-md-8 col-lg-8 h5'>
-                        {errors?.phone?.message}
-                    </p>
-                </div>
+                <input type='hidden' name={user.id} value={user.id} />
 
                 <FormRow
                     name='address'
@@ -156,14 +108,30 @@ function Checkout() {
                         />
                     </div>
                 </div>
-                <div>
-                    <p className='text-danger px-2 col-12 col-md-8 col-lg-8 h5'>
-                        {user.address !== null
-                            ? distance
-                                ? `${distance} km`
-                                : 'Calculating...'
-                            : 'Address is required for delivery'}
-                    </p>
+                <div className='d-flex justify-content-end'>
+                    <div className='px-2 col-12 col-md-8 col-lg-8 h5'>
+                        <span>
+                            {user.address !== null
+                                ? distance
+                                    ? `${distance} km`
+                                    : 'Calculating...'
+                                : 'Address is required for delivery'}
+                        </span>
+                        {distance !== null && (
+                            <span className='ms-2'>
+                                {distance < 1 ? (
+                                    <span className='text-success'>
+                                        Free shipping available!
+                                    </span>
+                                ) : (
+                                    <span className='text-warning'>
+                                        Shipping cost applies for distances
+                                        greater than 1 km.
+                                    </span>
+                                )}
+                            </span>
+                        )}
+                    </div>
                 </div>
 
                 <div className='row mt-4 d-flex justify-content-between'>

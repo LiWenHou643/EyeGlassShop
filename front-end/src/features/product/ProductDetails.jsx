@@ -161,14 +161,20 @@ function ProductDetails() {
                         </div>
                         <p>{product.description}</p>
                         <div className='d-flex align-items-center gap-4'>
-                            <NumberInput onChange={handleValueChange} />
+                            <NumberInput
+                                onChange={handleValueChange}
+                                disabled={isAdding}
+                            />
                             <span>
                                 <span>Stock: </span>
                                 <span>{product.stockQuantity}</span>
                             </span>
                         </div>
                         <div className='d-flex gap-4 mt-3'>
-                            <Button onClick={handleAddToCart}>
+                            <Button
+                                onClick={handleAddToCart}
+                                disabled={isAdding}
+                            >
                                 Add to cart
                             </Button>
                             <Button>Buy now</Button>

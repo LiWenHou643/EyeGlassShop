@@ -44,7 +44,7 @@ public class CartService {
         if (cart.isPresent()) {
             List<CartItem> cartItems = new ArrayList<>(cart.get().getCartItems());
 
-            cartItems.sort(Comparator.comparing(CartItem::getCreatedAt));
+            cartItems.sort(Comparator.comparing(CartItem::getCreatedAt, Comparator.reverseOrder()));
 
             List<CartItemResponse> cartItemResponses = cartItems.stream()
                                                                 .map(CART_MAPPER::toCartItemResponse)
@@ -67,7 +67,7 @@ public class CartService {
 
     }
 
-    public void addItemToCart(Long cartId, Long productId, int quantity) {
+    public String addItemToCart(Long cartId, Long productId, int quantity) {
         Product product = productRepository.findById(productId)
                                            .orElseThrow(() -> new RuntimeException("Product not found"));
         int price = product.getPrice();
@@ -84,6 +84,8 @@ public class CartService {
             existingItem.get().setQuantity(quantity);
             existingItem.get().setTotalPrice((long) quantity * price * (100 - discount) / 100);
             cartItemRepository.save(existingItem.get());
+
+            return "Item updated in cart";
         } else {
             // Add new item to cart
             CartItem cartItem = new CartItem();
@@ -93,6 +95,8 @@ public class CartService {
             cartItem.setPriceAtTime(price * discount / 100);
             cartItem.setTotalPrice((long) quantity * price * (100 - discount) / 100);
             cartItemRepository.save(cartItem);
+
+            return "Item added to cart";
         }
     }
 

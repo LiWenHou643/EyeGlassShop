@@ -15,6 +15,9 @@ export function useCart() {
         onError: (err) => {
             console.log('onError', err);
         },
+        onSuccess: (data) => {
+            localStorage.setItem('cart', JSON.stringify(data));
+        },
         refetchOnWindowFocus: false,
         staleTime: 1000 * 60 * 5, // 5 minutes
         retry: false,

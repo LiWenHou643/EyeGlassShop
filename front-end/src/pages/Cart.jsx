@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { HiArrowRight } from 'react-icons/hi2';
-import { useNavigate } from 'react-router-dom';
 import { BarLoader, RingLoader } from 'react-spinners';
 import styled from 'styled-components';
 import CartItem from '../features/cart/CartItem';
@@ -15,8 +14,8 @@ import Loading from '../ui/Loading';
 import { formatPrice } from '../utils/helperFunction';
 
 function Cart() {
-    const navigate = useNavigate();
-    const { isLoading, isFetching, data, count, error } = useCart();
+    // const navigate = useNavigate();
+    const { isLoading, isFetching, data: cartItems, count, error } = useCart();
     const { totalPrice, setTotalPrice, promoCode, setPromoCode } = useCartCtx();
     const { checkCode, isChecking, error: invalidCode } = useCode();
     const [discount, setDiscount] = useState(0);
@@ -27,8 +26,8 @@ function Cart() {
     const [checkedItems, setCheckedItems] = useState({});
 
     useEffect(() => {
-        if (Array.isArray(data)) {
-            const total = data.reduce((acc, item) => {
+        if (Array.isArray(cartItems)) {
+            const total = cartItems.reduce((acc, item) => {
                 if (checkedItems[item.id]) {
                     return acc + item.totalPrice;
                 }
@@ -40,7 +39,7 @@ function Cart() {
         setTotalPrice(subtotal - discount);
     }, [
         checkedItems,
-        data,
+        cartItems,
         subtotal,
         discount,
         codeValue,
@@ -61,10 +60,6 @@ function Cart() {
     if (error) return <Error>Error: {error.message}</Error>;
     if (!isLoading && !isFetching && count === 0)
         return <EmptyData resourceName={'products'} />;
-
-    const handleCheckout = () => {
-        navigate('/checkout');
-    };
 
     const handlePromoCodeChange = async (e) => {
         const code = e.target.value;
@@ -99,7 +94,7 @@ function Cart() {
 
         // Update all items in checkedItems state
         const updatedCheckedItems = {};
-        data.forEach((item) => {
+        cartItems.forEach((item) => {
             updatedCheckedItems[item.id] = checked;
         });
         setCheckedItems(updatedCheckedItems);
@@ -119,6 +114,23 @@ function Cart() {
         });
     };
 
+    const handleCheckout = () => {
+        // Gather selected items
+        // const selectedItems = cartItems.filter(
+        //     (cartItem) => checkedItems[cartItem.id]
+        // );
+        // console.log(selectedItems);
+
+        console.log('Checkout', totalPrice);
+        // Navigate to the checkout page with the selected items
+        // navigate('/checkout', { state: { totalPrice } });
+    };
+
+    const checkedCount = Object.values(checkedItems).reduce(
+        (acc, cur) => (cur ? acc + 1 : acc),
+        0
+    );
+
     return (
         <StyledContainer>
             <div className='p-5 row'>
@@ -135,25 +147,38 @@ function Cart() {
                         </h1>
                     </div>
                     <hr />
-                    <div className='form-check form-check-inline mb-2 fs-3'>
-                        <input
-                            className='form-check-input'
-                            type='checkbox'
-                            id='inlineCheckbox'
-                            checked={selectAll}
-                            onChange={handleSelectAllChange}
-                        />
-                        <label
-                            className='form-check-label'
-                            htmlFor='inlineCheckbox'
-                        >
-                            Select all
-                        </label>
+
+                    <div className='d-flex justify-content-between align-items-center'>
+                        <div className='form-check form-check-inline mb-2 fs-3'>
+                            <input
+                                className='form-check-input'
+                                type='checkbox'
+                                id='inlineCheckbox'
+                                checked={selectAll}
+                                onChange={handleSelectAllChange}
+                            />
+                            <label
+                                className='form-check-label'
+                                htmlFor='inlineCheckbox'
+                            >
+                                Select all
+                            </label>
+                        </div>
+                        <div>
+                            {checkedCount > 0 ? (
+                                <span>
+                                    {checkedCount} item
+                                    {checkedCount > 1 ? 's' : ''} selected
+                                </span>
+                            ) : (
+                                <span>No selected items</span>
+                            )}
+                        </div>
                     </div>
                     <div className='row justify-content-between align-items-start'>
                         <ul>
-                            {data.length > 0 &&
-                                data.map((item) => (
+                            {cartItems.length > 0 &&
+                                cartItems.map((item) => (
                                     <CartItem
                                         key={item.id}
                                         $key={item.id}
