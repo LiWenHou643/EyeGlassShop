@@ -81,8 +81,8 @@ public class CartService {
 
         if (existingItem.isPresent()) {
             // Update quantity and total price if item already exists
-            existingItem.get().setQuantity(existingItem.get().getQuantity() + quantity);
-            existingItem.get().setTotalPrice((long) existingItem.get().getQuantity() * price * discount / 100);
+            existingItem.get().setQuantity(quantity);
+            existingItem.get().setTotalPrice((long) quantity * price * (100 - discount) / 100);
             cartItemRepository.save(existingItem.get());
         } else {
             // Add new item to cart
@@ -91,7 +91,7 @@ public class CartService {
             cartItem.setProduct(product);
             cartItem.setQuantity(quantity);
             cartItem.setPriceAtTime(price * discount / 100);
-            cartItem.setTotalPrice((long) quantity * price * discount / 100);
+            cartItem.setTotalPrice((long) quantity * price * (100 - discount) / 100);
             cartItemRepository.save(cartItem);
         }
     }
@@ -104,14 +104,5 @@ public class CartService {
         Optional<CartItem> existingItem = cartItemRepository.findByCartIdAndProductId(cartId, productId);
 
         existingItem.ifPresent(cartItemRepository::delete);
-    }
-
-    public void updateItemInCart(Long cartItemId, int quantity) {
-        Optional<CartItem> existingItem = cartItemRepository.findById(cartItemId);
-
-        if (existingItem.isPresent()) {
-            existingItem.get().setQuantity(quantity);
-            cartItemRepository.save(existingItem.get());
-        }
     }
 }

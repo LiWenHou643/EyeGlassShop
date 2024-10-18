@@ -14,6 +14,7 @@ public class CartItemResponse {
     String title;
     String description;
     String image;
+    int productId;
     int discount;
     int quantity;
     int priceAtTime;

@@ -34,7 +34,7 @@ public class CartController {
 
     @PostMapping(value = "/add")
     @PreAuthorize("hasAuthority('SCOPE_USER')")
-    public ApiResponse<Object> addItemToCart(@RequestParam(required = false) Long cartId, @RequestParam Long productId, @RequestParam int quantity) {
+    public ApiResponse<Object> addItemToCart(@RequestParam(required = false, name = "cartId") Long cartId, @RequestParam(name = "productId") Long productId, @RequestParam(name = "quantity") int quantity) {
         if (cartId == null) {
             String userName = SecurityContextHolder.getContext().getAuthentication().getName();
             cartId = cartService.getCartId(userName);
@@ -48,13 +48,6 @@ public class CartController {
     public ApiResponse<Object> removeItemFromCart(@RequestParam Long cartId, @RequestParam Long productId) {
 //        cartService.removeItemFromCart(cartId, productId);
         return ApiResponse.builder().message("Item removed from cart").build();
-    }
-
-    @PutMapping(value = "/update/{id}")
-    @PreAuthorize("hasAuthority('SCOPE_USER')")
-    public ApiResponse<Object> updateItemInCart(@PathVariable(name = "id") Long cartItemId, @RequestParam int quantity) {
-        cartService.updateItemInCart(cartItemId, quantity);
-        return ApiResponse.builder().message("Item updated in cart").build();
     }
 
 }

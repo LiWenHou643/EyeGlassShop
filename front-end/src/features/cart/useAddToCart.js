@@ -6,18 +6,49 @@ export function useAddToCart() {
     const queryClient = useQueryClient();
 
     const { mutate, isLoading } = useMutation({
-        mutationFn: ({ productId, cartId, quantity }) => {
-            axiosPrivate.post(`user/cart/add`, null, {
+        mutationFn: ({ cartId, productId, quantity }) => {
+            console.log({ cartId, productId, quantity });
+            return axiosPrivate.post(`user/cart/add`, null, {
                 params: {
-                    cartId,
-                    productId,
-                    quantity,
+                    cartId: cartId,
+                    productId: productId,
+                    quantity: quantity,
                 },
             });
         },
-        onSuccess: (res) => {
-            console.log(res);
-            queryClient.invalidateQueries('cart');
+        onMutate: async ({ cartId, productId, quantity }) => {
+            // Cancel any outgoing refetches (so they don't overwrite our optimistic update)
+            await queryClient.cancelQueries(['cart']);
+
+            // Snapshot the previous value
+            const previousCart = queryClient.getQueryData(['cart']);
+
+            // Optimistically update to the new value
+            queryClient.setQueryData(['cart'], (old) => {
+                if (!old) return; // If no old data, return nothing
+                const updatedItems = old.cartItems.map((item) => {
+                    if (item.productId === productId) {
+                        return {
+                            ...item,
+                            quantity, // Update the quantity
+                            totalPrice: quantity * item.priceAtTime, // Calculate total price based on new quantity
+                        };
+                    }
+                    return item;
+                });
+
+                return {
+                    ...old,
+                    cartItems: updatedItems,
+                };
+            });
+
+            // Return a context object with the previous value
+            return { previousCart };
+        },
+        onSettled: () => {
+            // Always refetch after error or success
+            queryClient.invalidateQueries(['cart']);
         },
         onError: (error) => {
             console.log(error);

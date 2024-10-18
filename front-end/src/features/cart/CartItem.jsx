@@ -1,16 +1,41 @@
+import debounce from 'lodash.debounce';
+import { useEffect, useRef } from 'react';
 import { HiOutlineTrash } from 'react-icons/hi2';
 import styled from 'styled-components';
+import { useCartCtx } from '../../hooks/useCartCtx';
 import Button from '../../ui/Button';
 import ImageContainer from '../../ui/ImageContainer';
 import NumberInput from '../../ui/NumberInput';
 import { formatPrice } from '../../utils/helperFunction';
-import { useUpdateCartItem } from './useUpdateCartItem';
+import { useAddToCart } from './useAddToCart';
 
 const CartItem = ({ item, isChecked, onChange }) => {
-    const { updateCartItem, isUpdating } = useUpdateCartItem();
+    const { addToCart, isAdding } = useAddToCart();
+    const {
+        cart: { id },
+    } = useCartCtx();
 
-    const handleQuantityChange = async (newQuantity) => {
-        updateCartItem({ id: item.id, quantity: newQuantity });
+    const debouncedAddToCart = useRef(
+        debounce(async (cartId, productId, newQuantity) => {
+            await addToCart({
+                cartId,
+                productId,
+                quantity: newQuantity,
+            });
+        }, 300)
+    );
+
+    useEffect(() => {
+        const currentDebouncedFunction = debouncedAddToCart.current;
+
+        // Cleanup function to cancel debounce on unmount
+        return () => {
+            currentDebouncedFunction.cancel();
+        };
+    }, []);
+
+    const onQuantityChange = (newQuantity) => {
+        debouncedAddToCart.current(id, item.productId, newQuantity);
     };
 
     return (
@@ -38,8 +63,8 @@ const CartItem = ({ item, isChecked, onChange }) => {
                     <div className='col-4'>
                         <NumberInput
                             initialValue={item.quantity}
-                            onChange={handleQuantityChange}
-                            disabled={isUpdating}
+                            onChange={onQuantityChange}
+                            disabled={isAdding}
                         />
                     </div>
                     <div className='col-4 text-end'>
