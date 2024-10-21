@@ -9,6 +9,7 @@ const Select = styled.select`
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
     background-color: var(--color-grey-transparent);
     width: 100%;
+    color: var(--color-grey-800);
     &:focus {
         outline: none;
     }

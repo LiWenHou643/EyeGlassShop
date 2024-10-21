@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.math.BigDecimal;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -20,11 +22,17 @@ public class CartItem extends BaseEntity {
     @Column(name = "quantity")
     int quantity;
 
-    @Column(name = "price_at_time")
-    int priceAtTime;
+    @Column(precision = 10, scale = 2)
+    BigDecimal price;
 
-    @Column(name = "total_price")
-    long totalPrice;
+    @Column(precision = 5, scale = 2)
+    BigDecimal discountPercentage;
+
+    @Column(precision = 10, scale = 2)
+    BigDecimal discountedPrice;
+
+    @Column(precision = 10, scale = 2)
+    BigDecimal totalPrice;
 
     @ManyToOne
     @JoinColumn(name = "product_id", referencedColumnName = "id")

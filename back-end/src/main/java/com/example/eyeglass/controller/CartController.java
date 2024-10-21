@@ -43,6 +43,17 @@ public class CartController {
         return ApiResponse.builder().message(message).build();
     }
 
+    @PostMapping(value = "/update")
+    @PreAuthorize("hasAuthority('SCOPE_USER')")
+    public ApiResponse<Object> updateItemInCart(@RequestParam(required = false, name = "cartId") Long cartId, @RequestParam(name = "quantity") int quantity) {
+        if (cartId == null) {
+            String userName = SecurityContextHolder.getContext().getAuthentication().getName();
+            cartId = cartService.getCartId(userName);
+        }
+        cartService.updateItemInCart(cartId, quantity);
+        return ApiResponse.builder().message("Item updated in cart").build();
+    }
+
     @PostMapping(value = "/remove")
     @PreAuthorize("hasAuthority('SCOPE_USER')")
     public ApiResponse<Object> removeItemFromCart(@RequestParam Long cartId, @RequestParam Long productId) {

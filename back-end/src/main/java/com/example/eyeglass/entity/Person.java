@@ -42,7 +42,7 @@ public class Person {
     @Column(name = "phone_number", unique = true)
     String phoneNumber;
 
-    @OneToOne(cascade = CascadeType.MERGE)
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "address_id", referencedColumnName = "id")
     Address address;
 

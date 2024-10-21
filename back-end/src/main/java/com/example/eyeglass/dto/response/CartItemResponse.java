@@ -3,6 +3,8 @@ package com.example.eyeglass.dto.response;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.math.BigDecimal;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -14,9 +16,10 @@ public class CartItemResponse {
     String title;
     String description;
     String image;
-    int productId;
-    int discount;
+    Long productId;
     int quantity;
-    int priceAtTime;
-    int totalPrice;
+    BigDecimal price;
+    BigDecimal discountPercent;
+    BigDecimal discountedPrice;
+    BigDecimal totalPrice;
 }

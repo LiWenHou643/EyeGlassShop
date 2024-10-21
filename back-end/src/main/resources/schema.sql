@@ -4,26 +4,26 @@ USE defaultdb;
 
 CREATE TABLE `roles`
 (
-    `id`   bigint PRIMARY KEY AUTO_INCREMENT,
+    `id`   INT PRIMARY KEY AUTO_INCREMENT,
     `name` varchar(20) UNIQUE NOT NULL
 );
 
 CREATE TABLE `person`
 (
-    `id`           bigint PRIMARY KEY AUTO_INCREMENT,
+    `id`           INT PRIMARY KEY AUTO_INCREMENT,
     `full_name`    varchar(50)  NOT NULL,
     `email`        varchar(150) NOT NULL,
     `phone_number` varchar(20),
-    `address_id`   bigint,
+    `address_id`   INT,
     `image`        varchar(100),
     `password`     varchar(255) NOT NULL,
-    `role_id`      bigint       NOT NULL,
+    `role_id`      INT       NOT NULL,
     UNIQUE KEY `idx_email` (`email`),  -- Creates a unique index on the email column
     UNIQUE KEY `idx_phone_number` (`phone_number`)  -- Creates a unique index on the email column
 );
 
 CREATE TABLE `address` (
-	`id` bigint PRIMARY KEY AUTO_INCREMENT,
+	`id` INT PRIMARY KEY AUTO_INCREMENT,
     `street_address` varchar(50) not null,
     `ward` varchar(50) not null,
     `district` varchar(50) not null,
@@ -38,98 +38,117 @@ CREATE TABLE `invalidated_tokens`
 
 CREATE TABLE `refresh_tokens`
 (
-    `id`            bigint PRIMARY KEY AUTO_INCREMENT,
+    `id`            INT PRIMARY KEY AUTO_INCREMENT,
     `refresh_token` varchar(512) NOT NULL,
     `revoked`       tinyint      NOT NULL,
-    `person_id`     bigint       NOT NULL
+    `person_id`     INT       NOT NULL
 );
 
 CREATE TABLE `category`
 (
-    `id`   bigint PRIMARY KEY AUTO_INCREMENT,
+    `id`   INT PRIMARY KEY AUTO_INCREMENT,
     `name` varchar(100) NOT NULL
 );
 
 CREATE TABLE `product`
 (
-    `id`             bigint PRIMARY KEY AUTO_INCREMENT,
-    `category_id`    bigint              NOT NULL,
+    `id`             INT PRIMARY KEY AUTO_INCREMENT,
+    `category_id`    INT              NOT NULL,
     `product_code`   varchar(255) UNIQUE NOT NULL,
     `title`          varchar(250)        NOT NULL,
-    `price`          int                 NOT NULL,
-    `discount`       int                 NOT NULL,
+    `price`          DECIMAL(10, 2)      NOT NULL,
+    `discount_percentage` DECIMAL(5, 2) DEFAULT 0,
     `image`          varchar(500)        NOT NULL,
     `description`    longtext            NOT NULL,
-    `stock_quantity` int                 NOT NULL DEFAULT 0,
+    `stock_quantity` int                 NOT NULL DEFAULT 50,
     `sold_quantity`  int                 NOT NULL DEFAULT 0,
     `is_deleted`     boolean             NOT NULL DEFAULT FALSE
 );
 
 CREATE TABLE `color`
 (
-    `id`         bigint PRIMARY KEY AUTO_INCREMENT,
-    `product_id` bigint      NOT NULL,
+    `id`         INT PRIMARY KEY AUTO_INCREMENT,
+    `product_id` INT      NOT NULL,
     `name`       varchar(50) NOT NULL,
     `hex`        VARCHAR(7)  NOT NULL
 );
 
 CREATE TABLE `cart`
 (
-    `id`        bigint PRIMARY KEY AUTO_INCREMENT,
-    `person_id` bigint NOT NULL
+    `id`        INT PRIMARY KEY AUTO_INCREMENT,
+    `person_id` INT NOT NULL
 );
 
 CREATE TABLE `cart_item`
 (
-    `id`            bigint PRIMARY KEY AUTO_INCREMENT,
-    `cart_id`       bigint NOT NULL,
-    `product_id`    bigint NOT NULL,
-    `quantity`      int    NOT NULL,
-    `price_at_time` int    NOT NULL,
-    `total_price`   long   NOT NULL,
-    `created_at` 	datetime not null default current_timestamp,
-    `updated_at` 	datetime not null default current_timestamp
+    `id`            INT PRIMARY KEY AUTO_INCREMENT,
+    `cart_id`       INT NOT NULL,
+    `product_id`    INT NOT NULL,
+    `quantity` 		TINYINT NOT NULL CHECK (`quantity` > 0),
+    `price` DECIMAL(10, 2)   NOT NULL,
+    `discount_percentage` DECIMAL(5, 2) DEFAULT 0,  -- Discount percentage (0 to 100)
+    `discounted_price` DECIMAL(10, 2) AS (`price` * (100 - `discount_percentage` / 100)) STORED,
+    `total_price` DECIMAL(10, 2) AS (`discounted_price` * `quantity`) STORED,
+    `created_at` 	TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    `updated_at` 	TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+CREATE TABLE `cart_item`
+(
+    `id`            INT PRIMARY KEY AUTO_INCREMENT,
+    `cart_id`       INT NOT NULL,
+    `product_id`    INT NOT NULL,
+    `quantity` 		TINYINT NOT NULL CHECK (`quantity` > 0),
+    `price` DECIMAL(10, 2)   NOT NULL,
+    `discount_percentage` DECIMAL(5, 2) DEFAULT 0,  -- Discount percentage (0 to 100)
+    `discounted_price` DECIMAL(10, 2) AS (`price` * (1 - `discount_percentage` / 100)) STORED,
+    `total_price` DECIMAL(12, 2) AS (`discounted_price` * `quantity`) STORED,
+    `created_at` 	TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    `updated_at` 	TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
-
-CREATE TABLE `payment_details`
-(
-    `id`       bigint PRIMARY KEY AUTO_INCREMENT,
-    `amount`   int NOT NULL,
-    `provider` int NOT NULL,
-    `status`   int NOT NULL
+CREATE TABLE `orders` (
+    `id` INT AUTO_INCREMENT PRIMARY KEY,
+    `person_id` INT NOT NULL,               -- Foreign key to users table
+    `status` ENUM('pending', 'cod_pending', 'confirmed', 'processing', 'shipped', 'delivered', 'cancelled', 'refunded') NOT NULL,  -- Updated status options
+    `sub_total` DECIMAL(10, 2) DEFAULT 0.00,  -- Discount amount
+    `discount_percentage` DECIMAL(5,2) DEFAULT 0.00,
+    `total` DECIMAL(10, 2) AS (`sub_total` * (1 - `discount_percentage` / 100)) STORED, -- Total after discounts
+    `promo_code` VARCHAR(50),                -- Applied promotion code
+    `shipping_address` VARCHAR(255) NOT NULL,
+    `payment_method` ENUM('paypal', 'cash_on_delivery') NOT NULL,  -- Updated payment options
+    `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (`person_id`) REFERENCES `person`(`id`) ON DELETE CASCADE  -- Reference to users table
 );
 
-CREATE TABLE `orders`
-(
-    `id`         bigint PRIMARY KEY AUTO_INCREMENT,
-    `person_id`  bigint    NOT NULL,
-    `payment_id` bigint    NOT NULL,
-    `total`      int       NOT NULL,
-    `create_at`  timestamp NOT NULL
-);
-
-CREATE TABLE `order_detail`
-(
-    `id`         bigint PRIMARY KEY AUTO_INCREMENT,
-    `order_id`   bigint NOT NULL,
-    `product_id` bigint NOT NULL,
-    `price`      int    NOT NULL,
-    `quantity`   int    NOT NULL
+CREATE TABLE `order_item` (
+    `id` INT AUTO_INCREMENT PRIMARY KEY,
+    `order_id` INT NOT NULL,              -- Foreign key to orders table
+    `product_id` INT NOT NULL,            -- Foreign key to products table
+    `quantity` TINYINT NOT NULL CHECK (`quantity` > 0),
+    `price` DECIMAL(10, 2) NOT NULL,         -- Price per item
+    `discount_percentage` DECIMAL(5, 2) DEFAULT 0,  -- Discount percentage (0 to 100)
+    `discounted_price` DECIMAL(10, 2) AS (`price` * (1 - `discount_percentage` / 100)) STORED,
+    `total_price` DECIMAL(12, 2) AS (`discounted_price` * `quantity`) STORED, -- Calculated total after discount
+    `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (`order_id`) REFERENCES `orders`(`id`) ON DELETE CASCADE,
+    FOREIGN KEY (`product_id`) REFERENCES `product`(`id`) ON DELETE CASCADE
 );
 
 CREATE TABLE `ratings`
 (
-    `id`           bigint PRIMARY KEY AUTO_INCREMENT,
-    `product_id`   bigint NOT NULL,
-    `person_id`    bigint NOT NULL,
+    `id`           INT PRIMARY KEY AUTO_INCREMENT,
+    `product_id`   INT NOT NULL,
+    `person_id`    INT NOT NULL,
     `rating_value` int    NOT NULL,
     `review_text`  text,
-    `created_at`   timestamp default current_timestamp
+    `created_at`   TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
 CREATE TABLE `codes` (
-	`id` bigint PRIMARY KEY AUTO_INCREMENT,
+	`id` INT PRIMARY KEY AUTO_INCREMENT,
     `code` varchar(100) NOT NULL,
     `value` int NOT NULL,
     UNIQUE KEY `idx_code` (`code`)
@@ -137,43 +156,26 @@ CREATE TABLE `codes` (
 
 
 ALTER TABLE `person`
-    ADD FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`);
-
-ALTER TABLE `person`
+    ADD FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`),
 	ADD FOREIGN KEY (`address_id`) REFERENCES `address` (`id`);
 
 ALTER TABLE `refresh_tokens`
     ADD FOREIGN KEY (`person_id`) REFERENCES `person` (`id`);
 
-ALTER TABLE `orders`
-    ADD FOREIGN KEY (`person_id`) REFERENCES `person` (`id`);
-
+ALTER TABLE `product`
+    ADD FOREIGN KEY (`category_id`) REFERENCES `category` (`id`);
+    
 ALTER TABLE `cart`
     ADD FOREIGN KEY (`person_id`) REFERENCES `person` (`id`);
 
-ALTER TABLE `product`
-    ADD FOREIGN KEY (`category_id`) REFERENCES `category` (`id`);
-
 ALTER TABLE `cart_item`
-    ADD FOREIGN KEY (`product_id`) REFERENCES `product` (`id`);
-
-ALTER TABLE `cart_item`
+    ADD FOREIGN KEY (`product_id`) REFERENCES `product` (`id`),
     ADD FOREIGN KEY (`cart_id`) REFERENCES `cart` (`id`);
-
-ALTER TABLE `order_detail`
-    ADD FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`);
-
-ALTER TABLE `order_detail`
-    ADD FOREIGN KEY (`product_id`) REFERENCES `product` (`id`);
-
-ALTER TABLE `orders`
-    ADD FOREIGN KEY (`payment_id`) REFERENCES `payment_details` (`id`);
 
 ALTER TABLE `color`
     ADD FOREIGN KEY (`product_id`) REFERENCES `product` (`id`);
 
 ALTER TABLE `ratings`
-    ADD FOREIGN KEY (`product_id`) REFERENCES `product` (`id`);
-
-ALTER TABLE `ratings`
+    ADD FOREIGN KEY (`product_id`) REFERENCES `product` (`id`),
     ADD FOREIGN KEY (`person_id`) REFERENCES `person` (`id`);
+    

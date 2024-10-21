@@ -3,6 +3,8 @@ package com.example.eyeglass.dto.response;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.math.BigDecimal;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -15,8 +17,8 @@ public class ProductResponse {
     String image;
     String description;
     String category;
+    BigDecimal price;
     int discount;
-    int price;
     int stockQuantity;
     int soldQuantity;
     boolean deleted;

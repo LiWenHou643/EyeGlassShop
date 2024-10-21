@@ -23,4 +23,9 @@ public class CodeService {
                                 .value(code.getValue())
                                 .build();
     }
+
+    public Code checkCode(String code) {
+        return codeRepository.findByCode(code)
+                             .orElseThrow(() -> new AppException(PROMOTION_CODE_INVALID));
+    }
 }

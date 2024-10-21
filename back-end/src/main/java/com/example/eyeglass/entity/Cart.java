@@ -24,6 +24,6 @@ public class Cart {
     @JoinColumn(name = "person_id", referencedColumnName = "id", nullable = false)
     Person person;
 
-    @OneToMany(mappedBy = "cart")
+    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true)
     Set<CartItem> cartItems = new HashSet<>();
 }

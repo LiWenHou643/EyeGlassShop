@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { HiArrowRight } from 'react-icons/hi2';
+import { useNavigate } from 'react-router-dom';
 import { BarLoader, RingLoader } from 'react-spinners';
 import styled from 'styled-components';
 import CartItem from '../features/cart/CartItem';
@@ -14,7 +15,7 @@ import Loading from '../ui/Loading';
 import { formatPrice } from '../utils/helperFunction';
 
 function Cart() {
-    // const navigate = useNavigate();
+    const navigate = useNavigate();
     const { isLoading, isFetching, data: cartItems, count, error } = useCart();
     const { totalPrice, setTotalPrice, promoCode, setPromoCode } = useCartCtx();
     const { checkCode, isChecking, error: invalidCode } = useCode();
@@ -123,7 +124,9 @@ function Cart() {
 
         console.log('Checkout', totalPrice);
         // Navigate to the checkout page with the selected items
-        // navigate('/checkout', { state: { totalPrice } });
+        navigate('/checkout', {
+            state: { totalPrice, discount, codeValue, subtotal, promoCode },
+        });
     };
 
     const checkedCount = Object.values(checkedItems).reduce(

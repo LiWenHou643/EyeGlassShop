@@ -69,7 +69,6 @@ public class ProductService {
                        .collect(Collectors.toList());
     }
 
-
     public ProductResponse getProductById(Long productId) {
         return PRODUCT_MAPPER.toProductResponse(productRepository.findByIdAndDeletedIsFalse(productId)
                                                                  .orElseThrow(() -> new AppException(
@@ -97,7 +96,7 @@ public class ProductService {
         product.setProductCode(productRequest.productCode());
         product.setTitle(productRequest.title());
         product.setPrice(productRequest.price());
-        product.setDiscount(productRequest.discount());
+        product.setDiscountPercentage(productRequest.discountPercentage());
         product.setImage(productRequest.image());
         product.setDescription(productRequest.description());
         product.setStockQuantity(productRequest.stockQuantity());

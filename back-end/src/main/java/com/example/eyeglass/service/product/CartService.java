@@ -10,16 +10,16 @@ import com.example.eyeglass.repository.person.PersonRepository;
 import com.example.eyeglass.repository.product.CartItemRepository;
 import com.example.eyeglass.repository.product.CartRepository;
 import com.example.eyeglass.repository.product.ProductRepository;
+import jakarta.transaction.Transactional;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.example.eyeglass.mapper.CartMapper.CART_MAPPER;
@@ -67,46 +67,84 @@ public class CartService {
 
     }
 
+    public Cart getCartByPersonId(Long personId) {
+        return cartRepository.findByPersonId(personId)
+                             .orElseThrow(() -> new RuntimeException("Cart not found"));
+    }
+
+    @Transactional
     public String addItemToCart(Long cartId, Long productId, int quantity) {
         Product product = productRepository.findById(productId)
                                            .orElseThrow(() -> new RuntimeException("Product not found"));
-        int price = product.getPrice();
-        int discount = product.getDiscount();
+        BigDecimal price = product.getPrice();
+        BigDecimal discountPercent = product.getDiscountPercentage();
 
         Cart cart = cartRepository.findById(cartId)
                                   .orElseThrow(() -> new RuntimeException("Cart not found"));
 
         // Check if the cart already has the product
-        Optional<CartItem> existingItem = cartItemRepository.findByCartIdAndProductId(cartId, productId);
+        CartItem existingItem = cart.getCartItems()
+                                    .stream()
+                                    .filter(cartItem -> cartItem.getProduct().getId().equals(productId))
+                                    .findFirst()
+                                    .orElse(null);
 
-        if (existingItem.isPresent()) {
-            // Update quantity and total price if item already exists
-            existingItem.get().setQuantity(quantity);
-            existingItem.get().setTotalPrice((long) quantity * price * (100 - discount) / 100);
-            cartItemRepository.save(existingItem.get());
-
+        if (existingItem != null) {
+            existingItem.setQuantity(existingItem.getQuantity() + quantity);
+            cartRepository.save(cart);
             return "Item updated in cart";
         } else {
-            // Add new item to cart
             CartItem cartItem = new CartItem();
             cartItem.setCart(cart);
             cartItem.setProduct(product);
             cartItem.setQuantity(quantity);
-            cartItem.setPriceAtTime(price * discount / 100);
-            cartItem.setTotalPrice((long) quantity * price * (100 - discount) / 100);
-            cartItemRepository.save(cartItem);
+            // Convert discountPercent to BigDecimal
+            BigDecimal discountBigDecimal = discountPercent
+                    .divide(BigDecimal.valueOf(100), RoundingMode.HALF_UP);
+            // Calculate price at time (original price minus discount)
+            BigDecimal discountAmount = price.multiply(discountBigDecimal);
+            BigDecimal priceAtTime = price.subtract(discountAmount);
+            cartItem.setPrice(priceAtTime);
+
+            cart.getCartItems().add(cartItem);
+            saveCart(cart);
 
             return "Item added to cart";
         }
     }
 
-    public void removeItemFromCart(Long cartId, Long productId) {
+    public void updateItemInCart(Long cartItemId, int quantity) {
+        CartItem cartItem = cartItemRepository.findById(cartItemId)
+                                              .orElseThrow(() -> new RuntimeException("Cart item not found"));
+        cartItem.setQuantity(quantity);
+    }
+
+    public void saveCart(Cart cart) {
+        cartRepository.save(cart);
+    }
+
+    public void deleteCartItem(Long cartItemId) {
+        cartItemRepository.deleteById(cartItemId);
+    }
+
+    public void deleteCartItems(Set<CartItem> cartItems) {
+        Cart cart = cartRepository.findById(1L)
+                                  .orElseThrow(() -> new RuntimeException("Cart not found"));
+
+        cart.getCartItems().removeAll(cartItems);
+
+        saveCart(cart);
+    }
+
+    public void clearCart(Long cartId) {
         Cart cart = cartRepository.findById(cartId)
                                   .orElseThrow(() -> new RuntimeException("Cart not found"));
 
-        // Check if the cart already has the product
-        Optional<CartItem> existingItem = cartItemRepository.findByCartIdAndProductId(cartId, productId);
+        // Clear all cart items
+        cart.getCartItems().clear();
 
-        existingItem.ifPresent(cartItemRepository::delete);
+        // Save the cart to remove items from DB
+        cartRepository.save(cart);
     }
+
 }

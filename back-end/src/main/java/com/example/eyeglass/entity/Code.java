@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.math.BigDecimal;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -20,5 +22,6 @@ public class Code {
     @Column(unique = true)
     String code;
 
-    int value;
+    @Column(nullable = false, precision = 5, scale = 2)
+    BigDecimal value;
 }

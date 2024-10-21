@@ -8,6 +8,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -38,12 +39,14 @@ public class Product {
 
     @NotNull(message = "Price cannot be null")
     @Min(value = 0, message = "Price cannot be less than 0")
-    int price;
+    @Column(precision = 10, scale = 2)
+    BigDecimal price;
 
     @NotNull(message = "Discount cannot be null")
     @Min(value = 0, message = "Discount cannot be less than 0")
     @Max(value = 100, message = "Discount cannot be more than 100")
-    int discount;
+    @Column(name = "discount_percentage", precision = 5, scale = 2)
+    BigDecimal discountPercentage;
 
     @Column(name = "stock_quantity")
     int stockQuantity = 0;

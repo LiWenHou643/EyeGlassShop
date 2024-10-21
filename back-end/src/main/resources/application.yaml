@@ -33,4 +33,5 @@ jwt:
 
 stripe:
   api:
-    key: ${STRIPE_API_KEY:sk_test_4eC39HqLyjWDarjtT1zdp7dc}
+    secret-key: ${STRIPE_SECRET_KEY:sk_test_51QBH3WRtHLd8oKj8YoO3a6czGapZp6Uvfc8zejVESKZeiqRholPbxtA9YBcwYc85fYfQ1lNUW46YwaikHgAWiQFV00CtMSwSRl}
+    public-key: ${STRIPE_PUBLIC_KEY:pk_test_51QBH3WRtHLd8oKj8jQulTVm6gGLW7z9dfoXCrWMiy3jrTGyEyRqfIwZD7lx4H6EN7KVBRuICXphc5E4vfMkaY4Hy00Y5ZAhafk}

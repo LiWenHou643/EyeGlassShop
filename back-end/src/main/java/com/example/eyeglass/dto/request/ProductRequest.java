@@ -1,5 +1,7 @@
 package com.example.eyeglass.dto.request;
 
+import java.math.BigDecimal;
+
 public record ProductRequest(
         Long id,
         Long categoryId,
@@ -7,8 +9,8 @@ public record ProductRequest(
         String title,
         String image,
         String description,
-        int discount,
-        int price,
+        BigDecimal price,
+        BigDecimal discountPercentage,
         int stockQuantity,
         int soldQuantity
 ) {
