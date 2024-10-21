@@ -1,0 +1,23 @@
+package com.example.eyeglass.dto.response;
+
+import lombok.*;
+import lombok.experimental.FieldDefaults;
+
+import java.math.BigDecimal;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
+@Builder
+public class OrderItemResponse {
+    Long id;
+    Long productId;
+    String productName;
+    String productImage;
+    Integer quantity;
+    BigDecimal price;
+    BigDecimal discountPercentage;
+    BigDecimal discountedPrice;
+    BigDecimal totalPrice;
+}
