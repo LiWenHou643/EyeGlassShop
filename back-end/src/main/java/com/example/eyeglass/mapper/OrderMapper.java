@@ -1,7 +1,10 @@
 package com.example.eyeglass.mapper;
 
 import com.example.eyeglass.dto.request.OrderRequest;
+import com.example.eyeglass.dto.response.OrderItemResponse;
+import com.example.eyeglass.dto.response.OrderResponse;
 import com.example.eyeglass.entity.Order;
+import com.example.eyeglass.entity.OrderItem;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
@@ -14,6 +17,10 @@ public interface OrderMapper {
     Order toOrder(OrderRequest req);
 
     @Mapping(source = "person.id", target = "personId")
-    OrderRequest toOrderRequest(Order order);
+    OrderResponse toOrderResponse(Order order);
 
+    @Mapping(source = "product.id", target = "productId")
+    @Mapping(source = "product.title", target = "productName")
+    @Mapping(source = "product.image", target = "productImage")
+    OrderItemResponse toOrderItemResponse(OrderItem orderItem);
 }

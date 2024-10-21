@@ -1,6 +1,7 @@
 package com.example.eyeglass.service;
 
 import com.example.eyeglass.dto.request.OrderRequest;
+import com.example.eyeglass.dto.response.OrderResponse;
 import com.example.eyeglass.entity.*;
 import com.example.eyeglass.exception.AppException;
 import com.example.eyeglass.exception.ErrorCode;
@@ -35,7 +36,7 @@ public class OrderService {
     CodeService codeService;
 
     @Transactional
-    public Order createOrder(OrderRequest req, String userName) {
+    public OrderResponse createOrder(OrderRequest req, String userName) {
         Person person = personRepository.findByEmail(userName)
                                         .orElseThrow(() -> new RuntimeException("Person not found"));
 
@@ -90,7 +91,11 @@ public class OrderService {
         Order savedOrder = saveOrder(order); // Save the order
 
         cartService.deleteCartItems(cartItemsToOrder); // Delete the cart items
-        return savedOrder; // Return the saved order
+        OrderResponse orderResponse = ORDER_MAPPER.toOrderResponse(savedOrder);
+        orderResponse.setOrderItems(orderItems.stream()
+                                              .map(ORDER_MAPPER::toOrderItemResponse)
+                                              .collect(Collectors.toList()));
+        return orderResponse; // Return the saved order
     }
 
     public Order saveOrder(Order order) {

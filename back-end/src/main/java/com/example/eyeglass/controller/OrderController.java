@@ -2,8 +2,7 @@ package com.example.eyeglass.controller;
 
 import com.example.eyeglass.dto.request.OrderRequest;
 import com.example.eyeglass.dto.response.ApiResponse;
-import com.example.eyeglass.dto.response.PaymentResponse;
-import com.example.eyeglass.entity.Order;
+import com.example.eyeglass.dto.response.OrderResponse;
 import com.example.eyeglass.service.OrderService;
 import com.example.eyeglass.service.PaymentService;
 import com.stripe.exception.StripeException;
@@ -20,15 +19,15 @@ public class OrderController {
     private PaymentService paymentService;
 
     @PostMapping("/order")
-    public ApiResponse<PaymentResponse> createOrder(@RequestBody OrderRequest req) throws StripeException {
+    public ApiResponse<OrderResponse> createOrder(@RequestBody OrderRequest req) throws StripeException {
         String userName = SecurityContextHolder.getContext().getAuthentication().getName();
 
-        Order order = orderService.createOrder(req, userName);
+        OrderResponse order = orderService.createOrder(req, userName);
 //        PaymentResponse res = paymentService.createPaymentLink(order);
 
-        ApiResponse<PaymentResponse> response = new ApiResponse<>();
-//        response.setData(res);
-//        response.setMessage("Order created successfully");
+        ApiResponse<OrderResponse> response = new ApiResponse<>();
+        response.setData(order);
+        response.setMessage("Order created successfully");
         return response;
     }
 }
