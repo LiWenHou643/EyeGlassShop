@@ -108,18 +108,29 @@ CREATE TABLE `cart_item`
 
 CREATE TABLE `orders` (
     `id` INT AUTO_INCREMENT PRIMARY KEY,
-    `person_id` INT NOT NULL,               -- Foreign key to users table
+    `person_id` INT NOT NULL,
     `status` ENUM('pending', 'cod_pending', 'confirmed', 'processing', 'shipped', 'delivered', 'cancelled', 'refunded') NOT NULL,  -- Updated status options
-    `sub_total` DECIMAL(10, 2) DEFAULT 0.00,  -- Discount amount
+    `sub_total` DECIMAL(10, 2) NOT NULL,
     `discount_percentage` DECIMAL(5,2) DEFAULT 0.00,
-    `total` DECIMAL(10, 2) AS (`sub_total` * (1 - `discount_percentage` / 100)) STORED, -- Total after discounts
+    `total` DECIMAL(10, 2) AS (`sub_total` * (1 - `discount_percentage` / 100)) STORED,
     `promo_code` VARCHAR(50),                -- Applied promotion code
     `shipping_address` VARCHAR(255) NOT NULL,
-    `payment_method` ENUM('paypal', 'cash_on_delivery') NOT NULL,  -- Updated payment options
     `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (`person_id`) REFERENCES `person`(`id`) ON DELETE CASCADE  -- Reference to users table
 );
+
+CREATE TABLE `payments` (
+	`id` INT AUTO_INCREMENT PRIMARY KEY,
+	`order_id` INT NOT NULL,
+    `status` ENUM('paid', 'unpaid', 'failed', 'refunded') NOT NULL,
+    `amount`   DECIMAL(10, 2) NOT NULL,
+    `payment_method` ENUM('paypal', 'cash_on_delivery') NOT NULL,  -- Updated payment options
+    `transaction_id` VARCHAR(100) UNIQUE,  -- Unique transaction ID for payment tracking
+    `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (`order_id`) REFERENCES `orders`(`id`) ON DELETE CASCADE
+); 
 
 CREATE TABLE `order_item` (
     `id` INT AUTO_INCREMENT PRIMARY KEY,

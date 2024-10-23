@@ -30,6 +30,7 @@ public class OrderController {
         String userName = SecurityContextHolder.getContext().getAuthentication().getName();
         var order = orderService.createOrder(req, userName);
         var res = stripeService.createPaymentLink(order);
+//        var res = paypalService.createPaymentLink(order);
         return ApiResponse.<PaymentResponse>builder().message("Order created successfully").data(res).build();
     }
 }

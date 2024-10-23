@@ -168,7 +168,8 @@ VALUES ('1', 'eyeglasses'),
        ('2', 'sunglasses'),
        ('3', 'eyelens');
 
-INSERT INTO `defaultdb`.`product` (`category_id`, `product_code`, `title`, `price`, `discount_percentage`, `image`, `description`,
+INSERT INTO `defaultdb`.`product` (`category_id`, `product_code`, `title`, `price`, `discount_percentage`, `image`,
+                                   `description`,
                                    `stock_quantity`)
 VALUES ('1', 'EG01', 'Eye Glasses 01', '599000', '50', '/data-image/eg-01.jpg', 'good glasses for protect eyes', '0'),
        ('1', 'EG02', 'Eye Glasses 02', '350000', '10', '/data-image/eg-02.jpg', 'good glasses for protect eyes', '50'),
@@ -373,8 +374,8 @@ VALUES ('1', '2'),
        ('49', '50'),
        ('50', '51');
 
-INSERT INTO `defaultdb`.`cart_item` (`id`, `cart_id`, `product_id`, `quantity`, `price`, 
-										`discount_percentage`, `created_at`)
+INSERT INTO `defaultdb`.`cart_item` (`id`, `cart_id`, `product_id`, `quantity`, `price`,
+                                     `discount_percentage`, `created_at`)
 VALUES ('1', '1', '6', '3', '230000', '0', '2024-10-9 05:24:33'),
        ('2', '1', '8', '3', '830000', '20', '2024-10-10 05:24:33'),
        ('3', '1', '15', '2', '660000', '30', '2024-10-11 05:24:33');

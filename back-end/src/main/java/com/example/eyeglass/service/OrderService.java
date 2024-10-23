@@ -95,7 +95,7 @@ public class OrderService {
 
         Order savedOrder = saveOrder(order); // Save the order
 
-        cartService.deleteCartItems(cartItemsToOrder); // Delete the cart items
+//        cartService.deleteCartItems(cartItemsToOrder); // Delete the cart items after order is created
         OrderResponse orderResponse = ORDER_MAPPER.toOrderResponse(savedOrder);
         orderResponse = orderResponse.toBuilder().orderItems(orderItems.stream()
                                                                        .map(ORDER_MAPPER::toOrderItemResponse)

@@ -19,6 +19,9 @@ public class StripeService {
     @Value("${stripe.secret-key}")
     String stripeSecretKey;
 
+    @Value("${stripe.currency}")
+    String currency;
+
     public PaymentResponse createPaymentLink(OrderResponse order) throws StripeException {
         Stripe.apiKey = stripeSecretKey;
         BigDecimal totalAmount = order.getTotal(); // Assuming this returns BigDecimal
@@ -38,7 +41,7 @@ public class StripeService {
                                                                             .setPriceData(
                                                                                     SessionCreateParams.LineItem.PriceData.builder()
                                                                                                                           .setCurrency(
-                                                                                                                                  "vnd")
+                                                                                                                                  currency)
                                                                                                                           .setUnitAmount(
                                                                                                                                   amountInCents)
                                                                                                                           .setProductData(

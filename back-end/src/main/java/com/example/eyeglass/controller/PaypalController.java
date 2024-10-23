@@ -9,7 +9,6 @@ import com.example.eyeglass.exception.AppException;
 import com.example.eyeglass.exception.ErrorCode;
 import com.example.eyeglass.repository.person.PersonRepository;
 import com.example.eyeglass.service.PaypalService;
-import com.example.eyeglass.service.person.PersonService;
 import com.paypal.api.payments.Payment;
 import com.paypal.base.rest.PayPalRESTException;
 import lombok.RequiredArgsConstructor;
@@ -30,11 +29,10 @@ import static lombok.AccessLevel.PRIVATE;
 @FieldDefaults(level = PRIVATE, makeFinal = true)
 @RequiredArgsConstructor
 public class PaypalController {
+    PersonRepository personRepository;
     PaypalService paypalService;
     JwtGenerator jwtGenerator;
-    private final JwtUtils jwtUtils;
-    private final PersonService personService;
-    private final PersonRepository personRepository;
+    JwtUtils jwtUtils;
 
     @PostMapping("/payment/create")
     @PreAuthorize("hasAuthority('SCOPE_USER')")
