@@ -12,7 +12,6 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
-@Builder
 @Table(name = "order_item")
 public class OrderItem extends BaseEntity {
 
@@ -22,7 +21,7 @@ public class OrderItem extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id", nullable = false)
-    Order order; // Foreign key to orders table
+    Order order;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id", nullable = false)
@@ -37,11 +36,9 @@ public class OrderItem extends BaseEntity {
     @Column(nullable = false, precision = 10, scale = 2)
     BigDecimal price; // Price per item
 
-    @Column(nullable = false, precision = 10, scale = 2)
     @Transient
     BigDecimal discountedPrice; // Discount for this specific item
 
-    @Column(nullable = false, precision = 10, scale = 2)
     @Transient
     BigDecimal totalPrice; // Total price for this item after discount
 }

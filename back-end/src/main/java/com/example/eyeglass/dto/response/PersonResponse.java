@@ -7,25 +7,18 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 @Getter
-@Setter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class PersonResponse {
     Long id;
-
     String fullName;
-
     String email;
-
     String phoneNumber;
-
     Address address;
-
     @JsonIgnore
     String password;
-
     Roles roles;
-
     String image;
 }

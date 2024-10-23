@@ -6,11 +6,10 @@ import lombok.experimental.FieldDefaults;
 import java.math.BigDecimal;
 
 @Getter
-@Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
 @FieldDefaults(level = lombok.AccessLevel.PRIVATE)
+@Builder
 public class CartItemResponse {
     Long id;
     String title;

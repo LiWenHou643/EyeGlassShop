@@ -28,6 +28,17 @@ public class JwtGenerator {
         return jwtEncoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
     }
 
+    public String generatePaypalToken(Person person) {
+        JwtClaimsSet claims = JwtClaimsSet.builder()
+                                          .issuer("eyeglass")
+                                          .issuedAt(Instant.now())
+                                          .expiresAt(Instant.now().plus(30, ChronoUnit.SECONDS))
+                                          .subject(person.getEmail())
+                                          .claim("scope", person.getRoles().getName())
+                                          .build();
+        return jwtEncoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
+    }
+
     public String generateRefreshToken(Person person) {
         JwtClaimsSet claims = JwtClaimsSet.builder()
                                           .issuer("eyeglass")

@@ -8,8 +8,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -29,39 +27,31 @@ public class ProductController {
             @RequestParam(name = "page", defaultValue = "0") int page,
             @RequestParam(name = "size", defaultValue = "10") int size) {
 
-        ApiResponse<Page<ProductResponse>> response = new ApiResponse<>();
-        response.setData(productService.getProducts(category, page, size, sort));
-        return response;
+        var response = productService.getProducts(category, page, size, sort);
+        return ApiResponse.<Page<ProductResponse>>builder().data(response).build();
     }
 
     @GetMapping("/best-seller")
     public ApiResponse<Page<ProductResponse>> getBestSellerProducts(@RequestParam(name = "limit", defaultValue = "12") int limit) {
-        Page<ProductResponse> products = productService.getBestSellerProducts(limit);
-        ApiResponse<Page<ProductResponse>> response = new ApiResponse<>();
-        response.setData(products);
-        return response;
+        var response = productService.getBestSellerProducts(limit);
+        return ApiResponse.<Page<ProductResponse>>builder().data(response).build();
     }
 
     @GetMapping("/most-discount")
     public ApiResponse<Page<ProductResponse>> getMostDiscountProducts(@RequestParam(name = "limit", defaultValue = "12") int limit) {
-        Page<ProductResponse> products = productService.getMostDiscountProducts(limit);
-        ApiResponse<Page<ProductResponse>> response = new ApiResponse<>();
-        response.setData(products);
-        return response;
+        var response = productService.getMostDiscountProducts(limit);
+        return ApiResponse.<Page<ProductResponse>>builder().data(response).build();
     }
 
     @GetMapping("/search")
     public ApiResponse<List<ProductResponse>> searchProducts(@RequestParam(name = "title", required = false) String title) {
-        List<ProductResponse> products = productService.searchProducts(title);
-        ApiResponse<List<ProductResponse>> response = new ApiResponse<>();
-        response.setData(products);
-        return response;
+        var response = productService.searchProducts(title);
+        return ApiResponse.<List<ProductResponse>>builder().data(response).build();
     }
 
     @GetMapping("/{productId}")
-    public ResponseEntity<ProductResponse> getProductById(@PathVariable Long productId) {
-        return ResponseEntity.status(HttpStatus.OK).body(
-                productService.getProductById(productId)
-        );
+    public ApiResponse<ProductResponse> getProductById(@PathVariable Long productId) {
+        var response = productService.getProductById(productId);
+        return ApiResponse.<ProductResponse>builder().data(response).build();
     }
 }

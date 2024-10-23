@@ -1,11 +1,13 @@
 package com.example.eyeglass.dto.response;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 
 @Getter
-@Setter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class PaymentResponse {
-
-    private String paymentUrl;
+    String paymentUrl;
 }

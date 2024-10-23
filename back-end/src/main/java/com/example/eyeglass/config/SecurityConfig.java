@@ -47,7 +47,7 @@ public class SecurityConfig {
     JwtUtils jwtUtils;
 
     String[] PUBLIC_ENDPOINTS = {
-            "/public/**", "/auth/**", "/error",
+            "/public/**", "/auth/**", "/error", "/payment/success/**", "/payment/cancel/**", "/favicon.ico"
     };
 
     @Bean
@@ -58,7 +58,7 @@ public class SecurityConfig {
                                                              .anyRequest()
                                                              .authenticated());
         httpSecurity.oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()));
-        httpSecurity.addFilterBefore(new JwtFilter(rsaKeyRecord, jwtUtils, PUBLIC_ENDPOINTS),
+        httpSecurity.addFilterBefore(new JwtFilter(jwtUtils, PUBLIC_ENDPOINTS),
                 UsernamePasswordAuthenticationFilter.class);
         httpSecurity.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         httpSecurity.csrf(AbstractHttpConfigurer::disable);

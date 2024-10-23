@@ -1,6 +1,5 @@
 package com.example.eyeglass.config.Authentication;
 
-import com.example.eyeglass.config.RSAKeyRecord;
 import com.example.eyeglass.dto.response.ApiResponse;
 import com.example.eyeglass.exception.AppException;
 import com.example.eyeglass.exception.ErrorCode;
@@ -28,7 +27,6 @@ import java.io.IOException;
 @Slf4j
 @RequiredArgsConstructor
 public class JwtFilter extends OncePerRequestFilter {
-    private final RSAKeyRecord rsaKeyRecord;
     private final JwtUtils jwtUtils;
     private final String[] publicEndpoints;
 
@@ -56,7 +54,7 @@ public class JwtFilter extends OncePerRequestFilter {
             }
 
             String token = authorizationHeader.substring(7);
-            
+
             Jwt jwt = jwtUtils.getToken(token);
             boolean isExpired = jwtUtils.isExpired(jwt);
             boolean isInvalidated = jwtUtils.isInvalidated(jwt);
@@ -76,30 +74,30 @@ public class JwtFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
 
         } catch (AppException e) {
-            ApiResponse<Void> errorResponse = new ApiResponse<>();
-            errorResponse.setCode(e.getErrorCode().getCode());
-            errorResponse.setMessage(e.getErrorCode().getMessage());
+            var errorResponse = ApiResponse.<Void>builder()
+                                           .code(e.getErrorCode().getCode())
+                                           .message(e.getErrorCode().getMessage())
+                                           .build();
 
             responseException(response, errorResponse);
 
         } catch (JwtException | InvalidBearerTokenException e) {
             log.info("Invalid JWT token: {}", e.getMessage());
-            ApiResponse<Void> errorResponse = new ApiResponse<>();
-            if (isTokenExpired(e)) {
-                errorResponse.setCode(ErrorCode.JWT_EXPIRED.getCode());
-                errorResponse.setMessage(ErrorCode.JWT_EXPIRED.getMessage());
-            } else {
-                errorResponse.setCode(ErrorCode.JWT_INVALID.getCode());
-                errorResponse.setMessage(ErrorCode.JWT_INVALID.getMessage());
-            }
-
+            var code = isTokenExpired(e) ? ErrorCode.JWT_EXPIRED.getCode() : ErrorCode.JWT_INVALID.getCode();
+            var message = isTokenExpired(e) ? ErrorCode.JWT_EXPIRED.getMessage() : ErrorCode.JWT_INVALID.getMessage();
+            var errorResponse = ApiResponse.<Void>builder()
+                                           .code(code)
+                                           .message(message)
+                                           .build();
             responseException(response, errorResponse);
 
         } catch (Exception e) {
-            ApiResponse<Void> errorResponse = new ApiResponse<>();
-            errorResponse.setCode(ErrorCode.UNCATEGORIZED_EXCEPTION.getCode());
-            errorResponse.setMessage(e.getMessage());
-
+            var code = ErrorCode.UNCATEGORIZED_EXCEPTION.getCode();
+            var message = e.getMessage();
+            ApiResponse<Void> errorResponse = ApiResponse.<Void>builder()
+                                                         .code(code)
+                                                         .message(message)
+                                                         .build();
             responseException(response, errorResponse);
         }
     }
@@ -122,4 +120,5 @@ public class JwtFilter extends OncePerRequestFilter {
         ObjectMapper mapper = new ObjectMapper();
         return mapper.writeValueAsString(object);
     }
+
 }

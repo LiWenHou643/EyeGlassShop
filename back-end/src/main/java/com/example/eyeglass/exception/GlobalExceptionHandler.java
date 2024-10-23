@@ -21,76 +21,58 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     ApiResponse<Void> handleException(Exception e) {
-        ApiResponse<Void> response = new ApiResponse<>();
-        response.setCode(ErrorCode.UNCATEGORIZED_EXCEPTION.getCode());
-        response.setMessage(ErrorCode.UNCATEGORIZED_EXCEPTION.getMessage());
-        return response;
+        return ApiResponse.<Void>builder()
+                          .code(ErrorCode.UNCATEGORIZED_EXCEPTION.getCode())
+                          .message(ErrorCode.UNCATEGORIZED_EXCEPTION.getMessage())
+                          .build();
     }
 
     @ExceptionHandler(RuntimeException.class)
     ApiResponse<Void> handleRuntimeException(RuntimeException e) {
-        ApiResponse<Void> response = new ApiResponse<>();
-        response.setCode(ErrorCode.UNCATEGORIZED_EXCEPTION.getCode());
-        response.setMessage(ErrorCode.UNCATEGORIZED_EXCEPTION.getMessage());
-        return response;
+        return ApiResponse.<Void>builder()
+                          .code(ErrorCode.UNCATEGORIZED_EXCEPTION.getCode())
+                          .message(ErrorCode.UNCATEGORIZED_EXCEPTION.getMessage())
+                          .build();
     }
 
     @ExceptionHandler(NoHandlerFoundException.class)
     ApiResponse<Void> handleNoHandlerFoundException(NoHandlerFoundException e) {
-        ApiResponse<Void> response = new ApiResponse<>();
-        response.setCode(ErrorCode.PATH_NOT_FOUND.getCode());
-        response.setMessage(ErrorCode.PATH_NOT_FOUND.getMessage());
-        return response;
+        return ApiResponse.<Void>builder()
+                          .code(ErrorCode.PATH_NOT_FOUND.getCode())
+                          .message(ErrorCode.PATH_NOT_FOUND.getMessage())
+                          .build();
     }
 
     @ExceptionHandler(AccessDeniedException.class)
-    ApiResponse<Void> handleAccessDeniedException(AccessDeniedException e) {
-        ApiResponse<Void> response = new ApiResponse<>();
-        response.setCode(ErrorCode.ACCESS_DENIED.getCode());
-        response.setMessage(ErrorCode.ACCESS_DENIED.getMessage());
-        return response;
+    public ApiResponse<Void> handleAccessDeniedException(AccessDeniedException e) {
+        return ApiResponse.<Void>builder()
+                          .code(ErrorCode.ACCESS_DENIED.getCode())
+                          .message(ErrorCode.ACCESS_DENIED.getMessage())
+                          .build();
     }
 
     @ExceptionHandler(AuthorizationDeniedException.class)
-    ApiResponse<Void> handleAuthorizationDeniedException(AuthorizationDeniedException e) {
-        ApiResponse<Void> response = new ApiResponse<>();
-        response.setCode(ErrorCode.ACCESS_DENIED.getCode());
-        response.setMessage(ErrorCode.ACCESS_DENIED.getMessage());
-        return response;
+    public ApiResponse<Void> handleAuthorizationDeniedException(AuthorizationDeniedException e) {
+        return ApiResponse.<Void>builder()
+                          .code(ErrorCode.ACCESS_DENIED.getCode())
+                          .message(ErrorCode.ACCESS_DENIED.getMessage())
+                          .build();
     }
 
     @ExceptionHandler(AppException.class)
-    ApiResponse<Void> handleAppException(AppException e) {
+    public ApiResponse<Void> handleAppException(AppException e) {
         ErrorCode errorCode = e.getErrorCode();
-        ApiResponse<Void> response = new ApiResponse<>();
-        response.setCode(errorCode.getCode());
-        response.setMessage(errorCode.getMessage());
-        return response;
+        return ApiResponse.<Void>builder()
+                          .code(errorCode.getCode())
+                          .message(errorCode.getMessage())
+                          .build();
     }
 
     @ExceptionHandler({InvalidBearerTokenException.class, BadJwtException.class, ParseException.class})
-    ApiResponse<Void> handleInvalidBearerTokenException(InvalidBearerTokenException e) {
-        ApiResponse<Void> response = new ApiResponse<>();
-        response.setCode(ErrorCode.REFRESH_TOKEN_INVALID.getCode());
-        response.setMessage(ErrorCode.REFRESH_TOKEN_INVALID.getMessage());
-        return response;
+    public ApiResponse<Void> handleInvalidBearerTokenException(InvalidBearerTokenException e) {
+        return ApiResponse.<Void>builder()
+                          .code(ErrorCode.REFRESH_TOKEN_INVALID.getCode())
+                          .message(ErrorCode.REFRESH_TOKEN_INVALID.getMessage())
+                          .build();
     }
-
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    ApiResponse<Map<String, String>> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
-        Map<String, String> errors = new HashMap<>();
-
-        e.getBindingResult().getAllErrors().forEach((error) -> {
-            String fieldName = ((FieldError) error).getField();
-            String errorMessage = error.getDefaultMessage();
-            errors.put(fieldName, errorMessage);
-        });
-
-        ApiResponse<Map<String, String>> response = new ApiResponse<>();
-        response.setCode(ErrorCode.REGISTER_FAILED.getCode());
-        response.setData(errors);
-
-        return response;
-    }
-
 }

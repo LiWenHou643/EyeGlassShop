@@ -24,24 +24,21 @@ public class AdminController {
     @PostMapping("/product/add")
     @PreAuthorize("hasAuthority('SCOPE_ADMIN')")
     public ApiResponse<ProductResponse> addProduct(@Valid @RequestBody ProductRequest productRequest) {
-        ApiResponse<ProductResponse> response = new ApiResponse<>();
-        response.setData(productService.addProduct(productRequest));
-        return response;
+        var response = productService.addProduct(productRequest);
+        return ApiResponse.<ProductResponse>builder().data(response).build();
     }
 
     @PostMapping("/product/update")
     @PreAuthorize("hasAuthority('SCOPE_ADMIN')")
     public ApiResponse<ProductResponse> updateProduct(@Valid @RequestBody ProductRequest productRequest) {
-        ApiResponse<ProductResponse> response = new ApiResponse<>();
-        response.setData(productService.updateProduct(productRequest));
-        return response;
+        var response = productService.updateProduct(productRequest);
+        return ApiResponse.<ProductResponse>builder().data(response).build();
     }
 
     @PostMapping("/product/delete")
     @PreAuthorize("hasAuthority('SCOPE_ADMIN')")
     public ApiResponse<ProductResponse> deleteProduct(@Valid @RequestBody ProductRequest productRequest) {
-        ApiResponse<ProductResponse> response = new ApiResponse<>();
         productService.deleteProduct(productRequest);
-        return response;
+        return ApiResponse.<ProductResponse>builder().build();
     }
 }

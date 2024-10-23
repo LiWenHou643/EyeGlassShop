@@ -17,6 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -60,17 +61,15 @@ public class OrderService {
         for (Long id : reqCartItemIds) {
             CartItem cartItem = cartItemMap.get(id);
             if (cartItem != null) {
-                OrderItem orderItem = OrderItem.builder()
-                                               .order(order) // Order will be set later
-                                               .product(cartItem.getProduct())
-                                               .quantity(cartItem.getQuantity())
-                                               .price(cartItem.getPrice())
-                                               .discountPercentage(cartItem.getDiscountPercentage())
-                                               .discountedPrice(cartItem.getDiscountedPrice())
-                                               .totalPrice(cartItem.getTotalPrice())
-                                               .build();
+                OrderItem orderItem = new OrderItem();
+                orderItem.setOrder(order);
+                orderItem.setProduct(cartItem.getProduct());
+                orderItem.setQuantity(cartItem.getQuantity());
+                orderItem.setPrice(cartItem.getPrice());
+                orderItem.setDiscountPercentage(cartItem.getDiscountPercentage());
+                orderItem.setDiscountedPrice(cartItem.getDiscountedPrice());
+                orderItem.setTotalPrice(cartItem.getTotalPrice());
 
-                log.info("Order Item: {} : {}", orderItem.getPrice(), orderItem.getTotalPrice());
                 orderItems.add(orderItem);
                 cartItemsToOrder.add(cartItem);
                 // Remove the item from the cart items list
@@ -82,19 +81,25 @@ public class OrderService {
             throw new AppException(ErrorCode.CART_ITEM_NOT_FOUND);
         }
 
-        order.setSubTotal(orderItems.stream()
-                                    .map(OrderItem::getTotalPrice)
-                                    .reduce(BigDecimal.ZERO, BigDecimal::add));
-        order.setDiscountPercentage(percent);
+        // Calculate subtotal
+        BigDecimal subTotal = orderItems.stream()
+                                        .map(OrderItem::getTotalPrice)
+                                        .reduce(BigDecimal.ZERO, BigDecimal::add);
+        // Calculate discount
+        BigDecimal discount = subTotal.multiply(percent.divide(BigDecimal.valueOf(100), 2, RoundingMode.HALF_UP));
 
+        order.setSubTotal(subTotal);
+        order.setDiscountPercentage(percent);
+        order.setTotal(subTotal.subtract(discount));
         order.setOrderItems(orderItems);
+
         Order savedOrder = saveOrder(order); // Save the order
 
         cartService.deleteCartItems(cartItemsToOrder); // Delete the cart items
         OrderResponse orderResponse = ORDER_MAPPER.toOrderResponse(savedOrder);
-        orderResponse.setOrderItems(orderItems.stream()
-                                              .map(ORDER_MAPPER::toOrderItemResponse)
-                                              .collect(Collectors.toList()));
+        orderResponse = orderResponse.toBuilder().orderItems(orderItems.stream()
+                                                                       .map(ORDER_MAPPER::toOrderItemResponse)
+                                                                       .collect(Collectors.toList())).build();
         return orderResponse; // Return the saved order
     }
 

@@ -31,35 +31,29 @@ public class AuthenticationController {
     @PostMapping("/login")
     public ApiResponse<AuthenticationResponse> authenticateUser(
             @Validated(Login.class) @RequestBody AuthenticationRequest authenticationRequest,
-            HttpServletResponse response) {
-
-        ApiResponse<AuthenticationResponse> res = new ApiResponse<>();
-        res.setMessage("User authenticated successfully");
-        res.setData(authenticationService.authenticate(authenticationRequest, response));
-        return res;
+            HttpServletResponse httpServletResponse) {
+        var response = authenticationService.authenticate(authenticationRequest, httpServletResponse);
+        return ApiResponse.<AuthenticationResponse>builder().message("User authenticated successfully").data(response)
+                          .build();
     }
 
     @PostMapping("/register")
     public ApiResponse<PersonResponse> registerUser(@Validated(Create.class) @RequestBody RegisterRequest request) {
-        ApiResponse<PersonResponse> res = new ApiResponse<>();
-        res.setMessage("User registered successfully");
-        res.setData(authenticationService.register(request));
-        return res;
+        var response = authenticationService.register(request);
+        return ApiResponse.<PersonResponse>builder().message("User registered successfully").data(response)
+                          .build();
     }
 
     @GetMapping("/logout")
-    public ApiResponse<String> logoutUser(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
+    public ApiResponse<Void> logoutUser(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
         logoutHandlerService.logout(request, response, authentication);
-        ApiResponse<String> res = new ApiResponse<>();
-        res.setMessage("User logged out successfully");
-        return res;
+        return ApiResponse.<Void>builder().message("User logout successfully").build();
     }
 
     @GetMapping("/refresh")
     public ApiResponse<AuthenticationResponse> refreshToken(HttpServletRequest request) {
-        ApiResponse<AuthenticationResponse> res = new ApiResponse<>();
-        res.setMessage("Token refreshed successfully");
-        res.setData(authenticationService.refreshToken(request));
-        return res;
+        var response = authenticationService.refreshToken(request);
+        return ApiResponse.<AuthenticationResponse>builder().message("Token refreshed successfully").data(response)
+                          .build();
     }
 }

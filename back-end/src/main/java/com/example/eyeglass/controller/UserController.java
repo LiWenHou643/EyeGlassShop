@@ -19,22 +19,19 @@ public class UserController {
 
     PersonService personService;
 
-    @PreAuthorize("hasAuthority('SCOPE_USER')")
     @GetMapping
+    @PreAuthorize("hasAuthority('SCOPE_USER')")
     public ApiResponse<PersonResponse> getUser() {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        ApiResponse<PersonResponse> response = new ApiResponse<>();
-        response.setMessage("User get successfully");
-        response.setData(personService.getPersonByEmail(username));
-        return response;
+        var response = personService.getPersonByEmail(username);
+        return ApiResponse.<PersonResponse>builder().message("User get successfully").data(response).build();
     }
 
     @PutMapping(value = "/update")
+    @PreAuthorize("hasAuthority('SCOPE_USER')")
     public ApiResponse<PersonResponse> updateUser(@RequestBody UpdateProfileRequest request) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        ApiResponse<PersonResponse> response = new ApiResponse<>();
-        response.setMessage("User updated successfully");
-        response.setData(personService.updatePerson(username, request));
-        return response;
+        var response = personService.updatePerson(username, request);
+        return ApiResponse.<PersonResponse>builder().message("User get successfully").data(response).build();
     }
 }

@@ -13,9 +13,7 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@ToString
 @Entity
-@Builder
 @Table(name = "orders")
 public class Order extends BaseEntity {
 
@@ -29,13 +27,11 @@ public class Order extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    @Builder.Default
     OrderStatus status = OrderStatus.PENDING; // ENUM for status
 
     @Column(nullable = false, precision = 10, scale = 2)
     BigDecimal subTotal; // Total before discounts
 
-    @Column(nullable = false, precision = 10, scale = 2)
     @Transient
     BigDecimal total; // Total after discounts
 
@@ -52,6 +48,5 @@ public class Order extends BaseEntity {
     PaymentMethod paymentMethod; // ENUM for payment method
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.LAZY) // Lazy loading
-    @Builder.Default
     Set<OrderItem> orderItems = new HashSet<>();
 }

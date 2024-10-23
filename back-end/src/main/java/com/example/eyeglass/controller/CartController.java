@@ -21,15 +21,9 @@ public class CartController {
     @PreAuthorize("hasAuthority('SCOPE_USER')")
     public ApiResponse<CartResponse> getCartItems() {
         String userName = SecurityContextHolder.getContext().getAuthentication().getName();
-        CartResponse cart = cartService.getCartItems(userName);
-        ApiResponse<CartResponse> response = new ApiResponse<>();
-        if (cart == null) {
-            response.setMessage("Cart is empty");
-        } else {
-            response.setMessage("Cart items retrieved successfully");
-        }
-        response.setData(cart);
-        return response;
+        var cart = cartService.getCartItems(userName);
+        var message = cart == null ? "Cart is empty" : "Cart items retrieved successfully";
+        return ApiResponse.<CartResponse>builder().message(message).data(cart).build();
     }
 
     @PostMapping(value = "/add")
