@@ -32,7 +32,7 @@ public class JwtGenerator {
         JwtClaimsSet claims = JwtClaimsSet.builder()
                                           .issuer("eyeglass")
                                           .issuedAt(Instant.now())
-                                          .expiresAt(Instant.now().plus(30, ChronoUnit.SECONDS))
+                                          .expiresAt(Instant.now().plus(60, ChronoUnit.SECONDS))
                                           .subject(person.getEmail())
                                           .claim("scope", person.getRoles().getName())
                                           .build();

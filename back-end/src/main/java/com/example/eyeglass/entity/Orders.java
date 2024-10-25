@@ -14,20 +14,28 @@ import java.util.Set;
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
+@Builder
 @Table(name = "orders")
-public class Order extends BaseEntity {
+public class Orders extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id; // Primary Key
+    Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "person_id", nullable = false)
-    Person person; // Foreign key to users table
+    @ManyToOne
+    @JoinColumn(name = "person_id", referencedColumnName = "id")
+    Person person;
+
+    @OneToMany(mappedBy = "orders", cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    Set<OrderItem> orderItems = new HashSet<>();
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     OrderStatus status = OrderStatus.PENDING; // ENUM for status
+
+    @OneToOne(mappedBy = "orders", cascade = CascadeType.PERSIST)
+    @PrimaryKeyJoinColumn
+    Payments payment;
 
     @Column(nullable = false, precision = 10, scale = 2)
     BigDecimal subTotal; // Total before discounts
@@ -43,10 +51,5 @@ public class Order extends BaseEntity {
     @Column(nullable = false)
     String shippingAddress; // Shipping address
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    PaymentMethod paymentMethod; // ENUM for payment method
 
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.LAZY) // Lazy loading
-    Set<OrderItem> orderItems = new HashSet<>();
 }

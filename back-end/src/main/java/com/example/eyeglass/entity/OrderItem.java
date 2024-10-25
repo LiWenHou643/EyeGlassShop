@@ -12,6 +12,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
+@Builder
 @Table(name = "order_item")
 public class OrderItem extends BaseEntity {
 
@@ -19,18 +20,19 @@ public class OrderItem extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id; // Primary Key
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "order_id", nullable = false)
-    Order order;
+    @ManyToOne
+    @JoinColumn(name = "order_id", referencedColumnName = "id", nullable = false)
+    Orders orders;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_id", nullable = false)
+    @OneToOne
+    @JoinColumn(name = "product_id", referencedColumnName = "id", nullable = false)
     Product product; // Foreign key to products table
 
     @Column(nullable = false)
     Integer quantity; // Number of items ordered
 
     @Column(nullable = false, precision = 5, scale = 2)
+    @Builder.Default
     BigDecimal discountPercentage = BigDecimal.ZERO; // Discount for this specific item
 
     @Column(nullable = false, precision = 10, scale = 2)

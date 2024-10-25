@@ -87,19 +87,6 @@ CREATE TABLE `cart_item`
     `quantity` 		TINYINT NOT NULL CHECK (`quantity` > 0),
     `price` DECIMAL(10, 2)   NOT NULL,
     `discount_percentage` DECIMAL(5, 2) DEFAULT 0,  -- Discount percentage (0 to 100)
-    `discounted_price` DECIMAL(10, 2) AS (`price` * (100 - `discount_percentage` / 100)) STORED,
-    `total_price` DECIMAL(10, 2) AS (`discounted_price` * `quantity`) STORED,
-    `created_at` 	TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    `updated_at` 	TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-);
-CREATE TABLE `cart_item`
-(
-    `id`            INT PRIMARY KEY AUTO_INCREMENT,
-    `cart_id`       INT NOT NULL,
-    `product_id`    INT NOT NULL,
-    `quantity` 		TINYINT NOT NULL CHECK (`quantity` > 0),
-    `price` DECIMAL(10, 2)   NOT NULL,
-    `discount_percentage` DECIMAL(5, 2) DEFAULT 0,  -- Discount percentage (0 to 100)
     `discounted_price` DECIMAL(10, 2) AS (`price` * (1 - `discount_percentage` / 100)) STORED,
     `total_price` DECIMAL(12, 2) AS (`discounted_price` * `quantity`) STORED,
     `created_at` 	TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -109,7 +96,7 @@ CREATE TABLE `cart_item`
 CREATE TABLE `orders` (
     `id` INT AUTO_INCREMENT PRIMARY KEY,
     `person_id` INT NOT NULL,
-    `status` ENUM('pending', 'cod_pending', 'confirmed', 'processing', 'shipped', 'delivered', 'cancelled', 'refunded') NOT NULL,  -- Updated status options
+    `status` ENUM('PENDING', 'PROCESSING', 'SHIPPED', 'DELIVERED', 'CANCALLED', 'REFUNDED') NOT NULL,  -- Updated status options
     `sub_total` DECIMAL(10, 2) NOT NULL,
     `discount_percentage` DECIMAL(5,2) DEFAULT 0.00,
     `total` DECIMAL(10, 2) AS (`sub_total` * (1 - `discount_percentage` / 100)) STORED,
@@ -123,10 +110,10 @@ CREATE TABLE `orders` (
 CREATE TABLE `payments` (
 	`id` INT AUTO_INCREMENT PRIMARY KEY,
 	`order_id` INT NOT NULL,
-    `status` ENUM('paid', 'unpaid', 'failed', 'refunded') NOT NULL,
+    `status` ENUM('PAID', 'UNPAID', 'FAILED', 'REFUNDED') NOT NULL,
     `amount`   DECIMAL(10, 2) NOT NULL,
-    `payment_method` ENUM('paypal', 'cash_on_delivery') NOT NULL,  -- Updated payment options
-    `transaction_id` VARCHAR(100) UNIQUE,  -- Unique transaction ID for payment tracking
+    `payment_method` ENUM('PAYPAL', 'CASH_ON_DELIVERY') NOT NULL,  -- Updated payment options
+    `transaction_id` VARCHAR(100) UNIQUE DEFAULT NULL,  -- Unique transaddressaction ID for payment tracking
     `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (`order_id`) REFERENCES `orders`(`id`) ON DELETE CASCADE

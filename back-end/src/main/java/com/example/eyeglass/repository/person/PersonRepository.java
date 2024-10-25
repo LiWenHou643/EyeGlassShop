@@ -8,9 +8,6 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-@NonNullApi
 public interface PersonRepository extends JpaRepository<Person, Long> {
-    Optional<Person> findById(Long id);
-
     Optional<Person> findByEmail(String email);
 }

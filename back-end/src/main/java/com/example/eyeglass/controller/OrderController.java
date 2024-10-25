@@ -3,15 +3,15 @@ package com.example.eyeglass.controller;
 import com.example.eyeglass.dto.request.OrderRequest;
 import com.example.eyeglass.dto.response.ApiResponse;
 import com.example.eyeglass.dto.response.PaymentResponse;
+import com.example.eyeglass.entity.PaymentMethod;
+import com.example.eyeglass.exception.AppException;
+import com.example.eyeglass.exception.ErrorCode;
 import com.example.eyeglass.service.OrderService;
 import com.example.eyeglass.service.PaypalService;
-import com.example.eyeglass.service.StripeService;
-import com.stripe.exception.StripeException;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,15 +22,23 @@ import org.springframework.web.bind.annotation.RestController;
 public class OrderController {
     OrderService orderService;
     PaypalService paypalService;
-    StripeService stripeService;
 
-    @PostMapping("/order")
+    @PostMapping("/order/create")
     @PreAuthorize("hasAuthority('SCOPE_USER')")
-    public ApiResponse<PaymentResponse> createOrder(@RequestBody OrderRequest req) throws StripeException {
-        String userName = SecurityContextHolder.getContext().getAuthentication().getName();
-        var order = orderService.createOrder(req, userName);
-        var res = stripeService.createPaymentLink(order);
-//        var res = paypalService.createPaymentLink(order);
-        return ApiResponse.<PaymentResponse>builder().message("Order created successfully").data(res).build();
+    public ApiResponse<PaymentResponse> createOrder(@RequestBody OrderRequest req) {
+        var order = orderService.createOrder(req);
+
+        // Save the payment into database
+        paypalService.savePayment(order, null, req.paymentMethod()); // Save the payment
+        if (req.paymentMethod().equals(PaymentMethod.PAYPAL)) {
+            // Create PayPal link for online payment
+            PaymentResponse link = paypalService.createPayment(order);
+            return ApiResponse.<PaymentResponse>builder().data(link).build();
+        } else if (req.paymentMethod().equals(PaymentMethod.CASH_ON_DELIVERY)) {
+            // Do nothing
+        } else {
+            throw new AppException(ErrorCode.PAYMENT_METHOD_NOT_SUPPORTED);
+        }
+        return null;
     }
 }

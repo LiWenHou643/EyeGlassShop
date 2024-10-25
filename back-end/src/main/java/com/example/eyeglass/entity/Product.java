@@ -57,10 +57,10 @@ public class Product {
     @Column(name = "is_deleted")
     boolean deleted = false;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST, targetEntity = Category.class)
+    @ManyToOne
     @JoinColumn(name = "category_id", referencedColumnName = "id", nullable = false)
     Category category;
 
-    @OneToMany(mappedBy = "product")
+    @OneToMany(mappedBy = "product", cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     Set<CartItem> cartItems = new HashSet<>();
 }

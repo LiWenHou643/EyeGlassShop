@@ -28,6 +28,10 @@ public class Person {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
+    @OneToMany(mappedBy = "person", cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    @Builder.Default
+    Set<Orders> ordersSet = new HashSet<>();
+
     @Column(name = "full_name")
     @NotBlank(message = "Full name cannot be blank", groups = {Create.class, Update.class})
     @Size(min = 3, max = 50, message = "Full name must be between 3 and 50 characters", groups = {Create.class, Update.class})
@@ -63,6 +67,6 @@ public class Person {
     Cart cart;
 
     @OneToMany(mappedBy = "person", cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    @Builder.Default
     Set<RefreshToken> refreshTokens = new HashSet<>();
-
 }

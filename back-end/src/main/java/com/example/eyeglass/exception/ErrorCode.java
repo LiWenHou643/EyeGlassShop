@@ -33,6 +33,10 @@ public enum ErrorCode {
 
     CART_ITEM_NOT_FOUND(3001, "Cart item not found", HttpStatus.NOT_FOUND),
     FAILED_TO_CREATE_ORDER(3002, "Failed to create order", HttpStatus.BAD_REQUEST),
+    ORDER_NOT_FOUND(3003, "Order not found", HttpStatus.NOT_FOUND),
+
+    PAYMENT_METHOD_NOT_SUPPORTED(4001, "Payment method not supported", HttpStatus.BAD_REQUEST),
+    PAYPAL_FAILED(4002, "Paypal failed", HttpStatus.BAD_REQUEST),
     ;
 
     ErrorCode(int code, String message, HttpStatusCode statusCode) {

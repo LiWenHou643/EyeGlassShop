@@ -14,18 +14,21 @@ import java.math.BigDecimal;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Table(name = "payments")
-public class Payment {
+public class Payments {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
-    @Column(name = "order_id", nullable = false)
-    Long orderId;
+    @OneToOne
+    @MapsId
+    @JoinColumn(name = "order_id")
+    Orders orders;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    PaymentStatus status;
+    @Builder.Default
+    PaymentStatus status = PaymentStatus.UNPAID;
 
     @Column(nullable = false, precision = 10, scale = 2)
     BigDecimal amount;

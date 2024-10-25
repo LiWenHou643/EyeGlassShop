@@ -97,12 +97,11 @@ public class AuthenticationService {
         Person personExist = personRepository.findByEmail(request.getEmail()).orElse(null);
         if (personExist != null) throw new AppException(ErrorCode.USER_EXISTED);
 
-        Person person = Person.builder()
-                              .fullName(request.getFullName())
-                              .email(request.getEmail())
-                              .password(passwordEncoder.encode(request.getPassword()))
-                              .roles(role.get())
-                              .build();
+        Person person = new Person();
+        person.setFullName(request.getFullName());
+        person.setEmail(request.getEmail());
+        person.setPassword(passwordEncoder.encode(request.getPassword()));
+        person.setRoles(role.get());
         Person isSaved = personRepository.save(person);
 
         Cart cart = Cart.builder().person(isSaved).build();
