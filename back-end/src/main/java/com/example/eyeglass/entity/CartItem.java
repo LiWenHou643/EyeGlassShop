@@ -12,6 +12,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
+@Builder
 @Table(name = "cart_item")
 public class CartItem extends BaseEntity {
     @Id
@@ -27,10 +28,13 @@ public class CartItem extends BaseEntity {
     @Column(precision = 5, scale = 2)
     BigDecimal discountPercentage;
 
-    @Column(precision = 10, scale = 2)
+    @Access(AccessType.PROPERTY)
+    @Column(name = "discounted_price", precision = 10, scale = 2, insertable = false, updatable = false)
     BigDecimal discountedPrice;
 
-    @Column(precision = 10, scale = 2)
+
+    @Access(AccessType.PROPERTY)
+    @Column(name = "total_price", precision = 10, scale = 2, insertable = false, updatable = false)
     BigDecimal totalPrice;
 
     @ManyToOne

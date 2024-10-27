@@ -1,5 +1,5 @@
-import axios from './axios';
 import { PAGE_SIZE } from '../utils/constant';
+import axios from './axios';
 
 export const getProducts = async ({
     category,

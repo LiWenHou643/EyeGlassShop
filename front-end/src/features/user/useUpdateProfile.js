@@ -1,10 +1,10 @@
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'react-hot-toast';
 import { useAxiosPrivate } from '../../hooks/useAxiosPrivate';
 
 export function useUpdateProfile() {
     const axiosPrivate = useAxiosPrivate();
-
+    const queryClient = useQueryClient();
     const update = async (data) => {
         try {
             console.log('Trying update profile:', data);
@@ -20,6 +20,7 @@ export function useUpdateProfile() {
             mutationFn: update,
             onSuccess: (response) => {
                 toast.success(response.message);
+                queryClient.invalidateQueries('user');
                 return response.data;
             },
             onError: (error) => {

@@ -98,14 +98,17 @@ public class CartService {
             cartItem.setCart(cart);
             cartItem.setProduct(product);
             cartItem.setQuantity(quantity);
+            cartItem.setPrice(price);
             // Convert discountPercent to BigDecimal
             BigDecimal discountBigDecimal = discountPercent
                     .divide(BigDecimal.valueOf(100), RoundingMode.HALF_UP);
             // Calculate price at time (original price minus discount)
             BigDecimal discountAmount = price.multiply(discountBigDecimal);
-            BigDecimal priceAtTime = price.subtract(discountAmount);
-            cartItem.setPrice(priceAtTime);
-
+            BigDecimal discountedPrice = price.subtract(discountAmount);
+            cartItem.setDiscountPercentage(discountPercent);
+            cartItem.setDiscountedPrice(discountedPrice);
+            cartItem.setTotalPrice(discountedPrice.multiply(BigDecimal.valueOf(quantity)));
+            
             cart.getCartItems().add(cartItem);
             saveCart(cart);
 

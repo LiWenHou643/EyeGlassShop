@@ -7,7 +7,7 @@ import com.example.eyeglass.entity.PaymentMethod;
 import com.example.eyeglass.exception.AppException;
 import com.example.eyeglass.exception.ErrorCode;
 import com.example.eyeglass.service.OrderService;
-import com.example.eyeglass.service.PaypalService;
+import com.example.eyeglass.service.PaymentService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -21,24 +21,23 @@ import org.springframework.web.bind.annotation.RestController;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class OrderController {
     OrderService orderService;
-    PaypalService paypalService;
+    PaymentService paymentService;
 
     @PostMapping("/order/create")
     @PreAuthorize("hasAuthority('SCOPE_USER')")
     public ApiResponse<PaymentResponse> createOrder(@RequestBody OrderRequest req) {
         var order = orderService.createOrder(req);
-
         // Save the payment into database
-        paypalService.savePayment(order, null, req.paymentMethod()); // Save the payment
+        paymentService.savePayment(order, null, req.paymentMethod()); // Save the payment
         if (req.paymentMethod().equals(PaymentMethod.PAYPAL)) {
             // Create PayPal link for online payment
-            PaymentResponse link = paypalService.createPayment(order);
+            PaymentResponse link = paymentService.createPaypalPayment(order);
             return ApiResponse.<PaymentResponse>builder().data(link).build();
         } else if (req.paymentMethod().equals(PaymentMethod.CASH_ON_DELIVERY)) {
-            // Do nothing
+            PaymentResponse link = paymentService.createPayment(order);
+            return ApiResponse.<PaymentResponse>builder().data(link).build();
         } else {
             throw new AppException(ErrorCode.PAYMENT_METHOD_NOT_SUPPORTED);
         }
-        return null;
     }
 }

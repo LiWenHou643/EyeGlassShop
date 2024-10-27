@@ -11,5 +11,5 @@ export function useProduct(id) {
         }
     );
 
-    return { isLoading, error, data };
+    return { isLoading, error, data: data?.data };
 }

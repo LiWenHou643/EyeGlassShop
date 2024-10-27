@@ -40,16 +40,15 @@ public class OrderService {
     public Orders createOrder(OrderRequest req) {
         Person person = personRepository.findById(req.personId())
                                         .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
-        Code code = codeService.checkCode(req.promoCode());
-        BigDecimal percent = code.getValue();
+        Code code = req.promoCode().isEmpty() ? null : codeService.checkCode(req.promoCode());
+        BigDecimal percent = code == null ? BigDecimal.ZERO : code.getValue();
 
         List<Long> reqCartItemIds = req.selectedCartItems();
         Set<OrderItem> orderItems = new HashSet<>();
-//
-//        // Get cart items from cart
+        // Get cart items from cart
         Cart cart = person.getCart();
         Set<CartItem> cartItems = (cart.getCartItems());
-//        // Convert cart items to map for easy access
+        // Convert cart items to map for easy access
         Map<Long, CartItem> cartItemMap = cartItems.stream()
                                                    .collect(Collectors.toMap(CartItem::getId,
                                                            cartItem -> cartItem));
@@ -76,14 +75,14 @@ public class OrderService {
         if (orderItems.isEmpty() || cartItems.isEmpty()) {
             throw new AppException(ErrorCode.CART_ITEM_NOT_FOUND);
         }
-//
-//        // Calculate subtotal
+
+        // Calculate subtotal
         BigDecimal subTotal = orderItems.stream()
                                         .map(OrderItem::getTotalPrice)
                                         .reduce(BigDecimal.ZERO, BigDecimal::add);
-//        // Calculate discount
+        // Calculate discount
         BigDecimal discount = subTotal.multiply(percent.divide(BigDecimal.valueOf(100), 2, RoundingMode.HALF_UP));
-//
+
         orders.setPerson(person);
         orders.setShippingAddress(req.shippingAddress());
         orders.setPromoCode(req.promoCode());

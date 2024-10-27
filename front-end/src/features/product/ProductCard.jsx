@@ -2,6 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import ImageContainer from '../../ui/ImageContainer';
 import BaseStyledLink from '../../ui/Link';
+import { CURRENCY } from '../../utils/constant';
 import {
     countDiscount,
     formatPrice,
@@ -55,7 +56,9 @@ function ProductCard({ item, isSlider }) {
                                 </h4>
                             </>
                         ) : (
-                            <h4 className='mb-0'>{formatPrice(item.price)}d</h4>
+                            <h4 className='mb-0'>
+                                {CURRENCY + formatPrice(item.price)}
+                            </h4>
                         )}
                     </div>
                 </CardPrice>
@@ -106,7 +109,8 @@ const CardTitle = styled.p`
     font-weight: 500;
     text-decoration: none;
     margin: 0.6rem 0 !important;
-    display: -webkit-box;
+    display: -webkit-bimport { CURRENCY } from '../../utils/constant';
+ox;
     -webkit-line-clamp: 1;
     -webkit-box-orient: vertical;
     overflow: hidden;

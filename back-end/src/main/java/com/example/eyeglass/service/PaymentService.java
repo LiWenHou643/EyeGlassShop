@@ -25,7 +25,7 @@ import static lombok.AccessLevel.PRIVATE;
 @Transactional
 @RequiredArgsConstructor
 @FieldDefaults(level = PRIVATE, makeFinal = true)
-public class PaypalService {
+public class PaymentService {
     APIContext apiContext;
     JwtGenerator jwtGenerator;
     PaymentRepository paymentRepository;
@@ -44,6 +44,36 @@ public class PaypalService {
     }
 
     public PaymentResponse createPayment(Orders orders) {
+        Set<OrderItem> orderItems = orders.getOrderItems();
+        Cart cart = orders.getPerson().getCart();
+        Set<CartItem> cartItems = cart.getCartItems();
+        Set<CartItem> cartItemsToDelete = new HashSet<>();
+
+        Set<Long> orderItemIds = orderItems.stream()
+                                           .map(OrderItem::getId)
+                                           .collect(Collectors.toSet());
+
+        // Iterate through cart items and add to the delete set if their ID matches an order item ID
+        for (CartItem cartItem : cartItems) {
+            if (orderItemIds.contains(cartItem.getId())) {
+                cartItemsToDelete.add(cartItem);
+            }
+        }
+        // Update product stock and sold quantity
+        orders.getOrderItems().forEach(orderItem -> {
+            orderItem.getProduct().setStockQuantity(
+                    orderItem.getProduct().getStockQuantity() - orderItem.getQuantity());
+            orderItem.getProduct().setSoldQuantity(
+                    orderItem.getProduct().getSoldQuantity() + orderItem.getQuantity());
+        });
+
+        orderService.saveOrder(orders);
+        cartService.deleteCartItems(cartItemsToDelete);
+
+        return PaymentResponse.builder().paymentUrl("cash_on_delivery").build();
+    }
+
+    public PaymentResponse createPaypalPayment(Orders orders) {
         try {
             Person person = orders.getPerson();
             String jwt = jwtGenerator.generatePaypalToken(person);
@@ -51,7 +81,7 @@ public class PaypalService {
             final String cancelUrl = "http://localhost:8080/payment/cancel";
             final String successUrl = "http://localhost:8080/payment/success?orderId=%s&accessToken=%s".formatted(
                     orders.getId(), jwt);
-            Payment payment = createPaymentLink(
+            Payment payment = createPaypalLink(
                     orders.getTotal(), "USD", "paypal", "sale", "Payment description",
                     cancelUrl, successUrl);
 
@@ -66,7 +96,7 @@ public class PaypalService {
         }
     }
 
-    public Payment createPaymentLink(BigDecimal total, String currency, String method, String intent, String description, String cancelUrl, String successUrl) throws PayPalRESTException {
+    public Payment createPaypalLink(BigDecimal total, String currency, String method, String intent, String description, String cancelUrl, String successUrl) throws PayPalRESTException {
         Amount amount = new Amount();
         amount.setCurrency(currency);
         amount.setTotal(String.format("%.2f", total));
@@ -93,7 +123,7 @@ public class PaypalService {
         return payment.create(apiContext);
     }
 
-    public String executePayment(String paymentId, String payerId, String orderId) throws PayPalRESTException {
+    public String executePaypalPayment(String paymentId, String payerId, String orderId) throws PayPalRESTException {
 
         // Update order status and product stock
         Orders orders = orderService.findById(Long.parseLong(orderId));
@@ -121,8 +151,6 @@ public class PaypalService {
             orderItem.getProduct().setSoldQuantity(
                     orderItem.getProduct().getSoldQuantity() + orderItem.getQuantity());
         });
-        orderService.saveOrder(orders);
-        cartService.deleteCartItems(cartItemsToDelete);
 
         Payment payment = new Payment();
         payment.setId(paymentId);
@@ -133,6 +161,8 @@ public class PaypalService {
             payment.execute(apiContext, paymentExecute);
         } catch (PayPalRESTException e) {
             // Log error and throw a custom exception to trigger rollback
+            orders.setStatus(OrderStatus.CANCELLED);
+            payments.setStatus(PaymentStatus.FAILED);
             throw new PayPalRESTException("Error executing payment", e);
         }
 
@@ -149,7 +179,9 @@ public class PaypalService {
                         // Update the payment with the transaction ID
                         payments.setStatus(PaymentStatus.PAID);
                         payments.setTransactionId(transactionId);
+                        payments.setOrders(orders);
                         paymentRepository.save(payments);
+                        cartService.deleteCartItems(cartItemsToDelete);
                         System.out.printf("Sandbox Transaction ID: %s%n", transactionId);
                     } else {
                         System.out.println("Sale not found in related resources.");
@@ -162,7 +194,12 @@ public class PaypalService {
             }
             return "Payment executed successfully.";
         } else {
+            orders.setStatus(OrderStatus.CANCELLED);
+            payments.setStatus(PaymentStatus.FAILED);
+            payments.setOrders(orders);
+            paymentRepository.save(payments);
             return "Payment not approved.";
         }
+
     }
 }

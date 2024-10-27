@@ -55,7 +55,7 @@ public class ProductService {
     }
 
     public Page<ProductResponse> getMostDiscountProducts(int limit) {
-        Pageable pageable = PageRequest.of(0, limit, Sort.by(Sort.Direction.DESC, "discount"));
+        Pageable pageable = PageRequest.of(0, limit, Sort.by(Sort.Direction.DESC, "discountPercentage"));
         Page<Product> productPage = productRepository.findAllByDeletedIsFalse(pageable);
         // Map Product entities to ProductResponse DTOs
         return productPage.map(PRODUCT_MAPPER::toProductResponse);

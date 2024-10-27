@@ -10,7 +10,7 @@ function Form({ onSubmit, children, className }) {
     return (
         <StyledForm
             onSubmit={onSubmit}
-            className={`${className} w-100 d-flex flex-column gap-4`}
+            className={`${className} d-flex flex-column gap-4`}
         >
             {children}
         </StyledForm>

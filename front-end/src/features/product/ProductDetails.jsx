@@ -33,6 +33,8 @@ function ProductDetails() {
 
     const { data: product, isLoading, error } = useProduct(productId);
 
+    console.log('product', product);
+
     if (isLoading) {
         return (
             <Loading>
@@ -105,7 +107,7 @@ function ProductDetails() {
                                         starHoverColor='#E0610DFF'
                                         starEmptyColor='#999999FF'
                                         rating={4.6}
-                                        starDimension='2.4rem'
+                                        starDimension='2rem'
                                         starSpacing='0.1rem'
                                     />
                                 </div>

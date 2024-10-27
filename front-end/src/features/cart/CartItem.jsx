@@ -6,6 +6,7 @@ import { useCartCtx } from '../../hooks/useCartCtx';
 import Button from '../../ui/Button';
 import ImageContainer from '../../ui/ImageContainer';
 import NumberInput from '../../ui/NumberInput';
+import { CURRENCY } from '../../utils/constant';
 import { formatPrice } from '../../utils/helperFunction';
 import { useAddToCart } from './useAddToCart';
 
@@ -76,13 +77,13 @@ const CartItem = ({ item, isChecked, onChange }) => {
                 <hr />
                 <div className='d-flex justify-content-between align-items-center'>
                     <p className='col-4'>
-                        Price: {formatPrice(item.priceAtTime)} VND
+                        Price: {formatPrice(item.price)} {CURRENCY}
                     </p>
                     <p className='col-4 text-center'>
-                        Discount: {item.discount}%
+                        Discount: {item.discountPercentage}%
                     </p>
                     <p className='col-4 text-end'>
-                        Total: {formatPrice(item.totalPrice)} VND
+                        Total: {formatPrice(item.totalPrice)} {CURRENCY}
                     </p>
                 </div>
             </div>

@@ -19,26 +19,26 @@ export const formatDate = (date) => {
 };
 
 export const exactNameFromEmail = (email) => {
-    return email.split('@')[0];
+    return email?.split('@')[0];
 };
 
 export const capitalizeFirstLetter = (string) => {
-    return string.charAt(0).toUpperCase() + string.slice(1);
+    return string?.charAt(0).toUpperCase() + string?.slice(1);
 };
 
 export const countDiscount = (price, discount) => {
     return price - (price * discount) / 100;
 };
 
-export const formatPrice = (price) => {
-    return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+export const formatPrice = (value, decimals = 2) => {
+    const factor = Math.pow(10, decimals);
+    return Math.round(value * factor) / factor;
 };
-
 export const formatSoldAmount = (soldAmount) => {
     if (soldAmount >= 1000) {
         return (soldAmount / 1000).toFixed(1).replace('.0', '') + 'k';
     }
-    return soldAmount.toString();
+    return soldAmount?.toString();
 };
 
 export const logJwtLifeTime = (token) => {
@@ -60,46 +60,54 @@ export const logJwtLifeTime = (token) => {
           );
 };
 
+export const formatAddress = (address) => {
+    return `${address?.streetAddress}, ${address?.ward}, ${address?.district}, ${address?.city}`;
+};
+
+const getCoordinates = async (address) => {
+    const formattedAddress = formatAddress(address);
+    const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(
+        formattedAddress
+    )}`;
+
+    try {
+        const response = await fetch(url);
+        const data = await response.json();
+
+        if (data.length > 0) {
+            const { lat, lon } = data[0]; // Get latitude and longitude from the first result
+            return { lat, lon };
+        } else {
+            console.error('No results found.');
+        }
+    } catch (error) {
+        console.error('Error fetching coordinates:', error);
+    }
+};
+
 export const haversineDistance = async (address) => {
-    const coord1 = SHIPPING_CONSTANTS.SHOP_LOCATION;
+    const apiKey = SHIPPING_CONSTANTS.MAP_API_KEY; // Replace with your OpenRouteService API key
+    const endCoords = SHIPPING_CONSTANTS.SHOP_LOCATION;
+    const startCoords = await getCoordinates(address);
 
-    const formattedAddress = `${address.streetAddress}, ${address.ward}, ${address.district}, ${address.city}, Vietnam`;
+    const url = `https://api.openrouteservice.org/v2/directions/driving-car?start=${startCoords.lon},${startCoords.lat}&end=${endCoords.lon},${endCoords.lat}&api_key=${apiKey}`;
 
-    console.log(formattedAddress);
-    const response = await fetch(
-        `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(
-            formattedAddress
-        )}`
-    );
+    try {
+        const response = await fetch(url);
+        const data = await response.json();
 
-    if (!response.ok) {
-        throw new Error('Failed to fetch coordinates');
+        if (data.features && data.features.length > 0) {
+            const route = data.features[0];
+            const distance = route.properties.segments[0].distance; // Distance in meters
+
+            return (distance / 1000).toFixed(2);
+        } else {
+            console.log('No routes found.');
+        }
+    } catch (error) {
+        console.error('Error fetching distance:', error);
+        throw error; // Propagate error for further handling
     }
-
-    const data = await response.json();
-    console.log(data);
-
-    if (data.length === 0) {
-        throw new Error('No results found');
-    }
-    const coord2 = data[0];
-
-    const toRad = (value) => (value * Math.PI) / 180;
-
-    const R = 6371; // Radius of the Earth in kilometers
-    const dLat = toRad(coord2.lat - coord1.lat);
-    const dLon = toRad(coord2.lon - coord1.lon);
-
-    const a =
-        Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-        Math.cos(toRad(coord1.lat)) *
-            Math.cos(toRad(coord2.lat)) *
-            Math.sin(dLon / 2) *
-            Math.sin(dLon / 2);
-
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-
-    return parseFloat((R * c).toFixed(2)); // Distance in kilometers
 };
 
 export const calculateDeliveryCost = (distance) => {

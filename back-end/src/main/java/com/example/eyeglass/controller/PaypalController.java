@@ -4,9 +4,7 @@ import com.example.eyeglass.config.Authentication.JwtUtils;
 import com.example.eyeglass.dto.response.ApiResponse;
 import com.example.eyeglass.exception.AppException;
 import com.example.eyeglass.exception.ErrorCode;
-import com.example.eyeglass.service.OrderService;
-import com.example.eyeglass.service.PaypalService;
-import com.example.eyeglass.service.product.CartService;
+import com.example.eyeglass.service.PaymentService;
 import com.paypal.base.rest.PayPalRESTException;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -21,7 +19,7 @@ import static lombok.AccessLevel.PRIVATE;
 @FieldDefaults(level = PRIVATE, makeFinal = true)
 @RequiredArgsConstructor
 public class PaypalController {
-    PaypalService paypalService;
+    PaymentService paymentService;
     JwtUtils jwtUtils;
 
     @GetMapping("/payment/success")
@@ -40,7 +38,7 @@ public class PaypalController {
             }
 
             // Execute payment
-            String payment = paypalService.executePayment(paymentId, payerId, orderId);
+            String payment = paymentService.executePaypalPayment(paymentId, payerId, orderId);
             return ApiResponse.<String>builder()
                               .data(payment)
                               .message("Payment executed successfully.")

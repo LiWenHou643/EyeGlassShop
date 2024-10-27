@@ -386,7 +386,6 @@ VALUES ('1', 'vip10', '10'),
        
 -- SHOW TABLES;
 -- SET FOREIGN_KEY_CHECKS = 0;
-
 -- TRUNCATE TABLE address;
 -- TRUNCATE TABLE cart;
 -- TRUNCATE TABLE cart_item;
@@ -402,6 +401,5 @@ VALUES ('1', 'vip10', '10'),
 -- TRUNCATE TABLE ratings;
 -- TRUNCATE TABLE refresh_tokens;
 -- TRUNCATE TABLE roles;
-
 -- SET FOREIGN_KEY_CHECKS = 1;
 

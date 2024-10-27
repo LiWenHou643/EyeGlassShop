@@ -1,14 +1,14 @@
-import * as yup from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { useLogin } from '../../features/authentication/useLogin';
 import { SyncLoader } from 'react-spinners';
+import styled from 'styled-components';
+import * as yup from 'yup';
+import { useLogin } from '../../features/authentication/useLogin';
 import { useAuth } from '../../hooks/useAuth';
 import Button from '../../ui/Button';
-import FormRow from '../../ui/FormRow';
 import Form from '../../ui/Form';
-import styled from 'styled-components';
+import FormRow from '../../ui/FormRow';
 
 const schema = yup.object({
     email: yup
@@ -61,7 +61,7 @@ export default function LoginForm() {
     };
 
     return (
-        <Form onSubmit={handleSubmit(onSubmit)}>
+        <Form onSubmit={handleSubmit(onSubmit)} className='w-100'>
             <FormRow
                 name='email'
                 inputId='email'

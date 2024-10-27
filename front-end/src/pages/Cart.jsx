@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { HiArrowRight } from 'react-icons/hi2';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { BarLoader, RingLoader } from 'react-spinners';
 import styled from 'styled-components';
 import CartItem from '../features/cart/CartItem';
@@ -12,6 +12,7 @@ import EmptyData from '../ui/EmptyData';
 import Error from '../ui/Error';
 import Form from '../ui/Form';
 import Loading from '../ui/Loading';
+import { CURRENCY } from '../utils/constant';
 import { formatPrice } from '../utils/helperFunction';
 
 function Cart() {
@@ -60,8 +61,17 @@ function Cart() {
         );
     if (error) return <Error>Error: {error.message}</Error>;
     if (!isLoading && !isFetching && count === 0)
-        return <EmptyData resourceName={'products'} />;
-
+        return (
+            <div className='text-center d-flex justify-content-center align-items-center'>
+                <EmptyData resourceName={'products'} />
+                <Link
+                    to='/products'
+                    className='text-capitalize border border-1 border-black ms-2 p-1'
+                >
+                    Shopping now
+                </Link>
+            </div>
+        );
     const handlePromoCodeChange = async (e) => {
         const code = e.target.value;
         setPromoCode(code);
@@ -116,16 +126,19 @@ function Cart() {
     };
 
     const handleCheckout = () => {
-        // Gather selected items
-        // const selectedItems = cartItems.filter(
-        //     (cartItem) => checkedItems[cartItem.id]
-        // );
-        // console.log(selectedItems);
-
-        console.log('Checkout', totalPrice);
-        // Navigate to the checkout page with the selected items
+        const selectedCartItemIds = cartItems
+            .filter((item) => checkedItems[item.id])
+            .map((item) => item.id);
+        console.log('Selected items:', selectedCartItemIds);
         navigate('/checkout', {
-            state: { totalPrice, discount, codeValue, subtotal, promoCode },
+            state: {
+                totalPrice,
+                discount,
+                codeValue,
+                subtotal,
+                promoCode,
+                selectedCartItemIds,
+            },
         });
     };
 
@@ -200,7 +213,10 @@ function Cart() {
                         </div>
                         <hr />
                         <div className='d-flex justify-content-between'>
-                            <h4>Subtotal: {formatPrice(subtotal) + ' VND'}</h4>
+                            <h4>
+                                Subtotal:{' '}
+                                {formatPrice(subtotal) + ' ' + CURRENCY}
+                            </h4>
                         </div>
                         <hr />
                         <Form onSubmit={handlePromoCodeSubmit}>
@@ -237,18 +253,23 @@ function Cart() {
                         </div>
                         <div className='d-flex justify-content-between'>
                             <h4>Discount: {codeValue}%</h4>
-                            <h4>- {formatPrice(discount)} VND</h4>
+                            <h4>
+                                - {formatPrice(discount)} {CURRENCY}
+                            </h4>
                         </div>
                         <hr />
                         <div className='d-flex justify-content-between'>
-                            <h3>Total: {formatPrice(totalPrice) + ' VND'}</h3>
+                            <h3>
+                                Total:{' '}
+                                {formatPrice(totalPrice) + ' ' + CURRENCY}
+                            </h3>
                         </div>
                         <Button
                             className='mt-3 w-100 fs-2'
                             onClick={handleCheckout}
                             disabled={isCheckoutDisabled()}
                         >
-                            Checkout <HiArrowRight className='mb-1' />
+                            Order Now <HiArrowRight className='mb-1' />
                         </Button>
                     </div>
                 </div>

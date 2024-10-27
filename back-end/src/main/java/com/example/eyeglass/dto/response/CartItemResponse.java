@@ -18,7 +18,7 @@ public class CartItemResponse {
     Long productId;
     int quantity;
     BigDecimal price;
-    BigDecimal discountPercent;
+    BigDecimal discountPercentage;
     BigDecimal discountedPrice;
     BigDecimal totalPrice;
 }
