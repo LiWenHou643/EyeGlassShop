@@ -11,18 +11,18 @@ const sizes = {
     medium: css`
         font-size: 1.4rem;
         padding: 0.8rem 1.6rem;
-        font-weight: 500;
+        font-weight: 600;
     `,
     large: css`
         font-size: 1.6rem;
         padding: 1.2rem 2.2rem;
-        font-weight: 500;
+        font-weight: 600;
     `,
 };
 
 const variations = {
     primary: css`
-        color: var(--color-grey-800);
+        color: var(--color-grey-100);
         background-color: var(--color-indigo-400);
 
         &:hover {

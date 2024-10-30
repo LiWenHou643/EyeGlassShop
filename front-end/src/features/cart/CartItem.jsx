@@ -2,25 +2,20 @@ import debounce from 'lodash.debounce';
 import { useEffect, useRef } from 'react';
 import { HiOutlineTrash } from 'react-icons/hi2';
 import styled from 'styled-components';
-import { useCartCtx } from '../../hooks/useCartCtx';
 import Button from '../../ui/Button';
 import ImageContainer from '../../ui/ImageContainer';
 import NumberInput from '../../ui/NumberInput';
 import { CURRENCY } from '../../utils/constant';
 import { formatPrice } from '../../utils/helperFunction';
-import { useAddToCart } from './useAddToCart';
+import { useUpdateInCart } from './useUpdateInCart';
 
 const CartItem = ({ item, isChecked, onChange }) => {
-    const { addToCart, isAdding } = useAddToCart();
-    const {
-        cart: { id },
-    } = useCartCtx();
+    const { updateCart, isUpdating } = useUpdateInCart();
 
     const debouncedAddToCart = useRef(
-        debounce(async (cartId, productId, newQuantity) => {
-            await addToCart({
-                cartId,
-                productId,
+        debounce(async (cartItemId, newQuantity) => {
+            await updateCart({
+                cartItemId,
                 quantity: newQuantity,
             });
         }, 300)
@@ -36,7 +31,8 @@ const CartItem = ({ item, isChecked, onChange }) => {
     }, []);
 
     const onQuantityChange = (newQuantity) => {
-        debouncedAddToCart.current(id, item.productId, newQuantity);
+        if (newQuantity !== item.quantity)
+            debouncedAddToCart.current(item.id, newQuantity);
     };
 
     return (
@@ -65,7 +61,7 @@ const CartItem = ({ item, isChecked, onChange }) => {
                         <NumberInput
                             initialValue={item.quantity}
                             onChange={onQuantityChange}
-                            disabled={isAdding}
+                            disabled={isUpdating}
                         />
                     </div>
                     <div className='col-4 text-end'>

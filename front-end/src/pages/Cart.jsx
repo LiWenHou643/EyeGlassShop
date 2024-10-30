@@ -129,7 +129,6 @@ function Cart() {
         const selectedCartItemIds = cartItems
             .filter((item) => checkedItems[item.id])
             .map((item) => item.id);
-        console.log('Selected items:', selectedCartItemIds);
         navigate('/checkout', {
             state: {
                 totalPrice,
@@ -165,7 +164,7 @@ function Cart() {
                     <hr />
 
                     <div className='d-flex justify-content-between align-items-center'>
-                        <div className='form-check form-check-inline mb-2 fs-3'>
+                        <div className='form-check form-check-inline mb-2 fs-3 d-flex align-items-center'>
                             <input
                                 className='form-check-input'
                                 type='checkbox'
@@ -247,7 +246,7 @@ function Cart() {
                                 </Error>
                             ) : !isTyping && !invalidCode && codeValue ? (
                                 <p className='text-success'>
-                                    Applied successfully
+                                    {codeValue}% discount applied
                                 </p>
                             ) : null}
                         </div>

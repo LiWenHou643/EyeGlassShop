@@ -1,8 +1,10 @@
+import { useNavigate } from 'react-router-dom';
 import { refreshToken } from '../api/apiAuth';
 import { useAuth } from './useAuth';
 import { useCartCtx } from './useCartCtx';
 
 export const useRefreshToken = () => {
+    const navigate = useNavigate();
     const { setAuth, setPersist } = useAuth();
     const { setCart } = useCartCtx();
     const refresh = async () => {
@@ -39,7 +41,7 @@ export const useRefreshToken = () => {
             setCart([]);
             setAuth({});
             setPersist(false);
-
+            navigate('/login');
             return;
         }
     };

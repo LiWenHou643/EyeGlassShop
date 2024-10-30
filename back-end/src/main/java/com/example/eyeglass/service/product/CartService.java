@@ -108,7 +108,7 @@ public class CartService {
             cartItem.setDiscountPercentage(discountPercent);
             cartItem.setDiscountedPrice(discountedPrice);
             cartItem.setTotalPrice(discountedPrice.multiply(BigDecimal.valueOf(quantity)));
-            
+
             cart.getCartItems().add(cartItem);
             saveCart(cart);
 
@@ -120,6 +120,7 @@ public class CartService {
         CartItem cartItem = cartItemRepository.findById(cartItemId)
                                               .orElseThrow(() -> new RuntimeException("Cart item not found"));
         cartItem.setQuantity(quantity);
+        cartItemRepository.save(cartItem);
     }
 
     public void saveCart(Cart cart) {

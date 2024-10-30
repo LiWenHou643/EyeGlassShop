@@ -1,12 +1,8 @@
 package com.example.eyeglass.dto.response;
 
-import com.example.eyeglass.entity.PaymentMethod;
-import com.example.eyeglass.entity.PaymentStatus;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-
-import java.math.BigDecimal;
 
 @Getter
 @Builder
@@ -14,10 +10,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class PaymentResponse {
-    Long id;
-    PaymentStatus status;
-    BigDecimal amount;
-    PaymentMethod paymentMethod;
-    String transactionId;
+public class PaymentLink {
+    String paymentUrl;
+    String orderId;
 }

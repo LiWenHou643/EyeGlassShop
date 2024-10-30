@@ -6,7 +6,6 @@ export function useCart() {
 
     const getCart = async () => {
         const response = await axiosPrivate.get('user/cart');
-        console.log('response', response.data.data);
         return response.data.data;
     };
 

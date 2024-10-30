@@ -1,6 +1,7 @@
 -- DROP SCHEMA IF EXISTS `defaultdb`;
 -- CREATE SCHEMA `defaultdb`;
 USE defaultdb;
+SET time_zone = 'Asia/Ho_Chi_Minh';
 
 CREATE TABLE `roles`
 (
@@ -79,8 +80,7 @@ CREATE TABLE `cart`
     `person_id` INT NOT NULL
 );
 
-CREATE TABLE `cart_item`
-(
+CREATE TABLE `cart_item`(
     `id`            INT PRIMARY KEY AUTO_INCREMENT,
     `cart_id`       INT NOT NULL,
     `product_id`    INT NOT NULL,
@@ -96,21 +96,35 @@ CREATE TABLE `cart_item`
 CREATE TABLE `orders` (
     `id` INT AUTO_INCREMENT PRIMARY KEY,
     `person_id` INT NOT NULL,
-    `status` ENUM('PENDING', 'PROCESSING', 'SHIPPED', 'DELIVERED', 'CANCALLED', 'REFUNDED') NOT NULL,  -- Updated status options
+    `status` ENUM('PENDING', 'CONFIRMED', 'SHIPPED', 'DELIVERED', 'CANCELLED', 'REFUNDED', 'FINISHED') NOT NULL,  -- Updated status options
     `sub_total` DECIMAL(10, 2) NOT NULL,
     `discount_percentage` DECIMAL(5,2) DEFAULT 0.00,
     `total` DECIMAL(10, 2) AS (`sub_total` * (1 - `discount_percentage` / 100)) STORED,
-    `promo_code` VARCHAR(50),                -- Applied promotion code
+    `promo_code` VARCHAR(50),  -- Applied promotion code
     `shipping_address` VARCHAR(255) NOT NULL,
+    `notes` TEXT,
     `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    UNIQUE KEY `idx_person_id` (`person_id`),
+    UNIQUE KEY `idx_status` (`status`),
     FOREIGN KEY (`person_id`) REFERENCES `person`(`id`) ON DELETE CASCADE  -- Reference to users table
 );
+
+CREATE TABLE `order_status_history` (
+    `id` INT AUTO_INCREMENT PRIMARY KEY,
+    `order_id` INT NOT NULL,
+    `status` ENUM('PENDING', 'CONFIRMED', 'SHIPPED', 'DELIVERED', 'FINISHED') NOT NULL,
+    `datetime` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (`order_id`) REFERENCES `orders`(`id`),
+    UNIQUE KEY `idx_status` (`status`),
+    UNIQUE KEY `idx_datetime` (`datetime`)
+);
+
 
 CREATE TABLE `payments` (
 	`id` INT AUTO_INCREMENT PRIMARY KEY,
 	`order_id` INT NOT NULL,
-    `status` ENUM('PAID', 'UNPAID', 'FAILED', 'REFUNDED') NOT NULL,
+    `status` ENUM('PAID', 'UNPAID', 'REFUNDED') NOT NULL,
     `amount`   DECIMAL(10, 2) NOT NULL,
     `payment_method` ENUM('PAYPAL', 'CASH_ON_DELIVERY') NOT NULL,  -- Updated payment options
     `transaction_id` VARCHAR(100) UNIQUE DEFAULT NULL,  -- Unique transaddressaction ID for payment tracking
@@ -134,8 +148,7 @@ CREATE TABLE `order_item` (
     FOREIGN KEY (`product_id`) REFERENCES `product`(`id`) ON DELETE CASCADE
 );
 
-CREATE TABLE `ratings`
-(
+CREATE TABLE `ratings`(
     `id`           INT PRIMARY KEY AUTO_INCREMENT,
     `product_id`   INT NOT NULL,
     `person_id`    INT NOT NULL,

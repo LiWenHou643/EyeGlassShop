@@ -14,6 +14,8 @@ import Checkout from './pages/Checkout';
 import ForgotPwd from './pages/ForgotPwd';
 import Home from './pages/Home';
 import Login from './pages/Login';
+import Order from './pages/Order';
+import OrderDetails from './pages/OrderDetails';
 import PageNotFound from './pages/PageNotFound';
 import Product from './pages/Product';
 import Profile from './pages/Profile';
@@ -75,6 +77,12 @@ function App() {
                                     <Route
                                         path='checkout'
                                         element={<Checkout />}
+                                    />
+                                    <Route path='orders' element={<Order />} />
+
+                                    <Route
+                                        path='order-details/:id'
+                                        element={<OrderDetails />}
                                     />
 
                                     {/* -- PROTECTED ROUTES -- */}

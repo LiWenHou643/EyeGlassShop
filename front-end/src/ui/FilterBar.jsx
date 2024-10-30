@@ -35,6 +35,7 @@ function FilterBar({ filterField, options, className }) {
                         onClick={() => {
                             setSearchParams({ [filterField]: options.value });
                         }}
+                        className='text-capitalize'
                     >
                         {options.label}
                     </StyledButton>

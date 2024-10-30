@@ -39,12 +39,8 @@ public class CartController {
 
     @PostMapping(value = "/update")
     @PreAuthorize("hasAuthority('SCOPE_USER')")
-    public ApiResponse<Object> updateItemInCart(@RequestParam(required = false, name = "cartId") Long cartId, @RequestParam(name = "quantity") int quantity) {
-        if (cartId == null) {
-            String userName = SecurityContextHolder.getContext().getAuthentication().getName();
-            cartId = cartService.getCartId(userName);
-        }
-        cartService.updateItemInCart(cartId, quantity);
+    public ApiResponse<Object> updateItemInCart(@RequestParam(name = "cartItemId") Long cartItemId, @RequestParam(name = "quantity") int quantity) {
+        cartService.updateItemInCart(cartItemId, quantity);
         return ApiResponse.builder().message("Item updated in cart").build();
     }
 

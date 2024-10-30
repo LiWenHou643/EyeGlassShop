@@ -38,9 +38,9 @@ public class OrderItem extends BaseEntity {
     @Column(nullable = false, precision = 10, scale = 2)
     BigDecimal price; // Price per item
 
-    @Transient
+    @Column(precision = 10, scale = 2, insertable = false, updatable = false)
     BigDecimal discountedPrice; // Discount for this specific item
 
-    @Transient
+    @Column(precision = 10, scale = 2, insertable = false, updatable = false)
     BigDecimal totalPrice; // Total price for this item after discount
 }

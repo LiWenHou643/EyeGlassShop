@@ -33,10 +33,10 @@ function ProductsOperationBar() {
                 className='col-12 col-md-6 col-xl-4'
                 filterField='category'
                 options={[
-                    { label: 'All', value: 'all' },
-                    { label: 'Eyeglasses', value: 'eyeglasses' },
-                    { label: 'Sunglasses', value: 'sunglasses' },
-                    { label: 'Eyelens', value: 'eyelens' },
+                    { label: 'all', value: 'all' },
+                    { label: 'eyeglasses', value: 'eyeglasses' },
+                    { label: 'sunglasses', value: 'sunglasses' },
+                    { label: 'eyelens', value: 'eyelens' },
                 ]}
             />
             <SortBar

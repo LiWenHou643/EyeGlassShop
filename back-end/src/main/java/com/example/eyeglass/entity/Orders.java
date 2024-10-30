@@ -26,11 +26,13 @@ public class Orders extends BaseEntity {
     @JoinColumn(name = "person_id", referencedColumnName = "id")
     Person person;
 
-    @OneToMany(mappedBy = "orders", cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "orders", cascade = CascadeType.PERSIST, fetch = FetchType.LAZY, orphanRemoval = true)
+    @Builder.Default
     Set<OrderItem> orderItems = new HashSet<>();
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
+    @Builder.Default
     OrderStatus status = OrderStatus.PENDING; // ENUM for status
 
     @OneToOne(mappedBy = "orders", cascade = CascadeType.PERSIST)
@@ -40,7 +42,7 @@ public class Orders extends BaseEntity {
     @Column(nullable = false, precision = 10, scale = 2)
     BigDecimal subTotal; // Total before discounts
 
-    @Transient
+    @Column(precision = 10, scale = 2, insertable = false, updatable = false)
     BigDecimal total; // Total after discounts
 
     @Column(nullable = false, precision = 10, scale = 2)
@@ -51,5 +53,5 @@ public class Orders extends BaseEntity {
     @Column(nullable = false)
     String shippingAddress; // Shipping address
 
-
+    String notes; // Additional notes
 }

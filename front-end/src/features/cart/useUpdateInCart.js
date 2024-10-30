@@ -7,17 +7,15 @@ export function useUpdateInCart() {
     const queryClient = useQueryClient();
 
     const { mutate, isLoading } = useMutation({
-        mutationFn: ({ cartId, productId, quantity }) => {
-            console.log({ cartId, productId, quantity });
-            return axiosPrivate.post(`user/cart/add`, null, {
+        mutationFn: ({ cartItemId, quantity }) => {
+            return axiosPrivate.post(`user/cart/update`, null, {
                 params: {
-                    cartId: cartId,
-                    productId: productId,
+                    cartItemId: cartItemId,
                     quantity: quantity,
                 },
             });
         },
-        onMutate: async ({ cartId, productId, quantity }) => {
+        onMutate: async ({ cartItemId, quantity }) => {
             // Cancel any outgoing refetches (so they don't overwrite our optimistic update)
             await queryClient.cancelQueries(['cart']);
 
@@ -28,11 +26,11 @@ export function useUpdateInCart() {
             queryClient.setQueryData(['cart'], (old) => {
                 if (!old) return; // If no old data, return nothing
                 const updatedItems = old.cartItems.map((item) => {
-                    if (item.productId === productId) {
+                    if (item.id === cartItemId) {
                         return {
                             ...item,
                             quantity, // Update the quantity
-                            totalPrice: quantity * item.priceAtTime, // Calculate total price based on new quantity
+                            totalPrice: quantity * item.discountedPrice, // Calculate total price based on new quantity
                         };
                     }
                     return item;
@@ -44,11 +42,9 @@ export function useUpdateInCart() {
                 };
             });
 
-            // Return a context object with the previous value
             return { previousCart };
         },
         onSettled: () => {
-            // Always refetch after error or success
             queryClient.invalidateQueries(['cart']);
         },
         onError: (error) => {
@@ -59,5 +55,5 @@ export function useUpdateInCart() {
         },
     });
 
-    return { addToCart: mutate, isAdding: isLoading };
+    return { updateCart: mutate, isUpdating: isLoading };
 }

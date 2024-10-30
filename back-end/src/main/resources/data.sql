@@ -384,6 +384,24 @@ VALUES ('1', 'vip10', '10'),
        ('2', 'vip20', '20'),
        ('3', 'vip30', '30');
        
+       
+INSERT INTO `orders` (
+    `person_id`, `status`, `sub_total`, `discount_percentage`, `promo_code`, `shipping_address`, `notes`, `created_at`, `updated_at`
+) VALUES (
+    1, 'DELIVERED', 35.88, 0.00, NULL, '1 Mau Than, Phường An Nghiệp, Quận Ninh Kiều, Thành phố Cần Thơ', 'Please ship to my house in the afternoon.', '2024-10-29 14:17:20', '2024-11-5 13:57:50'             
+);
+INSERT INTO `defaultdb`.`order_item` (`id`, `order_id`, `product_id`, `quantity`, `price`, `discount_percentage`, `created_at`, `updated_at`)
+VALUES ('1', '1', '3', '2', '29.90', '40', '2024-10-29 14:17:20', '2024-10-29 14:17:20');
+
+INSERT INTO `order_status_history` (`order_id`, `status`, `datetime`)
+VALUES (1,'PENDING', '2024-10-29 14:17:20'),
+(1,'CONFIRMED', '2024-10-30 15:30:24'),
+(1,'SHIPPED', '2024-10-31 10:10:30'),
+(1,'DELIVERED', '2024-11-05 13:57:50');
+
+INSERT INTO `defaultdb`.`payments` (`id`, `order_id`, `status`, `amount`, `payment_method`, `created_at`, `updated_at`) 
+VALUES ('1', '1', 'UNPAID', '35.88', 'CASH_ON_DELIVERY', '2024-03-15 03:00:00', '2024-03-15 03:00:00');
+
 -- SHOW TABLES;
 -- SET FOREIGN_KEY_CHECKS = 0;
 -- TRUNCATE TABLE address;

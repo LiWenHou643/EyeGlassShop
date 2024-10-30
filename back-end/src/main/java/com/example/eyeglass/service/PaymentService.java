@@ -1,7 +1,7 @@
 package com.example.eyeglass.service;
 
 import com.example.eyeglass.config.Authentication.JwtGenerator;
-import com.example.eyeglass.dto.response.PaymentResponse;
+import com.example.eyeglass.dto.response.PaymentLink;
 import com.example.eyeglass.entity.*;
 import com.example.eyeglass.repository.PaymentRepository;
 import com.example.eyeglass.service.product.CartService;
@@ -43,7 +43,7 @@ public class PaymentService {
         paymentRepository.save(payment);
     }
 
-    public PaymentResponse createPayment(Orders orders) {
+    public PaymentLink createPayment(Orders orders) {
         Set<OrderItem> orderItems = orders.getOrderItems();
         Cart cart = orders.getPerson().getCart();
         Set<CartItem> cartItems = cart.getCartItems();
@@ -67,13 +67,14 @@ public class PaymentService {
                     orderItem.getProduct().getSoldQuantity() + orderItem.getQuantity());
         });
 
+
         orderService.saveOrder(orders);
         cartService.deleteCartItems(cartItemsToDelete);
 
-        return PaymentResponse.builder().paymentUrl("cash_on_delivery").build();
+        return PaymentLink.builder().paymentUrl("cod").orderId(orders.getId().toString()).build();
     }
 
-    public PaymentResponse createPaypalPayment(Orders orders) {
+    public PaymentLink createPaypalPayment(Orders orders) {
         try {
             Person person = orders.getPerson();
             String jwt = jwtGenerator.generatePaypalToken(person);
@@ -88,11 +89,12 @@ public class PaymentService {
             return payment.getLinks().stream()
                           .filter(link -> "approval_url".equals(link.getRel()))
                           .findFirst()
-                          .map(link -> PaymentResponse.builder().paymentUrl(link.getHref())
-                                                      .build())
+                          .map(link -> PaymentLink.builder().paymentUrl(link.getHref())
+                                                  .orderId(orders.getId().toString())
+                                                  .build())
                           .orElse(null);
         } catch (PayPalRESTException | ClassCastException e) {
-            return PaymentResponse.builder().paymentUrl("").build();
+            return PaymentLink.builder().paymentUrl("").build();
         }
     }
 
@@ -123,8 +125,7 @@ public class PaymentService {
         return payment.create(apiContext);
     }
 
-    public String executePaypalPayment(String paymentId, String payerId, String orderId) throws PayPalRESTException {
-
+    public void executePaypalPayment(String paymentId, String payerId, String orderId) throws PayPalRESTException {
         // Update order status and product stock
         Orders orders = orderService.findById(Long.parseLong(orderId));
         Payments payments = orders.getPayment();
@@ -159,12 +160,16 @@ public class PaymentService {
 
         try {
             payment.execute(apiContext, paymentExecute);
+            payment = Payment.get(apiContext, paymentId);
         } catch (PayPalRESTException e) {
             // Log error and throw a custom exception to trigger rollback
             orders.setStatus(OrderStatus.CANCELLED);
             payments.setStatus(PaymentStatus.FAILED);
             throw new PayPalRESTException("Error executing payment", e);
         }
+
+        // Get the payment state
+        String state = payment.getState();
 
         if ("approved".equals(payment.getState())) {
             List<Transaction> transactions = payment.getTransactions();
@@ -182,7 +187,6 @@ public class PaymentService {
                         payments.setOrders(orders);
                         paymentRepository.save(payments);
                         cartService.deleteCartItems(cartItemsToDelete);
-                        System.out.printf("Sandbox Transaction ID: %s%n", transactionId);
                     } else {
                         System.out.println("Sale not found in related resources.");
                     }
@@ -192,14 +196,9 @@ public class PaymentService {
             } else {
                 System.out.println("No transactions found in payment.");
             }
-            return "Payment executed successfully.";
         } else {
-            orders.setStatus(OrderStatus.CANCELLED);
-            payments.setStatus(PaymentStatus.FAILED);
-            payments.setOrders(orders);
-            paymentRepository.save(payments);
-            return "Payment not approved.";
+            orderService.deleteOrder(orders);
+            throw new PayPalRESTException("Payment not approved");
         }
-
     }
 }

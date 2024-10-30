@@ -16,8 +16,6 @@ const GlobalStyles = createGlobalStyle`
     --color-grey-800: #1f2937;
     --color-grey-900: #111827;
 
-
-
     --image-grayscale: 0;
     --image-opacity: 100%;
 
@@ -316,6 +314,93 @@ td {
 
 select option {
     background-color: var(--color-grey-0);
+    color: var(--color-grey-800);
+}
+
+// ----------Custom CSS for progress bar
+#progressbar {
+    margin-bottom: 30px;
+    overflow: hidden;
+    color: #455A64;
+    padding-left: 0px;
+    margin-top: 30px
+}
+
+#progressbar li {
+    list-style-type: none;
+    font-size: 1.4rem;
+    width: 20%;
+    float: left;
+    position: relative;
+    font-weight: 400;
+    color: var(--color-grey-800);
+}
+
+#progressbar #step1:before {
+    content: "1";
+    color: #fff;
+    width: 29px;
+}
+
+
+#progressbar #step2:before {
+    content: "2";
+    color: #fff;
+    width: 29px;
+
+}
+
+#progressbar #step3:before {
+    content: "3";
+    color: #fff;
+    width: 29px;
+}
+
+#progressbar #step4:before {
+    content: "4";
+    color: #fff;
+    width: 29px;
+}
+
+
+#progressbar #step5:before {
+    content: "5";
+    color: #fff;
+    width: 29px;
+}
+    
+
+#progressbar li:before {
+    line-height: 29px;
+    display: block;
+    font-size: 12px;
+    background: #455A64;
+    border-radius: 50%;
+    margin: auto;
+}
+
+ #progressbar li:after {
+    content: '';
+    width: 100%;
+    height: 4px;
+    background: var(--color-grey-800);
+    position: absolute;
+    left: 0%;
+    right: 0%;
+    top: 13px;
+    z-index: -1;
+} 
+
+#progressbar li.active:before,
+#progressbar li.active:after {
+    background: #4bb8a9; 
+}
+
+#progressbar .trackDate {
+    position: absolute;
+    top: -1.6rem;
+    left: 2rem;
+    font-size: 12px;
     color: var(--color-grey-800);
 }
 `;

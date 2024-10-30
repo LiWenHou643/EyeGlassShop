@@ -1,10 +1,12 @@
 package com.example.eyeglass.service;
 
 import com.example.eyeglass.dto.request.OrderRequest;
+import com.example.eyeglass.dto.response.OrderResponse;
 import com.example.eyeglass.entity.*;
 import com.example.eyeglass.exception.AppException;
 import com.example.eyeglass.exception.ErrorCode;
 import com.example.eyeglass.repository.OrderRepository;
+import com.example.eyeglass.repository.OrderTrackHistoryRepository;
 import com.example.eyeglass.repository.person.PersonRepository;
 import com.example.eyeglass.service.product.CodeService;
 import jakarta.transaction.Transactional;
@@ -22,6 +24,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static com.example.eyeglass.mapper.OrderMapper.ORDER_MAPPER;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -30,10 +34,16 @@ public class OrderService {
     OrderRepository orderRepository;
     CodeService codeService;
     PersonRepository personRepository;
+    OrderTrackHistoryRepository orderTrackHistoryRepository;
 
     public Orders findById(Long id) {
         return orderRepository.findById(id)
                               .orElseThrow(() -> new AppException(ErrorCode.ORDER_NOT_FOUND));
+    }
+
+    public OrderResponse getOrderById(Long id) {
+        Orders orders = findById(id);
+        return ORDER_MAPPER.toOrderResponse(orders);
     }
 
     @Transactional
@@ -85,6 +95,7 @@ public class OrderService {
 
         orders.setPerson(person);
         orders.setShippingAddress(req.shippingAddress());
+        orders.setNotes(req.notes());
         orders.setPromoCode(req.promoCode());
         orders.setSubTotal(subTotal);
         orders.setDiscountPercentage(percent);
@@ -92,10 +103,43 @@ public class OrderService {
         orders.setOrderItems(orderItems);
 
         // Save the order
-        return saveOrder(orders);
+        var savedOrder = saveOrder(orders);
+        var orderTrackHistory = OrderTrackHistory.builder()
+                                                 .orderId(savedOrder.getId())
+                                                 .status(OrderStatus.PENDING)
+                                                 .build();
+        orderTrackHistoryRepository.save(orderTrackHistory);
+
+        return savedOrder;
     }
 
     public Orders saveOrder(Orders orders) {
         return orderRepository.save(orders);
+    }
+
+    public List<OrderResponse> listOrder() {
+        List<Orders> orders = orderRepository.findAll();
+        return orders.stream()
+                     .map(ORDER_MAPPER::toOrderResponse)
+                     .collect(Collectors.toList());
+    }
+
+    public void cancelOrder(Long id) {
+        Orders orders = findById(id);
+        orders.setStatus(OrderStatus.CANCELLED);
+        try {
+            saveOrder(orders);
+        } catch (Exception e) {
+            log.error("Error cancelling order: {}", e.getMessage());
+            throw new AppException(ErrorCode.ORDER_CANCEL_FAILED);
+        }
+    }
+
+    public void deleteOrder(Orders orders) {
+        orderRepository.delete(orders);
+    }
+
+    public List<Object[]> getStatusHistory(Long orderId) {
+        return orderTrackHistoryRepository.findStatusHistoryByOrderId(orderId);
     }
 }

@@ -65,13 +65,6 @@ function Checkout() {
     const { checkout, isCheckingOut } = useCheckout();
 
     const handleSubmitCheckout = () => {
-        console.log({
-            personId: user.id,
-            promoCode: curCode,
-            shippingAddress: address,
-            paymentMethod: paymentMethod,
-            selectedCartItems: selectedCartItemIds,
-        });
         checkout({
             personId: user.id,
             promoCode: curCode,
@@ -118,6 +111,9 @@ function Checkout() {
             </Loading>
         );
     }
+
+    const calculatingShipCost =
+        user.address == null || !distance ? true : false;
     return (
         <div className='container-lg' style={{ maxWidth: '1000px' }}>
             <h1 className='text-center text-capitalize'>Payment</h1>
@@ -174,16 +170,6 @@ function Checkout() {
                                         {isChecking ? 'Checking' : 'Apply'}
                                     </Button>
                                 </form>
-                                {invalidCode && (
-                                    <p className='text-danger'>
-                                        {invalidCode.message}
-                                    </p>
-                                )}
-                                {localCodeValue && (
-                                    <p className='text-success'>
-                                        {localCodeValue}% discount applied
-                                    </p>
-                                )}
                                 <div className='mb-2 fs-4'>
                                     {!isTyping && invalidCode ? (
                                         <Error className='text-start'>
@@ -191,9 +177,9 @@ function Checkout() {
                                         </Error>
                                     ) : !isTyping &&
                                       !invalidCode &&
-                                      codeValue ? (
+                                      localCodeValue ? (
                                         <p className='text-success'>
-                                            Applied successfully
+                                            {localCodeValue}% discount applied
                                         </p>
                                     ) : null}
                                 </div>
@@ -296,7 +282,7 @@ function Checkout() {
                         <Button
                             onClick={handleSubmitCheckout}
                             className='col-5 py-3 text-capitalize'
-                            disabled={isCheckingOut}
+                            disabled={isCheckingOut || calculatingShipCost}
                         >
                             {isCheckingOut ? 'Processing...' : 'Checkout'}
                         </Button>

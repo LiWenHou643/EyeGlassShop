@@ -32,7 +32,7 @@ export function useAddToCart() {
                         return {
                             ...item,
                             quantity, // Update the quantity
-                            totalPrice: quantity * item.priceAtTime, // Calculate total price based on new quantity
+                            totalPrice: quantity * item.discountedPrice, // Calculate total price based on new quantity
                         };
                     }
                     return item;

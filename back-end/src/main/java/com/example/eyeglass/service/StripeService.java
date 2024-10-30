@@ -1,7 +1,7 @@
 package com.example.eyeglass.service;
 
 import com.example.eyeglass.dto.response.OrderResponse;
-import com.example.eyeglass.dto.response.PaymentResponse;
+import com.example.eyeglass.dto.response.PaymentLink;
 import com.stripe.Stripe;
 import com.stripe.exception.StripeException;
 import com.stripe.model.checkout.Session;
@@ -22,7 +22,7 @@ public class StripeService {
     @Value("${stripe.currency}")
     String currency;
 
-    public PaymentResponse createPaymentLink(OrderResponse order) throws StripeException {
+    public PaymentLink createPaymentLink(OrderResponse order) throws StripeException {
         Stripe.apiKey = stripeSecretKey;
         BigDecimal totalAmount = order.getTotal(); // Assuming this returns BigDecimal
         long amountInCents = totalAmount
@@ -55,6 +55,6 @@ public class StripeService {
 
         Session session = Session.create(params);
 
-        return PaymentResponse.builder().paymentUrl(session.getUrl()).build();
+        return PaymentLink.builder().paymentUrl(session.getUrl()).build();
     }
 }
