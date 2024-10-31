@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.UnsupportedEncodingException;
 import java.net.URI;
 
 import static lombok.AccessLevel.PRIVATE;
@@ -29,7 +30,8 @@ public class PaypalController {
     public ResponseEntity<Void> successPayment(@RequestParam(name = "accessToken") String accessToken,
             @RequestParam(name = "orderId") String orderId,
             @RequestParam(name = "paymentId") String paymentId,
-            @RequestParam(name = "PayerID") String payerId) {
+            @RequestParam(name = "PayerID") String payerId,
+            @RequestParam(name = "selectedItems") String selectedItems) {
         try {
             Jwt jwt = jwtUtils.getToken(accessToken);
             boolean isExpired = jwtUtils.isExpired(jwt);
@@ -41,15 +43,17 @@ public class PaypalController {
             }
 
 
-            paymentService.executePaypalPayment(paymentId, payerId, orderId);
+            paymentService.executePaypalPayment(paymentId, payerId, orderId, selectedItems);
             return ResponseEntity.status(HttpStatus.FOUND)
                                  .location(
                                          URI.create(
-                                                 "http://localhost:3000/track-order/%s".formatted(
+                                                 "http://localhost:3000/order-details/%s".formatted(
                                                          orderId))) // Change to your frontend URL,
                                  .build();
         } catch (PayPalRESTException e) {
             throw new AppException(ErrorCode.PAYPAL_FAILED);
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
         }
     }
 }

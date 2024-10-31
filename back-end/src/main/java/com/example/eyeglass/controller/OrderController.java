@@ -32,11 +32,10 @@ public class OrderController {
         // Save the payment into database
         paymentService.savePayment(order, null, req.paymentMethod()); // Save the payment
         if (req.paymentMethod().equals(PaymentMethod.PAYPAL)) {
-            // Create PayPal link for online payment
-            PaymentLink link = paymentService.createPaypalPayment(order);
+            PaymentLink link = paymentService.createPaypalPayment(order, req.selectedCartItems());
             return ApiResponse.<PaymentLink>builder().data(link).build();
         } else if (req.paymentMethod().equals(PaymentMethod.CASH_ON_DELIVERY)) {
-            PaymentLink link = paymentService.createPayment(order);
+            PaymentLink link = paymentService.createPayment(order, req.selectedCartItems());
             return ApiResponse.<PaymentLink>builder().data(link).build();
         } else {
             throw new AppException(ErrorCode.PAYMENT_METHOD_NOT_SUPPORTED);

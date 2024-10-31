@@ -13,7 +13,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 
+import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -32,6 +37,7 @@ public class PaymentService {
     OrderService orderService;
     CartService cartService;
 
+    // Create PayPal link for online payment
     public void savePayment(Orders orders, String transactionId, PaymentMethod paymentMethod) {
         var payment = Payments.builder()
                               .orders(orders)
@@ -43,19 +49,16 @@ public class PaymentService {
         paymentRepository.save(payment);
     }
 
-    public PaymentLink createPayment(Orders orders) {
-        Set<OrderItem> orderItems = orders.getOrderItems();
+    public PaymentLink createPayment(Orders orders, List<Long> selectedCartItems) {
         Cart cart = orders.getPerson().getCart();
         Set<CartItem> cartItems = cart.getCartItems();
         Set<CartItem> cartItemsToDelete = new HashSet<>();
 
-        Set<Long> orderItemIds = orderItems.stream()
-                                           .map(OrderItem::getId)
-                                           .collect(Collectors.toSet());
+        Set<Long> selectedItemsSet = new HashSet<>(selectedCartItems);
 
         // Iterate through cart items and add to the delete set if their ID matches an order item ID
         for (CartItem cartItem : cartItems) {
-            if (orderItemIds.contains(cartItem.getId())) {
+            if (selectedItemsSet.contains(cartItem.getId())) {
                 cartItemsToDelete.add(cartItem);
             }
         }
@@ -74,14 +77,20 @@ public class PaymentService {
         return PaymentLink.builder().paymentUrl("cod").orderId(orders.getId().toString()).build();
     }
 
-    public PaymentLink createPaypalPayment(Orders orders) {
+    public PaymentLink createPaypalPayment(Orders orders, List<Long> selectedCartItems) {
         try {
             Person person = orders.getPerson();
             String jwt = jwtGenerator.generatePaypalToken(person);
 
             final String cancelUrl = "http://localhost:8080/payment/cancel";
-            final String successUrl = "http://localhost:8080/payment/success?orderId=%s&accessToken=%s".formatted(
-                    orders.getId(), jwt);
+
+            String selectedItemsString = selectedCartItems.stream()
+                                                          .map(String::valueOf) // Convert each Long to String
+                                                          .collect(Collectors.joining(",")); // Join with commas
+            String encodedSelectedItems = URLEncoder.encode(selectedItemsString, StandardCharsets.UTF_8);
+
+            final String successUrl = "http://localhost:8080/payment/success?orderId=%s&accessToken=%s&selectedItems=%s".formatted(
+                    orders.getId(), jwt, encodedSelectedItems);
             Payment payment = createPaypalLink(
                     orders.getTotal(), "USD", "paypal", "sale", "Payment description",
                     cancelUrl, successUrl);
@@ -90,7 +99,6 @@ public class PaymentService {
                           .filter(link -> "approval_url".equals(link.getRel()))
                           .findFirst()
                           .map(link -> PaymentLink.builder().paymentUrl(link.getHref())
-                                                  .orderId(orders.getId().toString())
                                                   .build())
                           .orElse(null);
         } catch (PayPalRESTException | ClassCastException e) {
@@ -125,8 +133,15 @@ public class PaymentService {
         return payment.create(apiContext);
     }
 
-    public void executePaypalPayment(String paymentId, String payerId, String orderId) throws PayPalRESTException {
+    public void executePaypalPayment(String paymentId, String payerId, String orderId, String selectedItems) throws PayPalRESTException, UnsupportedEncodingException {
         // Update order status and product stock
+        String decodedItems = URLDecoder.decode(selectedItems, StandardCharsets.UTF_8);
+
+        // Split the decoded string into an array and convert to List<Long>
+        List<Long> itemList = Arrays.stream(decodedItems.split(","))
+                                    .map(Long::valueOf) // Convert each string to Long
+                                    .toList();
+
         Orders orders = orderService.findById(Long.parseLong(orderId));
         Payments payments = orders.getPayment();
         Set<OrderItem> orderItems = orders.getOrderItems();
@@ -135,16 +150,15 @@ public class PaymentService {
         Set<CartItem> cartItemsToDelete = new HashSet<>();
 
         // Create a set of order item IDs for quick lookup
-        Set<Long> orderItemIds = orderItems.stream()
-                                           .map(OrderItem::getId)
-                                           .collect(Collectors.toSet());
+        Set<Long> selectedItemsSet = new HashSet<>(itemList);
 
         // Iterate through cart items and add to the delete set if their ID matches an order item ID
         for (CartItem cartItem : cartItems) {
-            if (orderItemIds.contains(cartItem.getId())) {
+            if (selectedItemsSet.contains(cartItem.getId())) {
                 cartItemsToDelete.add(cartItem);
             }
         }
+
         // Update product stock and sold quantity
         orders.getOrderItems().forEach(orderItem -> {
             orderItem.getProduct().setStockQuantity(
