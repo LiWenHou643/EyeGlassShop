@@ -43,7 +43,7 @@ public class OrderController {
     }
 
     @GetMapping("/list")
-    @PreAuthorize("hasAuthority('SCOPE_USER')")
+    @PreAuthorize("hasAnyAuthority('SCOPE_USER', 'SCOPE_ADMIN')")
     public ApiResponse<?> listOrders() {
         return ApiResponse.builder().data(orderService.listOrder()).build();
     }

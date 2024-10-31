@@ -1,18 +1,14 @@
 package com.example.eyeglass.controller;
 
-import com.example.eyeglass.dto.request.ProductRequest;
 import com.example.eyeglass.dto.response.ApiResponse;
-import com.example.eyeglass.dto.response.ProductResponse;
+import com.example.eyeglass.dto.response.OrderResponse;
+import com.example.eyeglass.service.OrderService;
 import com.example.eyeglass.service.product.ProductService;
-import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -20,25 +16,23 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/admin")
 public class AdminController {
     ProductService productService;
+    private final OrderService orderService;
 
-    @PostMapping("/product/add")
+    @GetMapping("/dashboard")
     @PreAuthorize("hasAuthority('SCOPE_ADMIN')")
-    public ApiResponse<ProductResponse> addProduct(@Valid @RequestBody ProductRequest productRequest) {
-        var response = productService.addProduct(productRequest);
-        return ApiResponse.<ProductResponse>builder().data(response).build();
+    public String dashboard() {
+        return "admin/dashboard";
     }
 
-    @PostMapping("/product/update")
+    @GetMapping("/orders")
     @PreAuthorize("hasAuthority('SCOPE_ADMIN')")
-    public ApiResponse<ProductResponse> updateProduct(@Valid @RequestBody ProductRequest productRequest) {
-        var response = productService.updateProduct(productRequest);
-        return ApiResponse.<ProductResponse>builder().data(response).build();
+    public String orders() {
+        return "admin/orders";
     }
 
-    @PostMapping("/product/delete")
+    @PutMapping("/confirm")
     @PreAuthorize("hasAuthority('SCOPE_ADMIN')")
-    public ApiResponse<ProductResponse> deleteProduct(@Valid @RequestBody ProductRequest productRequest) {
-        productService.deleteProduct(productRequest);
-        return ApiResponse.<ProductResponse>builder().build();
+    public ApiResponse<OrderResponse> confirmOrder(@RequestParam(name = "orderId") Long id) {
+        return ApiResponse.<OrderResponse>builder().data(orderService.confirm(id)).build();
     }
 }

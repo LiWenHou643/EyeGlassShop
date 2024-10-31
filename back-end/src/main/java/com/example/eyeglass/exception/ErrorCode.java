@@ -35,10 +35,10 @@ public enum ErrorCode {
     FAILED_TO_CREATE_ORDER(3002, "Failed to create order", HttpStatus.BAD_REQUEST),
     ORDER_NOT_FOUND(3003, "Order not found", HttpStatus.NOT_FOUND),
     ORDER_CANCEL_FAILED(3004, "Order cancel failed", HttpStatus.BAD_REQUEST),
+    ORDER_CONFIRM_FAILED(3005, "Order confirm failed", HttpStatus.BAD_REQUEST),
 
     PAYMENT_METHOD_NOT_SUPPORTED(4001, "Payment method not supported", HttpStatus.BAD_REQUEST),
-    PAYPAL_FAILED(4002, "Paypal failed", HttpStatus.BAD_REQUEST),
-    ;
+    PAYPAL_FAILED(4002, "Paypal failed", HttpStatus.BAD_REQUEST);
 
     ErrorCode(int code, String message, HttpStatusCode statusCode) {
         this.code = code;

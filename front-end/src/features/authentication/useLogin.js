@@ -26,7 +26,6 @@ export function useLogin() {
         onSuccess: async (response) => {
             if (response.code !== 1000) throw new Error(response.message);
 
-            console.log('login response', response.data);
             if (response.data.accessToken) {
                 const { accessToken, username, role } = response.data;
                 queryClient.setQueryData(['auth'], {
@@ -40,15 +39,19 @@ export function useLogin() {
                     JSON.stringify({ accessToken, username, role })
                 );
 
+                if (role === 'ADMIN') {
+                    return navigate('/admin/dashboard', { replace: true });
+                }
+
                 const cart = await getCart();
                 queryClient.setQueryData(['cart'], cart.data);
+                console.log('cart:', cart);
 
                 localStorage.setItem('cart', JSON.stringify(cart.data));
                 setCart(cart.data);
 
-                navigate(from, { replace: true });
+                return navigate(from, { replace: true });
             }
-            return null;
         },
         onError: (error) => {
             const errorMessage =

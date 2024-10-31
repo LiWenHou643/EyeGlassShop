@@ -111,9 +111,14 @@ body {
     color: var(--color-grey-700);
     background: var(--color-bg);
     transition: color 0.3s, background-color 0.3s;
-    min-height: 100vh;
     line-height: 1.5;
+    min-height: 97vh;
     font-size: 1.6rem;
+    overflow-x: hidden;
+}
+
+#root {
+    min-height: 97vh;
 }
 
 input,
@@ -403,6 +408,41 @@ select option {
     font-size: 12px;
     color: var(--color-grey-800);
 }
+
+.toggle-darkmode .form-check-input {
+    width: 40px;
+    height: 20px;
+    border: none;
+    background-color: var(--color-grey-200); 
+    border-radius: 10px; 
+    transition: background-color 0.3s ease;
+}
+
+.toggle-darkmode .form-check-input:checked {
+    background-color: var(--color-grey-0); 
+}
+
+.toggle-darkmode .form-check-input::before {
+    content: "";
+    width: 20px; 
+    height: 20px; 
+    border-radius: 50%; 
+    background-color: white;
+    color: var(--color-grey-800);
+    transition: transform 0.3s ease;
+}
+
+.toggle-darkmode .form-check-input:checked::before {
+    transform: translateX(20px); 
+}
+
+.toggle-darkmode .form-switch .form-check-input:focus {
+    outline: none;
+    border: none;
+    box-shadow: none;
+}
+
+
 `;
 
 export default GlobalStyles;

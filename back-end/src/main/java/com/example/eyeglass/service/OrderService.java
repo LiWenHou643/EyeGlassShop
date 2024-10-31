@@ -143,4 +143,16 @@ public class OrderService {
     public List<Object[]> getStatusHistory(Long orderId) {
         return orderTrackHistoryRepository.findStatusHistoryByOrderId(orderId);
     }
+
+    public OrderResponse confirm(Long id) {
+        Orders orders = findById(id);
+        orders.setStatus(OrderStatus.CONFIRMED);
+        try {
+            saveOrder(orders);
+            return ORDER_MAPPER.toOrderResponse(orders);
+        } catch (Exception e) {
+            log.error("Error confirming order: {}", e.getMessage());
+            throw new AppException(ErrorCode.ORDER_CONFIRM_FAILED);
+        }
+    }
 }
