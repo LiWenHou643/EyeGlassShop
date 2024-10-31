@@ -18,6 +18,17 @@ export const formatDate = (date) => {
     });
 };
 
+export const formatDateTime = (date) => {
+    const dateObj = new Date(date);
+    return dateObj.toLocaleString('en-US', {
+        month: 'short', // Abbreviated month name
+        day: '2-digit', // Day of the month with leading zeros if necessary
+        year: 'numeric', // Full numeric year
+        hour: '2-digit', // 2-digit hour
+        minute: '2-digit', // 2-digit minute
+    });
+};
+
 export const exactNameFromEmail = (email) => {
     return email?.split('@')[0];
 };

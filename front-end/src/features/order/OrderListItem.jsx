@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
 import Button from '../../ui/Button';
+import { formatDateTime } from '../../utils/helperFunction';
 import { useCancelOrder } from './useOrderActions';
 const OrderListItem = ({ item }) => {
     const navigate = useNavigate();
@@ -35,18 +36,24 @@ const OrderListItem = ({ item }) => {
     return (
         <Container className='card mb-4 shadow-sm p-3'>
             <div className='card-header bg-transparent d-flex justify-content-between align-items-center'>
-                <h5 className='mb-0'>Order ID: {item.id}</h5>
+                <span className='mb-0'>Order ID: {item.id}</span>
                 <span
                     className={`badge ${
-                        item.status === 'Deliveried'
+                        item.status === 'DELIVERED' ||
+                        item.status === 'SHIPPED' ||
+                        item.status === 'FINISHED' ||
+                        item.status === 'CONFIRMED'
                             ? 'bg-success'
-                            : item.status === 'Shipped'
+                            : item.status === 'PENDING'
                             ? 'bg-warning'
+                            : item.status === 'CANCELLED'
+                            ? 'bg-danger'
                             : 'bg-secondary'
                     }`}
                 >
                     {item.status}
                 </span>
+                <span>{formatDateTime(item.createdAt)}</span>
             </div>
             <div className='card-body'>
                 <h5 className='card-text'>
