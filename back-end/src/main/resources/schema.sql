@@ -1,7 +1,7 @@
 -- DROP SCHEMA IF EXISTS `defaultdb`;
 -- CREATE SCHEMA `defaultdb`;
 USE defaultdb;
-SET time_zone = 'Asia/Ho_Chi_Minh';
+SET time_zone = 'Asia/Bangkok';
 
 CREATE TABLE `roles`
 (
@@ -99,14 +99,15 @@ CREATE TABLE `orders` (
     `status` ENUM('PENDING', 'CONFIRMED', 'SHIPPED', 'DELIVERED', 'CANCELLED', 'REFUNDED', 'FINISHED') NOT NULL,  -- Updated status options
     `sub_total` DECIMAL(10, 2) NOT NULL,
     `discount_percentage` DECIMAL(5,2) DEFAULT 0.00,
-    `total` DECIMAL(10, 2) AS (`sub_total` * (1 - `discount_percentage` / 100)) STORED,
+    `ship_cost` DECIMAL(5,2) DEFAULT 0.00,
+    `total` DECIMAL(10, 2) AS (`sub_total` * (1 - `discount_percentage` / 100) + `ship_cost`) STORED,
     `promo_code` VARCHAR(50),  -- Applied promotion code
     `shipping_address` VARCHAR(255) NOT NULL,
     `notes` TEXT,
     `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    UNIQUE KEY `idx_person_id` (`person_id`),
-    UNIQUE KEY `idx_status` (`status`),
+    INDEX `idx_person_id` (`person_id`),
+    INDEX `idx_status` (`status`),
     FOREIGN KEY (`person_id`) REFERENCES `person`(`id`) ON DELETE CASCADE  -- Reference to users table
 );
 
@@ -116,8 +117,8 @@ CREATE TABLE `order_status_history` (
     `status` ENUM('PENDING', 'CONFIRMED', 'SHIPPED', 'DELIVERED', 'FINISHED') NOT NULL,
     `datetime` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (`order_id`) REFERENCES `orders`(`id`),
-    UNIQUE KEY `idx_status` (`status`),
-    UNIQUE KEY `idx_datetime` (`datetime`)
+    INDEX `idx_status` (`status`),
+    INDEX `idx_datetime` (`datetime`)
 );
 
 

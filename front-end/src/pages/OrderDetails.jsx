@@ -1,9 +1,11 @@
 import React from 'react';
 import { HiArrowSmallLeft } from 'react-icons/hi2';
 import { Link, useParams } from 'react-router-dom';
+import { RingLoader } from 'react-spinners';
 import { styled } from 'styled-components';
 import { useOrder } from '../features/order/useOrder';
 import { useTrackOrder } from '../features/order/useOrderActions';
+import Loading from '../ui/Loading';
 import { CURRENCY } from '../utils/constant';
 const OrderDetails = () => {
     const { id } = useParams();
@@ -11,7 +13,11 @@ const OrderDetails = () => {
     const { order, isFetching } = useOrder(id);
 
     if (isTracking || isFetching) {
-        return <div>Tracking order...</div>;
+        return (
+            <Loading>
+                <RingLoader color='blue' loading={isTracking || isFetching} />
+            </Loading>
+        );
     }
 
     let fixedStatus = [

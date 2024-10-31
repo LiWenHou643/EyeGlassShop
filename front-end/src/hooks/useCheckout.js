@@ -24,11 +24,11 @@ export const useCheckout = () => {
             if (url && url !== 'cod') {
                 window.location.href = url;
             } else {
-                navigate(`/track-order/${orderId}`, { replace: true });
+                navigate(`/order-details/${orderId}`, { replace: true });
             }
 
             // Invalidate the cart query
-            queryClient.invalidateQueries('cart');
+            queryClient.invalidateQueries('cart', 'orders');
         },
         onError: async () => {
             // Rollback the optimistic updates

@@ -373,16 +373,17 @@ VALUES ('1', '2'),
        ('49', '50'),
        ('50', '51');
 
-INSERT INTO `defaultdb`.`cart_item` (`id`, `cart_id`, `product_id`, `quantity`, `price`,
-                                     `discount_percentage`, `created_at`)
-VALUES ('1', '1', '6', '3', '23', '0', '2024-10-9 05:24:33'),
-       ('2', '1', '8', '3', '83', '20', '2024-10-10 05:24:33'),
-       ('3', '1', '15', '2', '66', '30', '2024-10-11 05:24:33');
 
 INSERT INTO `defaultdb`.`codes` (`id`, `code`, `value`)
 VALUES ('1', 'vip10', '10'),
        ('2', 'vip20', '20'),
        ('3', 'vip30', '30');
+       
+       
+INSERT INTO `defaultdb`.`cart_item` (`cart_id`, `product_id`, `quantity`, `price`, `discount_percentage`, `created_at`)
+VALUES ('1', '6', '3', '23', '0', '2024-10-9 05:24:33'),
+       ('1', '8', '3', '83', '20', '2024-10-10 05:24:33'),
+       ('1', '15', '2', '66', '30', '2024-10-11 05:24:33');
        
        
 INSERT INTO `orders` (

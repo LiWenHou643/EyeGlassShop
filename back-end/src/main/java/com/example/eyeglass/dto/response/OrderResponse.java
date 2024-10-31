@@ -18,6 +18,7 @@ public class OrderResponse {
     String status;
     BigDecimal subTotal;
     BigDecimal discountPercentage;
+    BigDecimal shipCost;
     BigDecimal total;
     String promoCode;
     String shippingAddress;

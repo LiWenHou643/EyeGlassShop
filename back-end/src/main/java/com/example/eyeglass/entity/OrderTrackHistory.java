@@ -24,7 +24,8 @@ public class OrderTrackHistory {
 
     @Enumerated(EnumType.STRING)
     OrderStatus status;
-    
+
     @Column(name = "datetime")
-    LocalDateTime datetime;
+    @Builder.Default
+    LocalDateTime datetime = LocalDateTime.now();
 }

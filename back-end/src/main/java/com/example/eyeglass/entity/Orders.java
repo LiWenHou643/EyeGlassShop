@@ -42,6 +42,9 @@ public class Orders extends BaseEntity {
     @Column(nullable = false, precision = 10, scale = 2)
     BigDecimal subTotal; // Total before discounts
 
+    @Column(nullable = false, precision = 10, scale = 2)
+    BigDecimal shipCost; // Shipping cost
+
     @Column(precision = 10, scale = 2, insertable = false, updatable = false)
     BigDecimal total; // Total after discounts
 

@@ -166,7 +166,7 @@ function Cart() {
                     <div className='d-flex justify-content-between align-items-center'>
                         <div className='form-check form-check-inline mb-2 fs-3 d-flex align-items-center'>
                             <input
-                                className='form-check-input'
+                                className='form-check-input mb-2 me-2'
                                 type='checkbox'
                                 id='inlineCheckbox'
                                 checked={selectAll}

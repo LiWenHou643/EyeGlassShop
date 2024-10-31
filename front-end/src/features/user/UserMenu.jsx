@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { HiOutlineUser } from 'react-icons/hi2';
-import { exactNameFromEmail } from '../../utils/helperFunction';
 import styled from 'styled-components';
 import BaseStyledLink from '../../ui/Link';
 import Modal from '../../ui/Modal';
+import { exactNameFromEmail } from '../../utils/helperFunction';
 import { useLogout } from '../authentication/useLogout';
 
 const MenuList = styled.ul`
@@ -82,6 +82,15 @@ function UserMenu({ user }) {
                             onClick={handleLinkClick}
                         >
                             {isAdmin ? 'Setting' : 'Profile'}
+                        </BaseStyledLink>
+                    </li>
+                    <li>
+                        <BaseStyledLink
+                            className='dropdown-item py-3 px-5'
+                            to={isAdmin ? '/admin/orders' : '/orders'}
+                            onClick={handleLinkClick}
+                        >
+                            Orders
                         </BaseStyledLink>
                     </li>
                     <li>

@@ -98,8 +98,9 @@ public class OrderService {
         orders.setNotes(req.notes());
         orders.setPromoCode(req.promoCode());
         orders.setSubTotal(subTotal);
+        orders.setShipCost(req.shipCost());
         orders.setDiscountPercentage(percent);
-        orders.setTotal(subTotal.subtract(discount));
+        orders.setTotal(subTotal.subtract(discount).add(req.shipCost()));
         orders.setOrderItems(orderItems);
 
         // Save the order

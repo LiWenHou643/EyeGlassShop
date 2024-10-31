@@ -71,6 +71,7 @@ function Checkout() {
             shippingAddress: address,
             paymentMethod: paymentMethod,
             selectedCartItems: selectedCartItemIds,
+            shipCost: deliveryCost,
         });
     };
 

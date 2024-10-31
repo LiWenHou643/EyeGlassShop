@@ -33,8 +33,6 @@ function ProductDetails() {
 
     const { data: product, isLoading, error } = useProduct(productId);
 
-    console.log('product', product);
-
     if (isLoading) {
         return (
             <Loading>

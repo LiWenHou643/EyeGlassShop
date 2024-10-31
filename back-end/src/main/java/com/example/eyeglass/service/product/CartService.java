@@ -131,12 +131,11 @@ public class CartService {
         cartItemRepository.deleteById(cartItemId);
     }
 
-    public void deleteCartItems(Set<CartItem> cartItems) {
-        Cart cart = cartRepository.findById(1L)
+    public void deleteCartItems(Long cartId, Set<CartItem> cartItems) {
+        Cart cart = cartRepository.findById(cartId)
                                   .orElseThrow(() -> new RuntimeException("Cart not found"));
 
         cart.getCartItems().removeAll(cartItems);
-
         saveCart(cart);
     }
 

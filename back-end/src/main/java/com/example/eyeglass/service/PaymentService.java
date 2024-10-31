@@ -69,7 +69,7 @@ public class PaymentService {
 
 
         orderService.saveOrder(orders);
-        cartService.deleteCartItems(cartItemsToDelete);
+        cartService.deleteCartItems(cart.getId(), cartItemsToDelete);
 
         return PaymentLink.builder().paymentUrl("cod").orderId(orders.getId().toString()).build();
     }
@@ -186,7 +186,7 @@ public class PaymentService {
                         payments.setTransactionId(transactionId);
                         payments.setOrders(orders);
                         paymentRepository.save(payments);
-                        cartService.deleteCartItems(cartItemsToDelete);
+                        cartService.deleteCartItems(cart.getId(), cartItemsToDelete);
                     } else {
                         System.out.println("Sale not found in related resources.");
                     }

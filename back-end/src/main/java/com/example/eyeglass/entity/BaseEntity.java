@@ -24,10 +24,10 @@ public class BaseEntity {
     @CreatedDate
     @Column(updatable = false, nullable = false)
     @JsonIgnore
-    LocalDateTime createdAt;
+    LocalDateTime createdAt = LocalDateTime.now();
 
     @LastModifiedDate
     @Column(insertable = false)
     @JsonIgnore
-    LocalDateTime updatedAt;
+    LocalDateTime updatedAt = LocalDateTime.now();
 }
