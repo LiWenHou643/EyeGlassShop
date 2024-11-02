@@ -1,11 +1,23 @@
+import { useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { RingLoader } from 'react-spinners';
 import { styled } from 'styled-components';
 import Button from '../../ui/Button';
 import Loading from '../../ui/Loading';
+import Pagination from '../../ui/Pagination';
 import { formatDateTime } from '../../utils/helperFunction';
-import { useOrders } from '../order/useOrders';
+import { useConfirmOrder, useShipOrder } from './useOrderActions';
+import { useOrders } from './useOrders';
+
 const Orders = () => {
-    const { orders, isLoading } = useOrders();
+    const [searchParams] = useSearchParams();
+    const page = searchParams.get('page') || 1;
+    const size = searchParams.get('size') || 10;
+
+    const { orders, isLoading, totalPage } = useOrders({ page, size });
+    const { confirmOrder, isConfirming } = useConfirmOrder();
+    const { shipOrder, isShipping } = useShipOrder();
+    const [clickedOrder, setClickedOrder] = useState(null);
 
     if (isLoading) {
         return (
@@ -14,11 +26,13 @@ const Orders = () => {
             </Loading>
         );
     }
-    const handleConfirm = () => {
-        console.log('confirm');
+    const handleConfirm = (id) => {
+        setClickedOrder(id);
+        confirmOrder(id);
     };
-    const handleShip = () => {
-        console.log('ship');
+    const handleShip = (id) => {
+        setClickedOrder(id);
+        shipOrder(id);
     };
 
     return (
@@ -47,18 +61,41 @@ const Orders = () => {
                             <td>{order.status}</td>
                             <td>
                                 {order.status === 'PENDING' && (
-                                    <Button onClick={handleConfirm}>
-                                        Confirm
+                                    <Button
+                                        onClick={() => handleConfirm(order.id)}
+                                        disabled={
+                                            isConfirming &&
+                                            clickedOrder === order.id
+                                        }
+                                    >
+                                        {isConfirming &&
+                                        clickedOrder === order.id
+                                            ? 'Confirming'
+                                            : 'Confirm'}
                                     </Button>
                                 )}
                                 {order.status === 'CONFIRMED' && (
-                                    <Button onClick={handleShip}>Ship</Button>
+                                    <Button
+                                        onClick={() => handleShip(order.id)}
+                                        disabled={
+                                            isShipping &&
+                                            clickedOrder === order.id
+                                        }
+                                    >
+                                        {isShipping && clickedOrder === order.id
+                                            ? 'Shipping'
+                                            : 'Ship'}
+                                    </Button>
                                 )}
                             </td>
                         </tr>
                     ))}
                 </tbody>
             </OrderTable>
+
+            <div className='p-5 d-flex justify-content-center'>
+                <Pagination totalPages={totalPage}></Pagination>
+            </div>
         </div>
     );
 };

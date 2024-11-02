@@ -1,6 +1,9 @@
 package com.example.eyeglass.service;
 
 import com.example.eyeglass.dto.request.OrderRequest;
+import com.example.eyeglass.dto.response.BestSellerDTO;
+import com.example.eyeglass.dto.response.OrderAdminDTO;
+import com.example.eyeglass.dto.response.OrderCountDTO;
 import com.example.eyeglass.dto.response.OrderResponse;
 import com.example.eyeglass.entity.*;
 import com.example.eyeglass.exception.AppException;
@@ -14,14 +17,14 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.time.LocalDateTime;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.example.eyeglass.mapper.OrderMapper.ORDER_MAPPER;
@@ -147,6 +150,11 @@ public class OrderService {
     public OrderResponse confirm(Long id) {
         Orders orders = findById(id);
         orders.setStatus(OrderStatus.CONFIRMED);
+        var trackHistory = OrderTrackHistory.builder()
+                                            .orderId(orders.getId())
+                                            .status(OrderStatus.CONFIRMED)
+                                            .build();
+        orderTrackHistoryRepository.save(trackHistory);
         try {
             saveOrder(orders);
             return ORDER_MAPPER.toOrderResponse(orders);
@@ -154,5 +162,52 @@ public class OrderService {
             log.error("Error confirming order: {}", e.getMessage());
             throw new AppException(ErrorCode.ORDER_CONFIRM_FAILED);
         }
+    }
+
+    public OrderResponse ship(Long id) {
+        Orders orders = findById(id);
+        orders.setStatus(OrderStatus.SHIPPED);
+        var trackHistory = OrderTrackHistory.builder()
+                                            .orderId(orders.getId())
+                                            .status(OrderStatus.SHIPPED)
+                                            .build();
+        orderTrackHistoryRepository.save(trackHistory);
+        try {
+            saveOrder(orders);
+            return ORDER_MAPPER.toOrderResponse(orders);
+        } catch (Exception e) {
+            log.error("Error shipping order: {}", e.getMessage());
+            throw new AppException(ErrorCode.ORDER_CONFIRM_FAILED);
+        }
+    }
+
+    public List<OrderCountDTO> getMonthlyTotals() {
+        return orderRepository.findMonthlyTotalsForFinishedOrders();
+    }
+
+    public Map<String, List<BestSellerDTO>> getTopSellingProductsForLastAndCurrentMonth() {
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime startOfCurrentMonth = now.withDayOfMonth(1).withHour(0).withMinute(0).withSecond(0);
+        LocalDateTime startOfLastMonth = startOfCurrentMonth.minusMonths(1);
+
+        // Current Month
+        List<BestSellerDTO> currentMonthTopSellers = orderRepository.findTopSellingProducts(startOfCurrentMonth, now,
+                PageRequest.of(0, 5));
+
+        // Last Month
+        LocalDateTime startOfNextMonth = startOfCurrentMonth.plusMonths(1);
+        List<BestSellerDTO> lastMonthTopSellers = orderRepository.findTopSellingProducts(startOfLastMonth,
+                startOfNextMonth, PageRequest.of(0, 5));
+
+        // Create a map to hold both lists
+        Map<String, List<BestSellerDTO>> topSellersMap = new HashMap<>();
+        topSellersMap.put("lastMonth", lastMonthTopSellers);
+        topSellersMap.put("currentMonth", currentMonthTopSellers);
+
+        return topSellersMap;
+    }
+
+    public Page<OrderAdminDTO> findAllOrderForAdmin(int page, int size) {
+        return orderRepository.findAllOrderForAdminDTO(PageRequest.of(page - 1, size));
     }
 }

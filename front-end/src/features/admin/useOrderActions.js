@@ -7,9 +7,9 @@ export const useConfirmOrder = () => {
     const { mutateAsync, isLoading } = useMutation(
         async (orderId) => {
             console.log('confirming order', orderId);
-            const { data } = await axiosPrivate.post(
-                `/orders/${orderId}/confirm`
-            );
+            const { data } = await axiosPrivate.put(`/admin/confirm`, null, {
+                params: { orderId },
+            });
             console.log('confirmed order', data);
             return data.data;
         },
@@ -20,7 +20,7 @@ export const useConfirmOrder = () => {
         }
     );
 
-    return { confirmOrder: mutateAsync, isLoading };
+    return { confirmOrder: mutateAsync, isConfirming: isLoading };
 };
 
 export const useShipOrder = () => {
@@ -29,7 +29,9 @@ export const useShipOrder = () => {
     const { mutateAsync, isLoading } = useMutation(
         async (orderId) => {
             console.log('shipping order', orderId);
-            const { data } = await axiosPrivate.post(`/orders/${orderId}/ship`);
+            const { data } = await axiosPrivate.put(`/admin/ship`, null, {
+                params: { orderId },
+            });
             console.log('shipped order', data);
             return data.data;
         },
@@ -40,5 +42,5 @@ export const useShipOrder = () => {
         }
     );
 
-    return { shipOrder: mutateAsync, isLoading };
+    return { shipOrder: mutateAsync, isShipping: isLoading };
 };

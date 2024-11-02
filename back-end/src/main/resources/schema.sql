@@ -63,7 +63,8 @@ CREATE TABLE `product`
     `description`    longtext            NOT NULL,
     `stock_quantity` int                 NOT NULL DEFAULT 50,
     `sold_quantity`  int                 NOT NULL DEFAULT 0,
-    `is_deleted`     boolean             NOT NULL DEFAULT FALSE
+    `is_deleted`     boolean             NOT NULL DEFAULT FALSE,
+    UNIQUE KEY `idx_product_code` (`product_code`)
 );
 
 CREATE TABLE `color`

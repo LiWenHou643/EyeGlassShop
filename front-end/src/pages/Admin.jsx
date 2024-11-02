@@ -1,7 +1,8 @@
 import { HiOutlineMoon, HiOutlineSun } from 'react-icons/hi2';
-import { Link, NavLink, Outlet } from 'react-router-dom';
+import { NavLink, Outlet } from 'react-router-dom';
 import { styled } from 'styled-components';
 import { useDarkMode } from '../context/DarkModeContext';
+import { useLogout } from '../features/authentication/useLogout';
 const Admin = () => {
     return (
         <Container className='row gx-0 min-vh-100'>
@@ -17,7 +18,7 @@ const Admin = () => {
 
 const Side = (props) => {
     const { isDarkMode, toggleDarkMode } = useDarkMode();
-
+    const { logout } = useLogout();
     return (
         <div onSelect={(selectedKey) => alert(`selected ${selectedKey}`)}>
             <div className='sidebar-sticky'></div>
@@ -39,7 +40,7 @@ const Side = (props) => {
                 </div>
                 <StyledNavLink to='dashboard'>Dashboard</StyledNavLink>
                 <StyledNavLink to='orders'>Orders</StyledNavLink>
-                <LogOut>Log out</LogOut>
+                <LogOut onClick={() => logout()}>Log out</LogOut>
             </ul>
         </div>
     );
@@ -63,10 +64,13 @@ const StyledNavLink = styled(NavLink)`
     }
 `;
 
-const LogOut = styled(Link)`
+const LogOut = styled.button`
     text-decoration: none;
     padding: 10px;
     margin: 5px;
+    outline: none;
+    border: none;
+    text-align: left;
     border-radius: 5px;
     background-color: var(--color-red-400);
     color: var(--color-grey-900);
