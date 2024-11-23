@@ -50,9 +50,15 @@ public class OrderController {
 
     @PutMapping("/cancel/{id}")
     @PreAuthorize("hasAuthority('SCOPE_USER')")
-    public ApiResponse<?> cancelOrder(@PathVariable Long id) {
-        orderService.cancelOrder(id);
-        return ApiResponse.builder().message("Order cancelled successfully").build();
+    public ApiResponse<OrderResponse> cancelOrder(@PathVariable Long id) {
+        var order = orderService.cancelOrder(id);
+        return ApiResponse.<OrderResponse>builder().message("Order cancelled successfully").data(order).build();
+    }
+
+    @PutMapping("/confirmReceipt/{id}")
+    @PreAuthorize("hasAuthority('SCOPE_USER')")
+    public ApiResponse<OrderResponse> confirmReceipt(@PathVariable Long id) {
+        return ApiResponse.<OrderResponse>builder().data(orderService.confirmReceipt(id)).build();
     }
 
     @GetMapping("/track/{id}")

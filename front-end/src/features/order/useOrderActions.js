@@ -8,19 +8,55 @@ export const useCancelOrder = () => {
 
     const cancel = async (id) => {
         const { data } = await axiosPrivate.put(`/orders/cancel/${id}`);
-        console.log(data.data);
         return data.data;
     };
 
     const { mutate: doCancel, isCanceling } = useMutation({
         mutationFn: cancel,
-        onSuccess: () => {
+        onSuccess: (canceledOrder) => {
+            // Use structured query key ['orders'] to update the cache
+            queryClient.setQueryData(['orders'], (oldData) => {
+                if (!oldData) return oldData; // Ensure data exists
+
+                // Assuming `oldData` is a flat array of orders
+                return oldData.map((order) =>
+                    order.id === canceledOrder.id
+                        ? { ...order, status: 'CANCELLED' }
+                        : order
+                );
+            });
+
             toast.success('Order has been canceled.');
+        },
+        onSettled: () => {
+            // Invalidate the query to ensure data consistency
             queryClient.invalidateQueries('orders');
         },
     });
 
     return { doCancel, isCanceling };
+};
+
+export const useConfirmReceipt = () => {
+    const axiosPrivate = useAxiosPrivate();
+    const queryClient = useQueryClient();
+
+    const confirm = async (id) => {
+        const { data } = await axiosPrivate.put(`/orders/confirmReceipt/${id}`);
+        console.log(data.data);
+        return data.data;
+    };
+
+    const { mutate: doConfirmReceipt, isConfirming } = useMutation({
+        mutationFn: confirm,
+        onSuccess: (res) => {
+            toast.success('Order has been confirmed.');
+            queryClient.invalidateQueries('order', res.id);
+            queryClient.invalidateQueries('orders');
+        },
+    });
+
+    return { doConfirmReceipt, isConfirming };
 };
 
 export const useTrackOrder = (id) => {

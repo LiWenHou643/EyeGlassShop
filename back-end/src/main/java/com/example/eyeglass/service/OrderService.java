@@ -10,7 +10,9 @@ import com.example.eyeglass.exception.AppException;
 import com.example.eyeglass.exception.ErrorCode;
 import com.example.eyeglass.repository.OrderRepository;
 import com.example.eyeglass.repository.OrderTrackHistoryRepository;
+import com.example.eyeglass.repository.PaymentRepository;
 import com.example.eyeglass.repository.person.PersonRepository;
+import com.example.eyeglass.repository.product.ProductRepository;
 import com.example.eyeglass.service.product.CodeService;
 import jakarta.transaction.Transactional;
 import lombok.AccessLevel;
@@ -19,6 +21,7 @@ import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -38,6 +41,8 @@ public class OrderService {
     CodeService codeService;
     PersonRepository personRepository;
     OrderTrackHistoryRepository orderTrackHistoryRepository;
+    private final PaymentRepository paymentRepository;
+    private final ProductRepository productRepository;
 
     public Orders findById(Long id) {
         return orderRepository.findById(id)
@@ -65,11 +70,25 @@ public class OrderService {
         Map<Long, CartItem> cartItemMap = cartItems.stream()
                                                    .collect(Collectors.toMap(CartItem::getId,
                                                            cartItem -> cartItem));
+        // Collect insufficient stock errors
+        List<String> insufficientStockErrors = new ArrayList<>();
 
         Orders orders = new Orders();
         for (Long id : reqCartItemIds) {
             CartItem cartItem = cartItemMap.get(id);
-            if (cartItem != null) {
+            if (cartItem == null) {
+                throw new AppException(ErrorCode.CART_ITEM_NOT_FOUND);
+            }
+
+            Product product = cartItem.getProduct();
+            int requestedQuantity = cartItem.getQuantity();
+
+            if (product.getStockQuantity() < requestedQuantity) {
+                insufficientStockErrors.add(
+                        String.format("Product '%s': Available: %d, Requested: %d",
+                                product.getTitle(), product.getStockQuantity(), requestedQuantity)
+                );
+            } else {
                 OrderItem orderItem = new OrderItem();
                 orderItem.setOrders(orders);
                 orderItem.setProduct(cartItem.getProduct());
@@ -83,6 +102,11 @@ public class OrderService {
                 // Remove the item from the cart items list
                 cartItemMap.remove(cartItem.getProduct().getId()); // Remove from the map as well
             }
+        }
+
+        // Throw exception if any stock issues exist
+        if (!insufficientStockErrors.isEmpty()) {
+            throw new AppException(ErrorCode.INSUFFICIENT_STOCK, String.join(". \n", insufficientStockErrors));
         }
 
         if (orderItems.isEmpty() || cartItems.isEmpty()) {
@@ -122,20 +146,67 @@ public class OrderService {
     }
 
     public List<OrderResponse> listOrder() {
-        List<Orders> orders = orderRepository.findAll();
+        List<Orders> orders = orderRepository.findAll(Sort.by(Sort.Order.desc("createdAt")));
         return orders.stream()
                      .map(ORDER_MAPPER::toOrderResponse)
                      .collect(Collectors.toList());
     }
 
-    public void cancelOrder(Long id) {
+    public OrderResponse cancelOrder(Long id) {
         Orders orders = findById(id);
         orders.setStatus(OrderStatus.CANCELLED);
+        var trackHistory = OrderTrackHistory.builder()
+                                            .orderId(orders.getId())
+                                            .status(OrderStatus.CANCELLED)
+                                            .build();
         try {
             saveOrder(orders);
+            orderTrackHistoryRepository.save(trackHistory);
+            return ORDER_MAPPER.toOrderResponse(orders);
         } catch (Exception e) {
             log.error("Error cancelling order: {}", e.getMessage());
             throw new AppException(ErrorCode.ORDER_CANCEL_FAILED);
+        }
+    }
+
+    public OrderResponse confirmReceipt(Long id) {
+        Orders orders = findById(id);
+        orders.setStatus(OrderStatus.FINISHED);
+        var trackHistory = OrderTrackHistory.builder()
+                                            .orderId(orders.getId())
+                                            .status(OrderStatus.FINISHED)
+                                            .build();
+        orderTrackHistoryRepository.save(trackHistory);
+        try {
+            saveOrder(orders);
+            return ORDER_MAPPER.toOrderResponse(orders);
+        } catch (Exception e) {
+            log.error("Error confirming receipt: {}", e.getMessage());
+            throw new AppException(ErrorCode.ORDER_CONFIRM_FAILED);
+        }
+    }
+
+    public OrderResponse delivered(Long id) {
+        Orders orders = findById(id);
+        orders.setStatus(OrderStatus.DELIVERED);
+        var trackHistory = OrderTrackHistory.builder()
+                                            .orderId(orders.getId())
+                                            .status(OrderStatus.DELIVERED)
+                                            .build();
+        orderTrackHistoryRepository.save(trackHistory);
+        var payment = orders.getPayment();
+        if (payment != null) {
+            payment.setStatus(PaymentStatus.PAID);
+        }
+        try {
+            saveOrder(orders);
+            assert payment != null;
+            paymentRepository.save(payment);
+            return ORDER_MAPPER.toOrderResponse(orders);
+
+        } catch (Exception e) {
+            log.error("Error delivering order: {}", e.getMessage());
+            throw new AppException(ErrorCode.ORDER_CONFIRM_FAILED);
         }
     }
 

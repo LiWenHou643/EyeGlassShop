@@ -6,7 +6,7 @@ import { useLogout } from '../features/authentication/useLogout';
 const Admin = () => {
     return (
         <Container className='row gx-0 min-vh-100'>
-            <aside className='col-2 min-vh-100'>
+            <aside className='col-2 px-4 min-vh-100'>
                 <Side />
             </aside>
             <main className='col-10'>
@@ -21,11 +21,11 @@ const Side = (props) => {
     const { logout } = useLogout();
     return (
         <div onSelect={(selectedKey) => alert(`selected ${selectedKey}`)}>
-            <div className='sidebar-sticky'></div>
+            <h1 className='p-4 text-center fw-bold'>Admin Management</h1>
             <ul className='d-flex flex-column'>
-                <div className='ms-4 nav-item align-items-center d-flex toggle-darkmode'>
+                <div className='ms-4 mb-3 nav-item align-items-center d-flex toggle-darkmode'>
                     <HiOutlineSun />
-                    <div className='ms-2 form-check form-switch'>
+                    <div className='mx-2 form-check form-switch'>
                         <input
                             className='form-check-input'
                             type='checkbox'

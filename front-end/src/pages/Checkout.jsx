@@ -62,7 +62,7 @@ function Checkout() {
         calculateDistance();
     }, [user, deliveryCost, subtotal, localDiscount]);
 
-    const { checkout, isCheckingOut } = useCheckout();
+    const { checkout, isCheckingOut, error } = useCheckout();
 
     const handleSubmitCheckout = () => {
         checkout({
@@ -118,6 +118,16 @@ function Checkout() {
     return (
         <div className='container-lg' style={{ maxWidth: '1000px' }}>
             <h1 className='text-center text-capitalize'>Payment</h1>
+            {error && (
+                <div
+                    className='bg-danger-subtle text-center p-3 rounded'
+                    style={{ whiteSpace: 'pre-wrap' }}
+                >
+                    {error.response?.message}
+                    <br />
+                    {error.response?.details}
+                </div>
+            )}
             <div className='row shadow p-5 mt-5'>
                 <div className='col-12 col-lg-4 shadow rounded p-4 bg-light h-50'>
                     <h2 className='mb-3 text-bg-light'>Customer Details</h2>

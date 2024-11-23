@@ -4,13 +4,20 @@ import { Link, useParams } from 'react-router-dom';
 import { RingLoader } from 'react-spinners';
 import { styled } from 'styled-components';
 import { useOrder } from '../features/order/useOrder';
-import { useTrackOrder } from '../features/order/useOrderActions';
+import {
+    useCancelOrder,
+    useConfirmReceipt,
+    useTrackOrder,
+} from '../features/order/useOrderActions';
+import Button from '../ui/Button';
 import Loading from '../ui/Loading';
 import { CURRENCY } from '../utils/constant';
 const OrderDetails = () => {
     const { id } = useParams();
     const { trackOrder, isTracking } = useTrackOrder(id);
     const { order, isFetching } = useOrder(id);
+    const { doCancel, isCanceling } = useCancelOrder();
+    const { doConfirmReceipt, isConfirming } = useConfirmReceipt();
 
     if (isTracking || isFetching) {
         return (
@@ -20,6 +27,22 @@ const OrderDetails = () => {
         );
     }
 
+    const handleOrder = (status) => {
+        const actions = {
+            pending: () => doCancel(order.id),
+            delivered: () => doConfirmReceipt(order.id),
+            finished: () => console.log('Order is finished.'),
+        };
+
+        actions[status]?.(); // Call the corresponding action if it exists
+    };
+
+    const buttonLabels = {
+        pending: isCanceling ? 'Canceling...' : 'Cancel Order',
+        delivered: isConfirming ? 'Confirming' : 'Confirm Receipt',
+        finished: 'Reorder',
+    };
+
     let fixedStatus = [
         { id: 1, status: 'PENDING', date: '', notes: '' },
         { id: 2, status: 'CONFIRMED', date: '', notes: '' },
@@ -28,7 +51,6 @@ const OrderDetails = () => {
         { id: 5, status: 'FINISHED', date: '', notes: '' },
     ];
 
-    let currentStatus = 'PENDING';
     trackOrder?.forEach((order) => {
         const [, , status, date] = order; // Correctly destructuring values
         const fixedItem = fixedStatus.find((s) => s.status === status);
@@ -36,14 +58,13 @@ const OrderDetails = () => {
         // Only set the date and notes if fixedItem is found
         if (fixedItem) {
             fixedItem.date = date;
-            currentStatus = status;
         }
     });
 
     return (
         <Container className='card mb-4 shadow-sm p-5'>
             <Link
-                to={`/orders?status=${currentStatus.toLowerCase()}`}
+                to={`/orders?status=${order.status.toLowerCase()}`}
                 className='d-block'
             >
                 <HiArrowSmallLeft />
@@ -55,27 +76,22 @@ const OrderDetails = () => {
                 Order Status:{' '}
                 <span
                     className={`badge ${
-                        currentStatus === 'DELIVERED' ||
-                        currentStatus === 'SHIPPED' ||
-                        currentStatus === 'FINISHED' ||
-                        currentStatus === 'CONFIRMED'
+                        order.status === 'DELIVERED' ||
+                        order.status === 'SHIPPED' ||
+                        order.status === 'FINISHED' ||
+                        order.status === 'CONFIRMED'
                             ? 'bg-success'
-                            : currentStatus === 'PENDING'
+                            : order.status === 'PENDING'
                             ? 'bg-warning'
-                            : currentStatus === 'CANCELLED'
+                            : order.status === 'CANCELLED'
                             ? 'bg-danger'
                             : 'bg-secondary'
                     }`}
                 >
-                    {currentStatus}
+                    {order.status}
                 </span>
             </h4>
             <h4>Order Notes: {order?.notes}</h4>
-            <p>
-                {currentStatus === 'PENDING'
-                    ? 'No notes'
-                    : fixedStatus.find((s) => s.status === currentStatus).notes}
-            </p>
             <h4>Shipping Address: {order?.shippingAddress}</h4>
             <h4>Order Items:</h4>
             <hr />
@@ -109,20 +125,39 @@ const OrderDetails = () => {
                     {order?.payment?.status}
                 </span>
             </h4>
-            <ul id='progressbar' className='pt-5'>
-                {fixedStatus.map((statusItem) => (
-                    <li
-                        key={statusItem.id}
-                        className={`text-center ${
-                            statusItem.date ? 'active' : ''
-                        }`}
-                        id={`step${statusItem.id}`}
-                    >
-                        {statusItem.status}
-                        <span className='trackDate'>{statusItem.date}</span>
-                    </li>
-                ))}
-            </ul>
+            {order.status !== 'CANCELLED' && (
+                <>
+                    <ul id='progressbar' className='pt-5'>
+                        {fixedStatus.map((statusItem) => (
+                            <li
+                                key={statusItem.id}
+                                className={`text-center ${
+                                    statusItem.date ? 'active' : ''
+                                }`}
+                                id={`step${statusItem.id}`}
+                            >
+                                {statusItem.status}
+                                <span className='trackDate'>
+                                    {statusItem.date}
+                                </span>
+                            </li>
+                        ))}
+                    </ul>
+                    <div className='mt-5 d-flex justify-content-end align-items-center'>
+                        <Button
+                            $variation='primary'
+                            $size='small'
+                            onClick={handleOrder.bind(
+                                null,
+                                order.status.toLowerCase()
+                            )}
+                            disabled={isCanceling}
+                        >
+                            {buttonLabels[order.status.toLowerCase()]}
+                        </Button>
+                    </div>
+                </>
+            )}
         </Container>
     );
 };

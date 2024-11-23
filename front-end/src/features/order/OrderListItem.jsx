@@ -2,20 +2,18 @@ import { useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
 import Button from '../../ui/Button';
 import { formatDateTime } from '../../utils/helperFunction';
-import { useCancelOrder } from './useOrderActions';
+import { useCancelOrder, useConfirmReceipt } from './useOrderActions';
 const OrderListItem = ({ item }) => {
     const navigate = useNavigate();
     const { doCancel, isCanceling } = useCancelOrder();
+    const { doConfirmReceipt, isConfirming } = useConfirmReceipt();
 
     const handleOrder = (status) => {
         const actions = {
             pending: () => doCancel(item.id),
-            confirmed: () => console.log('You can track your order.'),
+            confirmed: () => navigate(`/order-details/${item.id}`),
             shipped: () => navigate(`/order-details/${item.id}`),
-            delivered: () =>
-                console.log(
-                    'You can confirm receipt or request a return/exchange.'
-                ),
+            delivered: () => doConfirmReceipt(item.id),
             cancelled: () => console.log('You can reorder your items.'),
             returned: () =>
                 console.log('You can request a refund or exchange.'),
@@ -28,9 +26,10 @@ const OrderListItem = ({ item }) => {
         pending: isCanceling ? 'Canceling...' : 'Cancel Order',
         confirmed: 'Track Order',
         shipped: 'Track Shipment',
-        delivered: 'Confirm Receipt',
+        delivered: isConfirming ? 'Confirming' : 'Confirm Receipt',
         cancelled: 'Reorder',
         returned: 'Request Refund/Exchange',
+        finished: 'Reorder',
     };
 
     return (

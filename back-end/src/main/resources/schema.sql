@@ -115,7 +115,7 @@ CREATE TABLE `orders` (
 CREATE TABLE `order_status_history` (
     `id` INT AUTO_INCREMENT PRIMARY KEY,
     `order_id` INT NOT NULL,
-    `status` ENUM('PENDING', 'CONFIRMED', 'SHIPPED', 'DELIVERED', 'FINISHED') NOT NULL,
+    `status` ENUM('PENDING', 'CONFIRMED', 'SHIPPED', 'DELIVERED', 'FINISHED', 'CANCELLED') NOT NULL,
     `datetime` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (`order_id`) REFERENCES `orders`(`id`),
     INDEX `idx_status` (`status`),

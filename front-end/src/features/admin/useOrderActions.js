@@ -44,3 +44,25 @@ export const useShipOrder = () => {
 
     return { shipOrder: mutateAsync, isShipping: isLoading };
 };
+
+export const useDeliverOrder = () => {
+    const axiosPrivate = useAxiosPrivate();
+    const queryClient = useQueryClient();
+    const { mutateAsync, isLoading } = useMutation(
+        async (orderId) => {
+            console.log('delivering order', orderId);
+            const { data } = await axiosPrivate.put(`/admin/deliver`, null, {
+                params: { orderId },
+            });
+            console.log('delivered order', data);
+            return data.data;
+        },
+        {
+            onSettled: () => {
+                queryClient.invalidateQueries('orders');
+            },
+        }
+    );
+
+    return { deliverOrder: mutateAsync, isDelivering: isLoading };
+};

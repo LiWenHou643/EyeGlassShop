@@ -31,6 +31,12 @@ public class AdminController {
         return ApiResponse.<OrderResponse>builder().data(orderService.ship(id)).build();
     }
 
+    @PutMapping("/deliver")
+    @PreAuthorize("hasAuthority('SCOPE_ADMIN')")
+    public ApiResponse<OrderResponse> delivered(@RequestParam(name = "orderId") Long id) {
+        return ApiResponse.<OrderResponse>builder().data(orderService.delivered(id)).build();
+    }
+
     @GetMapping("/monthly-totals")
     @PreAuthorize("hasAuthority('SCOPE_ADMIN')")
     public ApiResponse<List<OrderCountDTO>> getMonthlyTotals() {

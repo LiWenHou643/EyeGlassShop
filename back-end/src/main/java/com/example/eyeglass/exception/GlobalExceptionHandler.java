@@ -4,16 +4,12 @@ import com.example.eyeglass.dto.response.ApiResponse;
 import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.security.oauth2.jwt.BadJwtException;
 import org.springframework.security.oauth2.server.resource.InvalidBearerTokenException;
-import org.springframework.validation.FieldError;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
 import java.nio.file.AccessDeniedException;
 import java.text.ParseException;
-import java.util.HashMap;
-import java.util.Map;
 
 
 @RestControllerAdvice
@@ -65,8 +61,10 @@ public class GlobalExceptionHandler {
         return ApiResponse.<Void>builder()
                           .code(errorCode.getCode())
                           .message(errorCode.getMessage())
+                          .details(e.getDetails()) // Add details to the response
                           .build();
     }
+
 
     @ExceptionHandler({InvalidBearerTokenException.class, BadJwtException.class, ParseException.class})
     public ApiResponse<Void> handleInvalidBearerTokenException(InvalidBearerTokenException e) {

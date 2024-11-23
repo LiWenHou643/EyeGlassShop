@@ -17,20 +17,23 @@ import java.util.List;
 @Repository
 public interface OrderRepository extends JpaRepository<Orders, Long> {
     @Query("SELECT new com.example.eyeglass.dto.response.OrderCountDTO(YEAR(o.createdAt), MONTH(o.createdAt), COUNT(o), SUM(o.total))" +
-            "FROM Orders o GROUP BY YEAR(o.createdAt), MONTH(o.createdAt) ORDER BY YEAR(o.createdAt), MONTH(o.createdAt)")
+            "FROM Orders o WHERE o.status = 'FINISHED' GROUP BY YEAR(o.createdAt), MONTH(o.createdAt) ORDER BY YEAR(o.createdAt), MONTH(o.createdAt)")
     List<OrderCountDTO> findMonthlyTotalsForFinishedOrders();
 
     @Query("SELECT new com.example.eyeglass.dto.response.BestSellerDTO(oi.product.id, oi.product.productCode, SUM(oi.quantity)) " +
             "FROM OrderItem oi JOIN oi.orders o " +
-            "WHERE o.createdAt >= :startDate AND o.createdAt < :endDate " +
+            "WHERE o.status = 'FINISHED' AND o.createdAt >= :startDate AND o.createdAt < :endDate " +
             "GROUP BY oi.product.id " +
             "ORDER BY SUM(oi.quantity) DESC")
     List<BestSellerDTO> findTopSellingProducts(@Param("startDate") LocalDateTime startDate,
             @Param("endDate") LocalDateTime endDate,
             Pageable pageable);
 
-    @Query("SELECT new com.example.eyeglass.dto.response.OrderAdminDTO(o.id, o.person.id, o.createdAt, o.total, o.notes, o.status) " +
-            "FROM Orders o ORDER BY o.createdAt DESC")
+    @Query("SELECT new com.example.eyeglass.dto.response.OrderAdminDTO(" +
+            "o.id, o.person.id, o.createdAt, o.total, o.notes, o.status, p.status) " +
+            "FROM Orders o " +
+            "LEFT JOIN Payments p ON o.id = p.orders.id " +
+            "ORDER BY o.createdAt DESC")
     Page<OrderAdminDTO> findAllOrderForAdminDTO(Pageable pageable);
 
 }

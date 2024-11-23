@@ -1,6 +1,7 @@
 package com.example.eyeglass.dto.response;
 
 import com.example.eyeglass.entity.OrderStatus;
+import com.example.eyeglass.entity.PaymentStatus;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -19,5 +20,6 @@ public class OrderAdminDTO {
     LocalDateTime createdAt;
     BigDecimal total;
     String notes;
-    OrderStatus status;
+    OrderStatus orderStatus;
+    PaymentStatus paymentStatus;
 }
