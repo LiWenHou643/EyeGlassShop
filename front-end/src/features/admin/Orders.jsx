@@ -103,7 +103,7 @@ const Orders = () => {
                                 </span>
                             </td>
                             <td>
-                                {order.status === 'PENDING' && (
+                                {order.orderStatus === 'PENDING' && (
                                     <Button
                                         onClick={() => handleConfirm(order.id)}
                                         disabled={
@@ -117,7 +117,7 @@ const Orders = () => {
                                             : 'Confirm'}
                                     </Button>
                                 )}
-                                {order.status === 'CONFIRMED' && (
+                                {order.orderStatus === 'CONFIRMED' && (
                                     <Button
                                         onClick={() => handleShip(order.id)}
                                         disabled={
@@ -130,7 +130,7 @@ const Orders = () => {
                                             : 'Ship'}
                                     </Button>
                                 )}
-                                {order.status === 'SHIPPED' && (
+                                {order.orderStatus === 'SHIPPED' && (
                                     <Button
                                         onClick={() =>
                                             handleDelivered(order.id)
