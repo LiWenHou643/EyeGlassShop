@@ -111,7 +111,7 @@ function App() {
                                                 element={<Cart />}
                                             />
                                             <Route
-                                                path='orders'
+                                                path='orders/:id'
                                                 element={<Order />}
                                             />
                                             <Route

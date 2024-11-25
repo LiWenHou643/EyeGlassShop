@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { searchProducts } from '../../api/apiProduct';
 import FilterBar from '../../ui/FilterBar';
@@ -49,7 +50,7 @@ function ProductsOperationBar() {
                 apiSearch={searchProducts}
                 render={(item, index) => {
                     return (
-                        <SearchItem href={`/products/${item.id}`} key={item.id}>
+                        <SearchItem to={`/products/${item.id}`} key={item.id}>
                             <span className='col-1'>{index + 1}</span>
                             <img
                                 className='col-3'
@@ -58,22 +59,23 @@ function ProductsOperationBar() {
                             />
                             <Title className='col-5 ps-4'>{item.title}</Title>
                             <div className='col-3 d-flex flex-column text-end'>
-                                {item.discount ? (
+                                {item.discount_percentage ? (
                                     <>
                                         <span className='text-decoration-line-through'>
-                                            {item.price}
+                                            ${item.price}
                                         </span>
                                         <span className='text-danger'>
+                                            $
                                             {formatPrice(
                                                 countDiscount(
                                                     item.price,
-                                                    item.discount
+                                                    item.discount_percentage
                                                 )
                                             )}
                                         </span>
                                     </>
                                 ) : (
-                                    <span>{item.price}</span>
+                                    <span>${item.price}</span>
                                 )}
                             </div>
                         </SearchItem>
@@ -92,7 +94,7 @@ const Container = styled.div`
     border-bottom: 1px solid #000000;
 `;
 
-const SearchItem = styled.a`
+const SearchItem = styled(Link)`
     display: flex;
     align-items: center;
     justify-content: space-between;

@@ -36,4 +36,5 @@ public interface OrderRepository extends JpaRepository<Orders, Long> {
             "ORDER BY o.createdAt DESC")
     Page<OrderAdminDTO> findAllOrderForAdminDTO(Pageable pageable);
 
+    List<Orders> findAllByPersonIdOrderByCreatedAtDesc(Long personId);
 }

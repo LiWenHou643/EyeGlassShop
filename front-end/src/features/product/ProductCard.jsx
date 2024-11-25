@@ -23,7 +23,7 @@ function ProductCard({ item, isSlider }) {
         >
             <div className='position-relative z-1 h-100'>
                 {item.discount !== 0 && (
-                    <CardDiscount>-{item.discount}%</CardDiscount>
+                    <CardDiscount>-{item.discountPercentage}%</CardDiscount>
                 )}
                 <CardSold>sold {formatSoldAmount(item.soldQuantity)}</CardSold>
 
@@ -43,16 +43,19 @@ function ProductCard({ item, isSlider }) {
                 <CardTitle className='card-title'>{item.title}</CardTitle>
                 <CardPrice className='card-text d-flex justify-content-between align-items-center'>
                     <div className='d-flex justify-content-between align-items-center w-100'>
-                        {item.discount !== 0 ? (
+                        {item.discountPercentage !== 0 ? (
                             <>
                                 <h4 className='text-decoration-line-through mb-0'>
-                                    {formatPrice(item.price)}d
+                                    ${formatPrice(item.price)}
                                 </h4>
                                 <h4 className='text-danger mb-0'>
+                                    $
                                     {formatPrice(
-                                        countDiscount(item.price, item.discount)
+                                        countDiscount(
+                                            item.price,
+                                            item.discountPercentage
+                                        )
                                     )}
-                                    d
                                 </h4>
                             </>
                         ) : (

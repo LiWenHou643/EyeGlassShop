@@ -100,7 +100,7 @@ const Header = () => {
                         Contact
                     </StyledLink>
                     {isAuth ? (
-                        <UserMenu user={auth} />
+                        <UserMenu auth={auth} />
                     ) : (
                         <LoginButton className='ps-4 ps-md-0' to='/login'>
                             Login

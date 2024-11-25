@@ -18,7 +18,7 @@ public class ProductResponse {
     String description;
     String category;
     BigDecimal price;
-    int discount;
+    BigDecimal discountPercentage;
     int stockQuantity;
     int soldQuantity;
     boolean deleted;

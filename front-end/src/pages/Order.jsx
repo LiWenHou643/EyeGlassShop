@@ -1,15 +1,16 @@
-import { useSearchParams } from 'react-router-dom';
+import { useParams, useSearchParams } from 'react-router-dom';
 import { RingLoader } from 'react-spinners';
 import { styled } from 'styled-components';
 import OrderListItem from '../features/order/OrderListItem';
-import { useOrders } from '../features/order/useOrders';
+import { useOrder } from '../features/order/useOrder';
 import FilterBar from '../ui/FilterBar';
 import Loading from '../ui/Loading';
 
 const Order = () => {
     const [searchParams] = useSearchParams();
     const status = searchParams.get('status') || 'all';
-    const { orders, isLoading } = useOrders();
+    const { id } = useParams();
+    const { orders, isLoading } = useOrder(id);
 
     if (isLoading) {
         return (
@@ -39,6 +40,7 @@ const Order = () => {
                     { label: 'delivered', value: 'delivered' },
                     { label: 'cancelled', value: 'cancelled' },
                     { label: 'returned', value: 'returned' },
+                    { label: 'finished', value: 'finished' },
                 ]}
             />
             <div className='d-flex justify-content-center mt-5'>

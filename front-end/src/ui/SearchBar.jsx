@@ -17,6 +17,7 @@ function SearchBar({ apiSearch, render, className }) {
                     // Call the searchProducts function to fetch data
                     const results = await apiSearch(debouncedSearchTerm);
                     setData(results.data); // Update state with the results
+                    console.log('Search results:', results.data);
                 } catch (error) {
                     console.error('Error fetching search results:', error);
                 }

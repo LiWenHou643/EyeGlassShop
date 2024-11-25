@@ -12,7 +12,6 @@ import com.example.eyeglass.repository.order.OrderRepository;
 import com.example.eyeglass.repository.order.OrderTrackHistoryRepository;
 import com.example.eyeglass.repository.payment.PaymentRepository;
 import com.example.eyeglass.repository.person.PersonRepository;
-import com.example.eyeglass.repository.product.ProductRepository;
 import com.example.eyeglass.service.product.CodeService;
 import jakarta.transaction.Transactional;
 import lombok.AccessLevel;
@@ -41,8 +40,7 @@ public class OrderService {
     CodeService codeService;
     PersonRepository personRepository;
     OrderTrackHistoryRepository orderTrackHistoryRepository;
-    private final PaymentRepository paymentRepository;
-    private final ProductRepository productRepository;
+    PaymentRepository paymentRepository;
 
     public Orders findById(Long id) {
         return orderRepository.findById(id)
@@ -52,6 +50,13 @@ public class OrderService {
     public OrderResponse getOrderById(Long id) {
         Orders orders = findById(id);
         return ORDER_MAPPER.toOrderResponse(orders);
+    }
+
+    public List<OrderResponse> findAllByPersonId(Long personId) {
+        return orderRepository.findAllByPersonIdOrderByCreatedAtDesc(personId)
+                              .stream()
+                              .map(ORDER_MAPPER::toOrderResponse)
+                              .collect(Collectors.toList());
     }
 
     @Transactional

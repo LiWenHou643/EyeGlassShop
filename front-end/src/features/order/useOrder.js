@@ -1,22 +1,22 @@
 import { useQuery } from '@tanstack/react-query';
 import { useAxiosPrivate } from '../../hooks/useAxiosPrivate';
-export const useOrder = (orderId) => {
+export const useOrder = (useId) => {
     const axiosPrivate = useAxiosPrivate();
 
-    const fetchOrder = async (orderId) => {
-        const { data } = await axiosPrivate.get(`/orders/${orderId}`);
+    const fetchOrder = async (useId) => {
+        const { data } = await axiosPrivate.get(`/orders/${useId}`);
         return data.data;
     };
 
     const { data, isLoading, error } = useQuery({
-        queryKey: ['order', orderId],
-        queryFn: () => fetchOrder(orderId),
+        queryKey: ['order', useId],
+        queryFn: () => fetchOrder(useId),
         refetchOnWindowFocus: false,
     });
 
     return {
-        order: data,
-        isFetching: isLoading,
+        orders: data,
+        isLoading,
         error,
     };
 };

@@ -48,6 +48,13 @@ public class OrderController {
         return ApiResponse.builder().data(orderService.listOrder()).build();
     }
 
+    @GetMapping("/{id}")
+    @PreAuthorize("hasAuthority('SCOPE_USER')")
+    public ApiResponse<List<OrderResponse>> getOrder(@PathVariable Long id) {
+        var orders = orderService.findAllByPersonId(id);
+        return ApiResponse.<List<OrderResponse>>builder().data(orders).build();
+    }
+
     @PutMapping("/cancel/{id}")
     @PreAuthorize("hasAuthority('SCOPE_USER')")
     public ApiResponse<OrderResponse> cancelOrder(@PathVariable Long id) {
@@ -65,13 +72,6 @@ public class OrderController {
     public ApiResponse<List<Object[]>> getStatusHistory(@PathVariable Long id) {
         List<Object[]> statusHistory = orderService.getStatusHistory(id);
         return ApiResponse.<List<Object[]>>builder().data(statusHistory).build();
-    }
-
-    @GetMapping("/{id}")
-    @PreAuthorize("hasAuthority('SCOPE_USER')")
-    public ApiResponse<OrderResponse> getOrder(@PathVariable Long id) {
-        OrderResponse order = orderService.getOrderById(id);
-        return ApiResponse.<OrderResponse>builder().data(order).build();
     }
 
 
