@@ -3,7 +3,7 @@ package com.example.eyeglass.service;
 import com.example.eyeglass.config.Authentication.JwtGenerator;
 import com.example.eyeglass.dto.response.PaymentLink;
 import com.example.eyeglass.entity.*;
-import com.example.eyeglass.repository.PaymentRepository;
+import com.example.eyeglass.repository.payment.PaymentRepository;
 import com.example.eyeglass.service.product.CartService;
 import com.paypal.api.payments.*;
 import com.paypal.base.rest.APIContext;

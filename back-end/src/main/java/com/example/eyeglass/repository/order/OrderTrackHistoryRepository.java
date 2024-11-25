@@ -1,4 +1,4 @@
-package com.example.eyeglass.repository;
+package com.example.eyeglass.repository.order;
 
 import com.example.eyeglass.entity.OrderTrackHistory;
 import org.springframework.data.jpa.repository.JpaRepository;
