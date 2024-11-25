@@ -11,6 +11,7 @@ import com.paypal.base.rest.PayPalRESTException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.io.UnsupportedEncodingException;
@@ -26,6 +27,7 @@ import java.util.stream.Collectors;
 
 import static lombok.AccessLevel.PRIVATE;
 
+@Slf4j
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -144,7 +146,6 @@ public class PaymentService {
 
         Orders orders = orderService.findById(Long.parseLong(orderId));
         Payments payments = orders.getPayment();
-        Set<OrderItem> orderItems = orders.getOrderItems();
         Cart cart = orders.getPerson().getCart();
         Set<CartItem> cartItems = cart.getCartItems();
         Set<CartItem> cartItemsToDelete = new HashSet<>();
@@ -181,9 +182,6 @@ public class PaymentService {
             payments.setStatus(PaymentStatus.FAILED);
             throw new PayPalRESTException("Error executing payment", e);
         }
-
-        // Get the payment state
-        String state = payment.getState();
 
         if ("approved".equals(payment.getState())) {
             List<Transaction> transactions = payment.getTransactions();

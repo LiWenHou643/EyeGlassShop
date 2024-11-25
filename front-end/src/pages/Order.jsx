@@ -1,16 +1,15 @@
-import { useParams, useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import { RingLoader } from 'react-spinners';
 import { styled } from 'styled-components';
 import OrderListItem from '../features/order/OrderListItem';
-import { useOrder } from '../features/order/useOrder';
+import { useFindOrderByUserId } from '../features/order/useOrder';
 import FilterBar from '../ui/FilterBar';
 import Loading from '../ui/Loading';
 
 const Order = () => {
     const [searchParams] = useSearchParams();
     const status = searchParams.get('status') || 'all';
-    const { id } = useParams();
-    const { orders, isLoading } = useOrder(id);
+    const { orders, isLoading } = useFindOrderByUserId();
 
     if (isLoading) {
         return (

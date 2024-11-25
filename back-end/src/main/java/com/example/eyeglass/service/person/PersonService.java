@@ -38,6 +38,11 @@ public class PersonService {
         return PERSON_MAPPER.toPersonResponse(person);
     }
 
+    public Person findById(Long id) {
+        return personRepository.findById(id)
+                               .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
+    }
+
     public PersonResponse getPersonByEmail(String email) {
         Person person = personRepository.findByEmail(email)
                                         .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));

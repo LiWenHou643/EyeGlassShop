@@ -1,10 +1,7 @@
 package com.example.eyeglass.service;
 
 import com.example.eyeglass.dto.request.OrderRequest;
-import com.example.eyeglass.dto.response.BestSellerDTO;
-import com.example.eyeglass.dto.response.OrderAdminDTO;
-import com.example.eyeglass.dto.response.OrderCountDTO;
-import com.example.eyeglass.dto.response.OrderResponse;
+import com.example.eyeglass.dto.response.*;
 import com.example.eyeglass.entity.*;
 import com.example.eyeglass.exception.AppException;
 import com.example.eyeglass.exception.ErrorCode;
@@ -49,15 +46,42 @@ public class OrderService {
 
     public OrderResponse getOrderById(Long id) {
         Orders orders = findById(id);
-        return ORDER_MAPPER.toOrderResponse(orders);
+        var sortedOrderItems = orders.getOrderItems()
+                                     .stream()
+                                     .sorted(Comparator.comparing(OrderItem::getId))
+                                     .map(ORDER_MAPPER::toOrderItemResponse)
+                                     .collect(Collectors.toList());
+
+        var orderDTO = ORDER_MAPPER.toOrderResponse(orders);
+        orderDTO.setOrderItems(sortedOrderItems);
+        return orderDTO;
     }
 
-    public List<OrderResponse> findAllByPersonId(Long personId) {
+    public List<OrderResponse> getAllByPersonId(Long personId) {
         return orderRepository.findAllByPersonIdOrderByCreatedAtDesc(personId)
                               .stream()
-                              .map(ORDER_MAPPER::toOrderResponse)
+                              .map(order -> {
+                                  // Sort order items by ID
+                                  List<OrderItemResponse> sortedOrderItems = order.getOrderItems()
+                                                                                  .stream()
+                                                                                  .map(ORDER_MAPPER::toOrderItemResponse)
+                                                                                  .sorted(Comparator.comparing(OrderItemResponse::getId))
+                                                                                  .collect(Collectors.toList());
+
+                                  // Map the order to an OrderResponse, setting the sorted order items
+                                  OrderResponse orderResponse = ORDER_MAPPER.toOrderResponse(order);
+                                  // Log only the IDs of each OrderItemResponse
+                                  List<Long> orderItemIds = sortedOrderItems.stream()
+                                                                            .map(OrderItemResponse::getId) // Extract IDs
+                                                                            .collect(Collectors.toList()); // Collect as a list
+                                  log.info("OrderResponse Item IDs: {}", orderItemIds); // Log the list of IDs
+                                  orderResponse.setOrderItems(sortedOrderItems); // assuming you have a setter for orderItems
+
+                                  return orderResponse;
+                              })
                               .collect(Collectors.toList());
     }
+
 
     @Transactional
     public Orders createOrder(OrderRequest req) {

@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { HiOutlineUser } from 'react-icons/hi2';
 import styled from 'styled-components';
-import { useUser } from '../../hooks/useUser';
 import BaseStyledLink from '../../ui/Link';
 import Modal from '../../ui/Modal';
 import { exactNameFromEmail } from '../../utils/helperFunction';
@@ -10,12 +9,6 @@ import { useLogout } from '../authentication/useLogout';
 function UserMenu({ auth }) {
     const [showMenu, setShowMenu] = useState(false);
     const { logout } = useLogout();
-
-    const { data: user, isLoading } = useUser();
-
-    if (isLoading) {
-        return null;
-    }
 
     const isAdmin = auth?.role === 'ADMIN';
 
@@ -57,11 +50,7 @@ function UserMenu({ auth }) {
                     <li>
                         <BaseStyledLink
                             className='dropdown-item py-3 px-5'
-                            to={
-                                isAdmin
-                                    ? '/admin/orders'
-                                    : `/orders/${user?.id}`
-                            }
+                            to={isAdmin ? '/admin/orders' : '/orders'}
                             onClick={handleLinkClick}
                         >
                             Orders

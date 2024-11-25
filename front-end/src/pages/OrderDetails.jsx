@@ -1,9 +1,9 @@
 import React from 'react';
 import { HiArrowSmallLeft } from 'react-icons/hi2';
-import { Link, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { RingLoader } from 'react-spinners';
 import { styled } from 'styled-components';
-import { useOrder } from '../features/order/useOrder';
+import { useFindOrderByOrderId } from '../features/order/useOrder';
 import {
     useCancelOrder,
     useConfirmReceipt,
@@ -13,19 +13,21 @@ import Button from '../ui/Button';
 import Loading from '../ui/Loading';
 import { CURRENCY } from '../utils/constant';
 const OrderDetails = () => {
+    const navigate = useNavigate();
     const { id } = useParams();
     const { trackOrder, isTracking } = useTrackOrder(id);
-    const { order, isFetching } = useOrder(id);
+    const { order, isLoading } = useFindOrderByOrderId(id);
     const { doCancel, isCanceling } = useCancelOrder();
     const { doConfirmReceipt, isConfirming } = useConfirmReceipt();
 
-    if (isTracking || isFetching) {
+    if (isTracking || isLoading) {
         return (
             <Loading>
-                <RingLoader color='blue' loading={isTracking || isFetching} />
+                <RingLoader color='blue' loading={isTracking || isLoading} />
             </Loading>
         );
     }
+    console.log(order);
 
     const handleOrder = (status) => {
         const actions = {
@@ -63,32 +65,34 @@ const OrderDetails = () => {
 
     return (
         <Container className='card mb-4 shadow-sm p-5'>
-            <Link
-                to={`/orders?status=${order.status.toLowerCase()}`}
-                className='d-block'
-            >
-                <HiArrowSmallLeft />
-                Back
-            </Link>
+            <div>
+                <button
+                    className='btn fs-4 border border-1'
+                    onClick={() => navigate('/orders')}
+                >
+                    <HiArrowSmallLeft />
+                    Back
+                </button>
+            </div>
             <h1 className='text-center'>Order Details</h1>
             <h4>Order ID: {id}</h4>
             <h4>
                 Order Status:{' '}
                 <span
                     className={`badge ${
-                        order.status === 'DELIVERED' ||
-                        order.status === 'SHIPPED' ||
-                        order.status === 'FINISHED' ||
-                        order.status === 'CONFIRMED'
+                        order?.status === 'DELIVERED' ||
+                        order?.status === 'SHIPPED' ||
+                        order?.status === 'FINISHED' ||
+                        order?.status === 'CONFIRMED'
                             ? 'bg-success'
-                            : order.status === 'PENDING'
+                            : order?.status === 'PENDING'
                             ? 'bg-warning'
-                            : order.status === 'CANCELLED'
+                            : order?.status === 'CANCELLED'
                             ? 'bg-danger'
                             : 'bg-secondary'
                     }`}
                 >
-                    {order.status}
+                    {order?.status}
                 </span>
             </h4>
             <h4>Order Notes: {order?.notes}</h4>
@@ -125,7 +129,7 @@ const OrderDetails = () => {
                     {order?.payment?.status}
                 </span>
             </h4>
-            {order.status !== 'CANCELLED' && (
+            {order?.status !== 'CANCELLED' && (
                 <>
                     <ul id='progressbar' className='pt-5'>
                         {fixedStatus.map((statusItem) => (
@@ -149,11 +153,11 @@ const OrderDetails = () => {
                             $size='small'
                             onClick={handleOrder.bind(
                                 null,
-                                order.status.toLowerCase()
+                                order?.status?.toLowerCase()
                             )}
                             disabled={isCanceling}
                         >
-                            {buttonLabels[order.status.toLowerCase()]}
+                            {buttonLabels[order?.status?.toLowerCase()]}
                         </Button>
                     </div>
                 </>

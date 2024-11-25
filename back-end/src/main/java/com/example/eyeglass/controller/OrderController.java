@@ -9,14 +9,19 @@ import com.example.eyeglass.exception.AppException;
 import com.example.eyeglass.exception.ErrorCode;
 import com.example.eyeglass.service.OrderService;
 import com.example.eyeglass.service.PaymentService;
+import com.example.eyeglass.service.person.PersonService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
@@ -24,14 +29,15 @@ import java.util.List;
 public class OrderController {
     OrderService orderService;
     PaymentService paymentService;
+    private final PersonService personService;
 
     @PostMapping("/create")
     @PreAuthorize("hasAuthority('SCOPE_USER')")
     public ApiResponse<PaymentLink> createOrder(@RequestBody OrderRequest req) {
         var order = orderService.createOrder(req);
         // Save the payment into database
-        paymentService.savePayment(order, null, req.paymentMethod()); // Save the payment
         if (req.paymentMethod().equals(PaymentMethod.PAYPAL)) {
+        paymentService.savePayment(order, null, req.paymentMethod()); // Save the payment
             PaymentLink link = paymentService.createPaypalPayment(order, req.selectedCartItems());
             return ApiResponse.<PaymentLink>builder().data(link).build();
         } else if (req.paymentMethod().equals(PaymentMethod.CASH_ON_DELIVERY)) {
@@ -48,11 +54,20 @@ public class OrderController {
         return ApiResponse.builder().data(orderService.listOrder()).build();
     }
 
+    @GetMapping
+    @PreAuthorize("hasAuthority('SCOPE_USER')")
+    public ApiResponse<List<OrderResponse>> getOrderByUserId() {
+        var person = SecurityContextHolder.getContext().getAuthentication().getName();
+        var id = personService.getPersonByEmail(person).getId();
+        var orders = orderService.getAllByPersonId(id);
+        return ApiResponse.<List<OrderResponse>>builder().data(orders).build();
+    }
+
     @GetMapping("/{id}")
     @PreAuthorize("hasAuthority('SCOPE_USER')")
-    public ApiResponse<List<OrderResponse>> getOrder(@PathVariable Long id) {
-        var orders = orderService.findAllByPersonId(id);
-        return ApiResponse.<List<OrderResponse>>builder().data(orders).build();
+    public ApiResponse<OrderResponse> getOrderById(@PathVariable Long id) {
+        var orders = orderService.getOrderById(id);
+        return ApiResponse.<OrderResponse>builder().data(orders).build();
     }
 
     @PutMapping("/cancel/{id}")
