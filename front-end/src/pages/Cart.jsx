@@ -29,6 +29,17 @@ function Cart() {
 
     useEffect(() => {
         if (Array.isArray(cartItems)) {
+            // Initialize `checkedItems` when `cartItems` is loaded
+            const initialCheckedItems = {};
+            cartItems.forEach((item) => {
+                initialCheckedItems[item.id] = false; // Default to unchecked
+            });
+            setCheckedItems(initialCheckedItems);
+        }
+    }, [cartItems]);
+
+    useEffect(() => {
+        if (Array.isArray(cartItems)) {
             const total = cartItems.reduce((acc, item) => {
                 if (checkedItems[item.id]) {
                     return acc + item.totalPrice;
@@ -72,6 +83,7 @@ function Cart() {
                 </Link>
             </div>
         );
+
     const handlePromoCodeChange = async (e) => {
         const code = e.target.value;
         setPromoCode(code);
