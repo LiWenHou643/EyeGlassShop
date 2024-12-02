@@ -1,41 +1,38 @@
 spring:
-  application:
-    name: ${SPRING_APP_NAME:eyeglass}
-  datasource:
-    url: jdbc:mysql://avnadmin:AVNS_7tuSVyFY8tOOOQ0rCss@mysql-eyeglass-nln-ct46605.h.aivencloud.com:28819/defaultdb?ssl-mode=REQUIRED
-    username: ${DATABASE_USERNAME:avnadmin}
-    password: ${DATABASE_PASSWORD:AVNS_7tuSVyFY8tOOOQ0rCss}
-  jpa:
-    hibernate:
-      ddl-auto: none
-    show-sql: ${JPA_SHOW_SQL:true}
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.MySQLDialect
-  web:
-    resources:
-      add-mappings: false
+    application:
+        name: ${SPRING_APP_NAME:eyeglass}
+    datasource:
+        url: ${DATABASE_URL}
+        username: ${DATABASE_USERNAME}
+        password: ${DATABASE_PASSWORD}
+    jpa:
+        hibernate:
+            ddl-auto: none
+        show-sql: ${JPA_SHOW_SQL:true}
+        properties:
+            hibernate:
+                dialect: org.hibernate.dialect.MySQLDialect
+    web:
+        resources:
+            add-mappings: false
 
 logging:
-  level:
-    org.springframework.security: ${SPRING_SECURITY_LOG_LEVEL:TRACE}
-  pattern:
-    console: ${LOG_PATTERN_CONSOLE:%green(%d{HH:mm:ss.SSS}) %blue(%-5level) %red([%thread]) %yellow(%logger{15}) - %msg%n}
+    level:
+        org.springframework.security: ${SPRING_SECURITY_LOG_LEVEL:TRACE}
+    pattern:
+        console: ${LOG_PATTERN_CONSOLE:%green(%d{HH:mm:ss.SSS}) %blue(%-5level) %red([%thread]) %yellow(%logger{15}) - %msg%n}
 
 server:
-  servlet:
-    session:
-      timeout: ${SESSION_TIMEOUT:20m}
+    servlet:
+        session:
+            timeout: ${SESSION_TIMEOUT:20m}
 
 jwt:
-  rsa-private-key: classpath:certs/privateKey.pem
-  rsa-public-key: classpath:certs/publicKey.pem
+    rsa-private-key: classpath:certs/privateKey.pem
+    rsa-public-key: classpath:certs/publicKey.pem
 
-stripe:
-  secret-key: ${STRIPE_SECRET_KEY:sk_test_51QBH3WRtHLd8oKj8YoO3a6czGapZp6Uvfc8zejVESKZeiqRholPbxtA9YBcwYc85fYfQ1lNUW46YwaikHgAWiQFV00CtMSwSRl}
-  currency: ${STRIPE_CURRENCY:vnd}
 paypal:
-  client:
-    id: ${PAYPAL_CLIENT_ID:ASS66SJz_RtirrMfu4CowWNGLjUsYfKYUR7new6W7tae7IWPZUlE0DOUh2UpbE9EUJlzFz80tS6OVlkZ}
-    secret: ${PAYPAL_CLIENT_SECRET:EGsTRgLaP9kLpqOk7Czr4ys9Q4Fn6RTwqHR3bio5QWIDn4dq_RkgsJCS97zpiXHW2ssdjkCgVs544SFh}
-  mode: ${PAYPAL_MODE:sandbox}
+    client:
+        id: ${PAYPAL_CLIENT_ID}
+        secret: ${PAYPAL_CLIENT_SECRET}
+    mode: ${PAYPAL_MODE:sandbox}
