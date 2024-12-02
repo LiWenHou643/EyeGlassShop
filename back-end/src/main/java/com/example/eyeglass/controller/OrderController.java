@@ -15,7 +15,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,7 +36,7 @@ public class OrderController {
         var order = orderService.createOrder(req);
         // Save the payment into database
         if (req.paymentMethod().equals(PaymentMethod.PAYPAL)) {
-        paymentService.savePayment(order, null, req.paymentMethod()); // Save the payment
+            paymentService.savePayment(order, null, req.paymentMethod()); // Save the payment
             PaymentLink link = paymentService.createPaypalPayment(order, req.selectedCartItems());
             return ApiResponse.<PaymentLink>builder().data(link).build();
         } else if (req.paymentMethod().equals(PaymentMethod.CASH_ON_DELIVERY)) {
@@ -54,7 +53,7 @@ public class OrderController {
         return ApiResponse.builder().data(orderService.listOrder()).build();
     }
 
-    @GetMapping
+    @GetMapping("/")
     @PreAuthorize("hasAuthority('SCOPE_USER')")
     public ApiResponse<List<OrderResponse>> getOrderByUserId() {
         var person = SecurityContextHolder.getContext().getAuthentication().getName();

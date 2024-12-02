@@ -1,10 +1,11 @@
 import { useQuery } from '@tanstack/react-query';
 import { useAxiosPrivate } from '../../hooks/useAxiosPrivate';
-export const useFindOrderByUserId = (useId) => {
+export const useFindOrderByUserId = () => {
     const axiosPrivate = useAxiosPrivate();
 
     const fetchOrder = async () => {
-        const { data } = await axiosPrivate.get(`/orders`);
+        const { data } = await axiosPrivate.get(`/orders/`);
+        console.log(data);
         return data.data;
     };
 

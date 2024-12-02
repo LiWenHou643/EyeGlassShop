@@ -7,10 +7,12 @@ import ImageContainer from '../../ui/ImageContainer';
 import NumberInput from '../../ui/NumberInput';
 import { CURRENCY } from '../../utils/constant';
 import { formatPrice } from '../../utils/helperFunction';
+import { useRemoveCartItem } from './useRemoveCartItem';
 import { useUpdateInCart } from './useUpdateInCart';
 
 const CartItem = ({ item, isChecked, onChange }) => {
     const { updateCart, isUpdating } = useUpdateInCart();
+    const { removeItem, isRemoving } = useRemoveCartItem();
 
     const debouncedAddToCart = useRef(
         debounce(async (cartItemId, newQuantity) => {
@@ -33,6 +35,10 @@ const CartItem = ({ item, isChecked, onChange }) => {
     const onQuantityChange = (newQuantity) => {
         if (newQuantity !== item.quantity)
             debouncedAddToCart.current(item.id, newQuantity);
+    };
+
+    const onDelete = (id) => {
+        removeItem({ cartItemId: id });
     };
 
     return (
@@ -65,7 +71,11 @@ const CartItem = ({ item, isChecked, onChange }) => {
                         />
                     </div>
                     <div className='col-4 text-end'>
-                        <Button $variation='danger'>
+                        <Button
+                            $variation='danger'
+                            onClick={() => onDelete(item.id)}
+                            disabled={isRemoving}
+                        >
                             <HiOutlineTrash />
                         </Button>
                     </div>

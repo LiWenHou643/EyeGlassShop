@@ -44,7 +44,7 @@ const Order = () => {
             />
             <div className='d-flex justify-content-center mt-5'>
                 <OrderList>
-                    {filteredOrders.map((item) => (
+                    {filteredOrders?.map((item) => (
                         <OrderListItem
                             key={item.id}
                             item={item}

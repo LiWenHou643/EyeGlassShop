@@ -139,6 +139,16 @@ public class CartService {
         saveCart(cart);
     }
 
+    public boolean removeItemFromCart(Long itemId) {
+        Optional<CartItem> cartItemOptional = cartItemRepository.findById(itemId);
+        if (cartItemOptional.isPresent()) {
+            CartItem cartItem = cartItemOptional.get();
+            cartItemRepository.delete(cartItem);
+            return true;
+        }
+        return false; // Item not found
+    }
+
     public void clearCart(Long cartId) {
         Cart cart = cartRepository.findById(cartId)
                                   .orElseThrow(() -> new RuntimeException("Cart not found"));

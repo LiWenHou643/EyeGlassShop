@@ -2,6 +2,8 @@ package com.example.eyeglass.controller;
 
 import com.example.eyeglass.dto.response.ApiResponse;
 import com.example.eyeglass.dto.response.CartResponse;
+import com.example.eyeglass.exception.AppException;
+import com.example.eyeglass.exception.ErrorCode;
 import com.example.eyeglass.service.product.CartService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -44,10 +46,14 @@ public class CartController {
         return ApiResponse.builder().message("Item updated in cart").build();
     }
 
-    @PostMapping(value = "/remove")
+    @DeleteMapping(value = "/remove/{itemId}")
     @PreAuthorize("hasAuthority('SCOPE_USER')")
-    public ApiResponse<Object> removeItemFromCart(@RequestParam Long cartId, @RequestParam Long productId) {
-//        cartService.removeItemFromCart(cartId, productId);
+    public ApiResponse<Object> removeItemFromCart(@PathVariable Long itemId) {
+        boolean removed = cartService.removeItemFromCart(itemId);
+        if (!removed) {
+            throw new AppException(ErrorCode.CART_ITEM_NOT_FOUND);
+        }
+
         return ApiResponse.builder().message("Item removed from cart").build();
     }
 

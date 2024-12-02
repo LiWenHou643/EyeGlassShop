@@ -4,6 +4,7 @@ export const useOrders = () => {
     const axiosPrivate = useAxiosPrivate();
     const fetch = async () => {
         const { data } = await axiosPrivate.get(`/orders/list`);
+        console.log(data);
         return data.data;
     };
 
